@@ -1,0 +1,21 @@
+/**
+	\mainpage GFS Operational Physics
+	
+	Documentation for the operational physics suite can be found here. As of January 2015, the following schemes are used:
+	- Radiation - RRTMG
+	- Turbulent Transport (PBL) - Hybrid EDMF
+	- Penetrative Convection - SAS
+	- Shallow Convection - SAS
+	- Cloud Microphysics - Zhao-Carr
+	- Gravity Wave Drag - Orographic GWD, Stationary Convective GWD
+	- Ozone Physics - NRL simplified scheme
+	- Land Surface Model - NOAH
+
+	Here, each scheme is documented in its own module.
+	
+	\section Structure
+
+	This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
+      
+
+*/
