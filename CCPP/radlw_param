@@ -1,0 +1,73 @@
+!  input variables:                                                     !
+!     plyr (npts,nlay) : layer mean pressures (mb)                      !
+!     plvl (npts,nlp1) : interface pressures (mb)                       !
+!     tlyr (npts,nlay) : layer mean temperature (k)                     !
+!     tlvl (npts,nlp1) : interface temperatures (k)                     !
+!     qlyr (npts,nlay) : layer specific humidity (gm/gm)   *see inside  !
+!     olyr (npts,nlay) : layer ozone concentration (gm/gm) *see inside  !
+!     gasvmr(npts,nlay,:): atmospheric gases amount:                    !
+!                       (check module_radiation_gases for definition)   !
+!       gasvmr(:,:,1)  -   co2 volume mixing ratio                      !
+!       gasvmr(:,:,2)  -   n2o volume mixing ratio                      !
+!       gasvmr(:,:,3)  -   ch4 volume mixing ratio                      !
+!       gasvmr(:,:,4)  -   o2  volume mixing ratio                      !
+!       gasvmr(:,:,5)  -   co  volume mixing ratio                      !
+!       gasvmr(:,:,6)  -   cfc11 volume mixing ratio                    !
+!       gasvmr(:,:,7)  -   cfc12 volume mixing ratio                    !
+!       gasvmr(:,:,8)  -   cfc22 volume mixing ratio                    !
+!       gasvmr(:,:,9)  -   ccl4  volume mixing ratio                    !
+!     clouds(npts,nlay,:): layer cloud profiles:                        !
+!                       (check module_radiation_clouds for definition)  !
+!                ---  for  ilwcliq > 0  ---                             !
+!       clouds(:,:,1)  -   layer total cloud fraction                   !
+!       clouds(:,:,2)  -   layer in-cloud liq water path   (g/m**2)     !
+!       clouds(:,:,3)  -   mean eff radius for liq cloud   (micron)     !
+!       clouds(:,:,4)  -   layer in-cloud ice water path   (g/m**2)     !
+!       clouds(:,:,5)  -   mean eff radius for ice cloud   (micron)     !
+!       clouds(:,:,6)  -   layer rain drop water path      (g/m**2)     !
+!       clouds(:,:,7)  -   mean eff radius for rain drop   (micron)     !
+!       clouds(:,:,8)  -   layer snow flake water path     (g/m**2)     !
+!       clouds(:,:,9)  -   mean eff radius for snow flake  (micron)     !
+!                ---  for  ilwcliq = 0  ---                             !
+!       clouds(:,:,1)  -   layer total cloud fraction                   !
+!       clouds(:,:,2)  -   layer cloud optical depth                    !
+!       clouds(:,:,3)  -   layer cloud single scattering albedo         !
+!       clouds(:,:,4)  -   layer cloud asymmetry factor                 !
+!     icseed(npts)   : auxiliary special cloud related array            !
+!                      when module variable isubclw=2, it provides      !
+!                      permutation seed for each column profile that    !
+!                      are used for generating random numbers.          !
+!                      when isubclw /=2, it will not be used.           !
+!     aerosols(npts,nlay,nbands,:) : aerosol optical properties         !
+!                       (check module_radiation_aerosols for definition)!
+!        (:,:,:,1)     - optical depth                                  !
+!        (:,:,:,2)     - single scattering albedo                       !
+!        (:,:,:,3)     - asymmetry parameter                            !
+!     sfemis (npts)  : surface emissivity                               !
+!     sfgtmp (npts)  : surface ground temperature (k)                   !
+!     npts           : total number of horizontal points                !
+!     nlay, nlp1     : total number of vertical layers, levels          !
+!     lprnt          : cntl flag for diagnostic print out               !
+!                                                                       !
+!  output variables:                                                    !
+!     hlwc  (npts,nlay): total sky heating rate (k/day or k/sec)        !
+!     topflx(npts)     : radiation fluxes at top, component:            !
+!                        (check module_radlw_paramters for definition)  !
+!        upfxc           - total sky upward flux at top (w/m2)          !
+!        upfx0           - clear sky upward flux at top (w/m2)          !
+!     sfcflx(npts)     : radiation fluxes at sfc, component:            !
+!                        (check module_radlw_paramters for definition)  !
+!        upfxc           - total sky upward flux at sfc (w/m2)          !
+!        upfx0           - clear sky upward flux at sfc (w/m2)          !
+!        dnfxc           - total sky downward flux at sfc (w/m2)        !
+!        dnfx0           - clear sky downward flux at sfc (w/m2)        !
+!                                                                       !
+!! optional output variables:                                           !
+!     hlwb(npts,nlay,nbands): spectral band total sky heating rates     !
+!     hlw0  (npts,nlay): clear sky heating rate (k/day or k/sec)        !
+!     flxprf(npts,nlp1): level radiative fluxes (w/m2), components:     !
+!                        (check module_radlw_paramters for definition)  !
+!        upfxc           - total sky upward flux                        !
+!        dnfxc           - total sky dnward flux                        !
+!        upfx0           - clear sky upward flux                        !
+!        dnfx0           - clear sky dnward flux           
