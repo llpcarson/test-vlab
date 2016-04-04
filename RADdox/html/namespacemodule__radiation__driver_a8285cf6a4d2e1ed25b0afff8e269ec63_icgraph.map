@@ -1,3 +1,0 @@
-<map id="module_radiation_driver::grrad" name="module_radiation_driver::grrad">
-<area shape="rect" id="node2" href="$gloopr_8f.html#aa4598a23017d824c298984f4b1f14555" title="NCEP/GFS shortwave (SW) radiation module. radiation driver, gloopr.f, calls grrad.f, which prepares atmospheric profiles, invokes main radiation calculations, and computes radiative fluxes and heating rates for some arbitrary number of vertical columns. " alt="" coords="211,13,268,39"/>
-</map>

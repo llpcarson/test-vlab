@@ -1,5 +1,0 @@
-<map id="taugb11" name="taugb11">
-<area shape="rect" id="node2" href="$namespacemodule__radlw__main.html#a7025e0f49149cf0ddbdd175efb5fe986" title="This subroutine contains optical depths developed for the rapid radiative transfer model..." alt="" coords="121,5,265,47"/>
-<area shape="rect" id="node3" href="$namespacemodule__radlw__main.html#a072a355f2067d729d64d2997270e36b1" title="This subroutine is the main lw radiation routine. " alt="" coords="313,5,457,47"/>
-<area shape="rect" id="node4" href="$namespacemodule__radiation__driver.html#a8285cf6a4d2e1ed25b0afff8e269ec63" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="505,5,663,47"/>
-</map>
