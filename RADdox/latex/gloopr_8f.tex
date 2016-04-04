@@ -1,0 +1,83 @@
+\hypertarget{gloopr_8f}{}\section{working\+\_\+src/gloopr.f File Reference}
+\label{gloopr_8f}\index{working\+\_\+src/gloopr.\+f@{working\+\_\+src/gloopr.\+f}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{gloopr_8f_aa4598a23017d824c298984f4b1f14555}{gloopr} (grid\+\_\+fld, g3d\+\_\+fld, aoi\+\_\+fld,                                                                           lats\+\_\+nodes\+\_\+r, global\+\_\+lats\+\_\+r, lonsperlar, phour,                                     deltim, xlon, xlat, coszdg, C\+O\+S\+Z\+EN, slmsk, snwdph,                                         S\+N\+C\+O\+VR, S\+N\+O\+A\+LB, Z\+O\+RL, T\+S\+EA, H\+P\+R\+I\+ME, S\+F\+A\+LB,                                                       A\+L\+V\+SF, A\+L\+N\+SF,A\+L\+V\+WF,A\+L\+N\+WF, F\+A\+C\+SF,F\+A\+C\+WF, CV, C\+VT,                                     C\+VB ,S\+WH, swhc, H\+LW, hlwc, S\+F\+C\+N\+SW, S\+F\+C\+D\+LW,                                                     F\+I\+CE,T\+I\+S\+FC, S\+F\+C\+D\+SW, sfcemis,                                                                       T\+S\+F\+LW, F\+L\+U\+XR, phy\+\_\+f3d, phy\+\_\+f2d,                                                                       slag, sdec, cdec, N\+B\+L\+CK, K\+DT                                        
+\begin{DoxyCompactList}\small\item\em N\+C\+E\+P/\+G\+FS shortwave (SW) radiation module. radiation driver, \hyperlink{gloopr_8f}{gloopr.\+f}, calls \hyperlink{grrad_8f}{grrad.\+f}, which prepares atmospheric profiles, invokes main radiation calculations, and computes radiative fluxes and heating rates for some arbitrary number of vertical columns. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{gloopr.\+f@{gloopr.\+f}!gloopr@{gloopr}}
+\index{gloopr@{gloopr}!gloopr.\+f@{gloopr.\+f}}
+\subsubsection[{\texorpdfstring{gloopr(grid\+\_\+fld, g3d\+\_\+fld, aoi\+\_\+fld,                                                                           lats\+\_\+nodes\+\_\+r, global\+\_\+lats\+\_\+r, lonsperlar, phour,                                     deltim, xlon, xlat, coszdg, C\+O\+S\+Z\+E\+N, slmsk, snwdph,                                         S\+N\+C\+O\+V\+R, S\+N\+O\+A\+L\+B, Z\+O\+R\+L, T\+S\+E\+A, H\+P\+R\+I\+M\+E, S\+F\+A\+L\+B,                                                       A\+L\+V\+S\+F, A\+L\+N\+S\+F,\+A\+L\+V\+W\+F,\+A\+L\+N\+W\+F, F\+A\+C\+S\+F,\+F\+A\+C\+W\+F, C\+V, C\+V\+T,                                     C\+V\+B ,\+S\+W\+H, swhc, H\+L\+W, hlwc, S\+F\+C\+N\+S\+W, S\+F\+C\+D\+L\+W,                                                     F\+I\+C\+E,\+T\+I\+S\+F\+C, S\+F\+C\+D\+S\+W, sfcemis,                                                                       T\+S\+F\+L\+W, F\+L\+U\+X\+R, phy\+\_\+f3d, phy\+\_\+f2d,                                                                       slag, sdec, cdec, N\+B\+L\+C\+K, K\+D\+T                                        }{gloopr(grid_fld, g3d_fld, aoi_fld,                                                                           lats_nodes_r, global_lats_r, lonsperlar, phour,                                     deltim, xlon, xlat, coszdg, COSZEN, slmsk, snwdph,                                         SNCOVR, SNOALB, ZORL, TSEA, HPRIME, SFALB,                                                       ALVSF, ALNSF,ALVWF,ALNWF, FACSF,FACWF, CV, CVT,                                     CVB ,SWH, swhc, HLW, hlwc, SFCNSW, SFCDLW,                                                     FICE,TISFC, SFCDSW, sfcemis,                                                                       TSFLW, FLUXR, phy_f3d, phy_f2d,                                                                       slag, sdec, cdec, NBLCK, KDT                                        }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine gloopr (
+\begin{DoxyParamCaption}
+\item[{type(grid\+\_\+var\+\_\+data)}]{grid\+\_\+fld, }
+\item[{type(g3d\+\_\+var\+\_\+data)}]{g3d\+\_\+fld, }
+\item[{type(aoi\+\_\+var\+\_\+data)}]{aoi\+\_\+fld, }
+\item[{integer, dimension(nodes), intent(in)}]{lats\+\_\+nodes\+\_\+r, }
+\item[{integer, dimension(latr), intent(in)}]{global\+\_\+lats\+\_\+r, }
+\item[{integer, dimension(latr), intent(in)}]{lonsperlar, }
+\item[{real (kind=kind\+\_\+phys), intent(inout)}]{phour, }
+\item[{real (kind=kind\+\_\+phys), intent(inout)}]{deltim, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{xlon, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{xlat, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{coszdg, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{C\+O\+S\+Z\+EN, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{slmsk, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{snwdph, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{S\+N\+C\+O\+VR, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{S\+N\+O\+A\+LB, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{Z\+O\+RL, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{T\+S\+EA, }
+\item[{real (kind=kind\+\_\+phys), dimension(nmtvr,lonr,lats\+\_\+node\+\_\+r), intent(inout)}]{H\+P\+R\+I\+ME, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{S\+F\+A\+LB, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{A\+L\+V\+SF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{A\+L\+N\+SF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{A\+L\+V\+WF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{A\+L\+N\+WF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{F\+A\+C\+SF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{F\+A\+C\+WF, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{CV, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{C\+VT, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{C\+VB, }
+\item[{real (kind=kind\+\_\+phys), dimension                               (ngptc,levs,nblck,lats\+\_\+node\+\_\+r), intent(out)}]{S\+WH, }
+\item[{real (kind=kind\+\_\+phys), dimension                               (ngptc,levs,nblck,lats\+\_\+node\+\_\+r), intent(out)}]{swhc, }
+\item[{real (kind=kind\+\_\+phys), dimension                               (ngptc,levs,nblck,lats\+\_\+node\+\_\+r), intent(out)}]{H\+LW, }
+\item[{real (kind=kind\+\_\+phys), dimension                               (ngptc,levs,nblck,lats\+\_\+node\+\_\+r), intent(out)}]{hlwc, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{S\+F\+C\+N\+SW, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{S\+F\+C\+D\+LW, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{F\+I\+CE, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(in)}]{T\+I\+S\+FC, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{S\+F\+C\+D\+SW, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{sfcemis, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r), intent(out)}]{T\+S\+F\+LW, }
+\item[{real (kind=kind\+\_\+phys), dimension (nfxr,lonr,lats\+\_\+node\+\_\+r), intent(inout)}]{F\+L\+U\+XR, }
+\item[{real (kind=kind\+\_\+phys), dimension(ngptc,levs,ntot3d,nblck,lats\+\_\+node\+\_\+r), intent(inout)}]{phy\+\_\+f3d, }
+\item[{real (kind=kind\+\_\+phys), dimension(lonr,lats\+\_\+node\+\_\+r,ntot2d), intent(inout)}]{phy\+\_\+f2d, }
+\item[{real (kind=kind\+\_\+phys), intent(out)}]{slag, }
+\item[{real (kind=kind\+\_\+phys), intent(out)}]{sdec, }
+\item[{real (kind=kind\+\_\+phys), intent(out)}]{cdec, }
+\item[{integer, intent(in)}]{N\+B\+L\+CK, }
+\item[{integer, intent(in)}]{K\+DT}
+\end{DoxyParamCaption}
+)}\hypertarget{gloopr_8f_aa4598a23017d824c298984f4b1f14555}{}\label{gloopr_8f_aa4598a23017d824c298984f4b1f14555}
+
+
+Definition at line 20 of file gloopr.\+f.
+
+
+
+References physcons\+::con\+\_\+fvirt, physcons\+::con\+\_\+rerth, physcons\+::con\+\_\+rocp, physcons\+::dxinv, physcons\+::dxmin, module\+\_\+radiation\+\_\+driver\+::grrad(), physparam\+::iaerflg, physparam\+::ipsd0, module\+\_\+radlw\+\_\+parameters\+::nbdlw, module\+\_\+radsw\+\_\+parameters\+::nbdsw, module\+\_\+radiation\+\_\+driver\+::radinit(), and module\+\_\+radiation\+\_\+driver\+::radupdate().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{gloopr_8f_aa4598a23017d824c298984f4b1f14555_cgraph}
+\end{center}
+\end{figure}
+
+

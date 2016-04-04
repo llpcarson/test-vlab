@@ -1,0 +1,162 @@
+\hypertarget{namespacemodule__radsw__kgb24}{}\section{module\+\_\+radsw\+\_\+kgb24 Module Reference}
+\label{namespacemodule__radsw__kgb24}\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+
+
+This module sets up absorption coeffients for band 24\+: 12850-\/16000 cm-\/1 (low -\/ h2o, o2; high -\/ o2)  
+
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, public \hyperlink{namespacemodule__radsw__kgb24_ad416df05aed8a6ae1ecd57d5c90c223c}{msa24}
+\item 
+integer, public \hyperlink{namespacemodule__radsw__kgb24_a0ec09b4df9fbfa868844ad93a84cbe31}{msb24}
+\item 
+integer, public \hyperlink{namespacemodule__radsw__kgb24_a52d0fde0af1d5427acf0d1924f393cdc}{msf24}
+\item 
+integer, public \hyperlink{namespacemodule__radsw__kgb24_a3a1c3808493ce89f2218116a02350e51}{mfr24}
+\item 
+integer, public \hyperlink{namespacemodule__radsw__kgb24_a6fcafb0e1605ad49a252ed1e22b00a5b}{mfx24}
+\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb24_a3a1c3808493ce89f2218116a02350e51}{mfr24}, ng24), public \hyperlink{namespacemodule__radsw__kgb24_ac57357ab300edcbad8f7b3801b796af3}{forref}
+\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb24_ad416df05aed8a6ae1ecd57d5c90c223c}{msa24}, ng24), public \hyperlink{namespacemodule__radsw__kgb24_a06965ec156c4e1d18d50a70ba43bd8e1}{absa}
+\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb24_a0ec09b4df9fbfa868844ad93a84cbe31}{msb24}, ng24), public \hyperlink{namespacemodule__radsw__kgb24_abd4db3c9678fee17f2cfd4a3e290619a}{absb}
+\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb24_a52d0fde0af1d5427acf0d1924f393cdc}{msf24}, ng24), public \hyperlink{namespacemodule__radsw__kgb24_a784e78b5964fadd3e3e1f57f7af30802}{selfref}
+\item 
+real(kind=kind\+\_\+phys), dimension(ng24), public \hyperlink{namespacemodule__radsw__kgb24_a3df78e9baa46df182aad6ff9b1662dc4}{abso3a}
+\item 
+real(kind=kind\+\_\+phys), dimension(ng24), public \hyperlink{namespacemodule__radsw__kgb24_a6b44aa0637523aa1f78de5b4d16c693b}{abso3b}
+\item 
+real(kind=kind\+\_\+phys), dimension(ng24, \hyperlink{namespacemodule__radsw__kgb24_a6fcafb0e1605ad49a252ed1e22b00a5b}{mfx24}), public \hyperlink{namespacemodule__radsw__kgb24_ab24774576414b5d210c34916c3d19404}{rayla}
+\item 
+real(kind=kind\+\_\+phys), dimension(ng24), public \hyperlink{namespacemodule__radsw__kgb24_a927fc4a43727d3e0735448c1cdc60458}{raylb}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!absa@{absa}}
+\index{absa@{absa}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{absa}{absa}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msa24},ng24), public module\+\_\+radsw\+\_\+kgb24\+::absa}\hypertarget{namespacemodule__radsw__kgb24_a06965ec156c4e1d18d50a70ba43bd8e1}{}\label{namespacemodule__radsw__kgb24_a06965ec156c4e1d18d50a70ba43bd8e1}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!absb@{absb}}
+\index{absb@{absb}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{absb}{absb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msb24},ng24), public module\+\_\+radsw\+\_\+kgb24\+::absb}\hypertarget{namespacemodule__radsw__kgb24_abd4db3c9678fee17f2cfd4a3e290619a}{}\label{namespacemodule__radsw__kgb24_abd4db3c9678fee17f2cfd4a3e290619a}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!abso3a@{abso3a}}
+\index{abso3a@{abso3a}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{abso3a}{abso3a}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng24), public module\+\_\+radsw\+\_\+kgb24\+::abso3a}\hypertarget{namespacemodule__radsw__kgb24_a3df78e9baa46df182aad6ff9b1662dc4}{}\label{namespacemodule__radsw__kgb24_a3df78e9baa46df182aad6ff9b1662dc4}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!abso3b@{abso3b}}
+\index{abso3b@{abso3b}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{abso3b}{abso3b}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng24), public module\+\_\+radsw\+\_\+kgb24\+::abso3b}\hypertarget{namespacemodule__radsw__kgb24_a6b44aa0637523aa1f78de5b4d16c693b}{}\label{namespacemodule__radsw__kgb24_a6b44aa0637523aa1f78de5b4d16c693b}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!forref@{forref}}
+\index{forref@{forref}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{forref}{forref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf mfr24},ng24), public module\+\_\+radsw\+\_\+kgb24\+::forref}\hypertarget{namespacemodule__radsw__kgb24_ac57357ab300edcbad8f7b3801b796af3}{}\label{namespacemodule__radsw__kgb24_ac57357ab300edcbad8f7b3801b796af3}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!mfr24@{mfr24}}
+\index{mfr24@{mfr24}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{mfr24}{mfr24}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb24\+::mfr24}\hypertarget{namespacemodule__radsw__kgb24_a3a1c3808493ce89f2218116a02350e51}{}\label{namespacemodule__radsw__kgb24_a3a1c3808493ce89f2218116a02350e51}
+
+
+Definition at line 16219 of file radsw\+\_\+datatb.\+f.
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!mfx24@{mfx24}}
+\index{mfx24@{mfx24}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{mfx24}{mfx24}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb24\+::mfx24}\hypertarget{namespacemodule__radsw__kgb24_a6fcafb0e1605ad49a252ed1e22b00a5b}{}\label{namespacemodule__radsw__kgb24_a6fcafb0e1605ad49a252ed1e22b00a5b}
+
+
+Definition at line 16219 of file radsw\+\_\+datatb.\+f.
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!msa24@{msa24}}
+\index{msa24@{msa24}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{msa24}{msa24}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb24\+::msa24}\hypertarget{namespacemodule__radsw__kgb24_ad416df05aed8a6ae1ecd57d5c90c223c}{}\label{namespacemodule__radsw__kgb24_ad416df05aed8a6ae1ecd57d5c90c223c}
+
+
+Definition at line 16219 of file radsw\+\_\+datatb.\+f.
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!msb24@{msb24}}
+\index{msb24@{msb24}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{msb24}{msb24}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb24\+::msb24}\hypertarget{namespacemodule__radsw__kgb24_a0ec09b4df9fbfa868844ad93a84cbe31}{}\label{namespacemodule__radsw__kgb24_a0ec09b4df9fbfa868844ad93a84cbe31}
+
+
+Definition at line 16219 of file radsw\+\_\+datatb.\+f.
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!msf24@{msf24}}
+\index{msf24@{msf24}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{msf24}{msf24}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb24\+::msf24}\hypertarget{namespacemodule__radsw__kgb24_a52d0fde0af1d5427acf0d1924f393cdc}{}\label{namespacemodule__radsw__kgb24_a52d0fde0af1d5427acf0d1924f393cdc}
+
+
+Definition at line 16219 of file radsw\+\_\+datatb.\+f.
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!rayla@{rayla}}
+\index{rayla@{rayla}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{rayla}{rayla}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng24,{\bf mfx24}), public module\+\_\+radsw\+\_\+kgb24\+::rayla}\hypertarget{namespacemodule__radsw__kgb24_ab24774576414b5d210c34916c3d19404}{}\label{namespacemodule__radsw__kgb24_ab24774576414b5d210c34916c3d19404}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!raylb@{raylb}}
+\index{raylb@{raylb}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{raylb}{raylb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng24), public module\+\_\+radsw\+\_\+kgb24\+::raylb}\hypertarget{namespacemodule__radsw__kgb24_a927fc4a43727d3e0735448c1cdc60458}{}\label{namespacemodule__radsw__kgb24_a927fc4a43727d3e0735448c1cdc60458}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
+\index{module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}!selfref@{selfref}}
+\index{selfref@{selfref}!module\+\_\+radsw\+\_\+kgb24@{module\+\_\+radsw\+\_\+kgb24}}
+\subsubsection[{\texorpdfstring{selfref}{selfref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msf24},ng24), public module\+\_\+radsw\+\_\+kgb24\+::selfref}\hypertarget{namespacemodule__radsw__kgb24_a784e78b5964fadd3e3e1f57f7af30802}{}\label{namespacemodule__radsw__kgb24_a784e78b5964fadd3e3e1f57f7af30802}
+
+
+Definition at line 16222 of file radsw\+\_\+datatb.\+f.
+
+
+
+Referenced by taumol24().
+
