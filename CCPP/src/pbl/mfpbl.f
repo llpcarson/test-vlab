@@ -1,4 +1,4 @@
-!>  \file mfpbl.f \ingroup PBL
+!>  \file mfpbl.f
 !!  This file contains the subroutine that calculates the updraft properties and mass flux for use in the Hybrid EDMF PBL scheme.
 
 !>  \ingroup PBL

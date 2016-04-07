@@ -1,3 +1,7 @@
+!>  \file radiation_surface.f
+!!  This file contains routines that set up surface albedo for sw radiation and surface
+!!    emissivity for lw radiation.
+
 !!!!!  ==========================================================  !!!!!
 !!!!!            'module_radiation_surface' description            !!!!!
 !!!!!  ==========================================================  !!!!!
@@ -69,7 +73,10 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-!> This module sets up surface albedo for sw radiation and surface 
+!> \ingroup rad
+!! \defgroup module_radiation_surface module_radiation_surface
+!! @{
+!> This module sets up surface albedo for sw radiation and surface
 !! emissivity for lw radiation.
 !========================================!
       module module_radiation_surface    !
@@ -113,7 +120,7 @@
       contains
 ! =================
 
-!> This subroutine is the initialization program for surface radiation related quantities 
+!> This subroutine is the initialization program for surface radiation related quantities
 !! (albedo, emissivity, etc.)
 !!\param[in] me       integer, print control flag
 !!\param[out] NONE
@@ -124,11 +131,8 @@
 !!\n                        a:=0  set sfc air/ground t same for lw radiation; =1  set sfc air/ground t diff for lw radiation
 !!\n                        b:=0  use fixed sfc emissivity=1.0 (black-body); =1  use varying climtology sfc emiss (veg based)
 !-----------------------------------
-      subroutine sfc_init                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( me )
+      subroutine sfc_init
+     &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
 !  ===================================================================  !
@@ -262,51 +266,47 @@
 !! direct-diffused) according to control flag ialbflg.
 !! \n 1) climatological surface albedo scheme (briegleb 1992)
 !! \n 2) modis retrieval based scheme from boston univ.
-!!\param[in] slmsk      real, (IMAX), sea(0),land(1),ice(2) mask on fcst model grid    
-!!\param[in] snowf      real, (IMAX), snow depth water equivalent in mm 
-!!\param[in] sncovr     real, (IMAX)  
-!!\n                    - ialgflg=0: not used     
-!!\n                    - ialgflg=1: snow cover over land in fraction 
-!!\param[in] snoalb     real, (IMAX)  
+!!\param[in] slmsk      real, (IMAX), sea(0),land(1),ice(2) mask on fcst model grid
+!!\param[in] snowf      real, (IMAX), snow depth water equivalent in mm
+!!\param[in] sncovr     real, (IMAX)
+!!\n                    - ialgflg=0: not used
+!!\n                    - ialgflg=1: snow cover over land in fraction
+!!\param[in] snoalb     real, (IMAX)
 !!\n                    - ialbflg=0: not used
 !!\n                    - ialgflg=1: max snow albedo over land in fraction
-!!\param[in] zorlf      real, (IMAX), surface roughness in cm  
-!!\param[in] coszf      real, (IMAX), cosin of solar zenith angle 
+!!\param[in] zorlf      real, (IMAX), surface roughness in cm
+!!\param[in] coszf      real, (IMAX), cosin of solar zenith angle
 !!\param[in] tsknf      real, (IMAX), ground surface temperature in K
-!!\param[in] tairf      real, (IMAX), lowest model layer air temperature in K  
-!!\param[in] hprif      real, (IMAX), topographic sdv in m      
-!!\n           ---  for ialbflg=0 climtological albedo scheme  ---  
+!!\param[in] tairf      real, (IMAX), lowest model layer air temperature in K
+!!\param[in] hprif      real, (IMAX), topographic sdv in m
+!!\n           ---  for ialbflg=0 climtological albedo scheme  ---
 !!\param[in] alvsf      real, (IMAX), 60 degree vis albedo with strong cosz dependency
 !!\param[in] alnsf      real, (IMAX), 60 degree nir albedo with strong cosz dependency
-!!\param[in] alvwf      real, (IMAX), 60 degree vis albedo with weak cosz dependency  
-!!\param[in] alnwf      real, (IMAX), 60 degree nir albedo with weak cosz dependency  
-!!\n           ---  for ialbflg=1 modis based land albedo scheme ---    
-!!\param[in] alvsf      real, (IMAX), visible black sky albedo at zenith 60 degree   
+!!\param[in] alvwf      real, (IMAX), 60 degree vis albedo with weak cosz dependency
+!!\param[in] alnwf      real, (IMAX), 60 degree nir albedo with weak cosz dependency
+!!\n           ---  for ialbflg=1 modis based land albedo scheme ---
+!!\param[in] alvsf      real, (IMAX), visible black sky albedo at zenith 60 degree
 !!\param[in] alnsf      real, (IMAX), near-ir black sky albedo at zenith 60 degree
-!!\param[in] alvwf      real, (IMAX), visible white sky albedo     
-!!\param[in] alnwf      real, (IMAX), near-ir white sky albedo 
-!!\param[in] facsf      real, (IMAX), fractional coverage with strong cosz dependency 
-!!\param[in] facwf      real, (IMAX), fractional coverage with weak cosz dependency 
-!!\param[in] fice       real, (IMAX), sea-ice fraction  
-!!\param[in] tisfc      real, (IMAX), sea-ice surface temperature 
-!!\param[in] IMAX       integer, array horizontal dimension 
-!!\param[out] sfcalb    real, (IMAX,NF_ALBD)              
-!!\n                    ( :, 1) -     near ir direct beam albedo 
-!!\n                    ( :, 2) -     near ir diffused albedo 
-!!\n                    ( :, 3) -     uv+vis direct beam albedo  
-!!\n                    ( :, 4) -     uv+vis diffused albedo  
+!!\param[in] alvwf      real, (IMAX), visible white sky albedo
+!!\param[in] alnwf      real, (IMAX), near-ir white sky albedo
+!!\param[in] facsf      real, (IMAX), fractional coverage with strong cosz dependency
+!!\param[in] facwf      real, (IMAX), fractional coverage with weak cosz dependency
+!!\param[in] fice       real, (IMAX), sea-ice fraction
+!!\param[in] tisfc      real, (IMAX), sea-ice surface temperature
+!!\param[in] IMAX       integer, array horizontal dimension
+!!\param[out] sfcalb    real, (IMAX,NF_ALBD)
+!!\n                    ( :, 1) -     near ir direct beam albedo
+!!\n                    ( :, 2) -     near ir diffused albedo
+!!\n                    ( :, 3) -     uv+vis direct beam albedo
+!!\n                    ( :, 4) -     uv+vis diffused albedo
 !> @{
 !!\section general General Algorithm
 !-----------------------------------
-      subroutine setalb                                                 &
-!...................................
-
-!  ---  inputs:
-     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,   &
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,            &
-     &       IMAX,                                                      &
-!  ---  outputs:
-     &       sfcalb                                                     &
+      subroutine setalb
+     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,   !  ---  inputs:
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,
+     &       IMAX,
+     &       sfcalb                                                    !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -371,13 +371,13 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::                &
-     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,           &
-     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,     &
+      real (kind=kind_phys), dimension(:), intent(in) ::
+     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,
+     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,
      &       sncovr, snoalb
 
 !  ---  outputs
-      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) ::    &
+      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) ::
      &       sfcalb
 !     real (kind=kind_phys), dimension(:,:), intent(out) :: sfcalb
 
@@ -589,7 +589,7 @@
 
 !           rfcs = 1.89 - 3.34*coszf(i) + 4.13*coszf(i)*coszf(i)        &
 !    &           - 2.02*coszf(i)*coszf(i)*coszf(i)
-            rfcs = 1.775/(1.0+1.55*coszf(i))      
+            rfcs = 1.775/(1.0+1.55*coszf(i))
 
             if (tsknf(i) >= con_t0c) then
               asevb = max(asevd, 0.026/(coszf(i)**1.7+0.065)            &
@@ -624,28 +624,24 @@
 !> @}
 
 !> This subroutine computes surface emissivity for LW radiation.
-!!\param[in] xlon      real, (IMAX), longitude in radiance, ok for both 0->2pi or -pi -> +pi ranges  
-!!\param[in] xlat      real, (IMAX), latitude  in radiance, default to pi/2 -> -pi/2 range, otherwise see in-line comment 
-!!\param[in] slmsk     real, (IMAX), sea(0),land(1),ice(2) mask on fcst model grid 
-!!\param[in] snowf     real, (IMAX), snow depth water equivalent in mm   
-!!\param[in] sncovr    real, (IMAX), ialbflg=1: snow cover over land in fraction 
-!!\param[in] zorlf     real, (IMAX), surface roughness in cm 
+!!\param[in] xlon      real, (IMAX), longitude in radiance, ok for both 0->2pi or -pi -> +pi ranges
+!!\param[in] xlat      real, (IMAX), latitude  in radiance, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param[in] slmsk     real, (IMAX), sea(0),land(1),ice(2) mask on fcst model grid
+!!\param[in] snowf     real, (IMAX), snow depth water equivalent in mm
+!!\param[in] sncovr    real, (IMAX), ialbflg=1: snow cover over land in fraction
+!!\param[in] zorlf     real, (IMAX), surface roughness in cm
 !!\param[in] tsknf     real, (IMAX), ground surface temperature in K
-!!\param[in] tairf     real, (IMAX), lowest model layer air temperature in K 
-!!\param[in] hprif     real, (IMAX), topographic sdv in m  
-!!\param[in] IMAX      integer, array horizontal dimension  
-!!\param[out] sfcemis  real, (IMAX), surface emissivity  
+!!\param[in] tairf     real, (IMAX), lowest model layer air temperature in K
+!!\param[in] hprif     real, (IMAX), topographic sdv in m
+!!\param[in] IMAX      integer, array horizontal dimension
+!!\param[out] sfcemis  real, (IMAX), surface emissivity
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine setemis                                                &
-!...................................
-
-!  ---  inputs:
-     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,      &
-     &       IMAX,                                                      &
-!  ---  outputs:
-     &       sfcemis                                                    &
+      subroutine setemis
+     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,      !  ---  inputs
+     &       IMAX,
+     &       sfcemis                                                    !  ---  outputs
      &     )
 
 !  ===================================================================  !
@@ -692,7 +688,7 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::                &
+      real (kind=kind_phys), dimension(:), intent(in) ::
      &       xlon,xlat, slmsk, snowf,sncovr, zorlf, tsknf, tairf, hprif
 
 !  ---  outputs
@@ -817,3 +813,4 @@
 !.........................................!
       end module module_radiation_surface !
 !=========================================!
+!> @}

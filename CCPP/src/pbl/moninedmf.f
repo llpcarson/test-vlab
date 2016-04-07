@@ -1,3 +1,7 @@
+!> \file moninedmf.f
+!!  Contains most of the hybrid eddy-diffusivity mass flux scheme except for the
+!!  subroutine that calculates the mass flux and updraft properties.
+
 !> \defgroup PBL Hybrid Eddy-diffusivity Mass Flux Scheme
 !! @{
 !!  \brief The Hybrid EDMF scheme is a first-order turbulent transport scheme used for subgrid-scale vertical advection in the PBL and above. It blends the traditional first-order approach that has been used and improved over the last several years with a more recent scheme that uses a mass-flux approach to calculate the countergradient diffusion terms.
@@ -5,13 +9,9 @@
 !!  The PBL scheme's main task is to calculate tendencies of temperature, moisture, and momentum due to vertical diffusion throughout the column (not just the PBL). The scheme is an amalgamation of decades of work, starting from the initial first-order PBL scheme of Troen and Mahrt (1986) \cite troen_and_mahrt_1986, implemented according to Hong and Pan (1996) \cite hong_and_pan_1996 and modified to include top-down mixing due to stratocumulus layers from Lock et al. (2000) \cite lock_et_al_2000 and replacement of counter-gradient terms with a mass flux scheme according to Siebesma et al. (2007) \cite siebesma_et_al_2007 and Soares et al. (2004) \cite soares_et_al_2004. Recently, heating due to TKE dissipation was also added according to Han et al. (2015) \cite han_et_al_2015.
 !!
 !!  \section diagram Calling Hierarchy Diagram
-!!  <IMG SRC="Hybrid_EDMF_Flowchart.png" width=200px>
+!!  \image html Hybrid_EDMF_Flowchart.png "caption" height=2cm
 !!  \section intraphysics Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information calculated in this scheme is used in other scheme types.
-
-!> \file moninedmf.f
-!!  Contains most of the hybrid eddy-diffusivity mass flux scheme except for the
-!!  subroutine that calculates the mass flux and updraft properties.
 
 !>  \brief This subroutine contains all of logic for the Hybrid EDMF PBL scheme except for the calculation of the updraft properties and mass flux.
 !!
@@ -189,7 +189,7 @@
      &                     ri,      rimin,  rl2,    rlam,  rlamun,
      &                     rone,    rzero,  sfcfrac,
      &                     spdk2,   sri,    zol1,   zolcr, zolcru,
-     &                     robn,    ttend, 
+     &                     robn,    ttend,
      &                     utend,   vk,     vk2,
      &                     ust3,    wst3,
      &                     vtend,   zfac,   vpert,  cteit,

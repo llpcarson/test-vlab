@@ -1,3 +1,7 @@
+!>  \file radlw_main.f
+!!  This file contains ncep's ncep's modifications of the rrtm-lw radiation
+!!  code from aer inc.
+
 !!!!!  ==============================================================  !!!!!
 !!!!!               lw-rrtm3 radiation package description             !!!!!
 !!!!!  ==============================================================  !!!!!
@@ -106,7 +110,7 @@
 !                                                                          !
 !                                                                          !
 !                   a rapid radiative transfer model                       !
-!                       for the longwave region                            ! 
+!                       for the longwave region                            !
 !             for application to general circulation models                !
 !                                                                          !
 !                                                                          !
@@ -224,14 +228,17 @@
 !       apr 2012,  b. ferrier and y. hou -- added conversion factor to fu's!
 !                    cloud-snow optical property scheme.                   !
 !       nov 2012,  yu-tai hou        -- modified control parameters thru   !
-!                     module 'physparam'.                                  !  
+!                     module 'physparam'.                                  !
 !                                                                          !
 !!!!!  ==============================================================  !!!!!
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> This module includes ncep's modifications of the rrtm-lw radiation    !
-!! code from aer inc.   
+!> \ingroup rad
+!! \defgroup module_radlw_main module_radlw_main
+!! @{
+!> This module includes ncep's modifications of the rrtm-lw radiation
+!! code from aer inc.
 !========================================!
       module module_radlw_main           !
 !........................................!
@@ -348,79 +355,74 @@
 ! ================
 
 !> This subroutine is the main lw radiation routine.
-!!\param[in] plyr           (npts,nlay),model layer mean pressure in mb 
-!!\param[in] plvl           (npts,nlp1),model interface pressure in mb    
-!!\param[in] tlyr           (npts,nlay),model layer mean temperature in K 
-!!\param[in] tlvl           (npts,nlp1),model interface temperature in K     
-!!\param[in] qlyr           (npts,nlay),layer specific humidity in gm/gm   *see inside 
+!!\param[in] plyr           (npts,nlay),model layer mean pressure in mb
+!!\param[in] plvl           (npts,nlp1),model interface pressure in mb
+!!\param[in] tlyr           (npts,nlay),model layer mean temperature in K
+!!\param[in] tlvl           (npts,nlp1),model interface temperature in K
+!!\param[in] qlyr           (npts,nlay),layer specific humidity in gm/gm   *see inside
 !!\param[in] olyr           (npts,nlay),layer ozone concentration in gm/gm   *see inside
-!!\param[in] gasvmr         (npts,nlay,:),atmospheric gases amount:(check module_radiation_gases for definition) 
-!!\n                        (:,:,1)  - co2 volume mixing ratio                         
-!!\n                        (:,:,2)  - n2o volume mixing ratio                       
-!!\n                        (:,:,3)  - ch4 volume mixing ratio      
-!!\n                        (:,:,4)  - o2  volume mixing ratio   
-!!\n                        (:,:,5)  - co  volume mixing ratio        
-!!\n                        (:,:,6)  - cfc11 volume mixing ratio     
-!!\n                        (:,:,7)  - cfc12 volume mixing ratio            
-!!\n                        (:,:,8)  - cfc22 volume mixing ratio       
-!!\n                        (:,:,9)  - ccl4  volume mixing ratio     
-!!\param[in] clouds         (npts,nlay,:),layer cloud profile(check module_radiation_clouds for definition) 
-!!\n                ---  for  ilwcliq > 0  ---                
-!!\n                        (:,:,1)  - layer total cloud fraction   
+!!\param[in] gasvmr         (npts,nlay,:),atmospheric gases amount:(check module_radiation_gases for definition)
+!!\n                        (:,:,1)  - co2 volume mixing ratio
+!!\n                        (:,:,2)  - n2o volume mixing ratio
+!!\n                        (:,:,3)  - ch4 volume mixing ratio
+!!\n                        (:,:,4)  - o2  volume mixing ratio
+!!\n                        (:,:,5)  - co  volume mixing ratio
+!!\n                        (:,:,6)  - cfc11 volume mixing ratio
+!!\n                        (:,:,7)  - cfc12 volume mixing ratio
+!!\n                        (:,:,8)  - cfc22 volume mixing ratio
+!!\n                        (:,:,9)  - ccl4  volume mixing ratio
+!!\param[in] clouds         (npts,nlay,:),layer cloud profile(check module_radiation_clouds for definition)
+!!\n                ---  for  ilwcliq > 0  ---
+!!\n                        (:,:,1)  - layer total cloud fraction
 !!\n                        (:,:,2)  - layer in-cloud liq water path   (\f$ g/m^2 \f$)
-!!\n                        (:,:,3)  - mean eff radius for liq cloud   (micron)   
+!!\n                        (:,:,3)  - mean eff radius for liq cloud   (micron)
 !!\n                        (:,:,4)  - layer in-cloud ice water path   (\f$ g/m^2 \f$)
-!!\n                        (:,:,5)  - mean eff radius for ice cloud   (micron) 
-!!\n                        (:,:,6)  - layer rain drop water path      (\f$ g/m^2 \f$) 
+!!\n                        (:,:,5)  - mean eff radius for ice cloud   (micron)
+!!\n                        (:,:,6)  - layer rain drop water path      (\f$ g/m^2 \f$)
 !!\n                        (:,:,7)  - mean eff radius for rain drop   (micron)
 !!\n                        (:,:,8)  - layer snow flake water path     (\f$ g/m^2 \f$)
-!!\n                        (:,:,9)  - mean eff radius for snow flake  (micron) 
-!!\n                ---  for  ilwcliq = 0  ---                           
-!!\n                        (:,:,1)  - layer total cloud fraction   
-!!\n                        (:,:,2)  - layer cloud optical depth            
-!!\n                        (:,:,3)  - layer cloud single scattering albedo  
-!!\n                        (:,:,4)  - layer cloud asymmetry factor     
+!!\n                        (:,:,9)  - mean eff radius for snow flake  (micron)
+!!\n                ---  for  ilwcliq = 0  ---
+!!\n                        (:,:,1)  - layer total cloud fraction
+!!\n                        (:,:,2)  - layer cloud optical depth
+!!\n                        (:,:,3)  - layer cloud single scattering albedo
+!!\n                        (:,:,4)  - layer cloud asymmetry factor
 !!\param[in] icseed         (npts),auxiliary special cloud related array.when module variable isubclw=2, it provides permutation seed for each column profile that are used for generating random numbers.when isubclw /=2, it will not be used.
 !!\param[in] aerosols       (npts,nlay,nbdsw,:),aerosol optical properties (check module_radiation_aerosols for definition)
-!!\n                        (:,:,:,1) - optical depth 
-!!\n                        (:,:,:,2) - single scattering albedo     
-!!\n                        (:,:,:,3) - asymmetry parameter   
-!!\param[in] sfemis         (npts),surface emissivity  
-!!\param[in] sfgtmp         (npts),surface ground temperature in K  
-!!\param[in] npts            total number of horizontal points                
-!!\param[in] nlay, nlp1      total number of vertical layers, levels 
-!!\param[in] lprnt           cntl flag for diagnostic print out         
+!!\n                        (:,:,:,1) - optical depth
+!!\n                        (:,:,:,2) - single scattering albedo
+!!\n                        (:,:,:,3) - asymmetry parameter
+!!\param[in] sfemis         (npts),surface emissivity
+!!\param[in] sfgtmp         (npts),surface ground temperature in K
+!!\param[in] npts            total number of horizontal points
+!!\param[in] nlay, nlp1      total number of vertical layers, levels
+!!\param[in] lprnt           cntl flag for diagnostic print out
 !!\param[out] hlwc          (npts,nlay),total sky heating rate in k/day or k/sec
-!!\param[out] topflx         (npts),radiation fluxes at top, components (check module_radlw_parameters for definition) 
-!!\n                          upfxc - total sky upward flux at top (\f$ w/m^2 \f$)    
-!!\n                          upfx0 - clear sky upward flux at top (\f$ w/m^2 \f$) 
+!!\param[out] topflx         (npts),radiation fluxes at top, components (check module_radlw_parameters for definition)
+!!\n                          upfxc - total sky upward flux at top (\f$ w/m^2 \f$)
+!!\n                          upfx0 - clear sky upward flux at top (\f$ w/m^2 \f$)
 !!\param[out] sfcflx         (npts),radiation fluxes at sfc, components (check module_radlw_parameters for definition)
-!!\n                          upfxc - total sky upward flux at sfc (\f$ w/m^2 \f$) 
-!!\n                          dnfxc - total sky downward flux at sfc (\f$ w/m^2 \f$) 
-!!\n                          upfx0 - clear sky upward flux at sfc (\f$ w/m^2 \f$) 
-!!\n                          dnfx0 - clear sky downward flux at sfc (\f$ w/m^2 \f$)             
+!!\n                          upfxc - total sky upward flux at sfc (\f$ w/m^2 \f$)
+!!\n                          dnfxc - total sky downward flux at sfc (\f$ w/m^2 \f$)
+!!\n                          upfx0 - clear sky upward flux at sfc (\f$ w/m^2 \f$)
+!!\n                          dnfx0 - clear sky downward flux at sfc (\f$ w/m^2 \f$)
 !!\n Optional:
-!!\param[out] hlwb           (npts,nlay,nbands),spectral band total sky heating rates 
+!!\param[out] hlwb           (npts,nlay,nbands),spectral band total sky heating rates
 !!\param[out] hlw0           (npts,nlay),clear sky heating rates (k/sec or k/day)
-!!\param[out] flxprf         (npts,nlp1),level radiation fluxes (\f$ w/m^2 \f$), components (check module_radlw_parameters for definition) 
+!!\param[out] flxprf         (npts,nlp1),level radiation fluxes (\f$ w/m^2 \f$), components (check module_radlw_parameters for definition)
 !!\n                          dnfxc - total sky downward flux
-!!\n                          upfxc - total sky upward flux 
-!!\n                          dnfx0 - clear sky downward flux  
-!!\n                          upfx0 - clear sky upward flux 
+!!\n                          upfxc - total sky upward flux
+!!\n                          dnfx0 - clear sky downward flux
+!!\n                          upfx0 - clear sky upward flux
 !> \section general General Algorithm
 !> @{
 ! --------------------------------
-      subroutine lwrad                                                  &
-! --------------------------------
-
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                      &
-     &       clouds,icseed,aerosols,sfemis,sfgtmp,                      &
-     &       npts, nlay, nlp1, lprnt,                                   &
-!  ---  outputs:
-     &       hlwc,topflx,sfcflx                                         &
-!! ---  optional:
-     &,      HLW0,HLWB,FLXPRF                                           &
+      subroutine lwrad
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                      !  ---  inputs
+     &       clouds,icseed,aerosols,sfemis,sfgtmp,
+     &       npts, nlay, nlp1, lprnt,
+     &       hlwc,topflx,sfcflx,                                         !  ---  outputs
+     &       HLW0,HLWB,FLXPRF                                           !! ---  optional
      &     )
 
 !  ====================  defination of variables  ====================  !
@@ -600,18 +602,18 @@
 
       logical,  intent(in) :: lprnt
 
-      real (kind=kind_phys), dimension(npts,nlp1), intent(in) :: plvl,  &
+      real (kind=kind_phys), dimension(npts,nlp1), intent(in) :: plvl,
      &       tlvl
-      real (kind=kind_phys), dimension(npts,nlay), intent(in) :: plyr,  &
+      real (kind=kind_phys), dimension(npts,nlay), intent(in) :: plyr,
      &       tlyr, qlyr, olyr
 
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: gasvmr
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: clouds
 
-      real (kind=kind_phys), dimension(npts), intent(in) :: sfemis,     &
+      real (kind=kind_phys), dimension(npts), intent(in) :: sfemis,
      &       sfgtmp
 
-      real (kind=kind_phys), dimension(npts,nlay,nbands,3),intent(in):: &
+      real (kind=kind_phys), dimension(npts,nlay,nbands,3),intent(in)::
      &       aerosols
 
 !  ---  outputs:
@@ -621,11 +623,11 @@
       type (sfcflw_type),    dimension(npts), intent(out) :: sfcflx
 
 !! ---  optional outputs:
-      real (kind=kind_phys), dimension(npts,nlay,nbands),optional,      &
+      real (kind=kind_phys), dimension(npts,nlay,nbands),optional,
      &       intent(out) :: hlwb
-      real (kind=kind_phys), dimension(npts,nlay),       optional,      &
+      real (kind=kind_phys), dimension(npts,nlay),       optional,
      &       intent(out) :: hlw0
-      type (proflw_type),    dimension(npts,nlp1),       optional,      &
+      type (proflw_type),    dimension(npts,nlp1),       optional,
      &       intent(out) :: flxprf
 
 !  ---  locals:
@@ -679,7 +681,7 @@
       lhlwb  = present ( hlwb )
       lhlw0  = present ( hlw0 )
       lflxprf= present ( flxprf )
- 
+
       colamt(:,:) = f_zero
 
 !> -# Change random number seed value for each radiation invocation (isubclw =1 or 2)
@@ -701,7 +703,7 @@
 !     endif
 
 !  --- ...  loop over horizontal npts profiles
- 
+
       lab_do_iplon : do iplon = 1, npts
 
 !> -# Read surface emissivity
@@ -760,7 +762,7 @@
             colamt(k,3) = max(temcol(k), coldry(k)*o3vmr(k))           ! o3
           enddo
 
-!> -# Set up column amount for rare gases n2o,ch4,o2,co,ccl4,cf11,cf12,cf22, convert from 
+!> -# Set up column amount for rare gases n2o,ch4,o2,co,ccl4,cf11,cf12,cf22, convert from
 !! volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20).
 !  --- ...  set up col amount for rare gases, convert from volume mixing ratio
 !           to molec/cm2 based on coldry (scaled to 1.0e-20)
@@ -1023,7 +1025,7 @@
 !      print *,' cldfrac',cldfrc
 !     endif
 
-!> -# Calling setcoef() to compute various coefficients needed in radiative 
+!> -# Calling setcoef() to compute various coefficients needed in radiative
 !! transfer calculations.
         call setcoef                                                    &
 !  ---  inputs:
@@ -1217,37 +1219,35 @@
 !> @}
 
 !> This subroutine performs calculations necessary for the initialization
-!! of the longwave model.  lookup tables are computed for use in the lw 
-!! radiative transfer, and input absorption coefficient data for each   
-!! spectral band are reduced from 256 g-point intervals to 140.   
+!! of the longwave model.  lookup tables are computed for use in the lw
+!! radiative transfer, and input absorption coefficient data for each
+!! spectral band are reduced from 256 g-point intervals to 140.
 !!\param[in] me        integer, print control for parallel process
 !!\param[out] NONE
 !!\section external External Module Variables
-!!\n physparam::ilwrate - heating rate unit selections   
-!!\n                      =1: output in k/day    
-!!\n                      =2: output in k/second   
-!!\n physparam::ilwrgas - control flag for rare gases (ch4,n2o,o2,cfcs, etc.) 
-!!\n                      =0: do not include rare gases           
-!!\n                      >0: include all rare gases   
-!!\n physparam::ilwcliq - liquid cloud optical properties contrl flag 
-!!\n                      =0: input cloud opt depth from diagnostic scheme 
-!!\n                      >0: input cwp,rew, and other cloud content parameters 
-!!\n physparam::isubclw - sub-column cloud approximation control flag 
+!!\n physparam::ilwrate - heating rate unit selections
+!!\n                      =1: output in k/day
+!!\n                      =2: output in k/second
+!!\n physparam::ilwrgas - control flag for rare gases (ch4,n2o,o2,cfcs, etc.)
+!!\n                      =0: do not include rare gases
+!!\n                      >0: include all rare gases
+!!\n physparam::ilwcliq - liquid cloud optical properties contrl flag
+!!\n                      =0: input cloud opt depth from diagnostic scheme
+!!\n                      >0: input cwp,rew, and other cloud content parameters
+!!\n physparam::isubclw - sub-column cloud approximation control flag
 !!\n                      =0: no sub-col cld treatment, use grid-mean cld quantities
 !!\n                      =1: mcica sub-col, prescribed seeds to get random numbers
 !!\n                      =2: mcica sub-col, providing array icseed for random numbers
-!!\n physparam::icldflg - cloud scheme control flag 
+!!\n physparam::icldflg - cloud scheme control flag
 !!\n                      =0: diagnostic scheme gives cloud tau, omiga, and g.
-!!\n                      =1: prognostic scheme gives cloud liq/ice path, etc. 
-!!\n physparam::iovrlw  - clouds vertical overlapping control flag  
-!!\n                      =0: random overlapping clouds 
-!!\n                      =1: maximum/random overlapping clouds 
-!!\n                      =2: maximum overlap cloud (isubcol>0 only) 
+!!\n                      =1: prognostic scheme gives cloud liq/ice path, etc.
+!!\n physparam::iovrlw  - clouds vertical overlapping control flag
+!!\n                      =0: random overlapping clouds
+!!\n                      =1: maximum/random overlapping clouds
+!!\n                      =2: maximum overlap cloud (isubcol>0 only)
 !-----------------------------------
-      subroutine rlwinit                                                &
-!...................................
-!  ---  inputs:
-     &     ( me )
+      subroutine rlwinit
+     &     ( me ) !  ---  inputs
 !  ---  outputs: (none)
 
 !  ===================  program usage description  ===================  !
@@ -1443,40 +1443,37 @@
 
 !> This subroutine computes the cloud optical depth(s) for each cloudy layer
 !! and g-point interval.
-!!\param[in] cfrac           real, (0:nlp1), layer cloud fraction  
-!!\n        .....  for  ilwcliq > 0 (prognostic cloud scheme)  - - -     
+!!\param[in] cfrac           real, (0:nlp1), layer cloud fraction
+!!\n        .....  for  ilwcliq > 0 (prognostic cloud scheme)  - - -
 !!\param[in] cliqp           real, (nlay), layer in-cloud liq water path (\f$g/m^2\f$)
-!!\param[in] reliq           real, (nlay), mean eff radius for liq cloud (micron)  
-!!\param[in] cicep           real, (nlay), layer in-cloud ice water path (\f$g/m^2\f$) 
-!!\param[in] reice           real, (nlay), mean eff radius for ice cloud (micron)  
-!!\param[in] cdat1           real, (nlay), layer rain drop water path (\f$g/m^2\f$)     
-!!\param[in] cdat2           real, (nlay), effective radius for rain drop (micron)    
-!!\param[in] cdat3           real, (nlay), layer snow flake water path(\f$g/m^2\f$)      
+!!\param[in] reliq           real, (nlay), mean eff radius for liq cloud (micron)
+!!\param[in] cicep           real, (nlay), layer in-cloud ice water path (\f$g/m^2\f$)
+!!\param[in] reice           real, (nlay), mean eff radius for ice cloud (micron)
+!!\param[in] cdat1           real, (nlay), layer rain drop water path (\f$g/m^2\f$)
+!!\param[in] cdat2           real, (nlay), effective radius for rain drop (micron)
+!!\param[in] cdat3           real, (nlay), layer snow flake water path(\f$g/m^2\f$)
 !!\param[in] cdat4           real, (nlay), mean eff radius for snow flake(micron)
-!!\n        .....  for ilwcliq = 0  (diagnostic cloud scheme)  - - -   
-!!\param[in] cliqp           real, (nlay), not used      
-!!\param[in] cicep           real, (nlay), not used                     
-!!\param[in] reliq           real, (nlay), not used           
-!!\param[in] reice           real, (nlay), not used        
-!!\param[in] cdat1           real, (nlay), layer cloud optical depth   
-!!\param[in] cdat2           real, (nlay), layer cloud single scattering albedo   
-!!\param[in] cdat3           real, (nlay), layer cloud asymmetry factor     
-!!\param[in] cdat4           real, (nlay), optional use                               
-!!\param[in] nlay            integer, 1, number of layer number       
+!!\n        .....  for ilwcliq = 0  (diagnostic cloud scheme)  - - -
+!!\param[in] cliqp           real, (nlay), not used
+!!\param[in] cicep           real, (nlay), not used
+!!\param[in] reliq           real, (nlay), not used
+!!\param[in] reice           real, (nlay), not used
+!!\param[in] cdat1           real, (nlay), layer cloud optical depth
+!!\param[in] cdat2           real, (nlay), layer cloud single scattering albedo
+!!\param[in] cdat3           real, (nlay), layer cloud asymmetry factor
+!!\param[in] cdat4           real, (nlay), optional use
+!!\param[in] nlay            integer, 1, number of layer number
 !!\param[in] nlp1            integer, 1, number of veritcal levels
-!!\param[in] ipseed          integer, 1, permutation seed for generating random numbers (isubclw>0) 
-!!\param[out] cldfmc         real,(ngptlw,nlay), cloud fraction for each sub-column 
+!!\param[in] ipseed          integer, 1, permutation seed for generating random numbers (isubclw>0)
+!!\param[out] cldfmc         real,(ngptlw,nlay), cloud fraction for each sub-column
 !!\param[out] taucld         real,(nbands,nlay), cloud optical depth for bands (non-mcica)
 !!\section general General Algorithm
 !> @{
 ! ----------------------------
-      subroutine cldprop                                                &
-! ............................
-!  ---  inputs:
-     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4,     &
-     &       nlay, nlp1, ipseed,                                        &
-!  ---  outputs:
-     &       cldfmc, taucld                                             &
+      subroutine cldprop
+     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4,     !  ---  inputs
+     &       nlay, nlp1, ipseed,
+     &       cldfmc, taucld                                             !  ---  outputs
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -1576,7 +1573,7 @@
       integer, intent(in) :: nlay, nlp1, ipseed
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cfrac
-      real (kind=kind_phys), dimension(nlay),   intent(in) :: cliqp,    &
+      real (kind=kind_phys), dimension(nlay),   intent(in) :: cliqp,
      &       reliq, cicep, reice, cdat1, cdat2, cdat3, cdat4
 
 !  ---  outputs:
@@ -1773,20 +1770,17 @@
 !> @}
 
 !> This suroutine computes sub-colum cloud profile flag array
-!!\param[in] cldf      real, (nlay), layer cloud fraction 
-!!\param[in] nlay      integer, 1, number of model vertical layers 
-!!\param[in] ipseed    integer, 1, permute seed for random num generator   
-!!\param[out] lcloudy     logical, (ngptlw,nlay),sub-colum cloud profile flag array  
-!!\section external External Module Variables                     
-!!\n physparam::iovrlw    - control flag for cloud overlapping method 
-!!\n                        =0:random; =1:maximum/random: =2:maximum   
+!!\param[in] cldf      real, (nlay), layer cloud fraction
+!!\param[in] nlay      integer, 1, number of model vertical layers
+!!\param[in] ipseed    integer, 1, permute seed for random num generator
+!!\param[out] lcloudy     logical, (ngptlw,nlay),sub-colum cloud profile flag array
+!!\section external External Module Variables
+!!\n physparam::iovrlw    - control flag for cloud overlapping method
+!!\n                        =0:random; =1:maximum/random: =2:maximum
 ! ----------------------------------
-      subroutine mcica_subcol                                           &
-! ..................................
-!  ---  inputs:
-     &    ( cldf, nlay, ipseed,                                         &
-!  ---  outputs:
-     &      lcloudy                                                     &
+      subroutine mcica_subcol
+     &    ( cldf, nlay, ipseed,                                        !  ---  inputs
+     &      lcloudy                                                     !  ---  outputs
      &    )
 
 !  ====================  defination of variables  ====================  !
@@ -1941,46 +1935,43 @@
 ! ----------------------------------
 
 !> This subroutine computes various coefficients needed in radiative transfer calculations.
-!!\param[in] pavel          real, (nlay), layer pressure (mb) 
+!!\param[in] pavel          real, (nlay), layer pressure (mb)
 !!\param[in] tavel          real, (nlay), layer temperature (K)
 !!\param[in] tz             real, (0:nlay), level(interface) temperatures (K)
 !!\param[in] stemp          real, 1, surface ground temperature (K)
 !!\param[in] h2ovmr         real, (nlay), layer w.v. volumn mixing ratio (kg/kg)
-!!\param[in] colamt         real, (nlay,maxgas), column amounts of absorbing gases. 
+!!\param[in] colamt         real, (nlay,maxgas), column amounts of absorbing gases.
 !! 2nd indices range: 1-maxgas, for watervapor,carbon dioxide, ozone, nitrous oxide, methane,oxigen, carbon monoxide,etc. \f$(mol/cm^2)\f$
-!!\param[in] coldry         real, (nlay), dry air column amount 
-!!\param[in] colbrd         real, (nlay), column amount of broadening gases 
+!!\param[in] coldry         real, (nlay), dry air column amount
+!!\param[in] colbrd         real, (nlay), column amount of broadening gases
 !!\param[in] nlay           integer, 1, total number of vertical layers
 !!\param[in] nlp1           integer, 1, total number of vertical levels
-!!\param[out] laytrop       integer, 1, tropopause layer index (unitless)  
-!!\param[out] pklay         real, (nbands,0:nlay), integrated planck func at lay temp 
-!!\param[out] pklev         real, (nbands,0:nlay), integrated planck func at lev temp 
+!!\param[out] laytrop       integer, 1, tropopause layer index (unitless)
+!!\param[out] pklay         real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[out] pklev         real, (nbands,0:nlay), integrated planck func at lev temp
 !!\param[out] jp            integer, (nlay), indices of lower reference pressure
-!!\param[out] jt, jt1       integer, (nlay), indices of lower reference temperatures   
-!!\param[out] rfrate        real, (nlay,nrates,2), ref ratios of binary species param 
+!!\param[out] jt, jt1       integer, (nlay), indices of lower reference temperatures
+!!\param[out] rfrate        real, (nlay,nrates,2), ref ratios of binary species param
 !!\n                        (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
 !!\n                        (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
-!!\param[out] facij         real, (nlay), factors multiply the reference ks, i,j=0/1 for lower/higher of the 2 appropriate temperatures and altitudes. 
-!!\param[out] selffac       real, (nlay), scale factor for w. v. self-continuum equals (w. v. density)/(atmospheric density at 296k and 1013 mb)                              
-!!\param[out] selffrac      real, (nlay), factor for temperature interpolation of reference w. v. self-continuum data           
+!!\param[out] facij         real, (nlay), factors multiply the reference ks, i,j=0/1 for lower/higher of the 2 appropriate temperatures and altitudes.
+!!\param[out] selffac       real, (nlay), scale factor for w. v. self-continuum equals (w. v. density)/(atmospheric density at 296k and 1013 mb)
+!!\param[out] selffrac      real, (nlay), factor for temperature interpolation of reference w. v. self-continuum data
 !!\param[out] indself       integer, (nlay), index of lower ref temp for selffac
-!!\param[out] forfac        real, (nlay), scale factor for w. v. foreign-continuum  
+!!\param[out] forfac        real, (nlay), scale factor for w. v. foreign-continuum
 !!\param[out] forfrac       real, (nlay), factor for temperature interpolation of reference w.v. foreign-continuum data
-!!\param[out] indfor        integer, (nlay), index of lower ref temp for forfac 
-!!\param[out] minorfrac     real, (nlay), factor for minor gases             
-!!\param[out] scaleminor,scaleminorn2         real, (nlay), scale factors for minor gases        
-!!\param[out] indminor      integer, (nlay), index of lower ref temp for minor gases 
+!!\param[out] indfor        integer, (nlay), index of lower ref temp for forfac
+!!\param[out] minorfrac     real, (nlay), factor for minor gases
+!!\param[out] scaleminor,scaleminorn2         real, (nlay), scale factors for minor gases
+!!\param[out] indminor      integer, (nlay), index of lower ref temp for minor gases
 ! ----------------------------------
-      subroutine setcoef                                                &
-! ..................................
-!  ---  inputs:
-     &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,          &
-     &       nlay, nlp1,                                                &
-!  ---  outputs:
-     &       laytrop,pklay,pklev,jp,jt,jt1,                             &
-     &       rfrate,fac00,fac01,fac10,fac11,                            &
-     &       selffac,selffrac,indself,forfac,forfrac,indfor,            &
-     &       minorfrac,scaleminor,scaleminorn2,indminor                 &
+      subroutine setcoef
+     &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,         !  ---  inputs:
+     &       nlay, nlp1,
+     &       laytrop,pklay,pklev,jp,jt,jt1,                             !  ---  outputs:
+     &       rfrate,fac00,fac01,fac10,fac11,
+     &       selffac,selffrac,indself,forfac,forfrac,indfor,
+     &       minorfrac,scaleminor,scaleminorn2,indminor
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2041,24 +2032,24 @@
       real (kind=kind_phys), dimension(nlay,maxgas),intent(in):: colamt
       real (kind=kind_phys), dimension(0:nlay),     intent(in):: tz
 
-      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,      &
+      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,
      &       tavel, h2ovmr, coldry, colbrd
 
       real (kind=kind_phys), intent(in) :: stemp
 
 !  ---  outputs:
-      integer, dimension(nlay), intent(out) :: jp, jt, jt1, indself,    &
+      integer, dimension(nlay), intent(out) :: jp, jt, jt1, indself,
      &       indfor, indminor
 
       integer, intent(out) :: laytrop
 
-      real (kind=kind_phys), dimension(nlay,nrates,2), intent(out) ::   &
+      real (kind=kind_phys), dimension(nlay,nrates,2), intent(out) ::
      &       rfrate
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(out) ::   &
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(out) ::
      &       pklev, pklay
 
-      real (kind=kind_phys), dimension(nlay),          intent(out) ::   &
-     &       fac00, fac01, fac10, fac11, selffac, selffrac, forfac,     &
+      real (kind=kind_phys), dimension(nlay),          intent(out) ::
+     &       fac00, fac01, fac10, fac11, selffac, selffrac, forfac,
      &       forfrac, minorfrac, scaleminor, scaleminorn2
 
 !  ---  locals:
@@ -2232,43 +2223,40 @@
       end subroutine setcoef
 ! ----------------------------------
 
-!> This subroutine computes the upward/downward radiative fluxes, and heating rates for 
+!> This subroutine computes the upward/downward radiative fluxes, and heating rates for
 !! both clear or cloudy atmosphere. Clouds assumed as randomly overlaping in a vertical column.
 !!\brief Original Code Description: this program calculates the upward fluxes, downward fluxes, and
-!! heating rates for an arbitrary clear or cloudy atmosphere. The input to this program is the 
+!! heating rates for an arbitrary clear or cloudy atmosphere. The input to this program is the
 !! atmospheric profile, all Planck function information, and the cloud fraction by layer. A variable
-!! diffusivity angle (secdif) is used for the angle integration. Bands 2-3 and 5-9 use a value for 
-!! secdif that varies from 1.50 to 1.80 as a function of the column water vapor, and other bands use 
+!! diffusivity angle (secdif) is used for the angle integration. Bands 2-3 and 5-9 use a value for
+!! secdif that varies from 1.50 to 1.80 as a function of the column water vapor, and other bands use
 !! a value of 1.66. The gaussian weight appropriate to this angle (wtdiff =0.5) is applied here. Note
 !! that use of the emissivity angle for the flux integration can cause errors of 1 to 4 \f$W/m^2\f$ within
 !! cloudy layers. Clouds are treated with a random cloud overlap method.
-!!\param[in] semiss      real,(nbands), lw surface emissivity  
-!!\param[in] delp        real, (nlay), layer pressure thickness (mb) 
-!!\param[in] cldfrc      real, (0:nlp1), layer cloud fraction  
-!!\param[in] taucld      real, (nbands,nlay), layer cloud opt depth  
+!!\param[in] semiss      real,(nbands), lw surface emissivity
+!!\param[in] delp        real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfrc      real, (0:nlp1), layer cloud fraction
+!!\param[in] taucld      real, (nbands,nlay), layer cloud opt depth
 !!\param[in] tautot      real, (ngptlw,nlay), total optical depth (gas+aerosols)
-!!\param[in] pklay       real, (nbands,0:nlay), integrated planck func at lay temp  
-!!\param[in] pklev       real, (nbands,0:nlay), integrated planck func at lev temp 
-!!\param[in] fracs       real, (ngptlw,nlay), planck fractions        
-!!\param[in] secdif      real, (nbands), secant of diffusivity angle    
-!!\param[in] nlay        integer, 1, number of vertical layers  
+!!\param[in] pklay       real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[in] pklev       real, (nbands,0:nlay), integrated planck func at lev temp
+!!\param[in] fracs       real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif      real, (nbands), secant of diffusivity angle
+!!\param[in] nlay        integer, 1, number of vertical layers
 !!\param[in] nlp1        integer, 1, number of vertical levels (interfaces)
 !!\param[out] totuflux        real, (0:nlay), total sky upward flux \f$(w/m^2)\f$
-!!\param[out] totdflux        real, (0:nlay), total sky downward flux \f$(w/m^2)\f$ 
-!!\param[out] htr             real, (nlay), total sky heating rate (k/sec or k/day) 
+!!\param[out] totdflux        real, (0:nlay), total sky downward flux \f$(w/m^2)\f$
+!!\param[out] htr             real, (nlay), total sky heating rate (k/sec or k/day)
 !!\param[out] totuclfl        real, (0:nlay), clear sky upward flux \f$(w/m^2)\f$
-!!\param[out] totdclfl        real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$  
-!!\param[out] htrcl           real, (nlay), clear sky heating rate (k/sec or k/day) 
-!!\param[out] htrb            real, (nlay,nbands), spectral band lw heating rate (k/day) 
+!!\param[out] totdclfl        real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
+!!\param[out] htrcl           real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb            real, (nlay,nbands), spectral band lw heating rate (k/day)
 !!\section general General Algorithm
 ! ----------------------------------
-      subroutine rtrn                                                   &
-! ..................................
-!  ---  inputs:
-     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,              &
-     &       fracs,secdif, nlay,nlp1,                                   &
-!  ---  outputs:
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       &
+      subroutine rtrn
+     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,              !  ---  inputs
+     &       fracs,secdif, nlay,nlp1,
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2373,15 +2361,15 @@
       integer, intent(in) :: nlay, nlp1
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cldfrc
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,   &
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs, &
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
      &       tautot
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::    &
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
      &       pklev, pklay
 
 !  ---  outputs:
@@ -2389,7 +2377,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::          &
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -2630,36 +2618,33 @@
 ! ----------------------------------
 
 !> This subroutine computes the upward/downward radiative fluxes, and heating
-!! rates for both clear or cloudy atmosphere. Clouds are assumed as in maximum-randomly 
+!! rates for both clear or cloudy atmosphere. Clouds are assumed as in maximum-randomly
 !! overlaping in a vertical column.
-!!\param[in] semiss       real, (nbands), lw surface emissivity    
-!!\param[in] delp         real, (nlay), layer pressure thickness (mb)  
-!!\param[in] cldfrc       real, (0:nlp1), layer cloud fraction       
-!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth   
+!!\param[in] semiss       real, (nbands), lw surface emissivity
+!!\param[in] delp         real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfrc       real, (0:nlp1), layer cloud fraction
+!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth
 !!\param[in] tautot       real, (ngptlw,nlay), total optical depth (gas+aerosols)
-!!\param[in] pklay        real, (nbands*0:nlay), integrated planck func at lay temp     
-!!\param[in] pklev        real, (nbands*0:nlay), integrated planck func at lev temp 
-!!\param[in] fracs        real, (ngptlw,nlay), planck fractions 
-!!\param[in] secdif       real, (nbands), secant of diffusivity angle   
-!!\param[in] nlay         integer, 1, number of vertical layers     
+!!\param[in] pklay        real, (nbands*0:nlay), integrated planck func at lay temp
+!!\param[in] pklev        real, (nbands*0:nlay), integrated planck func at lev temp
+!!\param[in] fracs        real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif       real, (nbands), secant of diffusivity angle
+!!\param[in] nlay         integer, 1, number of vertical layers
 !!\param[in] nlp1         integer, 1, number of vertical levels (interfaces)
 !!\param[out] totuflux    real, (0:nlay), total sky upward flux (\f$w/m^2\f$)
-!!\param[out] totdflux    real, (0:nlay), total sky downward flux (\f$w/m^2\f$)             
-!!\param[out] htr         real, (nlay), total sky heating rate (k/sec or k/day)  
-!!\param[out] totuclfl    real, (0:nlay), clear sky upward flux (\f$w/m^2\f$)   
-!!\param[out] totdclfl    real, (0:nlay), clear sky downward flux (\f$w/m^2\f$)    
-!!\param[out] htrcl       real, (nlay), clear sky heating rate (k/sec or k/day)  
-!!\param[out] htrb        real, (nlay*nbands), spectral band lw heating rate (k/day) 
+!!\param[out] totdflux    real, (0:nlay), total sky downward flux (\f$w/m^2\f$)
+!!\param[out] htr         real, (nlay), total sky heating rate (k/sec or k/day)
+!!\param[out] totuclfl    real, (0:nlay), clear sky upward flux (\f$w/m^2\f$)
+!!\param[out] totdclfl    real, (0:nlay), clear sky downward flux (\f$w/m^2\f$)
+!!\param[out] htrcl       real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb        real, (nlay*nbands), spectral band lw heating rate (k/day)
 !!\section general General Algorithm
 !> @{
 ! ----------------------------------
-      subroutine rtrnmr                                                 &
-! ..................................
-!  ---  inputs:
-     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,              &
-     &       fracs,secdif, nlay,nlp1,                                   &
-!  ---  outputs:
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       &
+      subroutine rtrnmr
+     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,             !  ---  inputs
+     &       fracs,secdif, nlay,nlp1,
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs:
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2763,15 +2748,15 @@
       integer, intent(in) :: nlay, nlp1
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cldfrc
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,   &
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs, &
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
      &       tautot
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::    &
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
      &       pklev, pklay
 
 !  ---  outputs:
@@ -2779,7 +2764,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::          &
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -3097,7 +3082,7 @@
           endif   ! end if_clfr_block
 
         enddo   ! end do_k_loop
-!> -# Compute spectral emissivity & reflectance, include the contribution of spectrally 
+!> -# Compute spectral emissivity & reflectance, include the contribution of spectrally
 !! varying longwave emissivity and reflection from the surface to the upward radiative transfer.
 !  --- ...  spectral emissivity & reflectance
 !           include the contribution of spectrally varying longwave emissivity
@@ -3228,36 +3213,33 @@
 !> @}
 
 !> This subroutine computes the upward/downward radiative fluxes, and heating
-!! rates for both clear or cloudy atmosphere.Clouds are treated with the mcica stochastic 
+!! rates for both clear or cloudy atmosphere.Clouds are treated with the mcica stochastic
 !! approach.
-!!\param[in] semiss       real, (nbands), lw surface emissivity   
-!!\param[in] delp         real, (nlay), layer pressure thickness (mb) 
-!!\param[in] cldfmc       real, (ngptlw,nlay), layer cloud fraction (sub-column) 
-!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth   
-!!\param[in] tautot       real, (ngptlw,nlay), total optical depth (gas+aerosols)  
-!!\param[in] pklay        real, (nbands,0:nlay), integrated planck func at lay temp  
-!!\param[in] pklev        real, (nbands,0:nlay), integrated planck func at lev temp 
-!!\param[in] fracs        real, (ngptlw,nlay), planck fractions 
-!!\param[in] secdif       real, (nbands), secant of diffusivity angle 
-!!\param[in] nlay         integer, 1, number of vertical layers 
-!!\param[in] nlp1         integer, 1, number of vertical levels (interfaces)  
+!!\param[in] semiss       real, (nbands), lw surface emissivity
+!!\param[in] delp         real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfmc       real, (ngptlw,nlay), layer cloud fraction (sub-column)
+!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth
+!!\param[in] tautot       real, (ngptlw,nlay), total optical depth (gas+aerosols)
+!!\param[in] pklay        real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[in] pklev        real, (nbands,0:nlay), integrated planck func at lev temp
+!!\param[in] fracs        real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif       real, (nbands), secant of diffusivity angle
+!!\param[in] nlay         integer, 1, number of vertical layers
+!!\param[in] nlp1         integer, 1, number of vertical levels (interfaces)
 !!\param[out] totuflux       real, (0:nlay), total sky upward flux \f$(w/m^2)\f$
 !!\param[out] totdflux       real, (0:nlay), total sky downward flux \f$(w/m^2)\f$
-!!\param[out] htr            real, (nlay), total sky heating rate (k/sec or k/day) 
-!!\param[out] totuclfl       real, (0:nlay), clear sky upward flux \f$(w/m^2)\f$ 
+!!\param[out] htr            real, (nlay), total sky heating rate (k/sec or k/day)
+!!\param[out] totuclfl       real, (0:nlay), clear sky upward flux \f$(w/m^2)\f$
 !!\param[out] totdclfl       real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
-!!\param[out] htrcl          real, (nlay), clear sky heating rate (k/sec or k/day) 
-!!\param[out] htrb           real, (nlay,nbands), spectral band lw heating rate (k/day) 
+!!\param[out] htrcl          real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb           real, (nlay,nbands), spectral band lw heating rate (k/day)
 !!\section general General Algorithm
 !> @{
 ! ---------------------------------
-      subroutine rtrnmc                                                 &
-! .................................
-!  ---  inputs:
-     &     ( semiss,delp,cldfmc,taucld,tautot,pklay,pklev,              &
-     &       fracs,secdif, nlay,nlp1,                                   &
-!  ---  outputs:
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       &
+      subroutine rtrnmc
+     &     ( semiss,delp,cldfmc,taucld,tautot,pklay,pklev,              !  ---  inputs:
+     &       fracs,secdif, nlay,nlp1,
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs:
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -3362,15 +3344,15 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, nlp1
 
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,   &
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs, &
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
      &       tautot, cldfmc
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::    &
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
      &       pklev, pklay
 
 !  ---  outputs:
@@ -3378,7 +3360,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::          &
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -3510,8 +3492,8 @@
 
         enddo   ! end do_k_loop
 
-!> -# Compute spectral emissivity & reflectance, include the contribution of 
-!! spectrally varying longwave emissivity and reflection from the surface to the 
+!> -# Compute spectral emissivity & reflectance, include the contribution of
+!! spectrally varying longwave emissivity and reflection from the surface to the
 !! upward radiative transfer.
 !  --- ...  spectral emissivity & reflectance
 !           include the contribution of spectrally varying longwave emissivity
@@ -3569,7 +3551,7 @@
         enddo   ! end do_k_loop
 
       enddo   ! end do_ig_loop
-!> -# Process longwave output from band for total and clear streams. Calculate 
+!> -# Process longwave output from band for total and clear streams. Calculate
 !! upward, downward, and net flux.
 !  --- ...  process longwave output from band for total and clear streams.
 !           calculate upward, downward, and net flux.
@@ -3625,48 +3607,45 @@
       end subroutine rtrnmc
 ! ----------------------------------
 !> @}
-!> This subroutine contains optical depths developed for the rapid radiative 
+!> This subroutine contains optical depths developed for the rapid radiative
 !! transfer model.
 !!\brief This file contains the subroutines taugbn (where n goes from 1 to 16).
-!! taugbn calculates the optical depths and planck fractions per g-value and layer 
+!! taugbn calculates the optical depths and planck fractions per g-value and layer
 !! for band n.
-!!\param[in] laytrop          integer, 1, tropopause layer index (unitless) layer at which switch is made for key species 
-!!\param[in] pavel            real, (nlay), layer pressures (mb)  
-!!\param[in] coldry           real, (nlay), column amount for dry air \f$(mol/cm^2)\f$ 
+!!\param[in] laytrop          integer, 1, tropopause layer index (unitless) layer at which switch is made for key species
+!!\param[in] pavel            real, (nlay), layer pressures (mb)
+!!\param[in] coldry           real, (nlay), column amount for dry air \f$(mol/cm^2)\f$
 !!\param[in] colamt           real, (nlay,maxgas), column amounts of h2o, co2, o3, n2o, ch4,o2, co \f$(mol/cm^2)\f$
-!!\param[in] colbrd           real, (nlay), column amount of broadening gases 
-!!\param[in] wx               real, (nlay,maxxsec), cross-section amounts \f$(mol/cm^2)\f$ 
-!!\param[in] tauaer           real, (nbands,nlay), aerosol optical depth   
-!!\param[in] rfrate           real, (nlay,nrates,2), reference ratios of binary species parameter 
+!!\param[in] colbrd           real, (nlay), column amount of broadening gases
+!!\param[in] wx               real, (nlay,maxxsec), cross-section amounts \f$(mol/cm^2)\f$
+!!\param[in] tauaer           real, (nbands,nlay), aerosol optical depth
+!!\param[in] rfrate           real, (nlay,nrates,2), reference ratios of binary species parameter
 !!\n                          (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
-!!\n                          (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer 
-!!\param[in] facij            real, (nlay), factors multiply the reference ks, i,j of 0/1 for lower/higher of the 2 appropriate temperatures and altitudes  
-!!\param[in] jp               integer, (nlay), index of lower reference pressure 
+!!\n                          (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
+!!\param[in] facij            real, (nlay), factors multiply the reference ks, i,j of 0/1 for lower/higher of the 2 appropriate temperatures and altitudes
+!!\param[in] jp               integer, (nlay), index of lower reference pressure
 !!\param[in] jt, jt1          integer, (nlay), indices of lower reference temperatures for pressure levels jp and jp+1, respectively
-!!\param[in] selffac          real, (nlay), scale factor for water vapor self-continuum equals (water vapor density)/(atmospheric density at 296k and 1013 mb) 
-!!\param[in] selffrac         real, (nlay), factor for temperature interpolation of reference water vapor self-continuum data 
-!!\param[in] indself          integer, (nlay), index of lower reference temperature for the self-continuum interpolation 
-!!\param[in] forfac           real, (nlay), scale factor for w. v. foreign-continuum 
-!!\param[in] forfrac          real, (nlay), factor for temperature interpolation of reference w.v. foreign-continuum data 
+!!\param[in] selffac          real, (nlay), scale factor for water vapor self-continuum equals (water vapor density)/(atmospheric density at 296k and 1013 mb)
+!!\param[in] selffrac         real, (nlay), factor for temperature interpolation of reference water vapor self-continuum data
+!!\param[in] indself          integer, (nlay), index of lower reference temperature for the self-continuum interpolation
+!!\param[in] forfac           real, (nlay), scale factor for w. v. foreign-continuum
+!!\param[in] forfrac          real, (nlay), factor for temperature interpolation of reference w.v. foreign-continuum data
 !!\param[in] indfor           integer, (nlay), index of lower reference temperature for the foreign-continuum interpolation
-!!\param[in] minorfrac        real, (nlay), factor for minor gases  
-!!\param[in] scaleminor,scaleminorn2            real, (nlay), scale factors for minor gases  
-!!\param[in] indminor         integer, (nlay), index of lower reference temperature for minor gases    
-!!\param[in] nlay             integer, 1, total number of layers  
-!!\param[out] fracs           real, (ngptlw,nlay), planck fractions  
-!!\param[out] tautot          real, (ngptlw,nlay), total optical depth (gas+aerosols) 
+!!\param[in] minorfrac        real, (nlay), factor for minor gases
+!!\param[in] scaleminor,scaleminorn2            real, (nlay), scale factors for minor gases
+!!\param[in] indminor         integer, (nlay), index of lower reference temperature for minor gases
+!!\param[in] nlay             integer, 1, total number of layers
+!!\param[out] fracs           real, (ngptlw,nlay), planck fractions
+!!\param[out] tautot          real, (ngptlw,nlay), total optical depth (gas+aerosols)
 !                                                                       !
 ! ----------------------------------
-      subroutine taumol                                                 &
-! ..................................
-!  ---  inputs:
-     &     ( laytrop,pavel,coldry,colamt,colbrd,wx,tauaer,              &
-     &       rfrate,fac00,fac01,fac10,fac11,jp,jt,jt1,                  &
-     &       selffac,selffrac,indself,forfac,forfrac,indfor,            &
-     &       minorfrac,scaleminor,scaleminorn2,indminor,                &
-     &       nlay,                                                      &
-!  ---  outputs:
-     &       fracs, tautot                                              &
+      subroutine taumol
+     &     ( laytrop,pavel,coldry,colamt,colbrd,wx,tauaer,              !  ---  inputs
+     &       rfrate,fac00,fac01,fac10,fac11,jp,jt,jt1,
+     &       selffac,selffrac,indself,forfac,forfrac,indfor,
+     &       minorfrac,scaleminor,scaleminorn2,indminor,
+     &       nlay,
+     &       fracs, tautot                                              !  ---  outputs
      &     )
 
 !  ************    original subprogram description    ***************   !
@@ -3785,12 +3764,12 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, laytrop
 
-      integer, dimension(nlay), intent(in) :: jp, jt, jt1, indself,     &
+      integer, dimension(nlay), intent(in) :: jp, jt, jt1, indself,
      &       indfor, indminor
 
-      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,      &
-     &       coldry, colbrd, fac00, fac01, fac10, fac11, selffac,       &
-     &       selffrac, forfac, forfrac, minorfrac, scaleminor,          &
+      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,
+     &       coldry, colbrd, fac00, fac01, fac10, fac11, selffac,
+     &       selffrac, forfac, forfrac, minorfrac, scaleminor,
      &       scaleminorn2
 
       real (kind=kind_phys), dimension(nlay,maxgas), intent(in):: colamt
@@ -3798,11 +3777,11 @@
 
       real (kind=kind_phys), dimension(nbands,nlay), intent(in):: tauaer
 
-      real (kind=kind_phys), dimension(nlay,nrates,2), intent(in) ::    &
+      real (kind=kind_phys), dimension(nlay,nrates,2), intent(in) ::
      &       rfrate
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(ngptlw,nlay), intent(out) ::     &
+      real (kind=kind_phys), dimension(ngptlw,nlay), intent(out) ::     
      &       fracs, tautot
 
 !  ---  locals
@@ -3901,7 +3880,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) -  forref(ig,indf))) 
+     &            * (forref(ig,indfp) -  forref(ig,indf)))
           taun2   = scalen2 * (ka_mn2(ig,indm) + minorfrac(k)           &
      &            * (ka_mn2(ig,indmp) - ka_mn2(ig,indm)))
 
@@ -3932,7 +3911,7 @@
 
         do ig = 1, ng01
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           taun2  = scalen2 * (kb_mn2(ig,indm) + minorfrac(k)            &
      &           * (kb_mn2(ig,indmp) - kb_mn2(ig,indm)))
 
@@ -3986,7 +3965,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns02+ig,k) = corradj * (colamt(k,1)                      &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -4010,7 +3989,7 @@
 
         do ig = 1, ng02
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns02+ig,k) = colamt(k,1)                                 &
      &           * (fac00(k)*absb(ig,ind0) + fac10(k)*absb(ig,ind0p)    &
@@ -4071,7 +4050,7 @@
         specparm = colamt(k,1) / speccomb
         specmult = 8.0 * min(specparm, oneminus)
         js = 1 + int(specmult)
-        fs = mod(specmult, f_one)        
+        fs = mod(specmult, f_one)
         ind0 = ((jp(k)-1)*5 + (jt(k)-1)) * nspa(3) + js
 
         speccomb1 = colamt(k,1) + rfrate(k,1,2)*colamt(k,2)
@@ -4304,7 +4283,7 @@
 
         do ig = 1, ng03
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           n2om1  = kb_mn2o(ig,jmn2o,indm) + fmn2o                       &
      &           * (kb_mn2o(ig,jmn2op,indm) - kb_mn2o(ig,jmn2o,indm))
           n2om2  = kb_mn2o(ig,jmn2o,indmp) + fmn2o                      &
@@ -4320,7 +4299,7 @@
      &              +  fac101*absb(ig,id101) + fac111*absb(ig,id111))
 
           taug(ns03+ig,k) = tau_major + tau_major1                      &
-     &                    + taufor + adjcoln2o*absn2o            
+     &                    + taufor + adjcoln2o*absn2o
 
           fracs(ns03+ig,k) = fracrefb(ig,jpl) + fpl                     &
      &                     * (fracrefb(ig,jplp) - fracrefb(ig,jpl))
@@ -4478,7 +4457,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           tau_major = speccomb                                          &
      &              * (fac000*absa(ig,id000) + fac010*absa(ig,id010)    &
@@ -4585,7 +4564,7 @@
 
       use module_radlw_kgb05
 
-!  ---  locals: 
+!  ---  locals:
       integer :: k, ind0, ind1, inds, indsp, indf, indfp, indm, indmp,  &
      &       id000, id010, id100, id110, id200, id210, jmo3, jmo3p,     &
      &       id001, id011, id101, id111, id201, id211, jpl, jplp,       &
@@ -4846,7 +4825,7 @@
 
       use module_radlw_kgb06
 
-!  ---  locals: 
+!  ---  locals:
       integer :: k, ind0, ind0p, ind1, ind1p, inds, indsp, indf, indfp, &
      &       indm, indmp, ig
 
@@ -5106,7 +5085,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           co2m1   = ka_mco2(ig,jmco2,indm) + fmco2                      &
      &            * (ka_mco2(ig,jmco2p,indm) - ka_mco2(ig,jmco2,indm))
           co2m2   = ka_mco2(ig,jmco2,indmp) + fmco2                     &
@@ -5487,7 +5466,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           n2om1   = ka_mn2o(ig,jmn2o,indm) + fmn2o                      &
      &            * (ka_mn2o(ig,jmn2op,indm) - ka_mn2o(ig,jmn2o,indm))
           n2om2   = ka_mn2o(ig,jmn2o,indmp) + fmn2o                     &
@@ -5502,7 +5481,7 @@
      &                * (fac001*absa(ig,id001) + fac011*absa(ig,id011)  &
      &                +  fac101*absa(ig,id101) + fac111*absa(ig,id111)  &
      &                +  fac201*absa(ig,id201) + fac211*absa(ig,id211)) &
-     &                + tauself + taufor + adjcoln2o*absn2o            
+     &                + tauself + taufor + adjcoln2o*absn2o
 
           fracs(ns09+ig,k) = fracrefa(ig,jpl) + fpl                     &
      &                     * (fracrefa(ig,jplp) - fracrefa(ig,jpl))
@@ -5585,7 +5564,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns10+ig,k) = colamt(k,1)                                 &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -5609,7 +5588,7 @@
 
         do ig = 1, ng10
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns10+ig,k) = colamt(k,1)                                 &
      &            * (fac00(k)*absb(ig,ind0) + fac10(k)*absb(ig,ind0p)   &
@@ -5698,7 +5677,7 @@
 
         do ig = 1, ng11
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           tauo2  = scaleo2 * (kb_mo2(ig,indm) + minorfrac(k)            &
      &           * (kb_mo2(ig,indmp) - kb_mo2(ig,indm)))
 
@@ -5869,7 +5848,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns12+ig,k) = speccomb                                    &
      &                * (fac000*absa(ig,id000) + fac010*absa(ig,id010)  &
@@ -6097,7 +6076,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           co2m1   = ka_mco2(ig,jmco2,indm) + fmco2                      &
      &            * (ka_mco2(ig,jmco2p,indm) - ka_mco2(ig,jmco2,indm))
           co2m2   = ka_mco2(ig,jmco2,indmp) + fmco2                     &
@@ -6180,7 +6159,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns14+ig,k) = colamt(k,2)                                 &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -6290,7 +6269,7 @@
         indmp = indm + 1
         jplp  = jpl  + 1
         jmn2p = jmn2 + 1
-         
+
         if (specparm < 0.125 .and. specparm1 < 0.125) then
           p0 = fs - f_one
           p40 = p0**4
@@ -6385,7 +6364,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           n2m1    = ka_mn2(ig,jmn2,indm) + fmn2                         &
      &            * (ka_mn2(ig,jmn2p,indm) - ka_mn2(ig,jmn2,indm))
           n2m2    = ka_mn2(ig,jmn2,indmp) + fmn2                        &
@@ -6574,7 +6553,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns16+ig,k) = speccomb                                    &
      &                * (fac000*absa(ig,id000) + fac010*absa(ig,id010)  &
@@ -6622,4 +6601,4 @@
 !........................................!
       end module module_radlw_main       !
 !========================================!
-
+!> @}

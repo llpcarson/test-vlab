@@ -1,8 +1,43 @@
-!> This file is the radiation driver module. it prepares atmospheric profiles
+!> \file grrad.f This file is the radiation driver module. it prepares atmospheric profiles
 !! and invokes main radiation calculation.
-!! \brief  module_radiation_driver prepares atmospheric profile, invokes main radiation 
-!! calculations, and computes radiative fluxes and heating rates 
-!! for some arbitrary number of vertical colums.There are three 
+
+!> \defgroup rad RRTMG Radiation Scheme
+!! @{
+!!  \brief one line description
+!!
+!!  Radiative process is one of the most complex and computational intensive part of all model physics.
+!!  As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
+!!  and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
+!!  has standardized component modules. The schematic radiation module structure is shown in table 1.
+!!
+!!  Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative
+!!  flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
+!!  needed for the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the
+!!  radiative heating and cooling rates of a given atmospheric volume. The magnitude of the terms in the surface energy
+!!  budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition,
+!!  the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
+!!  have strong dynamic effect on cloud evolution.
+!!
+!!  \section diagram Calling Hierarchy Diagram
+!!  \image html schematic_Rad_mod.png "caption" width=10cm
+!!  \section intraphysics Intraphysics Communication
+!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information calculated in this scheme is used in other scheme types.
+!!  \section mainpage-components Radiation Scheme Modules
+!!  The following links take you to more information about each module.
+!!  + Driver Module: \ref module_radiation_driver
+!!  + Shortwave(SW) Module: \ref module_radsw_main
+!!  + Longwave(LW) Module: \ref module_radlw_main
+!!  + Astronomy Module: \ref module_radiation_astronomy
+!!  + Aerosol Module: \ref module_radiation_aerosols
+!!  + Cloud Module: \ref module_radiation_clouds
+!!  + Surface Module: \ref module_radiation_surface
+!!  + Gases Module: \ref module_radiation_gases
+
+!> \defgroup module_radiation_driver module_radiation_driver
+!! @{
+!! \brief  module_radiation_driver prepares atmospheric profile, invokes main radiation
+!! calculations, and computes radiative fluxes and heating rates
+!! for some arbitrary number of vertical colums.There are three
 !! externally accessible subroutines: radinit, radupdate, and grrad.
 ! ==========================================================  !!!!!
 !             'module_radiation_driver' descriptions           !!!!!
@@ -196,7 +231,7 @@
      &                                     gas_init, gas_update
       use module_radiation_aerosols,only : NF_AESW, NF_AELW, setaer,    &
      &                                     aer_init, aer_update,        &
-     &                                     NSPC1                       
+     &                                     NSPC1
       use module_radiation_surface, only : NF_ALBD, sfc_init, setalb,   &
      &                                     setemis
       use module_radiation_clouds,  only : NF_CLDS, cld_init,           &
@@ -256,11 +291,11 @@
 !> \section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine radinit                                                &
+      subroutine radinit( si, NLAY, me )
 !...................................
 
 !  ---  inputs:
-     &     ( si, NLAY, me )
+!     &     ( si, NLAY, me )
 !  ---  outputs:
 !          ( none )
 
@@ -478,7 +513,7 @@
 
 !> This subroutine calls many update subroutines to check and update radiation required
 !! but time varying data sets and module variables.
-!! \param[in] idate(8)       integer, ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)   
+!! \param[in] idate(8)       integer, ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)
 !! \param[in] jdate(8)       integer, ncep absolute date and time at fcst time (yr,mon,day,t-zone,hr,min,sec,mil-sec)
 !! \param[in] deltsw         real, 1, sw radiation calling frequency in seconds
 !! \param[in] deltim         real, 1, model timestep in seconds
@@ -490,14 +525,15 @@
 !> \section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine radupdate                                              &
+      subroutine radupdate( idate,jdate,deltsw,deltim,lsswr, me,
+     &       slag,sdec,cdec,solcon)
 !...................................
 
 !  ---  inputs:
-     &     ( idate,jdate,deltsw,deltim,lsswr, me,                       &
+!     &     ( idate,jdate,deltsw,deltim,lsswr, me,                       &
 !  ---  outputs:
-     &       slag,sdec,cdec,solcon                                      &
-     &     )
+!     &       slag,sdec,cdec,solcon                                      &
+!     &     )
 
 ! =================   subprogram documentation block   ================ !
 !                                                                       !
@@ -578,7 +614,7 @@
 !
 !===> ...  begin here
 !
-!> -# Set up time stamp at fcst time and that for green house gases (currently co2 only) 
+!> -# Set up time stamp at fcst time and that for green house gases (currently co2 only)
 !  --- ...  time stamp at fcst time
 
       iyear = jdate(1)
@@ -606,7 +642,7 @@
       else
         lmon_chg = .false.
       endif
-!> -# Call astronomy updata routine, yearly update, no time interpolation 
+!> -# Call astronomy updata routine, yearly update, no time interpolation
 !!\n  - subroutine called: module_radiation_astronomy::sol_update
 !  --- ...  call astronomy update routine, yearly update, no time interpolation
 
@@ -669,10 +705,10 @@
 !> This subroutine is the driver of radiation calculation subroutines. It sets
 !! up profile variables for radiation input, including clouds, surface albedos,
 !! atmospheric aerosols, ozone, etc.
-!! \param[in] prsi       real, (IX,LM+1),model level pressure in Pa             
-!! \param[in] prsl       real, (IX,LM),model layer mean pressure in Pa        
-!! \param[in] prslk      real, (IX,LM),exner function = \f$ (p/p0)^{rocp} \f$ 
-!! \param[in] tgrs       real, (IX,LM),model layer mean temperature in K      
+!! \param[in] prsi       real, (IX,LM+1),model level pressure in Pa
+!! \param[in] prsl       real, (IX,LM),model layer mean pressure in Pa
+!! \param[in] prslk      real, (IX,LM),exner function = \f$ (p/p0)^{rocp} \f$
+!! \param[in] tgrs       real, (IX,LM),model layer mean temperature in K
 !! \param[in] qgrs       real, (IX,LM),layer specific humidity in gm/gm
 !! \param[in] tracer     real, (IX,LM,NTRAC),layer prognostic tracer amount/mixing-ration; incl: oz,cwc,aeros,etc
 !! \param[in] vvl        real, (IX,LM),layer mean vertical velocity in pa/sec
@@ -688,141 +724,136 @@
 !! \param[in] alvsf      real, (IM),mean vis albedo with strong cosz dependency
 !! \param[in] alnsf      real, (IM),mean nir albedo with strong cosz dependency
 !! \param[in] alvwf      real, (IM),mean vis albedo with weak cosz dependency
-!! \param[in] alnwf      real, (IM),mean nir albedo with weak cosz dependency 
+!! \param[in] alnwf      real, (IM),mean nir albedo with weak cosz dependency
 !! \param[in] facsf      real, (IM),fractional coverage with strong cosz dependency
 !! \param[in] facwf      real, (IM),fractional coverage with weak cosz dependency
-!! \param[in] fice       real, (IM),ice fraction over open water grid  
-!! \param[in] tisfc      real, (IM),surface temperature over ice fraction 
-!! \param[in] sinlat     real, (IM),sine of the grids' corresponding latitudes   
+!! \param[in] fice       real, (IM),ice fraction over open water grid
+!! \param[in] tisfc      real, (IM),surface temperature over ice fraction
+!! \param[in] sinlat     real, (IM),sine of the grids' corresponding latitudes
 !! \param[in] coslat     real, (IM),cosine of the grids' corresponding latitudes
-!! \param[in] solhr      real, 1, hour time after 00z at the t-stepe           
+!! \param[in] solhr      real, 1, hour time after 00z at the t-stepe
 !! \param[in] jdate      integer(8),current forecast date and time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
-!! \param[in] solcon     real, 1, solar constant (sun-earth distant adjusted)  
-!! \param[in] cv         real, (IM),fraction of convective cloud   
-!! \param[in] cvt,cvb    real, (IM),convective cloud top/bottom pressure in pa 
-!! \param[in] fcice      real, (IX,LM),fraction of cloud ice  (in ferrier scheme) 
-!! \param[in] frain      real, (IX,LM),fraction of rain water (in ferrier scheme) 
-!! \param[in] rrime      real, (IX,LM),mass ratio of total to unrimed ice ( >= 1 ) 
-!! \param[in] flgmin     real, (IM),minimim large ice fraction                  
+!! \param[in] solcon     real, 1, solar constant (sun-earth distant adjusted)
+!! \param[in] cv         real, (IM),fraction of convective cloud
+!! \param[in] cvt,cvb    real, (IM),convective cloud top/bottom pressure in pa
+!! \param[in] fcice      real, (IX,LM),fraction of cloud ice  (in ferrier scheme)
+!! \param[in] frain      real, (IX,LM),fraction of rain water (in ferrier scheme)
+!! \param[in] rrime      real, (IX,LM),mass ratio of total to unrimed ice ( >= 1 )
+!! \param[in] flgmin     real, (IM),minimim large ice fraction
 !! \param[in] icsdsw,icsdlw    integer, (IM),auxiliary cloud control arrays passed to main radiations. if isubcsw/isubclw (input to init) are set to 2, the arrays contains provided random seeds for sub-column clouds generators  !
 !! \param[in] ntcw       integer, =0 no cloud condensate calculated; >0 array index location for cloud condensate
-!! \param[in] ncld       integer, only used when ntcw .gt. 0    
-!! \param[in] ntoz       integer, =0 climatological ozone profile; >0 interactive ozone profile 
-!! \param[in] NTRAC      integer, dimension veriable for array oz                
-!! \param[in] NFXR       integer, second dimension of input/output array fluxr   
+!! \param[in] ncld       integer, only used when ntcw .gt. 0
+!! \param[in] ntoz       integer, =0 climatological ozone profile; >0 interactive ozone profile
+!! \param[in] NTRAC      integer, dimension veriable for array oz
+!! \param[in] NFXR       integer, second dimension of input/output array fluxr
 !! \param[in] dtlw,dtsw      real, time duration for lw/sw radiation call in sec
-!! \param[in] lsswr,lslwr    logical flags for sw/lw radiation calls  
-!! \param[in] lssav      logical flag for store 3-d cloud field 
-!! \param[in] IX,IM      integer, horizontal dimention and num of used points 
-!! \param[in] LM         integer, vertical layer dimension                  
-!! \param[in] me         integer, control flag for parallel process    
-!! \param[in] lprnt      logical, control flag for diagnostic print out  
-!! \param[in] ipt        integer, index for diagnostic printout point 
-!! \param[in] kdt        integer, time-step number                 
+!! \param[in] lsswr,lslwr    logical flags for sw/lw radiation calls
+!! \param[in] lssav      logical flag for store 3-d cloud field
+!! \param[in] IX,IM      integer, horizontal dimention and num of used points
+!! \param[in] LM         integer, vertical layer dimension
+!! \param[in] me         integer, control flag for parallel process
+!! \param[in] lprnt      logical, control flag for diagnostic print out
+!! \param[in] ipt        integer, index for diagnostic printout point
+!! \param[in] kdt        integer, time-step number
 !! \param[in] deltaq     real, (IX,LM),half width of uniform total water distribution
 !! \param[in] sup        real, supersaturation in pdf cloud when t is very low
-!! \param[in] cnvw       real, (IX.LM),layer convective cloud water         
-!! \param[in] cnvc       real, (IX,LM),layer convective cloud cover    
-!! \param[out] htrsw     real, (IX,LM),total sky sw heating rate in k/sec   
+!! \param[in] cnvw       real, (IX.LM),layer convective cloud water
+!! \param[in] cnvc       real, (IX,LM),layer convective cloud cover
+!! \param[out] htrsw     real, (IX,LM),total sky sw heating rate in k/sec
 !! \param[out] topfsw    type(topfsw_type), (IM),sw radiation fluxes at toa, components: (check module_radsw_parameters for definition)
-!! \n          %upfxc       - total sky upward sw flux at toa (w/m**2)     
-!! \n          %dnflx       - total sky downward sw flux at toa (w/m**2)   
-!! \n          %upfx0       - clear sky upward sw flux at toa (w/m**2) 
-!! \param[out] sfcfsw    type(sfcfsw_type), (IM),sw radiation fluxes at sfc, components: (check module_radsw_parameters for definition) 
-!! \n          %upfxc       - total sky upward sw flux at sfc (w/m**2) 
-!! \n          %dnfxc       - total sky downward sw flux at sfc (w/m**2) 
-!! \n          %upfx0       - clear sky upward sw flux at sfc (w/m**2)  
-!! \n          %dnfx0       - clear sky downward sw flux at sfc (w/m**2) 
-!! \param[out] dswcmp    real, (IX,4),dn sfc sw spectral components:   
-!! \n          (:, 1)       -  total sky sfc downward nir direct flux  
-!! \n          (:, 2)       -  total sky sfc downward nir diffused flux 
-!! \n          (:, 3)       -  total sky sfc downward uv+vis direct flux  
-!! \n          (:, 4)       -  total sky sfc downward uv+vis diff flux 
-!! \param[out] uswcmp    real, (IX,4),up sfc sw spectral components:        
-!! \n          (:, 1)       -  total sky sfc upward nir direct flux 
-!! \n          (:, 2)       -  total sky sfc upward nir diffused flux 
-!! \n          (:, 3)       -  total sky sfc upward uv+vis direct flux  
+!! \n          %upfxc       - total sky upward sw flux at toa (w/m**2)
+!! \n          %dnflx       - total sky downward sw flux at toa (w/m**2)
+!! \n          %upfx0       - clear sky upward sw flux at toa (w/m**2)
+!! \param[out] sfcfsw    type(sfcfsw_type), (IM),sw radiation fluxes at sfc, components: (check module_radsw_parameters for definition)
+!! \n          %upfxc       - total sky upward sw flux at sfc (w/m**2)
+!! \n          %dnfxc       - total sky downward sw flux at sfc (w/m**2)
+!! \n          %upfx0       - clear sky upward sw flux at sfc (w/m**2)
+!! \n          %dnfx0       - clear sky downward sw flux at sfc (w/m**2)
+!! \param[out] dswcmp    real, (IX,4),dn sfc sw spectral components:
+!! \n          (:, 1)       -  total sky sfc downward nir direct flux
+!! \n          (:, 2)       -  total sky sfc downward nir diffused flux
+!! \n          (:, 3)       -  total sky sfc downward uv+vis direct flux
+!! \n          (:, 4)       -  total sky sfc downward uv+vis diff flux
+!! \param[out] uswcmp    real, (IX,4),up sfc sw spectral components:
+!! \n          (:, 1)       -  total sky sfc upward nir direct flux
+!! \n          (:, 2)       -  total sky sfc upward nir diffused flux
+!! \n          (:, 3)       -  total sky sfc upward uv+vis direct flux
 !! \n          (:, 4)       -  total sky sfc upward uv+vis diff flux
-!! \param[out] sfalb     real, (IM),mean surface diffused sw albedo   
+!! \param[out] sfalb     real, (IM),mean surface diffused sw albedo
 !! \param[out] coszen    real, (IM),mean cos of zenith angle over rad call period
 !! \param[out] coszdg    real, (IM),daytime mean cosz over rad call period
 !! \param[out] htrlw       (IX,LM),total sky lw heating rate in k/sec
 !! \param[out] topflw    type(topflw_type), (IM),lw radiation fluxes at top, component:(check module_radlw_paramters for definition)
-!! \n          %upfxc       - total sky upward lw flux at toa (w/m**2) 
-!! \n          %upfx0       - clear sky upward lw flux at toa (w/m**2) 
-!! \param[out] sfcflw    type(sfcflw_type), (IM),lw radiation fluxes at sfc, component:(check module_radlw_paramters for definition) 
-!! \n          %upfxc       - total sky upward lw flux at sfc (w/m**2)  
+!! \n          %upfxc       - total sky upward lw flux at toa (w/m**2)
+!! \n          %upfx0       - clear sky upward lw flux at toa (w/m**2)
+!! \param[out] sfcflw    type(sfcflw_type), (IM),lw radiation fluxes at sfc, component:(check module_radlw_paramters for definition)
+!! \n          %upfxc       - total sky upward lw flux at sfc (w/m**2)
 !! \n          %upfx0       - clear sky upward lw flux at sfc (w/m**2)
-!! \n          %dnfxc       - total sky downward lw flux at sfc (w/m**2) 
-!! \n          %dnfx0       - clear sky downward lw flux at sfc (w/m**2) 
-!! \param[out] semis     real, (IM),surface lw emissivity in fraction 
-!! \param[out] cldcov    real, (IX,LM),3-d cloud fraction               
+!! \n          %dnfxc       - total sky downward lw flux at sfc (w/m**2)
+!! \n          %dnfx0       - clear sky downward lw flux at sfc (w/m**2)
+!! \param[out] semis     real, (IM),surface lw emissivity in fraction
+!! \param[out] cldcov    real, (IX,LM),3-d cloud fraction
 !! \param[out] tsflw     real, (IM),surface air temp during lw calculation in K
 !! \param[in,out] fluxr  real, (IX,NFXR),to save time accumulated 2-d fields defined as:
-!! \n                           1      - toa total sky upwd lw radiation flux         
-!! \n                           2      - toa total sky upwd sw radiation flux         
-!! \n                           3      - sfc total sky upwd sw radiation flux         
-!! \n                           4      - sfc total sky dnwd sw radiation flux        
-!! \n                           5      - high domain cloud fraction            
-!! \n                           6      - mid  domain cloud fraction      
-!! \n                           7      - low  domain cloud fraction        
-!! \n                           8      - high domain mean cloud top pressure   
-!! \n                           9      - mid  domain mean cloud top pressure  
-!! \n                          10      - low  domain mean cloud top pressure  
-!! \n                          11      - high domain mean cloud base pressure 
-!! \n                          12      - mid  domain mean cloud base pressure 
-!! \n                          13      - low  domain mean cloud base pressure 
-!! \n                          14      - high domain mean cloud top temperature 
-!! \n                          15      - mid  domain mean cloud top temperature 
-!! \n                          16      - low  domain mean cloud top temperature 
-!! \n                          17      - total cloud fraction         
-!! \n                          18      - boundary layer domain cloud fraction  
-!! \n                          19      - sfc total sky dnwd lw radiation flux    
-!! \n                          20      - sfc total sky upwd lw radiation flux   
+!! \n                           1      - toa total sky upwd lw radiation flux
+!! \n                           2      - toa total sky upwd sw radiation flux
+!! \n                           3      - sfc total sky upwd sw radiation flux
+!! \n                           4      - sfc total sky dnwd sw radiation flux
+!! \n                           5      - high domain cloud fraction
+!! \n                           6      - mid  domain cloud fraction
+!! \n                           7      - low  domain cloud fraction
+!! \n                           8      - high domain mean cloud top pressure
+!! \n                           9      - mid  domain mean cloud top pressure
+!! \n                          10      - low  domain mean cloud top pressure
+!! \n                          11      - high domain mean cloud base pressure
+!! \n                          12      - mid  domain mean cloud base pressure
+!! \n                          13      - low  domain mean cloud base pressure
+!! \n                          14      - high domain mean cloud top temperature
+!! \n                          15      - mid  domain mean cloud top temperature
+!! \n                          16      - low  domain mean cloud top temperature
+!! \n                          17      - total cloud fraction
+!! \n                          18      - boundary layer domain cloud fraction
+!! \n                          19      - sfc total sky dnwd lw radiation flux
+!! \n                          20      - sfc total sky upwd lw radiation flux
 !! \n                          21      - sfc total sky dnwd sw uv-b radiation flux
-!! \n                          22      - sfc clear sky dnwd sw uv-b radiation flux  
-!! \n                          23      - toa incoming solar radiation flux     
-!! \n                          24      - sfc vis beam dnwd sw radiation flux 
-!! \n                          25      - sfc vis diff dnwd sw radiation flux 
-!! \n                          26      - sfc nir beam dnwd sw radiation flux 
-!! \n                          27      - sfc nir diff dnwd sw radiation flux  
-!! \n                          28      - toa clear sky upwd lw radiation flux  
-!! \n                          29      - toa clear sky upwd sw radiation flux 
-!! \n                          30      - sfc clear sky dnwd lw radiation flux 
-!! \n                          31      - sfc clear sky upwd sw radiation flux 
-!! \n                          32      - sfc clear sky dnwd sw radiation flux 
-!! \n                          33      - sfc clear sky upwd lw radiation flux  
+!! \n                          22      - sfc clear sky dnwd sw uv-b radiation flux
+!! \n                          23      - toa incoming solar radiation flux
+!! \n                          24      - sfc vis beam dnwd sw radiation flux
+!! \n                          25      - sfc vis diff dnwd sw radiation flux
+!! \n                          26      - sfc nir beam dnwd sw radiation flux
+!! \n                          27      - sfc nir diff dnwd sw radiation flux
+!! \n                          28      - toa clear sky upwd lw radiation flux
+!! \n                          29      - toa clear sky upwd sw radiation flux
+!! \n                          30      - sfc clear sky dnwd lw radiation flux
+!! \n                          31      - sfc clear sky upwd sw radiation flux
+!! \n                          32      - sfc clear sky dnwd sw radiation flux
+!! \n                          33      - sfc clear sky upwd lw radiation flux
 !! \n optional:
 !! \n                          34      - aeros opt depth at 550nm (all components)
 !! \n                          35      - aeros opt depth at 550nm for du component
-!! \n                          36      - aeros opt depth at 550nm for bc component 
-!! \n                          37      - aeros opt depth at 550nm for oc component 
-!! \n                          38      - aeros opt depth at 550nm for su component  
+!! \n                          36      - aeros opt depth at 550nm for bc component
+!! \n                          37      - aeros opt depth at 550nm for oc component
+!! \n                          38      - aeros opt depth at 550nm for su component
 !! \n                          39      - aeros opt depth at 550nm for ss component                                        !
-!! \param[out] htrswb     real, (IX,LM,NBDSW),spectral band total sky sw heating rate 
+!! \param[out] htrswb     real, (IX,LM,NBDSW),spectral band total sky sw heating rate
 !! \param[out] htrlwb     real, (IX,LM,NBDLW),spectral band total sky lw heating rate
 !!
 !> \section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine grrad                                                  &
-!...................................
-!  ---  inputs:
-     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,                &
-     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,             &
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,            &
-     &       sinlat,coslat,solhr,jdate,solcon,                          &
-     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,                       &
-     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,                 &
-     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,                    &
-     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,     &
-!  ---  outputs:
-     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,     &
-     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,                    &
-!  ---  input/output:
-     &       fluxr                                                      &
-!! ---  optional outputs:
-     &,      htrlw0,htrsw0,htrswb,htrlwb                                &
+      subroutine grrad
+     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,              !  ---  inputs
+     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,
+     &       sinlat,coslat,solhr,jdate,solcon,
+     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,
+     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,
+     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,
+     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,
+     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,   !  ---  outputs
+     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,
+     &       fluxr                                                    !  ---  input/output
+     &,      htrlw0,htrsw0,htrswb,htrlwb                              ! ---  optional outputs:
      &     )
 
 ! =================   subprogram documentation block   ================ !
@@ -1110,7 +1141,7 @@
       implicit none
 
 !  ---  inputs: (for rank>1 arrays, horizontal dimensioned by IX)
-      integer,  intent(in) :: IX,IM, LM, NTRAC, NFXR, me,               &
+      integer,  intent(in) :: IX,IM, LM, NTRAC, NFXR, me,
      &                        ntoz, ntcw, ncld, ipt, kdt
       integer,  intent(in) :: icsdsw(IM), icsdlw(IM), jdate(8)
 
@@ -1118,18 +1149,18 @@
 
       real (kind=kind_phys), dimension(IX,LM+1), intent(in) ::  prsi
 
-      real (kind=kind_phys), dimension(IX,LM),   intent(in) ::  prsl,   &
-     &       prslk, tgrs, qgrs, vvl, fcice, frain, rrime, deltaq, cnvw, &
+      real (kind=kind_phys), dimension(IX,LM),   intent(in) ::  prsl,
+     &       prslk, tgrs, qgrs, vvl, fcice, frain, rrime, deltaq, cnvw,
      &       cnvc
       real (kind=kind_phys), dimension(IM), intent(in) :: flgmin
       real(kind=kind_phys), intent(in) :: sup
 
-      real (kind=kind_phys), dimension(IM),      intent(in) ::  slmsk,  &
-     &       xlon, xlat, tsfc, snowd, zorl, hprim, alvsf, alnsf, alvwf, &
-     &       alnwf, facsf, facwf, cv, cvt, cvb, fice, tisfc,            &
+      real (kind=kind_phys), dimension(IM),      intent(in) ::  slmsk,
+     &       xlon, xlat, tsfc, snowd, zorl, hprim, alvsf, alnsf, alvwf,
+     &       alnwf, facsf, facwf, cv, cvt, cvb, fice, tisfc,
      &       sncovr, snoalb, sinlat, coslat
 
-      real (kind=kind_phys), intent(in) :: solcon, dtlw, dtsw, solhr,   &
+      real (kind=kind_phys), intent(in) :: solcon, dtlw, dtsw, solhr,
      &       tracer(IX,LM,NTRAC)
 
       real (kind=kind_phys), dimension(IX,LM),intent(inout):: cldcov
@@ -1137,10 +1168,10 @@
 !  ---  outputs: (horizontal dimensioned by IX)
       real (kind=kind_phys), dimension(IX,LM),intent(out):: htrsw,htrlw
 
-      real (kind=kind_phys), dimension(IX,4), intent(out) :: dswcmp,    &
+      real (kind=kind_phys), dimension(IX,4), intent(out) :: dswcmp,
      &       uswcmp
 
-      real (kind=kind_phys), dimension(IM),   intent(out):: tsflw,      &
+      real (kind=kind_phys), dimension(IM),   intent(out):: tsflw,
      &       sfalb, semis, coszen, coszdg
 
       type (topfsw_type), dimension(IM), intent(out) :: topfsw
@@ -1174,7 +1205,7 @@
       real (kind=kind_phys), dimension(IM,LM+LTP,NF_CLDS) :: clouds
       real (kind=kind_phys), dimension(IM,LM+LTP,NF_VGAS) :: gasvmr
       real (kind=kind_phys), dimension(IM,       NF_ALBD) :: sfcalb
-      real (kind=kind_phys), dimension(IM,       NSPC1)   :: aerodp     
+      real (kind=kind_phys), dimension(IM,       NSPC1)   :: aerodp
       real (kind=kind_phys), dimension(IM,LM+LTP,NTRAC)   :: tracer1
 
       real (kind=kind_phys), dimension(IM,LM+LTP,NBDSW,NF_AESW)::faersw
@@ -1398,16 +1429,16 @@
 !  ---  outputs:
      &       coszen, coszdg                                             &
      &      )
-!> -# Set up non-prognostic gas volume mixing ratioes(gasvmr) 
-!!\n  - gasvmr(:,:,1)  -  co2 volume mixing ratio              
-!!\n  - gasvmr(:,:,2)  -  n2o volume mixing ratio                 
-!!\n  - gasvmr(:,:,3)  -  ch4 volume mixing ratio          
-!!\n  - gasvmr(:,:,4)  -  o2  volume mixing ratio           
-!!\n  - gasvmr(:,:,5)  -  co  volume mixing ratio        
-!!\n  - gasvmr(:,:,6)  -  cf11 volume mixing ratio        
-!!\n  - gasvmr(:,:,7)  -  cf12 volume mixing ratio         
-!!\n  - gasvmr(:,:,8)  -  cf22 volume mixing ratio  
-!!\n  - gasvmr(:,:,9)  -  ccl4 volume mixing ratio   
+!> -# Set up non-prognostic gas volume mixing ratioes(gasvmr)
+!!\n  - gasvmr(:,:,1)  -  co2 volume mixing ratio
+!!\n  - gasvmr(:,:,2)  -  n2o volume mixing ratio
+!!\n  - gasvmr(:,:,3)  -  ch4 volume mixing ratio
+!!\n  - gasvmr(:,:,4)  -  o2  volume mixing ratio
+!!\n  - gasvmr(:,:,5)  -  co  volume mixing ratio
+!!\n  - gasvmr(:,:,6)  -  cf11 volume mixing ratio
+!!\n  - gasvmr(:,:,7)  -  cf12 volume mixing ratio
+!!\n  - gasvmr(:,:,8)  -  cf22 volume mixing ratio
+!!\n  - gasvmr(:,:,9)  -  ccl4 volume mixing ratio
 
 !  --- ...  set up non-prognostic gas volume mixing ratioes
 
@@ -1501,7 +1532,7 @@
 
       endif                              ! end_if_ivflip
 !> -# Check for daytime points(ndate, idxday)
-!  --- ...  check for daytime points 
+!  --- ...  check for daytime points
 
       nday = 0
       do i = 1, IM
@@ -1532,11 +1563,11 @@
      &     )
 
 !> -# Obtain cloud information for radiation calculations (clouds,cldsa,mtopa,mbota)
-!!\n ---  for  prognostic cloud  ---    
+!!\n ---  for  prognostic cloud  ---
 !!    - For zhao/moorthi's prognostic cloud scheme, call module_radiation_clouds::progcld1
 !!    - For ferrier's microphysics, call module_radiation_clouds::progcld2
 !!    - For zhao/moorthi's prognostic cloud+pdfcld, call module_radiation_clouds::progcld3
-!!\n ---  for  diagnostic cloud  ---    
+!!\n ---  for  diagnostic cloud  ---
 !!    - call module_radiation_clouds::diagcld1
 !!
 !  --- ...  obtain cloud information for radiation calculations
@@ -1637,7 +1668,7 @@
 
       endif                                ! end_if_ntcw
 
-!  --- ...  start radiation calculations 
+!  --- ...  start radiation calculations
 !           remember to set heating rate unit to k/sec!
 
       if (lsswr) then
@@ -2075,7 +2106,9 @@
 !-----------------------------------
 !> @}
 
+!> @}
 !
 !........................................!
       end module module_radiation_driver !
 !========================================!
+!> @}

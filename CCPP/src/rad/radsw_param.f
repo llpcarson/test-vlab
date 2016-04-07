@@ -1,3 +1,11 @@
+!>  \file radsw_param.f
+!!  This file contains SW band parameters setup.
+
+!>  \addtogroup rad
+!!  @{
+!!  \addtogroup module_radsw_main
+!!  @{
+
 !!!!!  ==============================================================  !!!!!
 !!!!!              sw-rrtm3 radiation package description              !!!!!
 !!!!!  ==============================================================  !!!!!
@@ -53,6 +61,7 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
+!> \defgroup module_radsw_parameters
 !> This module contains SW band parameters set up.
 !========================================!
       module module_radsw_parameters     !
@@ -197,3 +206,5 @@
 !........................................!
       end module module_radsw_parameters !
 !========================================!
+!> @}
+!! @}

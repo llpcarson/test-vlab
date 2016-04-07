@@ -1,103 +1,21 @@
 /**
-@mainpage Radiation scheme in CCPP
+	\mainpage GFS Operational Physics
+	
+	Documentation for the operational physics suite can be found here. As of January 2015, the following schemes are used:
+	- Radiation - RRTMG
+	- Turbulent Transport (PBL) - Hybrid EDMF
+	- Penetrative Convection - SAS
+	- Shallow Convection - SAS
+	- Cloud Microphysics - Zhao-Carr
+	- Gravity Wave Drag - Orographic GWD, Stationary Convective GWD
+	- Ozone Physics - NRL simplified scheme
+	- Land Surface Model - NOAH
 
-@section Introduction
+	Here, each scheme is documented in its own module.
+	
+	\section Structure
 
-Radiative process is one of the most complex and computational intensive part of all model physics. 
-As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics, 
-and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
-has standardized component modules. The schematic radiation module structure is shown in table 1.
-
-@image html schematic_Rad_mod.png
-
-Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative 
-flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is 
-needed for the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the 
-radiative heating and cooling rates of a given atmospheric volume. The magnitude of the terms in the surface energy 
-budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition, 
-the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can 
-have strong dynamic effect on cloud evolution.
-
-
-@section mainpage-components Radiation Scheme Modules
-
-The following links take you to more information about each module.
-+ Driver Module: module_radiation_driver
-+ Shortwave(SW) Module: module_radsw_main
-+ Longwave(LW) Module: module_radlw_main
-+ Astronomy Module: module_radiation_astronomy
-+ Aerosol Module: module_radiation_aerosols
-+ Cloud Module: module_radiation_clouds
-+ Surface Module: module_radiation_surface
-+ Gases Module: module_radiation_gases
-
-
-
-
-
-
-
-
-@section References
-Barker, H. W., et al., 2003: Assessing 1D atmospheric solar radiative transfer models: interpretation and handling of unresolved clouds. J. Clim., 16, 2676-2699.
-
-Briegleb, B. P., 1992: Delta-Eddington approximation for solar radiation in the NCAR community climate model. J. Geophys. Res., 97, 7603-7612.
-
-Briegleb, B. P., P. Minnus, V. Ramanathan, and E. Harrison, 1986: Comparison of regional clear-sky albedo inferred from satellite observations and model computations. J. Clim. and Appl. Meteo., 25, 214-226.
-
-Chin, M., R. B. Rood, S-J. Lin, J-F. Mller, and A. M. Thompson, 2000: Atmospheric sulfur cycle simulated in the global model GOCART: Model description and global properties. J. Geophys. Res., 105, 24671-24687.
-
-Chou, M. D., M. J. Suarez, C. H. Ho, M. M. H. Yan, and K. T. Lee, 1998: Parameterizations for cloud overlapping and shortwave single scattering properties for use in general circulation and cloud ensemble models. J. Clim., 11, 202-214.
-
-Clough, S. A., and M. J. Iacono, 1995: Line-by-line calculation of atmospheric fluxes and cooling rates: 2. Application to carbon dioxide, ozone, methane, nitrous oxide and the halocarbons. J. Geophys. Res.100, 16519-16535.
-
-Clough, S. A., M. W. Shephard, E. J. Mlawer, J. S. delamere, M. J. Iacono, K. Cady-Pereira, S. Boukabara, and P. D. Brown, 2005: Atmospheric radiative transfer modeling: a summary of the AER codes, J. Quant. Spectrosc. Radiat. Transfer, 91, 233-244. 
-
-Coakley, J. A., R. D. Cess, and F. B. Yurevich, 1983: The effect of tropospheric aerosols on the earth's radiation budget: a parameterization for climate models. J. Atmos. Sci., 42, 1408-1429.
-
-Fels, S. B., and M.D. Schwarzkopf, 1975: The simplified exchange approximation: A new method for radiative transfer calculations. J. Atmos. Sci., 337, 2265-2297.
-
-Frohlich, C. and G. E. Shaw, 1980: New determination of Rayleigh scattering in the terrestrial atmosphere. Appl. Opt., 14, 1773-1775.
-
-Fu, Q., 1996: An accurate parameterization of the solar radiative properties of cirrus clouds for climate models. J. Clim., 9, 2058-2082.
-
-Fu, Q., P. Yang, and W.B. Sun, 1998: An accurate parameterization of the infrared  radiative properties of cirrus clouds for climate models. J. Clim., 11, 2223-2237. 
-
-Hess, M., P. Koepke, and I. Schult, 1998: Optical properties of aerosols and clouds: The software package OPAC. Bull. Am. Meteor. Soc., 79, 831-844.
-
-Heymsfield, A. J., and G. M. McFarquhar, 1996: High albedos of cirrus in the tropical Pacific warm pool. J. Atmos. Sci., 53, 2424-2451.
-
-Hou, Y-T., S. Moorthi, K. Campana, 2002: Parameterization of solar radiation transfer in the NCEP Models. NCEP Office Note  441, 46pp.
-
-Hu, Y. X., and K. Stamnes. 1993: An accurate parameterization of the radiative properties of water clouds suitable for use in climate models. J. Clim., 6, 728-742. 
-
-Kiehl, J. T., J. J. Hack, G. B. Bonan, B. A. Boville, D. L. Williamson, and P. J. Rasch, 1998: The national center for atmospheric research community climate model CCM3. J. Clim., 11, 1131-1149.
-
-Matthews, E., 1985: Atlas of Archived Vegetation, Land Use, and Seasonal Albedo Data Sets., NASA Technical Memorandum 86199, Goddard Institute for Space Studies, New York.
-
-Mlawer, E. J., S. J. Taubman, P. D. Brown, M. J. Iacono, and S. A. Clough, 1997: Radiative transfer for inhomogenerous atmospheres: RRTM, a validated correlated-k model for the longwave. J. Geophys. Res., 102, 16663-16682.
-
-Oreopoulos, L. and Barker, H. W., 1999: Accounting for subgrid-scale cloud variability in a multi-layer, 1D solar radiative transfer algorithm. Q. J. R. Meteorol. Soc., 125, 301-330.
-
-Pincus, R., Barker, H. W. and Morcrette, J.-J., 2003: A fast, flexible, approximate technique of computing radiative transfer for inhomogeneous clouds. J. Geophys. Res., 108, 4376, doi: 10.1029/2002JD003322.
-
-Roberts, R. E., J. A. Selby, and L. M. Biberman, 1976: Infrared continuum absorption by atmospheric water vapor in the 8-12 micron window. Appl. Optics., 15, 2085-2090.
-
-Rodgers, C.D., 1968: Some extension and applications of the new random model for molecular band transmission. Quart. J. Roy. Meteor. Soc., 94,99-102.
-
-Sato, M., J. E. Hansen, M. P. McCormick, and J. B. Pollack, 1993: Stratospheric aerosol optical depth, 1850-1990. J. Geophys. Res., 98, 22987-22994.
-
-Slingo, A., 1989: A GCM parameterization for the shortwave radiative properties pf water clouds. J. Atmos. Sci., 46, 1419-1427.
-
-Schwarzkopf, M.D., and S. B. Fels, 1985: Improvements to the algorithm for computing CO2 transmissivities and cooling rates. J. Geophys. Res., 90, 10541-10550.
-
-Schwarzkopf, M.D., and S. B. Fels, 1991: The simplified exchange method revisited: An accurate, rapid method for computation of infrared cooling rates and fluxes. J. Geophys. Res., 96, 9075-9096.
-
-Staylor, W. F. and A. C. Wilbur, 1990: Global surface albedos estimated from ERBE data. Preprints of the Seventh Conference on Atmospheric Radiation, San Francisco CA, American Meteorological Society, 231-236.
-
-Stephens, G. L., 1984: The parameterization of radiation for numerical weather prediction and climate models. Mon. Wea. Rev., 112, 826-867.
-
-Zdunkowski, W. G., Welsch, R. M., and Korb, G. J., 1980: An investigation of the structure of typical 2-stream methods for the calculation of solar fluxes and heating rates in clouds. Contrib. Atms. Phys., 53, 215-238.
+	This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
+      
 
 */
-
