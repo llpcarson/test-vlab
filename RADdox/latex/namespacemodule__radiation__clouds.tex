@@ -1,0 +1,951 @@
+\hypertarget{namespacemodule__radiation__clouds}{}\section{module\+\_\+radiation\+\_\+clouds Module Reference}
+\label{namespacemodule__radiation__clouds}\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+
+
+This module computes cloud related quantities for radiation computations.  
+
+
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{namespacemodule__radiation__clouds_a804b4ff009a185405e39838a907f8591}{gethml}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine computes high, mid, low, total, and boundary cloud fractions and cloud top/bottom layer indices for model diagnostic output. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radiation__clouds_a7b3ef3c22abd161058fd8880d86b538a}{rhtable}                                                                                             
+\begin{DoxyCompactList}\small\item\em cld-\/rh relations obtained from mitchell-\/hahn procedure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__clouds_ab6fef8945e0a409b2e0968b414ba5573}{cld\+\_\+init}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine is an initialization program for cloud-\/radiation calculations. It sets up boundary layer cloud top. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__clouds_ab45374e1eeec7d6211284b38c3ec8448}{progcld1}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine computes cloud related quantities using zhao/moorthi\textquotesingle{}s prognostic cloud microphysics scheme. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__clouds_a2f45f48505bb69a968c788ff680b5642}{progcld2}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine computes cloud related quantities using ferrier\textquotesingle{}s prognostic cloud microphysics scheme. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__clouds_a1953118ed22c3b6f8d94ef231b47a08b}{progcld3}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine computes cloud related quantities using zhao/moorthi\textquotesingle{}s prognostic cloud microphysics scheme + pdfcld. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__clouds_ab477be986b08fe827c44dbe352a23d39}{diagcld1}
+\begin{DoxyCompactList}\small\item\em This subroutine computes cloud fractions for radiation calculations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(40), parameter \hyperlink{namespacemodule__radiation__clouds_a54f11c2f6353f244501cf4ec3553d78b}{vtagcld} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+clouds v5.\+1 Nov 2012 \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_ab4060544be25be2b0a87042fb3bd6242}{gfac} =1.\+0e5/con\+\_\+g
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a50ea21222eb91e6363e8bf1338b34a66}{gord} =con\+\_\+g/con\+\_\+rd
+\item 
+integer, parameter, public \hyperlink{namespacemodule__radiation__clouds_a66cf0f94619a3d865b0c593197a30576}{nf\+\_\+clds} = 9
+\begin{DoxyCompactList}\small\item\em number of fields in cloud array \end{DoxyCompactList}\item 
+integer, parameter, public \hyperlink{namespacemodule__radiation__clouds_a2739168b8205ee860eb8a160ea722a44}{nk\+\_\+clds} = 3
+\begin{DoxyCompactList}\small\item\em number of cloud vertical domains \end{DoxyCompactList}\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__clouds_a2739168b8205ee860eb8a160ea722a44}{nk\+\_\+clds}+1, 2), save \hyperlink{namespacemodule__radiation__clouds_a03bc5d19cbdc84a2032c8d591ba4c96a}{ptopc}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_ad4d5840310847f5bf39082114069ceb8}{climit} = 0.\+001
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a2f6f333d39f496f623036802fc05f209}{climit2} =0.\+05
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a5667082e13ef37593bdfcc152e3dd449}{ovcst} = 1.\+0 -\/ 1.\+0e-\/8
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a1768a85f4d8af2ad40b62ae6e6667c1e}{reliq\+\_\+def} = 10.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a721e0fb4a34774f5b61f567b9cad8e7b}{reice\+\_\+def} = 50.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a93fcaedae02c0f9c4de9f39061379d6b}{rrain\+\_\+def} = 1000.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a2b68c4a206e17cb59597f6c4dffc7c1a}{rsnow\+\_\+def} = 250.\+0
+\item 
+integer, parameter \hyperlink{namespacemodule__radiation__clouds_ad2947b3c0a8382fbe12b76dd68b290e0}{nbin} =100
+\item 
+integer, parameter \hyperlink{namespacemodule__radiation__clouds_ab4d14edea12bbcda5361cad523386c7c}{nlon} =2
+\item 
+integer, parameter \hyperlink{namespacemodule__radiation__clouds_ad4274cb223949e858ecc2e6346bed610}{nlat} =4
+\item 
+integer, parameter \hyperlink{namespacemodule__radiation__clouds_afb94f3d62afa49bef6c33f73a7ecad65}{mcld} =4
+\item 
+integer, parameter \hyperlink{namespacemodule__radiation__clouds_aaf2a6549a8c42b9eae3d40d21d1e9532}{nseal} =2
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a2ce850be46f0144caa09309ae01958c2}{cldssa\+\_\+def} = 0.\+99
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_ab94e45a81d8be82b6cb686b35fd78a80}{cldasy\+\_\+def} = 0.\+84
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a1146f43b680b655d354a9c031ee4a463}{xlim} =5.\+0
+\item 
+real(kind=kind\+\_\+phys), dimension(3) \hyperlink{namespacemodule__radiation__clouds_ab2a798da0bb0125d1d5074b73c5951dc}{xlabdy}
+\item 
+real(kind=kind\+\_\+phys), dimension(3) \hyperlink{namespacemodule__radiation__clouds_aab28f783919380e5ff7f925f70355a57}{xlobdy}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a6ec3c0444de53580befd4bb4d39844d3}{vvcld1} = 0.\+0003e0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__clouds_a67962e77fb073cc25cafaaba0c2fa833}{vvcld2} =-\/0.\+0005e0
+\item 
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__clouds_ad2947b3c0a8382fbe12b76dd68b290e0}{nbin}, \hyperlink{namespacemodule__radiation__clouds_ab4d14edea12bbcda5361cad523386c7c}{nlon}, \hyperlink{namespacemodule__radiation__clouds_ad4274cb223949e858ecc2e6346bed610}{nlat}, \hyperlink{namespacemodule__radiation__clouds_afb94f3d62afa49bef6c33f73a7ecad65}{mcld}, \hyperlink{namespacemodule__radiation__clouds_aaf2a6549a8c42b9eae3d40d21d1e9532}{nseal}) \hyperlink{namespacemodule__radiation__clouds_a9673faf82ef00e0501763664743e3720}{rhcl}
+\item 
+integer \hyperlink{namespacemodule__radiation__clouds_a3390b20d42afccb3ec569a5b69a93f6e}{llyr} = 2
+\item 
+integer \hyperlink{namespacemodule__radiation__clouds_a5cfafee79e8cf066ddd8440cdfdc41a0}{iovr} = 1
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!cld\+\_\+init@{cld\+\_\+init}}
+\index{cld\+\_\+init@{cld\+\_\+init}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{cld\+\_\+init                                                                                          }{cld_init                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+clouds\+::cld\+\_\+init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__clouds_ab6fef8945e0a409b2e0968b414ba5573}{}\label{namespacemodule__radiation__clouds_ab6fef8945e0a409b2e0968b414ba5573}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em si} & real, model vertical sigma layer interface \\
+\hline
+\mbox{\tt in}  & {\em N\+L\+AY} & integer, vertical layer number \\
+\hline
+\mbox{\tt in}  & {\em me} & integer, print control flag \\
+\hline
+\mbox{\tt out}  & {\em N\+O\+NE} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
+
+\begin{DoxyEnumerate}
+\item Calling rhtable, set up tuned rh table ~\newline
+ -\/ subroutine rhtable\+: cld-\/rh relations obtained from mitchell-\/hahn procedure
+\item Compute llyr -\/ the top of BL cld and is topmost non cld(low) layer for stratiform (at or above lowest 0.\+1 of the atmosphere) 
+\end{DoxyEnumerate}
+
+Definition at line 231 of file radiation\+\_\+clouds.\+f.
+
+
+
+References physparam\+::icldflg, physparam\+::icmphys, iovr, physparam\+::iovrlw, physparam\+::iovrsw, physparam\+::ivflip, llyr, rhtable(), and vtagcld.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::radinit().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab6fef8945e0a409b2e0968b414ba5573_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab6fef8945e0a409b2e0968b414ba5573_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!diagcld1@{diagcld1}}
+\index{diagcld1@{diagcld1}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{diagcld1}{diagcld1}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+clouds\+::diagcld1 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__clouds_ab477be986b08fe827c44dbe352a23d39}{}\label{namespacemodule__radiation__clouds_ab477be986b08fe827c44dbe352a23d39}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em plyr} & real, (IX,N\+L\+AY), model layer mean pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em plvl} & real, (IX,N\+L\+P1), model level pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em tlyr} & real, (IX,N\+L\+AY), model layer mean temperature in K \\
+\hline
+\mbox{\tt in}  & {\em rhly} & real, (IX,N\+L\+AY), layer relative humidity \\
+\hline
+\mbox{\tt in}  & {\em vvel} & real, (IX,N\+L\+AY), layer mean vertical velocity in mb/sec \\
+\hline
+\mbox{\tt in}  & {\em cv} & real, (IX), fraction of convective cloud \\
+\hline
+\mbox{\tt in}  & {\em cvt,cvb} & real, (IX), conv cloud top/bottom pressure in mb \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (IX), grid latitude in radians, default to pi/2 -\/$>$ -\/pi/2 range, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real, (IX), grid longitude in radians, ok for both 0-\/$>$2pi or -\/pi -\/$>$ +pi ranges \\
+\hline
+\mbox{\tt in}  & {\em slmsk} & real, (IX), sea/land mask array (sea\+:0,land\+:1,sea-\/ice\+:2) \\
+\hline
+\mbox{\tt in}  & {\em IX} & integer, horizontal dimention \\
+\hline
+\mbox{\tt in}  & {\em N\+L\+AY,N\+L\+P1} & integer, vertical layer/level dimensions \\
+\hline
+\mbox{\tt out}  & {\em clouds} & real, (IX,N\+L\+AY,N\+F\+\_\+\+C\+L\+DS), cloud profiles ~\newline
+ (\+:,\+:,1) -\/ layer total cloud fraction ~\newline
+ (\+:,\+:,2) -\/ layer cloud optical depth ~\newline
+ (\+:,\+:,3) -\/ layer cloud single scattering albedo ~\newline
+ (\+:,\+:,4) -\/ layer cloud asymmetry factor \\
+\hline
+\mbox{\tt out}  & {\em clds} & real, (IX,5), fraction of clouds for low, mid, hi, tot, bl \\
+\hline
+\mbox{\tt out}  & {\em mtop} & integer, (IX,3), vertical indices for low, mid, hi cloud tops \\
+\hline
+\mbox{\tt out}  & {\em mbot} & real, (IX,3), vertical indices for low, mid, hi cloud bases \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
+
+\begin{DoxyEnumerate}
+\item Get rh-\/cld relation for this lat
+\item Linear transition betweeen latitudinal regions
+\item Get rh-\/cld relationship for each grid point, interpolating longitudinally between regions if necessary.
+\item Find top pressure for each cloud domain
+\item Compute stratiform cloud optical depth
+\item Compute potential temperature and its lapse rate
+\item Diagnostic method to find cloud amount cldtot, cldcnv
+\begin{DoxyItemize}
+\item Find the lowest low cloud top sigma level, computed for each lat cause domain definition changes with latitude.
+\item Find the stratosphere cut off layer for high cloud (about 250mb). It is assumed to be above the layerwith dthdp less than -\/0.\+25 in the high cloud domain
+\item Put convective cloud into \textquotesingle{}cldcnv\textquotesingle{}, no merge at this point.
+\item Calculate stratiform cloud and put into array \textquotesingle{}cldtot\textquotesingle{} using the cld-\/rh relationship from table look-\/up.\+where tables obtained using k.\+mitchell frequency distribution tuning
+\item Compute vertical velocity adjustment on low clouds
+\item Compute diagnostic cloud optical depth
+\end{DoxyItemize}
+\item Calling gethml, to compute low, mid, high, total, and boundary layer cloud fractions and cloud top/bottom layer indices for low, mid, and high clouds. 
+\end{DoxyEnumerate}
+
+Definition at line 1789 of file radiation\+\_\+clouds.\+f.
+
+
+
+References cldasy\+\_\+def, cldssa\+\_\+def, climit, physcons\+::con\+\_\+pi, physcons\+::con\+\_\+rocp, physcons\+::con\+\_\+ttp, gethml(), physparam\+::ivflip, llyr, mcld, nbin, nlon, nseal, ptopc, rhcl, vvcld1, vvcld2, xlabdy, xlim, and xlobdy.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab477be986b08fe827c44dbe352a23d39_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab477be986b08fe827c44dbe352a23d39_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!gethml@{gethml}}
+\index{gethml@{gethml}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{gethml                                                                                              }{gethml                                                                                              }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+clouds\+::gethml (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a804b4ff009a185405e39838a907f8591}{}\label{namespacemodule__radiation__clouds_a804b4ff009a185405e39838a907f8591}
+
+
+Definition at line 2410 of file radiation\+\_\+clouds.\+f.
+
+
+
+References climit, iovr, physparam\+::ivflip, llyr, nk\+\_\+clds, and ovcst.
+
+
+
+Referenced by diagcld1(), progcld1(), progcld2(), and progcld3().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a804b4ff009a185405e39838a907f8591_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!progcld1@{progcld1}}
+\index{progcld1@{progcld1}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{progcld1                                                                                          }{progcld1                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+clouds\+::progcld1 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__clouds_ab45374e1eeec7d6211284b38c3ec8448}{}\label{namespacemodule__radiation__clouds_ab45374e1eeec7d6211284b38c3ec8448}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em plyr} & real, (IX,N\+L\+AY), model layer mean pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em plvl} & real, (IX,N\+L\+P1), model level pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em tlyr} & real, (IX,N\+L\+AY), model layer mean temperature in K \\
+\hline
+\mbox{\tt in}  & {\em tvly} & real, (IX,N\+L\+AY), model layer virtual temperature in K \\
+\hline
+\mbox{\tt in}  & {\em qlyr} & real, (IX,N\+L\+AY), layer specific humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em qstl} & real, (IX,N\+L\+AY), layer saturate humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em rhly} & real, (IX,N\+L\+AY), layer relative humidity $ (=qlyr/qstl) $ \\
+\hline
+\mbox{\tt in}  & {\em clw} & real, (IX,N\+L\+AY), layer cloud condensate amount \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (IX), grid latitude in radians, default to pi/2 -\/$>$ -\/pi/2 range, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real, (IX), grid longitude in radians (not used) \\
+\hline
+\mbox{\tt in}  & {\em slmsk} & real, (IX), sea/land mask array (sea\+:0,land\+:1,sea-\/ice\+:2) \\
+\hline
+\mbox{\tt in}  & {\em IX} & integer, horizontal dimention \\
+\hline
+\mbox{\tt in}  & {\em N\+L\+AY,N\+L\+P1} & integer, vertical layer/level dimensions \\
+\hline
+\mbox{\tt out}  & {\em clouds} & real, (IX,N\+L\+AY,N\+F\+\_\+\+C\+L\+DS), cloud profiles ~\newline
+ (\+:,\+:,1) -\/ layer total cloud fraction ~\newline
+ (\+:,\+:,2) -\/ layer cloud liq water path $(g/m^2)$ ~\newline
+ (\+:,\+:,3) -\/ mean eff radius for liq cloud (micron) ~\newline
+ (\+:,\+:,4) -\/ layer cloud ice water path $(g/m^2)$ ~\newline
+ (\+:,\+:,5) -\/ mean eff radius for ice cloud (micron) ~\newline
+ (\+:,\+:,6) -\/ layer rain drop water path (not assigned) ~\newline
+ (\+:,\+:,7) -\/ mean eff radius for rain drop (micron) ~\newline
+ (\+:,\+:,8) -\/ layer snow flake water path (not assigned) ~\newline
+ (\+:,\+:,9) -\/ mean eff radius for snow flake (micron) ~\newline
+ $\ast$$\ast$$\ast$ fu\textquotesingle{}s scheme need to be normalized by snow density $ (g/m^3/1.0e6)$ \\
+\hline
+\mbox{\tt out}  & {\em clds} & real, (IX,5), fraction of clouds for low, mid, hi, tot, bl \\
+\hline
+\mbox{\tt out}  & {\em mtop} & integer, (IX,3), vertical indices for low, mid, hi cloud tops \\
+\hline
+\mbox{\tt out}  & {\em mbot} & integer, (IX,3), vertical indices for low, mid, hi cloud bases \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
+
+\begin{DoxyEnumerate}
+\item Find top pressure for each cloud domain for given latitude
+\item Compute liquid/ice condensate path in $ g/m^2 $
+\item Compute effective liquid cloud droplet radius over land
+\item Compute effective ice cloud droplet radius ~\newline
+ For ice clouds, following Heymsfield and Mc\+Farquhar (1996),the effective ice droplet radius is made to be an empirical function of ice water concentration (I\+WC) and environmental temperature as\+: ~\newline
+ $ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC $ ~\newline
+ $ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC $ ~\newline
+ $ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC $ ~\newline
+
+\item Call gethml to compute low,mid,high,total, and boundary layer cloud fractions 
+\end{DoxyEnumerate}
+
+Definition at line 384 of file radiation\+\_\+clouds.\+f.
+
+
+
+References climit, climit2, physcons\+::con\+\_\+pi, physcons\+::con\+\_\+ttp, gethml(), gfac, gord, physparam\+::ivflip, physparam\+::lcnorm, physparam\+::lcrick, physparam\+::lsashal, nf\+\_\+clds, ptopc, reice\+\_\+def, reliq\+\_\+def, rrain\+\_\+def, and rsnow\+\_\+def.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab45374e1eeec7d6211284b38c3ec8448_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_ab45374e1eeec7d6211284b38c3ec8448_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!progcld2@{progcld2}}
+\index{progcld2@{progcld2}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{progcld2                                                                                          }{progcld2                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+clouds\+::progcld2 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__clouds_a2f45f48505bb69a968c788ff680b5642}{}\label{namespacemodule__radiation__clouds_a2f45f48505bb69a968c788ff680b5642}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em plyr} & real, (IX,N\+L\+AY), model layer mean pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em plvl} & real, (IX,N\+L\+P1), model level pressure in mb (100\+Pa) \\
+\hline
+\mbox{\tt in}  & {\em tlyr} & real, (IX,N\+L\+AY), model layer mean temperature in K \\
+\hline
+\mbox{\tt in}  & {\em tvly} & real, (IX,N\+L\+AY), model layer virtual temperature in K \\
+\hline
+\mbox{\tt in}  & {\em qlyr} & real, (IX,N\+L\+AY), layer specific humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em qstl} & real, (IX,N\+L\+AY), layer saturate humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em rhly} & real, (IX,N\+L\+AY), layer relative humidity (=qlyr/qstl) \\
+\hline
+\mbox{\tt in}  & {\em clw} & real, (IX,N\+L\+AY), layer cloud condensate amount \\
+\hline
+\mbox{\tt in}  & {\em f\+\_\+ice} & real, (IX,N\+L\+AY), fraction of layer cloud ice (ferrier micro-\/phys) \\
+\hline
+\mbox{\tt in}  & {\em f\+\_\+rain} & real, (IX,N\+L\+AY), fraction of layer rain water (ferrier micro-\/phys) \\
+\hline
+\mbox{\tt in}  & {\em r\+\_\+rime} & real, (IX,N\+L\+AY), mass ratio of total ice to unrimed ice ($>$=1) \\
+\hline
+\mbox{\tt in}  & {\em flgmin} & real, (IX), minimim large ice fraction \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (IX), grid latitude in radians, default to pi/2 -\/$>$ -\/pi/2 range, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real, (IX), grid longitude in radians (not used) \\
+\hline
+\mbox{\tt in}  & {\em slmsk} & real, (IX), sea/land mask array (sea\+:0,land\+:1,sea-\/ice\+:2) \\
+\hline
+\mbox{\tt in}  & {\em IX} & integer, horizontal dimention \\
+\hline
+\mbox{\tt in}  & {\em N\+L\+AY,N\+L\+P1} & integer, vertical layer/level dimensions \\
+\hline
+\mbox{\tt out}  & {\em clouds} & real, (IX,N\+L\+AY,N\+F\+\_\+\+C\+L\+DS), cloud profiles ~\newline
+ (\+:,\+:,1) -\/ layer total cloud fraction ~\newline
+ (\+:,\+:,2) -\/ layer cloud liq water path $(g/m^2)$ ~\newline
+ (\+:,\+:,3) -\/ mean eff radius for liq cloud (micron) ~\newline
+ (\+:,\+:,4) -\/ layer cloud ice water path $(g/m^2)$ ~\newline
+ (\+:,\+:,5) -\/ mean eff radius for ice cloud (micron) ~\newline
+ (\+:,\+:,6) -\/ layer rain drop water path $(g/m^2)$ ~\newline
+ (\+:,\+:,7) -\/ mean eff radius for rain drop (micron) ~\newline
+ (\+:,\+:,8) -\/ layer snow flake water path $(g/m^2)$ ~\newline
+ (\+:,\+:,9) -\/ mean eff radius for snow flake (micron) ~\newline
+ $\ast$$\ast$$\ast$ fu\textquotesingle{}s scheme need to be normalized by snow density (g/m$\ast$$\ast$3/1.0e6) \\
+\hline
+\mbox{\tt out}  & {\em clds} & real, (IX,5), fraction of clouds for low, mid, hi, tot, bl \\
+\hline
+\mbox{\tt out}  & {\em mtop} & integer, (IX,3), vertical indices for low, mid, hi cloud tops \\
+\hline
+\mbox{\tt out}  & {\em mbot} & integer, (IX,3), vertical indices for low, mid, hi cloud bases \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
+
+\begin{DoxyEnumerate}
+\item Find top pressure for each cloud domain for given latitude
+\begin{DoxyItemize}
+\item ptopc(k,i)\+: top pressure of each cld domain (k=1-\/4 are sfc,l,m,h; i=1,2 are low-\/lat ($<$45 degree) and pole regions)
+\end{DoxyItemize}
+\item Seperate cloud condensate into liquid, ice, and rain types, and save the liquid+ice condensate in array clw2 for later calculation of cloud fraction
+\item Call \hyperlink{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f}{module\+\_\+microphysics\+::rsipath2}, in ferrier\textquotesingle{}s scheme,to compute layer\textquotesingle{}s cloud liquid, ice, rain, and snow water condensate path and the partical effective radius for liquid droplet, rain drop, and snow flake.
+\item Compute layer cloud fraction
+\item Compute effective ice cloud droplet radius
+\item Call gethml, to compute low, mid, high, total, and boundary layer cloud fractions and clouds top/bottom layer indices for low, mid, and high clouds. 
+\end{DoxyEnumerate}
+
+Definition at line 844 of file radiation\+\_\+clouds.\+f.
+
+
+
+References climit, climit2, physcons\+::con\+\_\+g, physcons\+::con\+\_\+pi, physcons\+::con\+\_\+rd, physcons\+::con\+\_\+t0c, physcons\+::con\+\_\+ttp, gethml(), physparam\+::ivflip, physparam\+::lcnorm, physparam\+::lcrick, physparam\+::lnoprec, physparam\+::lsashal, ptopc, reice\+\_\+def, reliq\+\_\+def, rrain\+\_\+def, module\+\_\+microphysics\+::rsipath2(), and rsnow\+\_\+def.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a2f45f48505bb69a968c788ff680b5642_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a2f45f48505bb69a968c788ff680b5642_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!progcld3@{progcld3}}
+\index{progcld3@{progcld3}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{progcld3                                                                                          }{progcld3                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+clouds\+::progcld3 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__clouds_a1953118ed22c3b6f8d94ef231b47a08b}{}\label{namespacemodule__radiation__clouds_a1953118ed22c3b6f8d94ef231b47a08b}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em plyr} & real, (ix,nlay), model layer mean pressure in mb (100pa) \\
+\hline
+\mbox{\tt in}  & {\em plvl} & real, (ix,nlp1), model level pressure in mb (100pa) \\
+\hline
+\mbox{\tt in}  & {\em tlyr} & real, (ix,nlay), model layer mean temperature in K \\
+\hline
+\mbox{\tt in}  & {\em tvly} & real, (ix,nlay), model layer virtual temperature in K \\
+\hline
+\mbox{\tt in}  & {\em qlyr} & real, (ix,nlay), layer specific humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em qstl} & real, (ix,nlay), layer saturate humidity in gm/gm \\
+\hline
+\mbox{\tt in}  & {\em rhly} & real, (ix,nlay), layer relative humidity (=qlyr/qstl) \\
+\hline
+\mbox{\tt in}  & {\em clw} & real, (ix,nlay), layer cloud condensate amount \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (ix), grid latitude in radians, default to pi/2 -\/$>$ -\/pi/2 range, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real, (ix), grid longitude in radians (not used) \\
+\hline
+\mbox{\tt in}  & {\em slmsk} & real, (ix), sea/land mask array (sea\+:0,land\+:1,sea-\/ice\+:2) \\
+\hline
+\mbox{\tt in}  & {\em ix} & integer, horizontal dimention \\
+\hline
+\mbox{\tt in}  & {\em nlay,nlp1} & integer, vertical layer/level dimensions \\
+\hline
+\mbox{\tt in}  & {\em deltaq} & real, (ix,nlay), half total water distribution width \\
+\hline
+\mbox{\tt in}  & {\em sup} & real, supersaturation \\
+\hline
+\mbox{\tt in}  & {\em kdt} & integer \\
+\hline
+\mbox{\tt in}  & {\em me} & integer, print control flag \\
+\hline
+\mbox{\tt out}  & {\em clouds} & real, (ix,nlay,nf\+\_\+clds), cloud profiles ~\newline
+ (\+:,\+:,1) -\/ layer total cloud fraction ~\newline
+ (\+:,\+:,2) -\/ layer cloud liq water path (g/m$\ast$$\ast$2) ~\newline
+ (\+:,\+:,3) -\/ mean eff radius for liq cloud (micron) ~\newline
+ (\+:,\+:,4) -\/ layer cloud ice water path (g/m$\ast$$\ast$2) ~\newline
+ (\+:,\+:,5) -\/ mean eff radius for ice cloud (micron) ~\newline
+ (\+:,\+:,6) -\/ layer rain drop water path not assigned ~\newline
+ (\+:,\+:,7) -\/ mean eff radius for rain drop (micron) ~\newline
+ (\+:,\+:,8) -\/ layer snow flake water path not assigned ~\newline
+ (\+:,\+:,9) -\/ mean eff radius for snow flake(micron) \\
+\hline
+\mbox{\tt out}  & {\em clds} & real, (ix,5), fraction of clouds for low, mid, hi, tot, bl \\
+\hline
+\mbox{\tt out}  & {\em mtop} & integer, (ix,3), vertical indices for low, mid, hi cloud tops \\
+\hline
+\mbox{\tt out}  & {\em mbot} & integer, (ix,3), vertical indices for low, mid, hi cloud bases \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
+
+\begin{DoxyEnumerate}
+\item Find top pressure for each cloud domain for given latitude
+\item Compute liquid/ice condensate path in $ g/m^2 $
+\item Compute effective liquid cloud droplet radius over land
+\item Compute effective ice cloud droplet radius ~\newline
+ For ice clouds, following Heymsfield and Mc\+Farquhar (1996),the effective ice droplet radius is made to be an empirical function of ice water concentration (I\+WC) and environmental temperature as\+: ~\newline
+ $ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC $ ~\newline
+ $ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC $ ~\newline
+ $ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC $ ~\newline
+
+\item Call gethml to compute low,mid,high,total, and boundary layer cloud fractions 
+\end{DoxyEnumerate}
+
+Definition at line 1357 of file radiation\+\_\+clouds.\+f.
+
+
+
+References climit, climit2, physcons\+::con\+\_\+pi, physcons\+::con\+\_\+thgni, physcons\+::con\+\_\+ttp, gethml(), gfac, gord, physparam\+::ivflip, physparam\+::lcnorm, physparam\+::lcrick, nf\+\_\+clds, ptopc, reice\+\_\+def, reliq\+\_\+def, rrain\+\_\+def, and rsnow\+\_\+def.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a1953118ed22c3b6f8d94ef231b47a08b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a1953118ed22c3b6f8d94ef231b47a08b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!rhtable@{rhtable}}
+\index{rhtable@{rhtable}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{rhtable                                                                                            }{rhtable                                                                                            }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+clouds\+::rhtable (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a7b3ef3c22abd161058fd8880d86b538a}{}\label{namespacemodule__radiation__clouds_a7b3ef3c22abd161058fd8880d86b538a}
+
+
+Definition at line 2733 of file radiation\+\_\+clouds.\+f.
+
+
+
+References mcld, nbin, nlat, nlon, nseal, and rhcl.
+
+
+
+Referenced by cld\+\_\+init().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__clouds_a7b3ef3c22abd161058fd8880d86b538a_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!cldasy\+\_\+def@{cldasy\+\_\+def}}
+\index{cldasy\+\_\+def@{cldasy\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{cldasy\+\_\+def}{cldasy_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::cldasy\+\_\+def = 0.\+84\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ab94e45a81d8be82b6cb686b35fd78a80}{}\label{namespacemodule__radiation__clouds_ab94e45a81d8be82b6cb686b35fd78a80}
+
+
+Definition at line 192 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!cldssa\+\_\+def@{cldssa\+\_\+def}}
+\index{cldssa\+\_\+def@{cldssa\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{cldssa\+\_\+def}{cldssa_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::cldssa\+\_\+def = 0.\+99\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a2ce850be46f0144caa09309ae01958c2}{}\label{namespacemodule__radiation__clouds_a2ce850be46f0144caa09309ae01958c2}
+
+
+Definition at line 191 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!climit@{climit}}
+\index{climit@{climit}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{climit}{climit}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::climit = 0.\+001\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ad4d5840310847f5bf39082114069ceb8}{}\label{namespacemodule__radiation__clouds_ad4d5840310847f5bf39082114069ceb8}
+
+
+Definition at line 175 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), gethml(), progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!climit2@{climit2}}
+\index{climit2@{climit2}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{climit2}{climit2}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::climit2 =0.\+05\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a2f6f333d39f496f623036802fc05f209}{}\label{namespacemodule__radiation__clouds_a2f6f333d39f496f623036802fc05f209}
+
+
+Definition at line 175 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!gfac@{gfac}}
+\index{gfac@{gfac}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{gfac}{gfac}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::gfac =1.\+0e5/con\+\_\+g\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ab4060544be25be2b0a87042fb3bd6242}{}\label{namespacemodule__radiation__clouds_ab4060544be25be2b0a87042fb3bd6242}
+
+
+Definition at line 161 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!gord@{gord}}
+\index{gord@{gord}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{gord}{gord}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::gord =con\+\_\+g/con\+\_\+rd\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a50ea21222eb91e6363e8bf1338b34a66}{}\label{namespacemodule__radiation__clouds_a50ea21222eb91e6363e8bf1338b34a66}
+
+
+Definition at line 161 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!iovr@{iovr}}
+\index{iovr@{iovr}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{iovr}{iovr}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+clouds\+::iovr = 1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a5cfafee79e8cf066ddd8440cdfdc41a0}{}\label{namespacemodule__radiation__clouds_a5cfafee79e8cf066ddd8440cdfdc41a0}
+
+
+Definition at line 211 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by cld\+\_\+init(), and gethml().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!llyr@{llyr}}
+\index{llyr@{llyr}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{llyr}{llyr}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+clouds\+::llyr = 2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a3390b20d42afccb3ec569a5b69a93f6e}{}\label{namespacemodule__radiation__clouds_a3390b20d42afccb3ec569a5b69a93f6e}
+
+
+Definition at line 210 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by cld\+\_\+init(), diagcld1(), and gethml().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!mcld@{mcld}}
+\index{mcld@{mcld}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{mcld}{mcld}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+clouds\+::mcld =4\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_afb94f3d62afa49bef6c33f73a7ecad65}{}\label{namespacemodule__radiation__clouds_afb94f3d62afa49bef6c33f73a7ecad65}
+
+
+Definition at line 188 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), and rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nbin@{nbin}}
+\index{nbin@{nbin}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nbin}{nbin}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+clouds\+::nbin =100\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ad2947b3c0a8382fbe12b76dd68b290e0}{}\label{namespacemodule__radiation__clouds_ad2947b3c0a8382fbe12b76dd68b290e0}
+
+
+Definition at line 185 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), and rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nf\+\_\+clds@{nf\+\_\+clds}}
+\index{nf\+\_\+clds@{nf\+\_\+clds}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nf\+\_\+clds}{nf_clds}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+clouds\+::nf\+\_\+clds = 9}\hypertarget{namespacemodule__radiation__clouds_a66cf0f94619a3d865b0c593197a30576}{}\label{namespacemodule__radiation__clouds_a66cf0f94619a3d865b0c593197a30576}
+
+
+Definition at line 164 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nk\+\_\+clds@{nk\+\_\+clds}}
+\index{nk\+\_\+clds@{nk\+\_\+clds}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nk\+\_\+clds}{nk_clds}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+clouds\+::nk\+\_\+clds = 3}\hypertarget{namespacemodule__radiation__clouds_a2739168b8205ee860eb8a160ea722a44}{}\label{namespacemodule__radiation__clouds_a2739168b8205ee860eb8a160ea722a44}
+
+
+Definition at line 166 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by gethml().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nlat@{nlat}}
+\index{nlat@{nlat}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nlat}{nlat}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+clouds\+::nlat =4\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ad4274cb223949e858ecc2e6346bed610}{}\label{namespacemodule__radiation__clouds_ad4274cb223949e858ecc2e6346bed610}
+
+
+Definition at line 187 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nlon@{nlon}}
+\index{nlon@{nlon}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nlon}{nlon}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+clouds\+::nlon =2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ab4d14edea12bbcda5361cad523386c7c}{}\label{namespacemodule__radiation__clouds_ab4d14edea12bbcda5361cad523386c7c}
+
+
+Definition at line 186 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), and rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!nseal@{nseal}}
+\index{nseal@{nseal}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{nseal}{nseal}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+clouds\+::nseal =2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_aaf2a6549a8c42b9eae3d40d21d1e9532}{}\label{namespacemodule__radiation__clouds_aaf2a6549a8c42b9eae3d40d21d1e9532}
+
+
+Definition at line 189 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), and rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!ovcst@{ovcst}}
+\index{ovcst@{ovcst}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{ovcst}{ovcst}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::ovcst = 1.\+0 -\/ 1.\+0e-\/8\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a5667082e13ef37593bdfcc152e3dd449}{}\label{namespacemodule__radiation__clouds_a5667082e13ef37593bdfcc152e3dd449}
+
+
+Definition at line 176 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by gethml().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!ptopc@{ptopc}}
+\index{ptopc@{ptopc}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{ptopc}{ptopc}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf nk\+\_\+clds}+1,2), save module\+\_\+radiation\+\_\+clouds\+::ptopc\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a03bc5d19cbdc84a2032c8d591ba4c96a}{}\label{namespacemodule__radiation__clouds_a03bc5d19cbdc84a2032c8d591ba4c96a}
+
+
+Definition at line 169 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!reice\+\_\+def@{reice\+\_\+def}}
+\index{reice\+\_\+def@{reice\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{reice\+\_\+def}{reice_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::reice\+\_\+def = 50.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a721e0fb4a34774f5b61f567b9cad8e7b}{}\label{namespacemodule__radiation__clouds_a721e0fb4a34774f5b61f567b9cad8e7b}
+
+
+Definition at line 180 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!reliq\+\_\+def@{reliq\+\_\+def}}
+\index{reliq\+\_\+def@{reliq\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{reliq\+\_\+def}{reliq_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::reliq\+\_\+def = 10.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a1768a85f4d8af2ad40b62ae6e6667c1e}{}\label{namespacemodule__radiation__clouds_a1768a85f4d8af2ad40b62ae6e6667c1e}
+
+
+Definition at line 179 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!rhcl@{rhcl}}
+\index{rhcl@{rhcl}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{rhcl}{rhcl}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf nbin},{\bf nlon},{\bf nlat},{\bf mcld},{\bf nseal}) module\+\_\+radiation\+\_\+clouds\+::rhcl\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a9673faf82ef00e0501763664743e3720}{}\label{namespacemodule__radiation__clouds_a9673faf82ef00e0501763664743e3720}
+
+
+Definition at line 208 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1(), and rhtable().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!rrain\+\_\+def@{rrain\+\_\+def}}
+\index{rrain\+\_\+def@{rrain\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{rrain\+\_\+def}{rrain_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::rrain\+\_\+def = 1000.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a93fcaedae02c0f9c4de9f39061379d6b}{}\label{namespacemodule__radiation__clouds_a93fcaedae02c0f9c4de9f39061379d6b}
+
+
+Definition at line 181 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!rsnow\+\_\+def@{rsnow\+\_\+def}}
+\index{rsnow\+\_\+def@{rsnow\+\_\+def}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{rsnow\+\_\+def}{rsnow_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::rsnow\+\_\+def = 250.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a2b68c4a206e17cb59597f6c4dffc7c1a}{}\label{namespacemodule__radiation__clouds_a2b68c4a206e17cb59597f6c4dffc7c1a}
+
+
+Definition at line 182 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by progcld1(), progcld2(), and progcld3().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!vtagcld@{vtagcld}}
+\index{vtagcld@{vtagcld}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{vtagcld}{vtagcld}}]{\setlength{\rightskip}{0pt plus 5cm}character(40), parameter module\+\_\+radiation\+\_\+clouds\+::vtagcld =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+clouds v5.\+1 Nov 2012 \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a54f11c2f6353f244501cf4ec3553d78b}{}\label{namespacemodule__radiation__clouds_a54f11c2f6353f244501cf4ec3553d78b}
+
+
+Definition at line 156 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by cld\+\_\+init().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!vvcld1@{vvcld1}}
+\index{vvcld1@{vvcld1}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{vvcld1}{vvcld1}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::vvcld1 = 0.\+0003e0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a6ec3c0444de53580befd4bb4d39844d3}{}\label{namespacemodule__radiation__clouds_a6ec3c0444de53580befd4bb4d39844d3}
+
+
+Definition at line 202 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!vvcld2@{vvcld2}}
+\index{vvcld2@{vvcld2}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{vvcld2}{vvcld2}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::vvcld2 =-\/0.\+0005e0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a67962e77fb073cc25cafaaba0c2fa833}{}\label{namespacemodule__radiation__clouds_a67962e77fb073cc25cafaaba0c2fa833}
+
+
+Definition at line 203 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!xlabdy@{xlabdy}}
+\index{xlabdy@{xlabdy}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{xlabdy}{xlabdy}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(3) module\+\_\+radiation\+\_\+clouds\+::xlabdy\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_ab2a798da0bb0125d1d5074b73c5951dc}{}\label{namespacemodule__radiation__clouds_ab2a798da0bb0125d1d5074b73c5951dc}
+
+
+Definition at line 197 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!xlim@{xlim}}
+\index{xlim@{xlim}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{xlim}{xlim}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+clouds\+::xlim =5.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_a1146f43b680b655d354a9c031ee4a463}{}\label{namespacemodule__radiation__clouds_a1146f43b680b655d354a9c031ee4a463}
+
+
+Definition at line 196 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+
+\index{module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}!xlobdy@{xlobdy}}
+\index{xlobdy@{xlobdy}!module\+\_\+radiation\+\_\+clouds@{module\+\_\+radiation\+\_\+clouds}}
+\subsubsection[{\texorpdfstring{xlobdy}{xlobdy}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(3) module\+\_\+radiation\+\_\+clouds\+::xlobdy\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__clouds_aab28f783919380e5ff7f925f70355a57}{}\label{namespacemodule__radiation__clouds_aab28f783919380e5ff7f925f70355a57}
+
+
+Definition at line 197 of file radiation\+\_\+clouds.\+f.
+
+
+
+Referenced by diagcld1().
+

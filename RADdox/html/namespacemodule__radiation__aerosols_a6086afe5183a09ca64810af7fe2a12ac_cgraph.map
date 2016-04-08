@@ -1,0 +1,8 @@
+<map id="module_radiation_aerosols::aer_init" name="module_radiation_aerosols::aer_init">
+<area shape="rect" id="node2" href="$namespacemodule__radiation__aerosols.html#a30bd5bb6d72adc8f635e6718e2541f5f" title="This subroutine is the opac&#45;climatology aerosol initialization program to set up necessary parameters..." alt="" coords="229,5,405,47"/>
+<area shape="rect" id="node5" href="$radiation__aerosols_8f.html#aa7fe6dc2964bc474a132b93aaab82cb0" title="This subroutine defines the one wavenumber solar fluxes based on toa solar spectral distribution..." alt="" coords="267,71,368,98"/>
+<area shape="rect" id="node6" href="$radiation__aerosols_8f.html#a9b4558586df512eab092565549b835e2" title="The initialization program for stratospheric volcanic aerosols. " alt="" coords="274,122,361,149"/>
+<area shape="rect" id="node7" href="$radiation__aerosols_8f.html#a3135fdf318002f9d56dd2d93225f4aac" title="This subroutine writes aerosol parameter configuration to run log file. " alt="" coords="277,173,358,199"/>
+<area shape="rect" id="node3" href="$radiation__aerosols_8f.html#a95fabbc4272ae70f3b345f9b1a898d46" title="the initialization program for climatological aerosols. the program reads and maps the pre&#45;tabulated ..." alt="" coords="453,13,543,39"/>
+<area shape="rect" id="node4" href="$radiation__aerosols_8f.html#a637761b6110739f2d96322e2ddcc1291" title="compute mean aerosols optical properties over each SW radiation spectral band for each of the species..." alt="" coords="591,13,649,39"/>
+</map>

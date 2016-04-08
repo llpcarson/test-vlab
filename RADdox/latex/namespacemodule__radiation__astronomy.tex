@@ -1,0 +1,483 @@
+\hypertarget{namespacemodule__radiation__astronomy}{}\section{module\+\_\+radiation\+\_\+astronomy Module Reference}
+\label{namespacemodule__radiation__astronomy}\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+
+
+This module sets up astronomy quantities for solar radiation calculations.  
+
+
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e}{sol\+\_\+update}                                                                                       
+\begin{DoxyCompactList}\small\item\em This subroutine computes solar parameters at forecast time. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radiation__astronomy_a3c99615d1cda89bcdb5ea1af3bca9d6f}{solar}                                                                                                 
+\begin{DoxyCompactList}\small\item\em This subroutine computes radius vector, declination and right ascension of sun, and equation of time. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a8ce5ecf0524d0460baf6c467b532085c}{coszmn}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine computes mean cos solar zenith angle over SW calling interval. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radiation__astronomy_a946b520f4b41e21f9f9e27da6122641b}{prtime}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine prints out forecast date, time, and astronomy quantities. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a00825c1a13e09455c478efa11314cb2d}{sol\+\_\+init}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine initializes astronomy process, and set up module constants. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(40), parameter \hyperlink{namespacemodule__radiation__astronomy_aa3497dc9fa4bbd8248fdf0f2784c268a}{vtagast} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+astronomy v5.\+2 Jan 2013 \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a220d2b997b3073cf2985d62111c5405d}{degrad} = 180.\+0/con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a4fbf4be04e17f1f8d0674ee2e20506b0}{tpi} = 2.\+0 $\ast$ con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a7369d8561566f5e7e51ccc40e09f2520}{hpi} = 0.\+5 $\ast$ con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_ad59856e8f877eb05a6b22610f14a391d}{f12} = 12.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a37b491dde50d06e339effb4a31d9f245}{f3600} = 3600.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_afeb2fccbe8137de6099a09035762ff5e}{czlimt} = 0.\+0001
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_adbf9cdfc7b55d882f015a4bc4ef276ab}{pid12} = (2.\+0$\ast$asin(1.\+0))/\hyperlink{namespacemodule__radiation__astronomy_ad59856e8f877eb05a6b22610f14a391d}{f12}
+\item 
+real(kind=kind\+\_\+phys), public \hyperlink{namespacemodule__radiation__astronomy_a37e08872f67023b11f839ac15151af09}{solc0} = con\+\_\+solr
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_a7ea431b6d4f4d6ee1f6545d6baeee44f}{isolflg} = 10
+\item 
+character(26) \hyperlink{namespacemodule__radiation__astronomy_a05ee7e378d38b90242738b9bf6c40c00}{solar\+\_\+fname} = \textquotesingle{} \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a264a011aa71fb670339ac555dc24e486}{sollag} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_ae195d9c834e2789170f89c988d28b01e}{sindec} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a07386e90045639b8023abd826e0e2768}{cosdec} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a723159a44491e4ae974128123a1e8dcd}{anginc} =0.\+0
+\item 
+real(kind=kind\+\_\+phys), dimension(12) \hyperlink{namespacemodule__radiation__astronomy_ab68b4488022a4c6340cb60dca3feff6a}{smon\+\_\+sav}
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_a83370fbee96388e545a89eb25ed6df90}{iyr\+\_\+sav} =0
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_ab93fe36440da3cc1f1d64cae2ec4c25b}{nstp} =6
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!coszmn@{coszmn}}
+\index{coszmn@{coszmn}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{coszmn                                                                                              }{coszmn                                                                                              }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+astronomy\+::coszmn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__astronomy_a8ce5ecf0524d0460baf6c467b532085c}{}\label{namespacemodule__radiation__astronomy_a8ce5ecf0524d0460baf6c467b532085c}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em xlon} & real, (IM), grids\textquotesingle{} longitudes in radians, work both on zonal, 0-\/$>$2pi and -\/pi-\/$>$+pi arrangements \\
+\hline
+\mbox{\tt in}  & {\em sinlat} & real, (IM), sine of the corresponding latitudes \\
+\hline
+\mbox{\tt in}  & {\em coslat} & real, (IM), cosine of the corresponding latitudes \\
+\hline
+\mbox{\tt in}  & {\em solhr} & real, time after 00z in hours \\
+\hline
+\mbox{\tt in}  & {\em IM} & integer, num of grids in horizontal dimension \\
+\hline
+\mbox{\tt in}  & {\em me} & integer, print message control flag \\
+\hline
+\mbox{\tt out}  & {\em coszen} & real, (IM), average of cosz for daytime only in sw call interval \\
+\hline
+\mbox{\tt out}  & {\em coszdg} & real, (IM), average of cosz over entire sw call interval \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 788 of file radiation\+\_\+astronomy.\+f.
+
+
+
+References anginc, cosdec, czlimt, f12, nstp, pid12, sindec, and sollag.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a8ce5ecf0524d0460baf6c467b532085c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!prtime@{prtime}}
+\index{prtime@{prtime}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{prtime                                                                                              }{prtime                                                                                              }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+astronomy\+::prtime (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a946b520f4b41e21f9f9e27da6122641b}{}\label{namespacemodule__radiation__astronomy_a946b520f4b41e21f9f9e27da6122641b}
+
+
+Definition at line 879 of file radiation\+\_\+astronomy.\+f.
+
+
+
+References degrad, f12, hpi, and sollag.
+
+
+
+Referenced by sol\+\_\+update().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a946b520f4b41e21f9f9e27da6122641b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!sol\+\_\+init@{sol\+\_\+init}}
+\index{sol\+\_\+init@{sol\+\_\+init}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{sol\+\_\+init                                                                                          }{sol_init                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+astronomy\+::sol\+\_\+init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__astronomy_a00825c1a13e09455c478efa11314cb2d}{}\label{namespacemodule__radiation__astronomy_a00825c1a13e09455c478efa11314cb2d}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em me} & print message control flag \\
+\hline
+\mbox{\tt out}  & {\em N\+O\+NE} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_external}{}\subsection{External Module Variables}\label{namespacemodule__radsw__main_external}
+~\newline
+ \hyperlink{namespacephysparam_adf09a9ec1939f1ee47bb4190a9098941}{physparam\+::isolar} ~\newline
+ -\/ = 0\+: use the old fixed solar constant in \char`\"{}physcon\char`\"{} ~\newline
+ -\/ =10\+: use the new fixed solar constant in \char`\"{}physcon\char`\"{} ~\newline
+ -\/ = 1\+: use noaa ann-\/mean tsi tbl abs-\/scale with cyc apprx ~\newline
+ -\/ = 2\+: use noaa ann-\/mean tsi tbl tim-\/scale with cyc apprx ~\newline
+ -\/ = 3\+: use cmip5 ann-\/mean tsi tbl tim-\/scale with cyc apprx ~\newline
+ -\/ = 4\+: use cmip5 mon-\/mean tsi tbl tim-\/scale with cyc apprx 
+
+Definition at line 139 of file radiation\+\_\+astronomy.\+f.
+
+
+
+References physcons\+::con\+\_\+solr, physcons\+::con\+\_\+solr\+\_\+old, physparam\+::isolar, isolflg, iyr\+\_\+sav, nstp, physparam\+::solar\+\_\+file, solar\+\_\+fname, solc0, and vtagast.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::radinit().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a00825c1a13e09455c478efa11314cb2d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!sol\+\_\+update@{sol\+\_\+update}}
+\index{sol\+\_\+update@{sol\+\_\+update}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{sol\+\_\+update                                                                                      }{sol_update                                                                                      }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+astronomy\+::sol\+\_\+update (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e}{}\label{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em jdate} & integer, 1, ncep absolute date and time at fcst time (yr, mon, day, t-\/zone, hr, min, sec, mil-\/sec) \\
+\hline
+\mbox{\tt in}  & {\em kyear} & integer, 1, usually kyear=jdate(1). if not, it is for hindcast mode, and it is usually the init cond time and serves as the upper limit of data can be used. \\
+\hline
+\mbox{\tt in}  & {\em deltsw} & real, 1, time duration in seconds per sw calculation \\
+\hline
+\mbox{\tt in}  & {\em deltim} & real, 1, timestep in seconds \\
+\hline
+\mbox{\tt in}  & {\em lsol\+\_\+chg} & logical flags for change solar constant \\
+\hline
+\mbox{\tt in}  & {\em me} & integer, print message control flag \\
+\hline
+\mbox{\tt out}  & {\em slag} & real, equation of time in radians \\
+\hline
+\mbox{\tt out}  & {\em sdec,cdec} & real, sin and cos of the solar declination angle \\
+\hline
+\mbox{\tt out}  & {\em solcon} & real, sun-\/earth distance adjusted solar constant $(w/m^2)$ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 310 of file radiation\+\_\+astronomy.\+f.
+
+
+
+References anginc, cosdec, f3600, isolflg, iyr\+\_\+sav, nstp, pid12, prtime(), sindec, smon\+\_\+sav, solar(), solar\+\_\+fname, solc0, and sollag.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::radupdate().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!solar@{solar}}
+\index{solar@{solar}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{solar                                                                                                }{solar                                                                                                }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+astronomy\+::solar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a3c99615d1cda89bcdb5ea1af3bca9d6f}{}\label{namespacemodule__radiation__astronomy_a3c99615d1cda89bcdb5ea1af3bca9d6f}
+
+
+Definition at line 620 of file radiation\+\_\+astronomy.\+f.
+
+
+
+References physcons\+::con\+\_\+pi, cosdec, degrad, sindec, sollag, and tpi.
+
+
+
+Referenced by sol\+\_\+update().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__astronomy_a3c99615d1cda89bcdb5ea1af3bca9d6f_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!anginc@{anginc}}
+\index{anginc@{anginc}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{anginc}{anginc}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+astronomy\+::anginc =0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a723159a44491e4ae974128123a1e8dcd}{}\label{namespacemodule__radiation__astronomy_a723159a44491e4ae974128123a1e8dcd}
+
+
+Definition at line 110 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!cosdec@{cosdec}}
+\index{cosdec@{cosdec}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{cosdec}{cosdec}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+astronomy\+::cosdec =0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a07386e90045639b8023abd826e0e2768}{}\label{namespacemodule__radiation__astronomy_a07386e90045639b8023abd826e0e2768}
+
+
+Definition at line 109 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), sol\+\_\+update(), and solar().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!czlimt@{czlimt}}
+\index{czlimt@{czlimt}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{czlimt}{czlimt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::czlimt = 0.\+0001\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_afeb2fccbe8137de6099a09035762ff5e}{}\label{namespacemodule__radiation__astronomy_afeb2fccbe8137de6099a09035762ff5e}
+
+
+Definition at line 97 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!degrad@{degrad}}
+\index{degrad@{degrad}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{degrad}{degrad}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::degrad = 180.\+0/con\+\_\+pi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a220d2b997b3073cf2985d62111c5405d}{}\label{namespacemodule__radiation__astronomy_a220d2b997b3073cf2985d62111c5405d}
+
+
+Definition at line 92 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by prtime(), and solar().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!f12@{f12}}
+\index{f12@{f12}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{f12}{f12}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::f12 = 12.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_ad59856e8f877eb05a6b22610f14a391d}{}\label{namespacemodule__radiation__astronomy_ad59856e8f877eb05a6b22610f14a391d}
+
+
+Definition at line 95 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), and prtime().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!f3600@{f3600}}
+\index{f3600@{f3600}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{f3600}{f3600}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::f3600 = 3600.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a37b491dde50d06e339effb4a31d9f245}{}\label{namespacemodule__radiation__astronomy_a37b491dde50d06e339effb4a31d9f245}
+
+
+Definition at line 96 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!hpi@{hpi}}
+\index{hpi@{hpi}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{hpi}{hpi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::hpi = 0.\+5 $\ast$ con\+\_\+pi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a7369d8561566f5e7e51ccc40e09f2520}{}\label{namespacemodule__radiation__astronomy_a7369d8561566f5e7e51ccc40e09f2520}
+
+
+Definition at line 94 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by prtime().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!isolflg@{isolflg}}
+\index{isolflg@{isolflg}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{isolflg}{isolflg}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+astronomy\+::isolflg = 10\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a7ea431b6d4f4d6ee1f6545d6baeee44f}{}\label{namespacemodule__radiation__astronomy_a7ea431b6d4f4d6ee1f6545d6baeee44f}
+
+
+Definition at line 103 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+init(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!iyr\+\_\+sav@{iyr\+\_\+sav}}
+\index{iyr\+\_\+sav@{iyr\+\_\+sav}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{iyr\+\_\+sav}{iyr_sav}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+astronomy\+::iyr\+\_\+sav =0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a83370fbee96388e545a89eb25ed6df90}{}\label{namespacemodule__radiation__astronomy_a83370fbee96388e545a89eb25ed6df90}
+
+
+Definition at line 114 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+init(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!nstp@{nstp}}
+\index{nstp@{nstp}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{nstp}{nstp}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+astronomy\+::nstp =6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_ab93fe36440da3cc1f1d64cae2ec4c25b}{}\label{namespacemodule__radiation__astronomy_ab93fe36440da3cc1f1d64cae2ec4c25b}
+
+
+Definition at line 115 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), sol\+\_\+init(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!pid12@{pid12}}
+\index{pid12@{pid12}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{pid12}{pid12}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::pid12 = (2.\+0$\ast$asin(1.\+0))/{\bf f12}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_adbf9cdfc7b55d882f015a4bc4ef276ab}{}\label{namespacemodule__radiation__astronomy_adbf9cdfc7b55d882f015a4bc4ef276ab}
+
+
+Definition at line 99 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!sindec@{sindec}}
+\index{sindec@{sindec}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{sindec}{sindec}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+astronomy\+::sindec =0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_ae195d9c834e2789170f89c988d28b01e}{}\label{namespacemodule__radiation__astronomy_ae195d9c834e2789170f89c988d28b01e}
+
+
+Definition at line 108 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), sol\+\_\+update(), and solar().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!smon\+\_\+sav@{smon\+\_\+sav}}
+\index{smon\+\_\+sav@{smon\+\_\+sav}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{smon\+\_\+sav}{smon_sav}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(12) module\+\_\+radiation\+\_\+astronomy\+::smon\+\_\+sav\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_ab68b4488022a4c6340cb60dca3feff6a}{}\label{namespacemodule__radiation__astronomy_ab68b4488022a4c6340cb60dca3feff6a}
+
+
+Definition at line 111 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!solar\+\_\+fname@{solar\+\_\+fname}}
+\index{solar\+\_\+fname@{solar\+\_\+fname}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{solar\+\_\+fname}{solar_fname}}]{\setlength{\rightskip}{0pt plus 5cm}character(26) module\+\_\+radiation\+\_\+astronomy\+::solar\+\_\+fname = \textquotesingle{} \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a05ee7e378d38b90242738b9bf6c40c00}{}\label{namespacemodule__radiation__astronomy_a05ee7e378d38b90242738b9bf6c40c00}
+
+
+Definition at line 104 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+init(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!solc0@{solc0}}
+\index{solc0@{solc0}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{solc0}{solc0}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), public module\+\_\+radiation\+\_\+astronomy\+::solc0 = con\+\_\+solr}\hypertarget{namespacemodule__radiation__astronomy_a37e08872f67023b11f839ac15151af09}{}\label{namespacemodule__radiation__astronomy_a37e08872f67023b11f839ac15151af09}
+
+
+Definition at line 102 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+init(), and sol\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!sollag@{sollag}}
+\index{sollag@{sollag}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{sollag}{sollag}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+astronomy\+::sollag =0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a264a011aa71fb670339ac555dc24e486}{}\label{namespacemodule__radiation__astronomy_a264a011aa71fb670339ac555dc24e486}
+
+
+Definition at line 107 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by coszmn(), prtime(), sol\+\_\+update(), and solar().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!tpi@{tpi}}
+\index{tpi@{tpi}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{tpi}{tpi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+astronomy\+::tpi = 2.\+0 $\ast$ con\+\_\+pi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_a4fbf4be04e17f1f8d0674ee2e20506b0}{}\label{namespacemodule__radiation__astronomy_a4fbf4be04e17f1f8d0674ee2e20506b0}
+
+
+Definition at line 93 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by solar().
+
+\index{module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}!vtagast@{vtagast}}
+\index{vtagast@{vtagast}!module\+\_\+radiation\+\_\+astronomy@{module\+\_\+radiation\+\_\+astronomy}}
+\subsubsection[{\texorpdfstring{vtagast}{vtagast}}]{\setlength{\rightskip}{0pt plus 5cm}character(40), parameter module\+\_\+radiation\+\_\+astronomy\+::vtagast =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+astronomy v5.\+2 Jan 2013 \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__astronomy_aa3497dc9fa4bbd8248fdf0f2784c268a}{}\label{namespacemodule__radiation__astronomy_aa3497dc9fa4bbd8248fdf0f2784c268a}
+
+
+Definition at line 87 of file radiation\+\_\+astronomy.\+f.
+
+
+
+Referenced by sol\+\_\+init().
+

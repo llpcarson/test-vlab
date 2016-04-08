@@ -1,0 +1,545 @@
+\hypertarget{radsw__main_8f}{}\section{radsw\+\_\+main.\+f File Reference}
+\label{radsw__main_8f}\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacemodule__radsw__main}{module\+\_\+radsw\+\_\+main}
+\begin{DoxyCompactList}\small\item\em This module includes ncep\textquotesingle{}s modifications of the rrtm-\/sw radiation code from aer inc. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radsw__main_afab73c508f778203d0f4b5181f1cbca9}{module\+\_\+radsw\+\_\+main\+::rswinit}                                                                                             
+\begin{DoxyCompactList}\small\item\em This subroutine initializes non-\/varying module variables, conversion factors, and look-\/up tables. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radsw__main_a97297a02cb1e23f2449918dfdacd9745}{module\+\_\+radsw\+\_\+main\+::mcica\+\_\+subcol}                                                                                   
+\begin{DoxyCompactList}\small\item\em This subroutine computes the sub-\/colum cloud profile flag array. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radsw__main_ab24dd3a4fae5749bf7ce09eebe6deb30}{module\+\_\+radsw\+\_\+main\+::setcoef}                                                                                             
+\begin{DoxyCompactList}\small\item\em This subroutine computes various coefficients needed in radiative transfer calculation. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radsw__main_a3f2a98a5eece3e3904d164adce213d7a}{module\+\_\+radsw\+\_\+main\+::spcvrtm}                                                                                             
+\begin{DoxyCompactList}\small\item\em This subroutine computes the shortwave radiative fluxes using two-\/stream method of h. barder and mcica,the monte-\/carlo independent column approximation, for the representation of sub-\/grid cloud variability (i.\+e. cloud overlap). \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radsw__main_afbfb76d4fab10254e065dce350ae5f2b}{module\+\_\+radsw\+\_\+main\+::taumol}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine calculates optical depths for gaseous absorption and rayleigh scattering ~\newline
+ subroutine called taugb\#\# (\#\# = 16-\/29) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a8702f5f6285ff1a5cbfad740545fffb6}{taumol16}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 16\+: 2600-\/3250 cm-\/1 (low -\/ h2o,ch4; high -\/ ch4) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_ae46d1c061726bcde426caadd80b1fd80}{taumol17}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 17\+: 3250-\/4000 cm-\/1 (low -\/ h2o,co2; high -\/ h2o,co2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a06f6f2b0ef60df93c267a667a2e1aa36}{taumol18}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 18\+: 4000-\/4650 cm-\/1 (low -\/ h2o,ch4; high -\/ ch4) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a776a0d78fda9f4fd0f1153b55be597df}{taumol19}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 19\+: 4650-\/5150 cm-\/1 (low -\/ h2o,co2; high -\/ co2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a6eb9a29728a986ea6b15240adebd4a0c}{taumol20}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 20\+: 5150-\/6150 cm-\/1 (low -\/ h2o; high -\/ h2o) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a54619c48147f35da2d7855dc488c0ff4}{taumol21}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 21\+: 6150-\/7700 cm-\/1 (low -\/ h2o,co2; high -\/ h2o,co2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a3b5392346eee35eb13a2a54175b6338b}{taumol22}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 22\+: 7700-\/8050 cm-\/1 (low -\/ h2o,o2; high -\/ o2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_adf5d73763c80ec079b72dda7d74cba94}{taumol23}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 23\+: 8050-\/12850 cm-\/1 (low -\/ h2o; high -\/ nothing) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_ae0abf1a08aa5d6ca14bfea83d0603716}{taumol24}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 24\+: 12850-\/16000 cm-\/1 (low -\/ h2o,o2; high -\/ o2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a21b72d6de9247eccb20de836ea76cf7a}{taumol25}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 25\+: 16000-\/22650 cm-\/1 (low -\/ h2o; high -\/ nothing) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a20261640145a5d10e091ef3c67763175}{taumol26}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 26\+: 22650-\/29000 cm-\/1 (low -\/ nothing; high -\/ nothing) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a7d2cea6cc0cfde853d25a14ba0efcca2}{taumol27}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 27\+: 29000-\/38000 cm-\/1 (low -\/ o3; high -\/ o3) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a2113c76707f43cf91fe5926ab69d1b8b}{taumol28}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 28\+: 38000-\/50000 cm-\/1 (low -\/ o3,o2; high -\/ o3,o2) \end{DoxyCompactList}\item 
+subroutine \hyperlink{radsw__main_8f_a08e2db10432d07392f29a49bc5b5c640}{taumol29}
+\begin{DoxyCompactList}\small\item\em The subroutine computes the optical depth in band 29\+: 820-\/2600 cm-\/1 (low -\/ h2o; high -\/ co2) \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radsw__main_ad9b28f997232642658b4d15a7eb70fcd}{module\+\_\+radsw\+\_\+main\+::swrad}                                                                                                 
+\begin{DoxyCompactList}\small\item\em This subroutine is the main sw radiation routine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{namespacemodule__radsw__main_ae9779a4f9bc2ddc9d856c844639c9bd3}{module\+\_\+radsw\+\_\+main\+::cldprop}                                                                                             
+\begin{DoxyCompactList}\small\item\em This subroutine computes the cloud optical properties for each cloudy layer and g-\/point interval. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{namespacemodule__radsw__main_aa104d257f11aa7e84692c08b3716af66}{module\+\_\+radsw\+\_\+main\+::spcvrtc}                                                                                             
+\begin{DoxyCompactList}\small\item\em This subroutine computes the shortwave radiative fluxes using two-\/stream method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{namespacemodule__radsw__main_a138ee8c91089737c432cf70dbd8a8fae}{module\+\_\+radsw\+\_\+main\+::swflux}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine computes the upward and downward radiation fluxes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(40), parameter \hyperlink{namespacemodule__radsw__main_a93334abce2ca8bfdcdfe5edd4ae1f093}{module\+\_\+radsw\+\_\+main\+::vtagsw} =\textquotesingle{}N\+C\+EP SW v5.\+1 Nov 2012 -\/R\+R\+T\+MG-\/SW v3.\+8 \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_a7d311ceb7f824ea31d31ba8144751b5a}{module\+\_\+radsw\+\_\+main\+::eps} = 1.\+0e-\/6
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_ac666738c31ea648cae506a47e5a4e43d}{module\+\_\+radsw\+\_\+main\+::oneminus} = 1.\+0 -\/ eps
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_acd9ae7c14cbfdc55f1f0fff637ca0331}{module\+\_\+radsw\+\_\+main\+::bpade} = 1.\+0/0.\+278
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_a4d32ea8f0f1bca37e3351a5ae5077f77}{module\+\_\+radsw\+\_\+main\+::stpfac} = 296.\+0/1013.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_abe91ed52b6016e99a2d0c874524fb27f}{module\+\_\+radsw\+\_\+main\+::ftiny} = 1.\+0e-\/12
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_a244c149eb05c0675a7e040dbf7e2bc4b}{module\+\_\+radsw\+\_\+main\+::s0} = 1368.\+22
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_ad54ac2d2bd5c4b3bd692c76d2a0bcc5d}{module\+\_\+radsw\+\_\+main\+::f\+\_\+zero} = 0.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_ad256aaca9c9d6b5d161ae21f68989db6}{module\+\_\+radsw\+\_\+main\+::f\+\_\+one} = 1.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_a1445a63250d89083447371120c484618}{module\+\_\+radsw\+\_\+main\+::amdw} = con\+\_\+amd/con\+\_\+amw
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radsw__main_a527e5e1cec6ad0800f69a606fde77369}{module\+\_\+radsw\+\_\+main\+::amdo3} = con\+\_\+amd/con\+\_\+amo3
+\item 
+integer, dimension(nblow\+:nbhgh) \hyperlink{namespacemodule__radsw__main_a4c0fc140a51c619089128f52e4bb878c}{module\+\_\+radsw\+\_\+main\+::nspa}
+\item 
+integer, dimension(nblow\+:nbhgh) \hyperlink{namespacemodule__radsw__main_a6be022a4a1ae32248d9721a9fff93db6}{module\+\_\+radsw\+\_\+main\+::nspb}
+\item 
+integer, dimension(nblow\+:nbhgh) \hyperlink{namespacemodule__radsw__main_aa20102786f7e7f8c71fb2783082eac1b}{module\+\_\+radsw\+\_\+main\+::idxebc}
+\item 
+integer, dimension(nblow\+:nbhgh) \hyperlink{namespacemodule__radsw__main_ad295d723dd7d269cb51c73923a4cbb94}{module\+\_\+radsw\+\_\+main\+::idxsfc}
+\item 
+integer, parameter \hyperlink{namespacemodule__radsw__main_a177282b3087dce2f54f1233ee8631231}{module\+\_\+radsw\+\_\+main\+::nuvb} = 27
+\item 
+logical \hyperlink{namespacemodule__radsw__main_a08bfecbd5edb2ad3ba0ae836cfe18d05}{module\+\_\+radsw\+\_\+main\+::lhswb} = .false.
+\item 
+logical \hyperlink{namespacemodule__radsw__main_a3fd8cae0d38772eea36ce6ec2d258997}{module\+\_\+radsw\+\_\+main\+::lhsw0} = .false.
+\item 
+logical \hyperlink{namespacemodule__radsw__main_ac4ab674edb40fda0c89aa8ee331ccdc6}{module\+\_\+radsw\+\_\+main\+::lflxprf} = .false.
+\item 
+logical \hyperlink{namespacemodule__radsw__main_a8c0a241d6c1aa69fee4cd24fdbc4256b}{module\+\_\+radsw\+\_\+main\+::lfdncmp} = .false.
+\item 
+real(kind=kind\+\_\+phys), dimension(0\+:ntbmx) \hyperlink{namespacemodule__radsw__main_a1f9d18b17cc24321ed1cf45254ac2b0f}{module\+\_\+radsw\+\_\+main\+::exp\+\_\+tbl}
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radsw__main_aad60e753cdda20d4e84d063280f0dfcc}{module\+\_\+radsw\+\_\+main\+::heatfac}
+\item 
+integer, parameter \hyperlink{namespacemodule__radsw__main_ae1f88a0b60d69b892cfae83bb9ab67df}{module\+\_\+radsw\+\_\+main\+::ipsdsw0} = 1
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol16@{taumol16}}
+\index{taumol16@{taumol16}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol16}{taumol16}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol16 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{radsw__main_8f_a8702f5f6285ff1a5cbfad740545fffb6}{}\label{radsw__main_8f_a8702f5f6285ff1a5cbfad740545fffb6}
+
+
+Definition at line 4028 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb16\+::absa, module\+\_\+radsw\+\_\+kgb16\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb16\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng16, module\+\_\+radsw\+\_\+parameters\+::ns16, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb16\+::rayl, module\+\_\+radsw\+\_\+kgb16\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a8702f5f6285ff1a5cbfad740545fffb6_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol17@{taumol17}}
+\index{taumol17@{taumol17}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol17}{taumol17}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol17 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_ae46d1c061726bcde426caadd80b1fd80}{}\label{radsw__main_8f_ae46d1c061726bcde426caadd80b1fd80}
+
+
+Definition at line 4123 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb17\+::absa, module\+\_\+radsw\+\_\+kgb17\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb17\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng17, module\+\_\+radsw\+\_\+parameters\+::ns17, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb17\+::rayl, module\+\_\+radsw\+\_\+kgb17\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_ae46d1c061726bcde426caadd80b1fd80_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol18@{taumol18}}
+\index{taumol18@{taumol18}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol18}{taumol18}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol18 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a06f6f2b0ef60df93c267a667a2e1aa36}{}\label{radsw__main_8f_a06f6f2b0ef60df93c267a667a2e1aa36}
+
+
+Definition at line 4244 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb18\+::absa, module\+\_\+radsw\+\_\+kgb18\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb18\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng18, module\+\_\+radsw\+\_\+parameters\+::ns18, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb18\+::rayl, module\+\_\+radsw\+\_\+kgb18\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a06f6f2b0ef60df93c267a667a2e1aa36_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol19@{taumol19}}
+\index{taumol19@{taumol19}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol19}{taumol19}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol19 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a776a0d78fda9f4fd0f1153b55be597df}{}\label{radsw__main_8f_a776a0d78fda9f4fd0f1153b55be597df}
+
+
+Definition at line 4339 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb19\+::absa, module\+\_\+radsw\+\_\+kgb19\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb19\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng19, module\+\_\+radsw\+\_\+parameters\+::ns19, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb19\+::rayl, module\+\_\+radsw\+\_\+kgb19\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a776a0d78fda9f4fd0f1153b55be597df_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol20@{taumol20}}
+\index{taumol20@{taumol20}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol20}{taumol20}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol20 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a6eb9a29728a986ea6b15240adebd4a0c}{}\label{radsw__main_8f_a6eb9a29728a986ea6b15240adebd4a0c}
+
+
+Definition at line 4433 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb20\+::absa, module\+\_\+radsw\+\_\+kgb20\+::absb, module\+\_\+radsw\+\_\+kgb20\+::absch4, module\+\_\+radsw\+\_\+kgb20\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng20, module\+\_\+radsw\+\_\+parameters\+::ns20, module\+\_\+radsw\+\_\+kgb20\+::rayl, and module\+\_\+radsw\+\_\+kgb20\+::selfref.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a6eb9a29728a986ea6b15240adebd4a0c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol21@{taumol21}}
+\index{taumol21@{taumol21}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol21}{taumol21}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol21 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a54619c48147f35da2d7855dc488c0ff4}{}\label{radsw__main_8f_a54619c48147f35da2d7855dc488c0ff4}
+
+
+Definition at line 4513 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb21\+::absa, module\+\_\+radsw\+\_\+kgb21\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb21\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng21, module\+\_\+radsw\+\_\+parameters\+::ns21, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb21\+::rayl, module\+\_\+radsw\+\_\+kgb21\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a54619c48147f35da2d7855dc488c0ff4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol22@{taumol22}}
+\index{taumol22@{taumol22}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol22}{taumol22}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol22 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a3b5392346eee35eb13a2a54175b6338b}{}\label{radsw__main_8f_a3b5392346eee35eb13a2a54175b6338b}
+
+
+Definition at line 4633 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb22\+::absa, module\+\_\+radsw\+\_\+kgb22\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb22\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng22, module\+\_\+radsw\+\_\+parameters\+::ns22, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb22\+::rayl, module\+\_\+radsw\+\_\+kgb22\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a3b5392346eee35eb13a2a54175b6338b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol23@{taumol23}}
+\index{taumol23@{taumol23}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol23}{taumol23}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol23 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_adf5d73763c80ec079b72dda7d74cba94}{}\label{radsw__main_8f_adf5d73763c80ec079b72dda7d74cba94}
+
+
+Definition at line 4739 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb23\+::absa, module\+\_\+radsw\+\_\+main\+::f\+\_\+zero, module\+\_\+radsw\+\_\+kgb23\+::forref, module\+\_\+radsw\+\_\+kgb23\+::givfac, module\+\_\+radsw\+\_\+parameters\+::ng23, module\+\_\+radsw\+\_\+parameters\+::ns23, module\+\_\+radsw\+\_\+kgb23\+::rayl, and module\+\_\+radsw\+\_\+kgb23\+::selfref.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_adf5d73763c80ec079b72dda7d74cba94_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol24@{taumol24}}
+\index{taumol24@{taumol24}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol24}{taumol24}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol24 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_ae0abf1a08aa5d6ca14bfea83d0603716}{}\label{radsw__main_8f_ae0abf1a08aa5d6ca14bfea83d0603716}
+
+
+Definition at line 4800 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb24\+::absa, module\+\_\+radsw\+\_\+kgb24\+::absb, module\+\_\+radsw\+\_\+kgb24\+::abso3a, module\+\_\+radsw\+\_\+kgb24\+::abso3b, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+kgb24\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng24, module\+\_\+radsw\+\_\+parameters\+::ns24, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb24\+::rayla, module\+\_\+radsw\+\_\+kgb24\+::raylb, module\+\_\+radsw\+\_\+kgb24\+::selfref, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_ae0abf1a08aa5d6ca14bfea83d0603716_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol25@{taumol25}}
+\index{taumol25@{taumol25}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol25}{taumol25}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol25 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a21b72d6de9247eccb20de836ea76cf7a}{}\label{radsw__main_8f_a21b72d6de9247eccb20de836ea76cf7a}
+
+
+Definition at line 4894 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb25\+::absa, module\+\_\+radsw\+\_\+kgb25\+::abso3a, module\+\_\+radsw\+\_\+kgb25\+::abso3b, module\+\_\+radsw\+\_\+parameters\+::ng25, module\+\_\+radsw\+\_\+parameters\+::ns25, and module\+\_\+radsw\+\_\+kgb25\+::rayl.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a21b72d6de9247eccb20de836ea76cf7a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol26@{taumol26}}
+\index{taumol26@{taumol26}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol26}{taumol26}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol26 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a20261640145a5d10e091ef3c67763175}{}\label{radsw__main_8f_a20261640145a5d10e091ef3c67763175}
+
+
+Definition at line 4948 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+main\+::f\+\_\+zero, module\+\_\+radsw\+\_\+parameters\+::ng26, module\+\_\+radsw\+\_\+parameters\+::ns26, and module\+\_\+radsw\+\_\+kgb26\+::rayl.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a20261640145a5d10e091ef3c67763175_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol27@{taumol27}}
+\index{taumol27@{taumol27}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol27}{taumol27}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol27 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a7d2cea6cc0cfde853d25a14ba0efcca2}{}\label{radsw__main_8f_a7d2cea6cc0cfde853d25a14ba0efcca2}
+
+
+Definition at line 4982 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb27\+::absa, module\+\_\+radsw\+\_\+kgb27\+::absb, module\+\_\+radsw\+\_\+parameters\+::ng27, module\+\_\+radsw\+\_\+parameters\+::ns27, and module\+\_\+radsw\+\_\+kgb27\+::rayl.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a7d2cea6cc0cfde853d25a14ba0efcca2_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol28@{taumol28}}
+\index{taumol28@{taumol28}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol28}{taumol28}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol28 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a2113c76707f43cf91fe5926ab69d1b8b}{}\label{radsw__main_8f_a2113c76707f43cf91fe5926ab69d1b8b}
+
+
+Definition at line 5042 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb28\+::absa, module\+\_\+radsw\+\_\+kgb28\+::absb, module\+\_\+radsw\+\_\+main\+::f\+\_\+one, module\+\_\+radsw\+\_\+parameters\+::ng28, module\+\_\+radsw\+\_\+parameters\+::ns28, module\+\_\+radsw\+\_\+main\+::oneminus, module\+\_\+radsw\+\_\+kgb28\+::rayl, and module\+\_\+radsw\+\_\+sflux\+::strrat.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a2113c76707f43cf91fe5926ab69d1b8b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}!taumol29@{taumol29}}
+\index{taumol29@{taumol29}!radsw\+\_\+main.\+f@{radsw\+\_\+main.\+f}}
+\subsubsection[{\texorpdfstring{taumol29}{taumol29}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine taumol\+::taumol29 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{radsw__main_8f_a08e2db10432d07392f29a49bc5b5c640}{}\label{radsw__main_8f_a08e2db10432d07392f29a49bc5b5c640}
+
+
+Definition at line 5149 of file radsw\+\_\+main.\+f.
+
+
+
+References module\+\_\+radsw\+\_\+kgb29\+::absa, module\+\_\+radsw\+\_\+kgb29\+::absb, module\+\_\+radsw\+\_\+kgb29\+::absco2, module\+\_\+radsw\+\_\+kgb29\+::absh2o, module\+\_\+radsw\+\_\+kgb29\+::forref, module\+\_\+radsw\+\_\+parameters\+::ng29, module\+\_\+radsw\+\_\+parameters\+::ns29, module\+\_\+radsw\+\_\+kgb29\+::rayl, and module\+\_\+radsw\+\_\+kgb29\+::selfref.
+
+
+
+Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{radsw__main_8f_a08e2db10432d07392f29a49bc5b5c640_icgraph}
+\end{center}
+\end{figure}
+
+

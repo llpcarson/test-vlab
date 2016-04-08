@@ -1,0 +1,385 @@
+\hypertarget{calpreciptype_8f}{}\section{calpreciptype.\+f File Reference}
+\label{calpreciptype_8f}\index{calpreciptype.\+f@{calpreciptype.\+f}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{calpreciptype_8f_ace3ba03fce51ab8bd25977ff03a99c1d}{calwxt} (lm, lp1, t, q, pmid, pint,                                                                                                                                                   d608, rog, epsq, zint, iwx, twet)
+\begin{DoxyCompactList}\small\item\em This subroutine computes precipitation type using a decision tree approach that uses variables such as integrated wet bulb temp below freezing and lowest layer temperature. \end{DoxyCompactList}\item 
+subroutine \hyperlink{calpreciptype_8f_a1359538b0437522a5643286d47cb956d}{calwxt\+\_\+ramer} (lm, lp1, t, q, pmid, rh, td, pint, ptyp)
+\begin{DoxyCompactList}\small\item\em This subroutine is written and provided by Jim Ramer at N\+O\+A\+A/\+F\+SL. \end{DoxyCompactList}\item 
+real function \hyperlink{calpreciptype_8f_a761529912bd612dc070ad13eb14de778}{xmytw} (t, td, p)
+\item 
+subroutine \hyperlink{calpreciptype_8f_aeb6ff6c9bfe0ac826d6b0e28c0592223}{calwxt\+\_\+bourg} (lm, lp1, rn, g, t, q, pmid, pint, zint, ptype)
+\begin{DoxyCompactList}\small\item\em This subrtouien computes precipitation type using a decision tree approach that uses the so-\/called \char`\"{}energy method\char`\"{} of Bourgouin of A\+ES (Canada) 1992. \end{DoxyCompactList}\item 
+subroutine \hyperlink{calpreciptype_8f_aea4e1369bc96598ada546c7aa96988cd}{calwxt\+\_\+revised} (lm, lp1, t, q, pmid, pint,                                                                                                                                                               d608, rog, epsq, zint, twet, iwx)
+\begin{DoxyCompactList}\small\item\em This subroutine computes precipitation type using a decision tree approach that uses variables such as integrated wet bulb temp below freezing and lowest layer temperature. \end{DoxyCompactList}\item 
+subroutine \hyperlink{calpreciptype_8f_a84b16fee5df628928b15bfbde86ee0ca}{calwxt\+\_\+explicit} (lm, tskin, sr, f\+\_\+rimef, iwx)
+\begin{DoxyCompactList}\small\item\em The subroutine computes precipitation type using explicit fields from the model microphysics. \end{DoxyCompactList}\item 
+subroutine \hyperlink{calpreciptype_8f_aa8cf475c2ada385565809d05de8fb215}{calwxt\+\_\+dominant} (nalg, rain, freezr, sleet, snow,                                                                                                           domr, domzr, domip, doms)
+\begin{DoxyCompactList}\small\item\em This subroutine takes the precip type solutions from different algorithms and sums them up to give a domain type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{calpreciptype_8f_a8a471b8f23f55928b69814c887ec925a}{calpreciptype} (kdt, nrcm, im, ix, lm, lp1, randomno,                                                                                                                                           xlat, xlon,                                                                                                                                                                                                                               gt0, gq0, prsl, prsi, prec,                                                                                                                                                                           phii, n3dfercld, tskin, sr, phy\+\_\+f3d,                                                                                                                                       domr, domzr, domip, doms)
+\begin{DoxyCompactList}\small\item\em This subroutine computes precipitation type. It is adopted from post but was made into column to used by G\+FS model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calpreciptype@{calpreciptype}}
+\index{calpreciptype@{calpreciptype}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calpreciptype(kdt, nrcm, im, ix, lm, lp1, randomno,                                                                                                                                           xlat, xlon,                                                                                                                                                                                                                               gt0, gq0, prsl, prsi, prec,                                                                                                                                                                           phii, n3dfercld, tskin, sr, phy\+\_\+f3d,                                                                                                                                       domr, domzr, domip, doms)}{calpreciptype(kdt, nrcm, im, ix, lm, lp1, randomno,                                                                                                                                           xlat, xlon,                                                                                                                                                                                                                               gt0, gq0, prsl, prsi, prec,                                                                                                                                                                           phii, n3dfercld, tskin, sr, phy_f3d,                                                                                                                                       domr, domzr, domip, doms)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calpreciptype (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{kdt, }
+\item[{integer, intent(in)}]{nrcm, }
+\item[{integer, intent(in)}]{im, }
+\item[{integer, intent(in)}]{ix, }
+\item[{integer, intent(in)}]{lm, }
+\item[{integer, intent(in)}]{lp1, }
+\item[{real, dimension(ix,nrcm), intent(in)}]{randomno, }
+\item[{real, dimension(im), intent(in)}]{xlat, }
+\item[{real, dimension(im), intent(in)}]{xlon, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lm), intent(in)}]{gt0, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lm), intent(in)}]{gq0, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lm), intent(in)}]{prsl, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lp1), intent(in)}]{prsi, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(in)}]{prec, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lp1), intent(in)}]{phii, }
+\item[{integer, intent(in)}]{n3dfercld, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(in)}]{tskin, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(in)}]{sr, }
+\item[{real(kind=kind\+\_\+phys), dimension(ix,lm), intent(in)}]{phy\+\_\+f3d, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(out)}]{domr, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(out)}]{domzr, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(out)}]{domip, }
+\item[{real(kind=kind\+\_\+phys), dimension(im), intent(out)}]{doms}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_a8a471b8f23f55928b69814c887ec925a}{}\label{calpreciptype_8f_a8a471b8f23f55928b69814c887ec925a}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em kdt} & integer, 1, number of the current time step \\
+\hline
+\mbox{\tt in}  & {\em nrcm} & integer, 1, second dimension for the random number array rann \\
+\hline
+\mbox{\tt in}  & {\em im} & integer, 1, horizontal number of used pts \\
+\hline
+\mbox{\tt in}  & {\em ix} & integer, 1, horizontal dimension \\
+\hline
+\mbox{\tt in}  & {\em lm} & integer, 1, vertical layer dimension \\
+\hline
+\mbox{\tt in}  & {\em lp1} & integer, 1, lm+1 \\
+\hline
+\mbox{\tt in}  & {\em randomno} & real,(ix,nrcm),random number array (0-\/1) \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real,(im),latitude (radian) \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real,(im),longitude (radian) \\
+\hline
+\mbox{\tt in}  & {\em gt0} & real,(ix,lm), updated temperature \\
+\hline
+\mbox{\tt in}  & {\em gq0} & real,(ix,lm), updated tracers\\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]dimension of gq0 should be (ix,lm,ntrac)? \end{DoxyRefDesc}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em prsl} & real,(ix,lm), mean layer pressure \\
+\hline
+\mbox{\tt in}  & {\em prsi} & real,(ix,lp1), pressure at layer interfaces \\
+\hline
+\mbox{\tt in}  & {\em prec} & real,(im), total rain at this time step (rain) \\
+\hline
+\mbox{\tt in}  & {\em phii} & real,(ix,lp1), interface geopotential $(m^2/s^2)$ \\
+\hline
+\mbox{\tt in}  & {\em n3dfercld} & integer,1,number of 3D arrays needed for microphysics(num\+\_\+p3d) \\
+\hline
+\mbox{\tt in}  & {\em tskin} & real,(im), ground surface temperature in K (tsea) \\
+\hline
+\mbox{\tt in}  & {\em sr} & real,(im), ratio of snow to total precipitation \\
+\hline
+\mbox{\tt in}  & {\em phy\+\_\+f3d} & real,(ix,lm), 3d arrays saved for restart \\
+\hline
+\mbox{\tt out}  & {\em domr} & real,(im), dominant precip type for rain \\
+\hline
+\mbox{\tt out}  & {\em domzr} & real,(im), dominant precip type for freezing rain \\
+\hline
+\mbox{\tt out}  & {\em domip} & real,(im), dominant precip type for sleet \\
+\hline
+\mbox{\tt out}  & {\em doms} & real,(im), dominant precip type for snow \\
+\hline
+\end{DoxyParams}
+\hypertarget{gscond_8f_general}{}\subsection{General Algorithm}\label{gscond_8f_general}
+
+\begin{DoxyEnumerate}
+\item Compute wet bulb temperature
+\item call \hyperlink{calpreciptype_8f_ace3ba03fce51ab8bd25977ff03a99c1d}{calwxt()} to compute instantaneous precipitation type.
+\item For Ramer algorithm, call \hyperlink{calpreciptype_8f_a1359538b0437522a5643286d47cb956d}{calwxt\+\_\+ramer()}
+\item For Bourgouin algorithm, call \hyperlink{calpreciptype_8f_aeb6ff6c9bfe0ac826d6b0e28c0592223}{calwxt\+\_\+bourg()}
+\item For revised N\+C\+EP algorithm, call \hyperlink{calpreciptype_8f_aea4e1369bc96598ada546c7aa96988cd}{calwxt\+\_\+revised()}
+\item For explicit algorithm(n3dfercld=3,ferrier\textquotesingle{}s scheme), call \hyperlink{calpreciptype_8f_a84b16fee5df628928b15bfbde86ee0ca}{calwxt\+\_\+explicit()}
+\item call \hyperlink{calpreciptype_8f_aa8cf475c2ada385565809d05de8fb215}{calwxt\+\_\+dominant()} to compute dominant precip type 
+\end{DoxyEnumerate}
+
+Definition at line 33 of file calpreciptype.\+f.
+
+
+
+References calwxt(), calwxt\+\_\+bourg(), calwxt\+\_\+dominant(), calwxt\+\_\+explicit(), calwxt\+\_\+ramer(), and calwxt\+\_\+revised().
+
+
+
+Referenced by gbphys().
+
+
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{calpreciptype_8f_a8a471b8f23f55928b69814c887ec925a_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{calpreciptype_8f_a8a471b8f23f55928b69814c887ec925a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt@{calwxt}}
+\index{calwxt@{calwxt}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt(lm, lp1, t, q, pmid, pint,                                                                                                                                                   d608, rog, epsq, zint, iwx, twet)}{calwxt(lm, lp1, t, q, pmid, pint,                                                                                                                                                   d608, rog, epsq, zint, iwx, twet)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{lm, }
+\item[{integer, intent(in)}]{lp1, }
+\item[{real, dimension(lm), intent(in)}]{t, }
+\item[{real, dimension(lm), intent(in)}]{q, }
+\item[{real, dimension(lm), intent(in)}]{pmid, }
+\item[{real, dimension(lp1), intent(in)}]{pint, }
+\item[{real, intent(in)}]{d608, }
+\item[{real, intent(in)}]{rog, }
+\item[{real, intent(in)}]{epsq, }
+\item[{real, dimension(lp1), intent(in)}]{zint, }
+\item[{integer, intent(out)}]{iwx, }
+\item[{real, dimension(lm), intent(in)}]{twet}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_ace3ba03fce51ab8bd25977ff03a99c1d}{}\label{calpreciptype_8f_ace3ba03fce51ab8bd25977ff03a99c1d}
+
+\begin{DoxyItemize}
+\item see baldwin and contorno 
+\end{DoxyItemize}
+
+Definition at line 256 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{calpreciptype_8f_ace3ba03fce51ab8bd25977ff03a99c1d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt\+\_\+bourg@{calwxt\+\_\+bourg}}
+\index{calwxt\+\_\+bourg@{calwxt\+\_\+bourg}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt\+\_\+bourg(lm, lp1, rn, g, t, q, pmid, pint, zint, ptype)}{calwxt_bourg(lm, lp1, rn, g, t, q, pmid, pint, zint, ptype)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt\+\_\+bourg (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{lm, }
+\item[{integer, intent(in)}]{lp1, }
+\item[{real, dimension(2), intent(in)}]{rn, }
+\item[{real, intent(in)}]{g, }
+\item[{real, dimension(lm), intent(in)}]{t, }
+\item[{real, dimension(lm), intent(in)}]{q, }
+\item[{real, dimension(lm), intent(in)}]{pmid, }
+\item[{real, dimension(lp1), intent(in)}]{pint, }
+\item[{real, dimension(lp1), intent(in)}]{zint, }
+\item[{integer, intent(out)}]{ptype}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_aeb6ff6c9bfe0ac826d6b0e28c0592223}{}\label{calpreciptype_8f_aeb6ff6c9bfe0ac826d6b0e28c0592223}
+
+
+Definition at line 908 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{calpreciptype_8f_aeb6ff6c9bfe0ac826d6b0e28c0592223_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt\+\_\+dominant@{calwxt\+\_\+dominant}}
+\index{calwxt\+\_\+dominant@{calwxt\+\_\+dominant}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt\+\_\+dominant(nalg, rain, freezr, sleet, snow,                                                                                                           domr, domzr, domip, doms)}{calwxt_dominant(nalg, rain, freezr, sleet, snow,                                                                                                           domr, domzr, domip, doms)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt\+\_\+dominant (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{nalg, }
+\item[{integer, dimension(nalg), intent(in)}]{rain, }
+\item[{integer, dimension(nalg), intent(in)}]{freezr, }
+\item[{integer, dimension(nalg), intent(in)}]{sleet, }
+\item[{integer, dimension(nalg), intent(in)}]{snow, }
+\item[{real, intent(out)}]{domr, }
+\item[{real, intent(out)}]{domzr, }
+\item[{real, intent(out)}]{domip, }
+\item[{real, intent(out)}]{doms}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_aa8cf475c2ada385565809d05de8fb215}{}\label{calpreciptype_8f_aa8cf475c2ada385565809d05de8fb215}
+
+
+Definition at line 1400 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calpreciptype_8f_aa8cf475c2ada385565809d05de8fb215_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt\+\_\+explicit@{calwxt\+\_\+explicit}}
+\index{calwxt\+\_\+explicit@{calwxt\+\_\+explicit}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt\+\_\+explicit(lm, tskin, sr, f\+\_\+rimef, iwx)}{calwxt_explicit(lm, tskin, sr, f_rimef, iwx)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt\+\_\+explicit (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{lm, }
+\item[{real, intent(in)}]{tskin, }
+\item[{real, intent(in)}]{sr, }
+\item[{real, dimension(lm), intent(in)}]{f\+\_\+rimef, }
+\item[{integer, intent(out)}]{iwx}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_a84b16fee5df628928b15bfbde86ee0ca}{}\label{calpreciptype_8f_a84b16fee5df628928b15bfbde86ee0ca}
+
+
+Definition at line 1337 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calpreciptype_8f_a84b16fee5df628928b15bfbde86ee0ca_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt\+\_\+ramer@{calwxt\+\_\+ramer}}
+\index{calwxt\+\_\+ramer@{calwxt\+\_\+ramer}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt\+\_\+ramer(lm, lp1, t, q, pmid, rh, td, pint, ptyp)}{calwxt_ramer(lm, lp1, t, q, pmid, rh, td, pint, ptyp)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt\+\_\+ramer (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{lm, }
+\item[{integer, intent(in)}]{lp1, }
+\item[{real, dimension(lm), intent(in)}]{t, }
+\item[{real, dimension(lm), intent(in)}]{q, }
+\item[{real, dimension(lm), intent(in)}]{pmid, }
+\item[{real, dimension(lm), intent(in)}]{rh, }
+\item[{real, dimension(lm), intent(in)}]{td, }
+\item[{real, dimension(lp1), intent(in)}]{pint, }
+\item[{integer, intent(out)}]{ptyp}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_a1359538b0437522a5643286d47cb956d}{}\label{calpreciptype_8f_a1359538b0437522a5643286d47cb956d}
+
+\begin{DoxyItemize}
+\item Ramer J, 1993\+: An expirical technique for diagnosing precipitation type from model output. preprints, 5th conf. on aviation weather systems, vienna, va, Amer. Meteor. Soc., 227-\/230. 
+\end{DoxyItemize}
+
+Definition at line 509 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{calpreciptype_8f_a1359538b0437522a5643286d47cb956d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!calwxt\+\_\+revised@{calwxt\+\_\+revised}}
+\index{calwxt\+\_\+revised@{calwxt\+\_\+revised}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{calwxt\+\_\+revised(lm, lp1, t, q, pmid, pint,                                                                                                                                                               d608, rog, epsq, zint, twet, iwx)}{calwxt_revised(lm, lp1, t, q, pmid, pint,                                                                                                                                                               d608, rog, epsq, zint, twet, iwx)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine calwxt\+\_\+revised (
+\begin{DoxyParamCaption}
+\item[{integer, intent(in)}]{lm, }
+\item[{integer, intent(in)}]{lp1, }
+\item[{real, dimension(lm), intent(in)}]{t, }
+\item[{real, dimension(lm), intent(in)}]{q, }
+\item[{real, dimension(lm), intent(in)}]{pmid, }
+\item[{real, dimension(lp1), intent(in)}]{pint, }
+\item[{real, intent(in)}]{d608, }
+\item[{real, intent(in)}]{rog, }
+\item[{real, intent(in)}]{epsq, }
+\item[{real, dimension(lp1), intent(in)}]{zint, }
+\item[{real, dimension(lm), intent(in)}]{twet, }
+\item[{integer, intent(out)}]{iwx}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_aea4e1369bc96598ada546c7aa96988cd}{}\label{calpreciptype_8f_aea4e1369bc96598ada546c7aa96988cd}
+
+\begin{DoxyItemize}
+\item see baldwin and contorno preprint from 13th weather analysis and forecasting conference for more details (or baldwin et al, 10th N\+WP conference preprint)
+\item since the original version of the algorithm has a high bias for freezing rain and sleet, the goal is to balance that bias with a version more likely to predict snow 
+\end{DoxyItemize}
+
+Definition at line 1080 of file calpreciptype.\+f.
+
+
+
+Referenced by calpreciptype().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calpreciptype_8f_aea4e1369bc96598ada546c7aa96988cd_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{calpreciptype.\+f@{calpreciptype.\+f}!xmytw@{xmytw}}
+\index{xmytw@{xmytw}!calpreciptype.\+f@{calpreciptype.\+f}}
+\subsubsection[{\texorpdfstring{xmytw(t, td, p)}{xmytw(t, td, p)}}]{\setlength{\rightskip}{0pt plus 5cm}real function xmytw (
+\begin{DoxyParamCaption}
+\item[{real}]{t, }
+\item[{real}]{td, }
+\item[{real}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{calpreciptype_8f_a761529912bd612dc070ad13eb14de778}{}\label{calpreciptype_8f_a761529912bd612dc070ad13eb14de778}
+
+
+Definition at line 786 of file calpreciptype.\+f.
+

@@ -1,0 +1,63 @@
+\hypertarget{radiation__astronomy_8f}{}\section{radiation\+\_\+astronomy.\+f File Reference}
+\label{radiation__astronomy_8f}\index{radiation\+\_\+astronomy.\+f@{radiation\+\_\+astronomy.\+f}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacemodule__radiation__astronomy}{module\+\_\+radiation\+\_\+astronomy}
+\begin{DoxyCompactList}\small\item\em This module sets up astronomy quantities for solar radiation calculations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a7c3585f7355925b360f5bc5d2c25c09e}{module\+\_\+radiation\+\_\+astronomy\+::sol\+\_\+update}                                                                                       
+\begin{DoxyCompactList}\small\item\em This subroutine computes solar parameters at forecast time. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radiation__astronomy_a3c99615d1cda89bcdb5ea1af3bca9d6f}{module\+\_\+radiation\+\_\+astronomy\+::solar}                                                                                                 
+\begin{DoxyCompactList}\small\item\em This subroutine computes radius vector, declination and right ascension of sun, and equation of time. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a8ce5ecf0524d0460baf6c467b532085c}{module\+\_\+radiation\+\_\+astronomy\+::coszmn}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine computes mean cos solar zenith angle over SW calling interval. \end{DoxyCompactList}\item 
+subroutine \hyperlink{namespacemodule__radiation__astronomy_a946b520f4b41e21f9f9e27da6122641b}{module\+\_\+radiation\+\_\+astronomy\+::prtime}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine prints out forecast date, time, and astronomy quantities. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__astronomy_a00825c1a13e09455c478efa11314cb2d}{module\+\_\+radiation\+\_\+astronomy\+::sol\+\_\+init}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine initializes astronomy process, and set up module constants. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(40), parameter \hyperlink{namespacemodule__radiation__astronomy_aa3497dc9fa4bbd8248fdf0f2784c268a}{module\+\_\+radiation\+\_\+astronomy\+::vtagast} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+astronomy v5.\+2 Jan 2013 \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a220d2b997b3073cf2985d62111c5405d}{module\+\_\+radiation\+\_\+astronomy\+::degrad} = 180.\+0/con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a4fbf4be04e17f1f8d0674ee2e20506b0}{module\+\_\+radiation\+\_\+astronomy\+::tpi} = 2.\+0 $\ast$ con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a7369d8561566f5e7e51ccc40e09f2520}{module\+\_\+radiation\+\_\+astronomy\+::hpi} = 0.\+5 $\ast$ con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_ad59856e8f877eb05a6b22610f14a391d}{module\+\_\+radiation\+\_\+astronomy\+::f12} = 12.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_a37b491dde50d06e339effb4a31d9f245}{module\+\_\+radiation\+\_\+astronomy\+::f3600} = 3600.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_afeb2fccbe8137de6099a09035762ff5e}{module\+\_\+radiation\+\_\+astronomy\+::czlimt} = 0.\+0001
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__astronomy_adbf9cdfc7b55d882f015a4bc4ef276ab}{module\+\_\+radiation\+\_\+astronomy\+::pid12} = (2.\+0$\ast$asin(1.\+0))/f12
+\item 
+real(kind=kind\+\_\+phys), public \hyperlink{namespacemodule__radiation__astronomy_a37e08872f67023b11f839ac15151af09}{module\+\_\+radiation\+\_\+astronomy\+::solc0} = con\+\_\+solr
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_a7ea431b6d4f4d6ee1f6545d6baeee44f}{module\+\_\+radiation\+\_\+astronomy\+::isolflg} = 10
+\item 
+character(26) \hyperlink{namespacemodule__radiation__astronomy_a05ee7e378d38b90242738b9bf6c40c00}{module\+\_\+radiation\+\_\+astronomy\+::solar\+\_\+fname} = \textquotesingle{} \textquotesingle{}
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a264a011aa71fb670339ac555dc24e486}{module\+\_\+radiation\+\_\+astronomy\+::sollag} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_ae195d9c834e2789170f89c988d28b01e}{module\+\_\+radiation\+\_\+astronomy\+::sindec} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a07386e90045639b8023abd826e0e2768}{module\+\_\+radiation\+\_\+astronomy\+::cosdec} =0.\+0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__astronomy_a723159a44491e4ae974128123a1e8dcd}{module\+\_\+radiation\+\_\+astronomy\+::anginc} =0.\+0
+\item 
+real(kind=kind\+\_\+phys), dimension(12) \hyperlink{namespacemodule__radiation__astronomy_ab68b4488022a4c6340cb60dca3feff6a}{module\+\_\+radiation\+\_\+astronomy\+::smon\+\_\+sav}
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_a83370fbee96388e545a89eb25ed6df90}{module\+\_\+radiation\+\_\+astronomy\+::iyr\+\_\+sav} =0
+\item 
+integer \hyperlink{namespacemodule__radiation__astronomy_ab93fe36440da3cc1f1d64cae2ec4c25b}{module\+\_\+radiation\+\_\+astronomy\+::nstp} =6
+\end{DoxyCompactItemize}
