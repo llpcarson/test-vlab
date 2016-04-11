@@ -1,0 +1,598 @@
+\hypertarget{namespacemodule__radiation__gases}{}\section{module\+\_\+radiation\+\_\+gases Module Reference}
+\label{namespacemodule__radiation__gases}\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+
+
+This module sets up ozone climatological profiles and other constant gas profiles, such as co2, ch4, n2o, o2, and those of cfc gases. All data are entered as mixing ratio by volume, except ozone which is mass mixing ratio (g/g).  
+
+
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{namespacemodule__radiation__gases_a1def261c0ef5d5408658c87b6dc08b53}{gas\+\_\+init}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then read in monthly ozone data. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{namespacemodule__radiation__gases_a064db1c287e8614ae7efd6b4fac91a6b}{gas\+\_\+update}                                                                                       
+\begin{DoxyCompactList}\small\item\em This subroutine reads in 2-\/d monthly co2 data set for a specified year. data are in a 15 degree lat/lon horizontal resolution. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{namespacemodule__radiation__gases_ad06401a54d361b3dd852d815d1b0f71e}{getgases}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine sets up global distribution of radiation absorbing gases in volume mixing ratio. currently only co2 has the options from observed values, all other gases are asigned to the climatological values. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{namespacemodule__radiation__gases_af4be311f1ec1601a167655c1632d66de}{getozn}                                                                                               
+\begin{DoxyCompactList}\small\item\em This subroutine sets up climatological ozone profile for radiation calculation this code is originally written by Shrinivas Moorthi. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(40), parameter \hyperlink{namespacemodule__radiation__gases_a8a79a6d3d931da021cd19290c58bdfaa}{vtaggas} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+gases v5.\+1 Nov 2012 \textquotesingle{}
+\item 
+integer, parameter, public \hyperlink{namespacemodule__radiation__gases_affc350828412da77ff3cf3e617ddc66c}{nf\+\_\+vgas} = 10
+\begin{DoxyCompactList}\small\item\em number of gas species \end{DoxyCompactList}\item 
+integer, parameter \hyperlink{namespacemodule__radiation__gases_a46eb4079ff9932819b3ab133bf6a43d9}{imxco2} = 24
+\begin{DoxyCompactList}\small\item\em input co2 dat lon points \end{DoxyCompactList}\item 
+integer, parameter \hyperlink{namespacemodule__radiation__gases_aa56e209872093bfcbdaeb452f5e5e332}{jmxco2} = 12
+\begin{DoxyCompactList}\small\item\em input co2 data lat points \end{DoxyCompactList}\item 
+integer, parameter \hyperlink{namespacemodule__radiation__gases_a3b26af64187b57999cadeced419b0f1b}{minyear} = 1957
+\begin{DoxyCompactList}\small\item\em earlist year 2-\/d co2 data available \end{DoxyCompactList}\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_afda5c1d1129d865b9772e0f58dea7598}{resco2} =15.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_aa5873ae54e950001ff873771378e7a1e}{raddeg} =180.\+0/con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_ab09dc05b8a02e9a0b56991508b599708}{prsco2} =788.\+0
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_ab99c75954c59ed92a52de94ca6113f73}{hfpi} =0.\+5$\ast$con\+\_\+pi
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a4fb5ca2e3bfaed7848d7602a22499e76}{co2vmr\+\_\+def} = 350.\+0e-\/6
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a858ad802efe755f8b4b5bde85996b6ae}{n2ovmr\+\_\+def} = 0.\+31e-\/6
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_aad928d9e0064905a0b6e1eb8bb59bd23}{ch4vmr\+\_\+def} = 1.\+50e-\/6
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a910898e96b8afe92ebc82ce62ba682d8}{o2vmr\+\_\+def} = 0.\+209
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a3554bdf03f8222d425bb6c946244cbb5}{covmr\+\_\+def} = 1.\+50e-\/8
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a23ae6bb6860bfefef0c281b7106f521e}{f11vmr\+\_\+def} = 3.\+520e-\/10
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a96d4f78070f30010626e0824b3421250}{f12vmr\+\_\+def} = 6.\+358e-\/10
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_afd0018e96811ac64ef2abd8cab821eb5}{f22vmr\+\_\+def} = 1.\+500e-\/10
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a013f8faaee6df0c7c032e1786770c110}{cl4vmr\+\_\+def} = 1.\+397e-\/10
+\item 
+real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__gases_a76ec88dc6284c48cfaae6cd05428b6dd}{f113vmr\+\_\+def} = 8.\+2000e-\/11
+\item 
+real(kind=kind\+\_\+phys), dimension(\+:), allocatable \hyperlink{namespacemodule__radiation__gases_ac7466def3963591ebfc48298806b1f6a}{pkstr}
+\item 
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__gases_ad18392d991a9ef4b6ff0e8e822176a18}{o3r}
+\item 
+integer \hyperlink{namespacemodule__radiation__gases_a0a14666484f230d3506a9b4740e2eeda}{k1oz} = 0
+\item 
+integer \hyperlink{namespacemodule__radiation__gases_a0c3727c9e2a0bec46e84622c4591cd8b}{k2oz} = 0
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__gases_ac7c9fd8ece69872fdef473020ea03d6b}{facoz} = 0.\+0
+\item 
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__gases_a4f35e5db780a64963dc65b8449def39d}{co2vmr\+\_\+sav}
+\item 
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__gases_a3985e306e5555089909fd42a4cc93afb}{co2cyc\+\_\+sav}
+\item 
+real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__gases_a0398d6837c9e8c41359e76a754147002}{co2\+\_\+glb} = \hyperlink{namespacemodule__radiation__gases_a4fb5ca2e3bfaed7848d7602a22499e76}{co2vmr\+\_\+def}
+\item 
+real(kind=kind\+\_\+phys), dimension(12) \hyperlink{namespacemodule__radiation__gases_ac2a03ad96c9aa598f9751fd689cb615f}{gco2cyc}
+\item 
+integer \hyperlink{namespacemodule__radiation__gases_a6b4372e633bef3fb367e6ff3cf200bb8}{kyrsav} = 0
+\item 
+integer \hyperlink{namespacemodule__radiation__gases_ab1cf1b63398a3e7ec0334a7c97258b4d}{kmonsav} = 1
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!gas\+\_\+init@{gas\+\_\+init}}
+\index{gas\+\_\+init@{gas\+\_\+init}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{gas\+\_\+init                                                                                          }{gas_init                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+gases\+::gas\+\_\+init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__gases_a1def261c0ef5d5408658c87b6dc08b53}{}\label{namespacemodule__radiation__gases_a1def261c0ef5d5408658c87b6dc08b53}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em me} & integer, 1, print message control flag \\
+\hline
+\mbox{\tt out}  & {\em N\+O\+NE} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_external}{}\subsection{External Module Variables}\label{namespacemodule__radsw__main_external}
+~\newline
+ \hyperlink{namespacephysparam_a61baf693e83ac6144d86fb8213d39a79}{physparam\+::ico2flg} -\/ co2 data source control flag ~\newline
+ =0\+: use prescribed co2 global mean value ~\newline
+ =1\+: use input global mean co2 value (co2\+\_\+glb) ~\newline
+ =2\+: use input 2-\/d monthly co2 value (co2vmr\+\_\+sav) ~\newline
+ \hyperlink{namespacephysparam_a4eef5ac5e5b83526d5da7de493cfe73d}{physparam\+::ictmflg} -\/ =yyyy\#, data ic time/date control flag ~\newline
+ = -\/2\+: same as 0, but superimpose seasonal cycle from climatology data set. ~\newline
+ = -\/1\+: use user provided external data for the fcst time, no extrapolation. ~\newline
+ = 0\+: use data at initial condition time, if not existed then use latest, without extrapolation. ~\newline
+ = 1\+: use data at the forecast time, if not existed then use latest and extrapolate to fcst time. ~\newline
+ =yyyy0\+: use yyyy data for the forecast time, no further data extrapolation. ~\newline
+ =yyyy1\+: use yyyy data for the fcst. if needed, do extrapolation to match the fcst time. ~\newline
+ \hyperlink{namespacephysparam_a90d63a1a0c04479f586ce21df72d36b7}{physparam\+::ioznflg} -\/ ozone data control flag ~\newline
+ =0\+: use climatological ozone profile ~\newline
+ $>$0\+: use interactive ozone profile ~\newline
+ \hyperlink{namespacephysparam_a7318a941744b1ec62dc9a6ff5bfbb50d}{physparam\+::ivflip} -\/ vertical profile indexing flag ~\newline
+ \hyperlink{namespacephysparam_a2af9769060fccf9c42e14a30cf21c0aa}{physparam\+::co2usr\+\_\+file} -\/ external co2 user defined data table ~\newline
+ \hyperlink{namespacephysparam_afe0dc3a936d79b4d7dd58fe29376cb1a}{physparam\+::co2cyc\+\_\+file} -\/ external co2 climotology monthly cycle data table 
+
+Definition at line 217 of file radiation\+\_\+gases.\+f.
+
+
+
+References co2\+\_\+glb, physparam\+::co2cyc\+\_\+file, co2cyc\+\_\+sav, physparam\+::co2usr\+\_\+file, co2vmr\+\_\+def, co2vmr\+\_\+sav, gco2cyc, physparam\+::ico2flg, physparam\+::ictmflg, imxco2, physparam\+::ioznflg, jmxco2, kmonsav, kyrsav, o3r, pkstr, and vtaggas.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::radinit().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__gases_a1def261c0ef5d5408658c87b6dc08b53_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!gas\+\_\+update@{gas\+\_\+update}}
+\index{gas\+\_\+update@{gas\+\_\+update}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{gas\+\_\+update                                                                                      }{gas_update                                                                                      }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+gases\+::gas\+\_\+update (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__gases_a064db1c287e8614ae7efd6b4fac91a6b}{}\label{namespacemodule__radiation__gases_a064db1c287e8614ae7efd6b4fac91a6b}
+
+
+Definition at line 535 of file radiation\+\_\+gases.\+f.
+
+
+
+References co2\+\_\+glb, co2cyc\+\_\+sav, physparam\+::co2dat\+\_\+file, physparam\+::co2gbl\+\_\+file, co2vmr\+\_\+sav, facoz, gco2cyc, physparam\+::ico2flg, physparam\+::ictmflg, imxco2, physparam\+::ioznflg, jmxco2, k1oz, k2oz, kmonsav, kyrsav, and minyear.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::radupdate().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__gases_a064db1c287e8614ae7efd6b4fac91a6b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!getgases@{getgases}}
+\index{getgases@{getgases}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{getgases                                                                                          }{getgases                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+gases\+::getgases (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__gases_ad06401a54d361b3dd852d815d1b0f71e}{}\label{namespacemodule__radiation__gases_ad06401a54d361b3dd852d815d1b0f71e}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em plvl} & real, (I\+M\+AX,L\+M\+A\+X+1), pressure at model layer interfaces (mb) \\
+\hline
+\mbox{\tt in}  & {\em xlon} & real, (I\+M\+AX), grid longitude in radians, ok both 0-\/$>$2pi or -\/pi -\/$>$ +pi arrangements \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (I\+M\+AX), grid latitude in radians, default range to pi/2 -\/$>$ -\/pi/2, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em I\+M\+AX,L\+M\+AX} & integer, horiz/vert dimensions for output data \\
+\hline
+\mbox{\tt out}  & {\em gasdat} & real, (I\+M\+AX,L\+M\+AX,N\+F\+\_\+\+V\+G\+AS) -\/ gases volume mixing ratioes ~\newline
+ (\+:,\+:,1) -\/ co2 ~\newline
+ (\+:,\+:,2) -\/ n2o ~\newline
+ (\+:,\+:,3) -\/ ch4 ~\newline
+ (\+:,\+:,4) -\/ o2 ~\newline
+ (\+:,\+:,5) -\/ co ~\newline
+ (\+:,\+:,6) -\/ cfc11 ~\newline
+ (\+:,\+:,7) -\/ cfc12 ~\newline
+ (\+:,\+:,8) -\/ cfc22 ~\newline
+ (\+:,\+:,9) -\/ ccl4 ~\newline
+ (\+:,\+:,10) -\/ cfc113 \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespacemodule__radsw__main_external}{}\subsection{External Module Variables}\label{namespacemodule__radsw__main_external}
+~\newline
+ \hyperlink{namespacephysparam_a61baf693e83ac6144d86fb8213d39a79}{physparam\+::ico2flg} -\/ co2 data source control flag ~\newline
+ =0\+: use prescribed co2 global mean value ~\newline
+ =1\+: use input global mean co2 value (co2\+\_\+glb) ~\newline
+ =2\+: use input 2-\/d monthly co2 value (co2vmr\+\_\+sav) ~\newline
+ \hyperlink{namespacephysparam_a7318a941744b1ec62dc9a6ff5bfbb50d}{physparam\+::ivflip} -\/ vertical profile indexing flag 
+
+Definition at line 933 of file radiation\+\_\+gases.\+f.
+
+
+
+References ch4vmr\+\_\+def, cl4vmr\+\_\+def, co2\+\_\+glb, co2vmr\+\_\+def, co2vmr\+\_\+sav, physcons\+::con\+\_\+pi, covmr\+\_\+def, f113vmr\+\_\+def, f11vmr\+\_\+def, f12vmr\+\_\+def, f22vmr\+\_\+def, gco2cyc, hfpi, physparam\+::ico2flg, imxco2, physparam\+::ivflip, jmxco2, kmonsav, n2ovmr\+\_\+def, o2vmr\+\_\+def, prsco2, raddeg, and resco2.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__gases_ad06401a54d361b3dd852d815d1b0f71e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!getozn@{getozn}}
+\index{getozn@{getozn}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{getozn                                                                                              }{getozn                                                                                              }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+gases\+::getozn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{namespacemodule__radiation__gases_af4be311f1ec1601a167655c1632d66de}{}\label{namespacemodule__radiation__gases_af4be311f1ec1601a167655c1632d66de}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em prslk} & real, (I\+M\+AX,LM), exner function = $(p/p0)^{rocp}$ \\
+\hline
+\mbox{\tt in}  & {\em xlat} & real, (I\+M\+AX), latitude in radians, default to pi/2 -\/$>$ -\/pi/2 range, otherwise see in-\/line comment \\
+\hline
+\mbox{\tt in}  & {\em I\+M\+AX,LM} & integer, horizontal and vertical dimensions \\
+\hline
+\mbox{\tt out}  & {\em o3mmr} & real, (I\+M\+AX,LM), output ozone profile in mass mixing ratio (g/g) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1086 of file radiation\+\_\+gases.\+f.
+
+
+
+References facoz, physparam\+::ivflip, k1oz, k2oz, o3r, pkstr, and raddeg.
+
+
+
+Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
+
+
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacemodule__radiation__gases_af4be311f1ec1601a167655c1632d66de_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!ch4vmr\+\_\+def@{ch4vmr\+\_\+def}}
+\index{ch4vmr\+\_\+def@{ch4vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{ch4vmr\+\_\+def}{ch4vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::ch4vmr\+\_\+def = 1.\+50e-\/6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_aad928d9e0064905a0b6e1eb8bb59bd23}{}\label{namespacemodule__radiation__gases_aad928d9e0064905a0b6e1eb8bb59bd23}
+
+
+Definition at line 148 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!cl4vmr\+\_\+def@{cl4vmr\+\_\+def}}
+\index{cl4vmr\+\_\+def@{cl4vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{cl4vmr\+\_\+def}{cl4vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::cl4vmr\+\_\+def = 1.\+397e-\/10\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a013f8faaee6df0c7c032e1786770c110}{}\label{namespacemodule__radiation__gases_a013f8faaee6df0c7c032e1786770c110}
+
+
+Definition at line 154 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!co2\+\_\+glb@{co2\+\_\+glb}}
+\index{co2\+\_\+glb@{co2\+\_\+glb}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{co2\+\_\+glb}{co2_glb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+gases\+::co2\+\_\+glb = {\bf co2vmr\+\_\+def}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a0398d6837c9e8c41359e76a754147002}{}\label{namespacemodule__radiation__gases_a0398d6837c9e8c41359e76a754147002}
+
+
+Definition at line 176 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!co2cyc\+\_\+sav@{co2cyc\+\_\+sav}}
+\index{co2cyc\+\_\+sav@{co2cyc\+\_\+sav}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{co2cyc\+\_\+sav}{co2cyc_sav}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+gases\+::co2cyc\+\_\+sav\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a3985e306e5555089909fd42a4cc93afb}{}\label{namespacemodule__radiation__gases_a3985e306e5555089909fd42a4cc93afb}
+
+
+Definition at line 174 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), and gas\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!co2vmr\+\_\+def@{co2vmr\+\_\+def}}
+\index{co2vmr\+\_\+def@{co2vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{co2vmr\+\_\+def}{co2vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::co2vmr\+\_\+def = 350.\+0e-\/6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a4fb5ca2e3bfaed7848d7602a22499e76}{}\label{namespacemodule__radiation__gases_a4fb5ca2e3bfaed7848d7602a22499e76}
+
+
+Definition at line 146 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!co2vmr\+\_\+sav@{co2vmr\+\_\+sav}}
+\index{co2vmr\+\_\+sav@{co2vmr\+\_\+sav}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{co2vmr\+\_\+sav}{co2vmr_sav}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+gases\+::co2vmr\+\_\+sav\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a4f35e5db780a64963dc65b8449def39d}{}\label{namespacemodule__radiation__gases_a4f35e5db780a64963dc65b8449def39d}
+
+
+Definition at line 173 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!covmr\+\_\+def@{covmr\+\_\+def}}
+\index{covmr\+\_\+def@{covmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{covmr\+\_\+def}{covmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::covmr\+\_\+def = 1.\+50e-\/8\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a3554bdf03f8222d425bb6c946244cbb5}{}\label{namespacemodule__radiation__gases_a3554bdf03f8222d425bb6c946244cbb5}
+
+
+Definition at line 150 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!f113vmr\+\_\+def@{f113vmr\+\_\+def}}
+\index{f113vmr\+\_\+def@{f113vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{f113vmr\+\_\+def}{f113vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::f113vmr\+\_\+def = 8.\+2000e-\/11\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a76ec88dc6284c48cfaae6cd05428b6dd}{}\label{namespacemodule__radiation__gases_a76ec88dc6284c48cfaae6cd05428b6dd}
+
+
+Definition at line 155 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!f11vmr\+\_\+def@{f11vmr\+\_\+def}}
+\index{f11vmr\+\_\+def@{f11vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{f11vmr\+\_\+def}{f11vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::f11vmr\+\_\+def = 3.\+520e-\/10\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a23ae6bb6860bfefef0c281b7106f521e}{}\label{namespacemodule__radiation__gases_a23ae6bb6860bfefef0c281b7106f521e}
+
+
+Definition at line 151 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!f12vmr\+\_\+def@{f12vmr\+\_\+def}}
+\index{f12vmr\+\_\+def@{f12vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{f12vmr\+\_\+def}{f12vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::f12vmr\+\_\+def = 6.\+358e-\/10\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a96d4f78070f30010626e0824b3421250}{}\label{namespacemodule__radiation__gases_a96d4f78070f30010626e0824b3421250}
+
+
+Definition at line 152 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!f22vmr\+\_\+def@{f22vmr\+\_\+def}}
+\index{f22vmr\+\_\+def@{f22vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{f22vmr\+\_\+def}{f22vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::f22vmr\+\_\+def = 1.\+500e-\/10\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_afd0018e96811ac64ef2abd8cab821eb5}{}\label{namespacemodule__radiation__gases_afd0018e96811ac64ef2abd8cab821eb5}
+
+
+Definition at line 153 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!facoz@{facoz}}
+\index{facoz@{facoz}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{facoz}{facoz}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys) module\+\_\+radiation\+\_\+gases\+::facoz = 0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ac7c9fd8ece69872fdef473020ea03d6b}{}\label{namespacemodule__radiation__gases_ac7c9fd8ece69872fdef473020ea03d6b}
+
+
+Definition at line 170 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+update(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!gco2cyc@{gco2cyc}}
+\index{gco2cyc@{gco2cyc}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{gco2cyc}{gco2cyc}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(12) module\+\_\+radiation\+\_\+gases\+::gco2cyc\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ac2a03ad96c9aa598f9751fd689cb615f}{}\label{namespacemodule__radiation__gases_ac2a03ad96c9aa598f9751fd689cb615f}
+
+
+Definition at line 177 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!hfpi@{hfpi}}
+\index{hfpi@{hfpi}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{hfpi}{hfpi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::hfpi =0.\+5$\ast$con\+\_\+pi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ab99c75954c59ed92a52de94ca6113f73}{}\label{namespacemodule__radiation__gases_ab99c75954c59ed92a52de94ca6113f73}
+
+
+Definition at line 143 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!imxco2@{imxco2}}
+\index{imxco2@{imxco2}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{imxco2}{imxco2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+gases\+::imxco2 = 24\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a46eb4079ff9932819b3ab133bf6a43d9}{}\label{namespacemodule__radiation__gases_a46eb4079ff9932819b3ab133bf6a43d9}
+
+
+Definition at line 133 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!jmxco2@{jmxco2}}
+\index{jmxco2@{jmxco2}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{jmxco2}{jmxco2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+gases\+::jmxco2 = 12\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_aa56e209872093bfcbdaeb452f5e5e332}{}\label{namespacemodule__radiation__gases_aa56e209872093bfcbdaeb452f5e5e332}
+
+
+Definition at line 135 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!k1oz@{k1oz}}
+\index{k1oz@{k1oz}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{k1oz}{k1oz}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+gases\+::k1oz = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a0a14666484f230d3506a9b4740e2eeda}{}\label{namespacemodule__radiation__gases_a0a14666484f230d3506a9b4740e2eeda}
+
+
+Definition at line 169 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+update(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!k2oz@{k2oz}}
+\index{k2oz@{k2oz}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{k2oz}{k2oz}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+gases\+::k2oz = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a0c3727c9e2a0bec46e84622c4591cd8b}{}\label{namespacemodule__radiation__gases_a0c3727c9e2a0bec46e84622c4591cd8b}
+
+
+Definition at line 169 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+update(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!kmonsav@{kmonsav}}
+\index{kmonsav@{kmonsav}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{kmonsav}{kmonsav}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+gases\+::kmonsav = 1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ab1cf1b63398a3e7ec0334a7c97258b4d}{}\label{namespacemodule__radiation__gases_ab1cf1b63398a3e7ec0334a7c97258b4d}
+
+
+Definition at line 181 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), gas\+\_\+update(), and getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!kyrsav@{kyrsav}}
+\index{kyrsav@{kyrsav}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{kyrsav}{kyrsav}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+gases\+::kyrsav = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a6b4372e633bef3fb367e6ff3cf200bb8}{}\label{namespacemodule__radiation__gases_a6b4372e633bef3fb367e6ff3cf200bb8}
+
+
+Definition at line 180 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), and gas\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!minyear@{minyear}}
+\index{minyear@{minyear}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{minyear}{minyear}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+gases\+::minyear = 1957\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a3b26af64187b57999cadeced419b0f1b}{}\label{namespacemodule__radiation__gases_a3b26af64187b57999cadeced419b0f1b}
+
+
+Definition at line 137 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+update().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!n2ovmr\+\_\+def@{n2ovmr\+\_\+def}}
+\index{n2ovmr\+\_\+def@{n2ovmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{n2ovmr\+\_\+def}{n2ovmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::n2ovmr\+\_\+def = 0.\+31e-\/6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a858ad802efe755f8b4b5bde85996b6ae}{}\label{namespacemodule__radiation__gases_a858ad802efe755f8b4b5bde85996b6ae}
+
+
+Definition at line 147 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!nf\+\_\+vgas@{nf\+\_\+vgas}}
+\index{nf\+\_\+vgas@{nf\+\_\+vgas}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{nf\+\_\+vgas}{nf_vgas}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+gases\+::nf\+\_\+vgas = 10}\hypertarget{namespacemodule__radiation__gases_affc350828412da77ff3cf3e617ddc66c}{}\label{namespacemodule__radiation__gases_affc350828412da77ff3cf3e617ddc66c}
+
+
+Definition at line 131 of file radiation\+\_\+gases.\+f.
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!o2vmr\+\_\+def@{o2vmr\+\_\+def}}
+\index{o2vmr\+\_\+def@{o2vmr\+\_\+def}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{o2vmr\+\_\+def}{o2vmr_def}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::o2vmr\+\_\+def = 0.\+209\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a910898e96b8afe92ebc82ce62ba682d8}{}\label{namespacemodule__radiation__gases_a910898e96b8afe92ebc82ce62ba682d8}
+
+
+Definition at line 149 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!o3r@{o3r}}
+\index{o3r@{o3r}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{o3r}{o3r}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+gases\+::o3r\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ad18392d991a9ef4b6ff0e8e822176a18}{}\label{namespacemodule__radiation__gases_ad18392d991a9ef4b6ff0e8e822176a18}
+
+
+Definition at line 168 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!pkstr@{pkstr}}
+\index{pkstr@{pkstr}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{pkstr}{pkstr}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:), allocatable module\+\_\+radiation\+\_\+gases\+::pkstr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ac7466def3963591ebfc48298806b1f6a}{}\label{namespacemodule__radiation__gases_ac7466def3963591ebfc48298806b1f6a}
+
+
+Definition at line 168 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!prsco2@{prsco2}}
+\index{prsco2@{prsco2}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{prsco2}{prsco2}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::prsco2 =788.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_ab09dc05b8a02e9a0b56991508b599708}{}\label{namespacemodule__radiation__gases_ab09dc05b8a02e9a0b56991508b599708}
+
+
+Definition at line 142 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!raddeg@{raddeg}}
+\index{raddeg@{raddeg}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{raddeg}{raddeg}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::raddeg =180.\+0/con\+\_\+pi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_aa5873ae54e950001ff873771378e7a1e}{}\label{namespacemodule__radiation__gases_aa5873ae54e950001ff873771378e7a1e}
+
+
+Definition at line 141 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases(), and getozn().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!resco2@{resco2}}
+\index{resco2@{resco2}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{resco2}{resco2}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+gases\+::resco2 =15.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_afda5c1d1129d865b9772e0f58dea7598}{}\label{namespacemodule__radiation__gases_afda5c1d1129d865b9772e0f58dea7598}
+
+
+Definition at line 140 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by getgases().
+
+\index{module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}!vtaggas@{vtaggas}}
+\index{vtaggas@{vtaggas}!module\+\_\+radiation\+\_\+gases@{module\+\_\+radiation\+\_\+gases}}
+\subsubsection[{\texorpdfstring{vtaggas}{vtaggas}}]{\setlength{\rightskip}{0pt plus 5cm}character(40), parameter module\+\_\+radiation\+\_\+gases\+::vtaggas =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+gases v5.\+1 Nov 2012 \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__gases_a8a79a6d3d931da021cd19290c58bdfaa}{}\label{namespacemodule__radiation__gases_a8a79a6d3d931da021cd19290c58bdfaa}
+
+
+Definition at line 125 of file radiation\+\_\+gases.\+f.
+
+
+
+Referenced by gas\+\_\+init().
+

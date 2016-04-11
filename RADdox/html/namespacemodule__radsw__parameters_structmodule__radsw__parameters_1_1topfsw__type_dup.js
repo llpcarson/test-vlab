@@ -1,0 +1,6 @@
+var namespacemodule__radsw__parameters_structmodule__radsw__parameters_1_1topfsw__type_dup =
+[
+    [ "dnfxc", "namespacemodule__radsw__parameters.html#ac1466bb6a9da92a59bdef51439320f35", null ],
+    [ "upfx0", "namespacemodule__radsw__parameters.html#a992c82c935dcb4d6269c905fc184cf48", null ],
+    [ "upfxc", "namespacemodule__radsw__parameters.html#a444a7fd67ff2c22403779a5e83eef09b", null ]
+];
