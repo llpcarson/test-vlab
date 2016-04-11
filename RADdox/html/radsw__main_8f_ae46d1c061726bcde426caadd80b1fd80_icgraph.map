@@ -1,5 +1,5 @@
 <map id="taumol17" name="taumol17">
-<area shape="rect" id="node2" href="$namespacemodule__radsw__main.html#afbfb76d4fab10254e065dce350ae5f2b" title="This subroutine calculates optical depths for gaseous absorption and rayleigh scattering &#160;&#160;subroutine..." alt="" coords="128,5,276,47"/>
-<area shape="rect" id="node3" href="$namespacemodule__radsw__main.html#ad9b28f997232642658b4d15a7eb70fcd" title="This subroutine is the main sw radiation routine. " alt="" coords="324,5,472,47"/>
-<area shape="rect" id="node4" href="$namespacemodule__radiation__driver.html#a8285cf6a4d2e1ed25b0afff8e269ec63" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="520,5,677,47"/>
+<area shape="rect" id="node2" href="$group__module__radsw__main.html#gaafef1e054b5103007f57129c07fcba81" title="This subroutine calculates optical depths for gaseous absorption and rayleigh scattering &#160;&#160;subroutine..." alt="" coords="128,5,276,47"/>
+<area shape="rect" id="node3" href="$group__module__radsw__main.html#ga1186b2e2f7ebd5fb6dfbb43222d3ab3c" title="This subroutine is the main sw radiation routine. " alt="" coords="324,5,472,47"/>
+<area shape="rect" id="node4" href="$group__module__radiation__driver.html#ga955c841d2ffda6975007d94101b79f7a" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="520,5,677,47"/>
 </map>

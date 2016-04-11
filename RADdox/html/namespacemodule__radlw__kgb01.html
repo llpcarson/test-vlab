@@ -52,6 +52,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="namespaces.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Types&#160;List</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -112,183 +114,40 @@ $(document).ready(function(){initNavTree('namespacemodule__radlw__kgb01.html',''
   <div class="summary">
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">module_radlw_kgb01 Module Reference</div>  </div>
+<div class="title">module_radlw_kgb01 Module Reference<div class="ingroups"><a class="el" href="group__rad.html">RRTMG Radiation Scheme</a> &raquo; <a class="el" href="group__module__radlw__main.html">module_radlw_main</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This module sets up absorption coefficients for band 01: 10-250 cm-1 (low - h2o; high - h2o)  
-</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a60db2a67b7f03a52fa88acd2c7874dfc"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a60db2a67b7f03a52fa88acd2c7874dfc">msa01</a></td></tr>
 <tr class="separator:a60db2a67b7f03a52fa88acd2c7874dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae34d953adc793ad27a294864e3e0e354"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#ae34d953adc793ad27a294864e3e0e354">msb01</a></td></tr>
-<tr class="separator:ae34d953adc793ad27a294864e3e0e354"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a321c2e84e14d28142d08bb5fbe485a67"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a321c2e84e14d28142d08bb5fbe485a67">msf01</a></td></tr>
-<tr class="separator:a321c2e84e14d28142d08bb5fbe485a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bd2e710d96291436f9ee36e99816a19"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a4bd2e710d96291436f9ee36e99816a19">mfr01</a></td></tr>
-<tr class="separator:a4bd2e710d96291436f9ee36e99816a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a218c6844f9043f362571f091a4f80522"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a218c6844f9043f362571f091a4f80522">mmn01</a></td></tr>
-<tr class="separator:a218c6844f9043f362571f091a4f80522"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdbe767d50d503c4a89d4042dd0dee8e"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a60db2a67b7f03a52fa88acd2c7874dfc">msa01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#acdbe767d50d503c4a89d4042dd0dee8e">absa</a></td></tr>
-<tr class="separator:acdbe767d50d503c4a89d4042dd0dee8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdaefe1c38d8bfcac5ef9b878fac77cb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#ae34d953adc793ad27a294864e3e0e354">msb01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#abdaefe1c38d8bfcac5ef9b878fac77cb">absb</a></td></tr>
-<tr class="separator:abdaefe1c38d8bfcac5ef9b878fac77cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14c7cc68b26c0ab1fdfda6faa2d485d5"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a321c2e84e14d28142d08bb5fbe485a67">msf01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a14c7cc68b26c0ab1fdfda6faa2d485d5">selfref</a></td></tr>
-<tr class="separator:a14c7cc68b26c0ab1fdfda6faa2d485d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd70a32f88808dc40c39edee5b76adbe"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a4bd2e710d96291436f9ee36e99816a19">mfr01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#acd70a32f88808dc40c39edee5b76adbe">forref</a></td></tr>
-<tr class="separator:acd70a32f88808dc40c39edee5b76adbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bca660247ac37483cd55c6936056631"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a0bca660247ac37483cd55c6936056631">fracrefa</a></td></tr>
-<tr class="separator:a0bca660247ac37483cd55c6936056631"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19b6a3893965817e82c77bee1de536cd"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a19b6a3893965817e82c77bee1de536cd">fracrefb</a></td></tr>
-<tr class="separator:a19b6a3893965817e82c77bee1de536cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4f08c625f2f25f132200811af42331"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a218c6844f9043f362571f091a4f80522">mmn01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#a0a4f08c625f2f25f132200811af42331">ka_mn2</a></td></tr>
-<tr class="separator:a0a4f08c625f2f25f132200811af42331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac357df5f66a7e384e22db58203ac294a"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a218c6844f9043f362571f091a4f80522">mmn01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__kgb01.html#ac357df5f66a7e384e22db58203ac294a">kb_mn2</a></td></tr>
-<tr class="separator:ac357df5f66a7e384e22db58203ac294a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae34d953adc793ad27a294864e3e0e354"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gae34d953adc793ad27a294864e3e0e354">msb01</a></td></tr>
+<tr class="separator:gae34d953adc793ad27a294864e3e0e354"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga321c2e84e14d28142d08bb5fbe485a67"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga321c2e84e14d28142d08bb5fbe485a67">msf01</a></td></tr>
+<tr class="separator:ga321c2e84e14d28142d08bb5fbe485a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bd2e710d96291436f9ee36e99816a19"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga4bd2e710d96291436f9ee36e99816a19">mfr01</a></td></tr>
+<tr class="separator:ga4bd2e710d96291436f9ee36e99816a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga218c6844f9043f362571f091a4f80522"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga218c6844f9043f362571f091a4f80522">mmn01</a></td></tr>
+<tr class="separator:ga218c6844f9043f362571f091a4f80522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacdbe767d50d503c4a89d4042dd0dee8e"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="namespacemodule__radlw__kgb01.html#a60db2a67b7f03a52fa88acd2c7874dfc">msa01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gacdbe767d50d503c4a89d4042dd0dee8e">absa</a></td></tr>
+<tr class="separator:gacdbe767d50d503c4a89d4042dd0dee8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabdaefe1c38d8bfcac5ef9b878fac77cb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="group__module__radlw__main.html#gae34d953adc793ad27a294864e3e0e354">msb01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gabdaefe1c38d8bfcac5ef9b878fac77cb">absb</a></td></tr>
+<tr class="separator:gabdaefe1c38d8bfcac5ef9b878fac77cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14c7cc68b26c0ab1fdfda6faa2d485d5"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="group__module__radlw__main.html#ga321c2e84e14d28142d08bb5fbe485a67">msf01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga14c7cc68b26c0ab1fdfda6faa2d485d5">selfref</a></td></tr>
+<tr class="separator:ga14c7cc68b26c0ab1fdfda6faa2d485d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd70a32f88808dc40c39edee5b76adbe"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="group__module__radlw__main.html#ga4bd2e710d96291436f9ee36e99816a19">mfr01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gacd70a32f88808dc40c39edee5b76adbe">forref</a></td></tr>
+<tr class="separator:gacd70a32f88808dc40c39edee5b76adbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0bca660247ac37483cd55c6936056631"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga0bca660247ac37483cd55c6936056631">fracrefa</a></td></tr>
+<tr class="separator:ga0bca660247ac37483cd55c6936056631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga19b6a3893965817e82c77bee1de536cd"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga19b6a3893965817e82c77bee1de536cd">fracrefb</a></td></tr>
+<tr class="separator:ga19b6a3893965817e82c77bee1de536cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a4f08c625f2f25f132200811af42331"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="group__module__radlw__main.html#ga218c6844f9043f362571f091a4f80522">mmn01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga0a4f08c625f2f25f132200811af42331">ka_mn2</a></td></tr>
+<tr class="separator:ga0a4f08c625f2f25f132200811af42331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac357df5f66a7e384e22db58203ac294a"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(ng01, <a class="el" href="group__module__radlw__main.html#ga218c6844f9043f362571f091a4f80522">mmn01</a>), public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gac357df5f66a7e384e22db58203ac294a">kb_mn2</a></td></tr>
+<tr class="separator:gac357df5f66a7e384e22db58203ac294a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="acdbe767d50d503c4a89d4042dd0dee8e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#a60db2a67b7f03a52fa88acd2c7874dfc">msa01</a>), public module_radlw_kgb01::absa</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abdaefe1c38d8bfcac5ef9b878fac77cb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#ae34d953adc793ad27a294864e3e0e354">msb01</a>), public module_radlw_kgb01::absb</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acd70a32f88808dc40c39edee5b76adbe"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#a4bd2e710d96291436f9ee36e99816a19">mfr01</a>), public module_radlw_kgb01::forref</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0bca660247ac37483cd55c6936056631"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01), public module_radlw_kgb01::fracrefa</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a19b6a3893965817e82c77bee1de536cd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01), public module_radlw_kgb01::fracrefb</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0a4f08c625f2f25f132200811af42331"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#a218c6844f9043f362571f091a4f80522">mmn01</a>), public module_radlw_kgb01::ka_mn2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac357df5f66a7e384e22db58203ac294a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#a218c6844f9043f362571f091a4f80522">mmn01</a>), public module_radlw_kgb01::kb_mn2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4bd2e710d96291436f9ee36e99816a19"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public module_radlw_kgb01::mfr01</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01617">1617</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a218c6844f9043f362571f091a4f80522"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public module_radlw_kgb01::mmn01</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01617">1617</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a60db2a67b7f03a52fa88acd2c7874dfc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -299,51 +158,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01617">1617</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae34d953adc793ad27a294864e3e0e354"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public module_radlw_kgb01::msb01</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01617">1617</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a321c2e84e14d28142d08bb5fbe485a67"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public module_radlw_kgb01::msf01</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01617">1617</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a14c7cc68b26c0ab1fdfda6faa2d485d5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(ng01,<a class="el" href="namespacemodule__radlw__kgb01.html#a321c2e84e14d28142d08bb5fbe485a67">msf01</a>), public module_radlw_kgb01::selfref</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01620">1620</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l03848">taugb01()</a>.</p>
+<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01633">1633</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
 
 </div>
 </div>

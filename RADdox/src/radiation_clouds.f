@@ -1,3 +1,7 @@
+!>  \file radiation_clouds.f
+!!  This file contains routines to compute cloud related quantities
+!!                for radiation computations
+
 !!!!!              module_radiation_clouds description             !!!!!
 !!!!!  ==========================================================  !!!!!
 !                                                                      !
@@ -134,7 +138,10 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-!> This module computes cloud related quantities for radiation computations 
+!> \ingroup rad
+!! \defgroup module_radiation_clouds module_radiation_clouds
+!! @{
+!> This module computes cloud related quantities for radiation computations
 !========================================!
       module module_radiation_clouds     !
 !........................................!
@@ -226,11 +233,8 @@
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine cld_init                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( si, NLAY, me )
+      subroutine cld_init
+     &     ( si, NLAY, me ) !  ---  inputs
 !  ---  outputs:
 !          ( none )
 
@@ -292,7 +296,7 @@
       if ( icldflg == 0 ) then
         if (me == 0) print *,' - Using Diagnostic Cloud Method'
 
-!> -# Calling rhtable, set up tuned rh table 
+!> -# Calling rhtable, set up tuned rh table
 !!\n  - subroutine rhtable: cld-rh relations obtained from mitchell-hahn procedure
 !  ---  set up tuned rh table
 
@@ -349,45 +353,41 @@
 !> @}
 
 !> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme.
-!!\param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)  
-!!\param[in] plvl    real, (IX,NLP1), model level pressure in mb (100Pa) 
-!!\param[in] tlyr    real, (IX,NLAY), model layer mean temperature in K    
-!!\param[in] tvly    real, (IX,NLAY), model layer virtual temperature in K  
-!!\param[in] qlyr    real, (IX,NLAY), layer specific humidity in gm/gm  
-!!\param[in] qstl    real, (IX,NLAY), layer saturate humidity in gm/gm  
+!!\param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)
+!!\param[in] plvl    real, (IX,NLP1), model level pressure in mb (100Pa)
+!!\param[in] tlyr    real, (IX,NLAY), model layer mean temperature in K
+!!\param[in] tvly    real, (IX,NLAY), model layer virtual temperature in K
+!!\param[in] qlyr    real, (IX,NLAY), layer specific humidity in gm/gm
+!!\param[in] qstl    real, (IX,NLAY), layer saturate humidity in gm/gm
 !!\param[in] rhly    real, (IX,NLAY), layer relative humidity \f$ (=qlyr/qstl) \f$
-!!\param[in] clw     real, (IX,NLAY), layer cloud condensate amount     
-!!\param[in] xlat    real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment 
-!!\param[in] xlon    real, (IX), grid longitude in radians  (not used)  
+!!\param[in] clw     real, (IX,NLAY), layer cloud condensate amount
+!!\param[in] xlat    real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param[in] xlon    real, (IX), grid longitude in radians  (not used)
 !!\param[in] slmsk   real, (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
-!!\param[in] IX           integer, horizontal dimention    
-!!\param[in] NLAY,NLP1    integer, vertical layer/level dimensions                                                                                                                               
-!!\param[out] clouds     real, (IX,NLAY,NF_CLDS), cloud profiles                    
-!!\n                     (:,:,1) - layer total cloud fraction     
-!!\n                     (:,:,2) - layer cloud liq water path \f$(g/m^2)\f$  
+!!\param[in] IX           integer, horizontal dimention
+!!\param[in] NLAY,NLP1    integer, vertical layer/level dimensions
+!!\param[out] clouds     real, (IX,NLAY,NF_CLDS), cloud profiles
+!!\n                     (:,:,1) - layer total cloud fraction
+!!\n                     (:,:,2) - layer cloud liq water path \f$(g/m^2)\f$
 !!\n                     (:,:,3) - mean eff radius for liq cloud (micron)
 !!\n                     (:,:,4) - layer cloud ice water path \f$(g/m^2)\f$
 !!\n                     (:,:,5) - mean eff radius for ice cloud (micron)
 !!\n                     (:,:,6) - layer rain drop water path (not assigned)
 !!\n                     (:,:,7) - mean eff radius for rain drop (micron)
 !!\n                     (:,:,8) - layer snow flake water path (not assigned)
-!!\n                     (:,:,9) - mean eff radius for snow flake (micron) 
+!!\n                     (:,:,9) - mean eff radius for snow flake (micron)
 !!\n  *** fu's scheme need to be normalized by snow density \f$ (g/m^3/1.0e6)\f$
 !!\param[out] clds       real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
-!!\param[out] mtop       integer, (IX,3), vertical indices for low, mid, hi cloud tops 
-!!\param[out] mbot       integer, (IX,3), vertical indices for low, mid, hi cloud bases  
+!!\param[out] mtop       integer, (IX,3), vertical indices for low, mid, hi cloud tops
+!!\param[out] mbot       integer, (IX,3), vertical indices for low, mid, hi cloud bases
 !>\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld1                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    &
-     &       xlat,xlon,slmsk,                                           &
-     &       IX, NLAY, NLP1, shoc_cld, cldcov,                          &
-!  ---  outputs:
-     &       clouds,clds,mtop,mbot                                      &
+      subroutine progcld1
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    !  ---  inputs:
+     &       xlat,xlon,slmsk,
+     &       IX, NLAY, NLP1, shoc_cld, cldcov,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -465,10 +465,10 @@
       integer,  intent(in) :: IX, NLAY, NLP1
 
       logical, intent(in)  :: shoc_cld
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw, cldcov
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
 
 !  ---  outputs
@@ -804,50 +804,46 @@
 !> @}
 
 !> This subroutine computes cloud related quantities using ferrier's prognostic cloud microphysics scheme.
-!!\param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa) 
-!!\param[in] plvl    real, (IX,NLP1), model level pressure in mb (100Pa)  
-!!\param[in] tlyr    real, (IX,NLAY), model layer mean temperature in K  
-!!\param[in] tvly    real, (IX,NLAY), model layer virtual temperature in K 
-!!\param[in] qlyr    real, (IX,NLAY), layer specific humidity in gm/gm  
-!!\param[in] qstl    real, (IX,NLAY), layer saturate humidity in gm/gm 
+!!\param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)
+!!\param[in] plvl    real, (IX,NLP1), model level pressure in mb (100Pa)
+!!\param[in] tlyr    real, (IX,NLAY), model layer mean temperature in K
+!!\param[in] tvly    real, (IX,NLAY), model layer virtual temperature in K
+!!\param[in] qlyr    real, (IX,NLAY), layer specific humidity in gm/gm
+!!\param[in] qstl    real, (IX,NLAY), layer saturate humidity in gm/gm
 !!\param[in] rhly    real, (IX,NLAY), layer relative humidity (=qlyr/qstl)
-!!\param[in] clw     real, (IX,NLAY), layer cloud condensate amount 
+!!\param[in] clw     real, (IX,NLAY), layer cloud condensate amount
 !!\param[in] f_ice   real, (IX,NLAY), fraction of layer cloud ice  (ferrier micro-phys)
 !!\param[in] f_rain  real, (IX,NLAY), fraction of layer rain water (ferrier micro-phys)
-!!\param[in] r_rime  real, (IX,NLAY), mass ratio of total ice to unrimed ice (>=1)  
-!!\param[in] flgmin  real, (IX), minimim large ice fraction   
-!!\param[in] xlat    real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment 
-!!\param[in] xlon    real, (IX), grid longitude in radians  (not used) 
-!!\param[in] slmsk   real, (IX), sea/land mask array (sea:0,land:1,sea-ice:2) 
-!!\param[in] IX      integer, horizontal dimention   
-!!\param[in] NLAY,NLP1     integer, vertical layer/level dimensions  
-!!\param[out] clouds      real, (IX,NLAY,NF_CLDS), cloud profiles 
-!!\n                      (:,:,1) - layer total cloud fraction   
-!!\n                      (:,:,2) - layer cloud liq water path  \f$(g/m^2)\f$  
+!!\param[in] r_rime  real, (IX,NLAY), mass ratio of total ice to unrimed ice (>=1)
+!!\param[in] flgmin  real, (IX), minimim large ice fraction
+!!\param[in] xlat    real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param[in] xlon    real, (IX), grid longitude in radians  (not used)
+!!\param[in] slmsk   real, (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
+!!\param[in] IX      integer, horizontal dimention
+!!\param[in] NLAY,NLP1     integer, vertical layer/level dimensions
+!!\param[out] clouds      real, (IX,NLAY,NF_CLDS), cloud profiles
+!!\n                      (:,:,1) - layer total cloud fraction
+!!\n                      (:,:,2) - layer cloud liq water path  \f$(g/m^2)\f$
 !!\n                      (:,:,3) - mean eff radius for liq cloud (micron)
-!!\n                      (:,:,4) - layer cloud ice water path  \f$(g/m^2)\f$ 
+!!\n                      (:,:,4) - layer cloud ice water path  \f$(g/m^2)\f$
 !!\n                      (:,:,5) - mean eff radius for ice cloud (micron)
-!!\n                      (:,:,6) - layer rain drop water path  \f$(g/m^2)\f$ 
-!!\n                      (:,:,7) - mean eff radius for rain drop (micron) 
-!!\n                      (:,:,8) - layer snow flake water path \f$(g/m^2)\f$    
-!!\n                      (:,:,9) - mean eff radius for snow flake (micron)     
-!!\n  *** fu's scheme need to be normalized by snow density (g/m**3/1.0e6) 
-!!\param[out] clds  real, (IX,5), fraction of clouds for low, mid, hi, tot, bl 
-!!\param[out] mtop  integer, (IX,3), vertical indices for low, mid, hi cloud tops 
-!!\param[out] mbot  integer, (IX,3), vertical indices for low, mid, hi cloud bases 
+!!\n                      (:,:,6) - layer rain drop water path  \f$(g/m^2)\f$
+!!\n                      (:,:,7) - mean eff radius for rain drop (micron)
+!!\n                      (:,:,8) - layer snow flake water path \f$(g/m^2)\f$
+!!\n                      (:,:,9) - mean eff radius for snow flake (micron)
+!!\n  *** fu's scheme need to be normalized by snow density (g/m**3/1.0e6)
+!!\param[out] clds  real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
+!!\param[out] mtop  integer, (IX,3), vertical indices for low, mid, hi cloud tops
+!!\param[out] mbot  integer, (IX,3), vertical indices for low, mid, hi cloud bases
 
 !>\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld2                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    &
-     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,               &
-     &       IX, NLAY, NLP1,                                            &
-!  ---  outputs:
-     &       clouds,clds,mtop,mbot                                      &
+      subroutine progcld2
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    !  ---  inputs
+     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,
+     &       IX, NLAY, NLP1,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -933,10 +929,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw, f_ice, f_rain, r_rime
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
       real (kind=kind_phys), dimension(:), intent(in) :: flgmin
 
@@ -1040,7 +1036,7 @@
         enddo
       enddo
 
-!> -# Call module_microphysics::rsipath2, in ferrier's scheme,to compute layer's cloud liquid, ice, 
+!> -# Call module_microphysics::rsipath2, in ferrier's scheme,to compute layer's cloud liquid, ice,
 !! rain, and snow water condensate path and the partical effective radius for liquid droplet, rain
 !! drop, and snow flake.
       call  rsipath2                                                    &
@@ -1294,7 +1290,7 @@
         enddo
       enddo
 
-!> -# Call gethml, to compute low, mid, high, total, and boundary layer cloud fractions and 
+!> -# Call gethml, to compute low, mid, high, total, and boundary layer cloud fractions and
 !! clouds top/bottom layer indices for low, mid, and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
@@ -1319,49 +1315,45 @@
 !> @}
 
 !> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme + pdfcld.
-!!\param[in] plyr       real, (ix,nlay), model layer mean pressure in mb (100pa)   
-!!\param[in] plvl       real, (ix,nlp1), model level pressure in mb (100pa)     
-!!\param[in] tlyr       real, (ix,nlay), model layer mean temperature in K 
+!!\param[in] plyr       real, (ix,nlay), model layer mean pressure in mb (100pa)
+!!\param[in] plvl       real, (ix,nlp1), model level pressure in mb (100pa)
+!!\param[in] tlyr       real, (ix,nlay), model layer mean temperature in K
 !!\param[in] tvly       real, (ix,nlay), model layer virtual temperature in K
 !!\param[in] qlyr       real, (ix,nlay), layer specific humidity in gm/gm
 !!\param[in] qstl       real, (ix,nlay), layer saturate humidity in gm/gm
-!!\param[in] rhly       real, (ix,nlay), layer relative humidity (=qlyr/qstl) 
-!!\param[in] clw        real, (ix,nlay), layer cloud condensate amount 
-!!\param[in] xlat       real, (ix), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment   
+!!\param[in] rhly       real, (ix,nlay), layer relative humidity (=qlyr/qstl)
+!!\param[in] clw        real, (ix,nlay), layer cloud condensate amount
+!!\param[in] xlat       real, (ix), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
 !!\param[in] xlon       real, (ix), grid longitude in radians  (not used)
-!!\param[in] slmsk      real, (ix), sea/land mask array (sea:0,land:1,sea-ice:2) 
-!!\param[in] ix         integer, horizontal dimention   
-!!\param[in] nlay,nlp1  integer, vertical layer/level dimensions 
-!!\param[in] deltaq     real, (ix,nlay), half total water distribution width 
-!!\param[in] sup        real, supersaturation   
+!!\param[in] slmsk      real, (ix), sea/land mask array (sea:0,land:1,sea-ice:2)
+!!\param[in] ix         integer, horizontal dimention
+!!\param[in] nlay,nlp1  integer, vertical layer/level dimensions
+!!\param[in] deltaq     real, (ix,nlay), half total water distribution width
+!!\param[in] sup        real, supersaturation
 !!\param[in] kdt        integer
 !!\param[in] me         integer, print control flag
-!!\param[out] clouds    real, (ix,nlay,nf_clds), cloud profiles   
-!!\n                    (:,:,1) - layer total cloud fraction 
-!!\n                    (:,:,2) - layer cloud liq water path (g/m**2) 
-!!\n                    (:,:,3) - mean eff radius for liq cloud (micron)  
-!!\n                    (:,:,4) - layer cloud ice water path (g/m**2)  
-!!\n                    (:,:,5) - mean eff radius for ice cloud (micron) 
-!!\n                    (:,:,6) - layer rain drop water path         not assigned 
-!!\n                    (:,:,7) - mean eff radius for rain drop (micron) 
-!!\n                    (:,:,8) - layer snow flake water path        not assigned  
+!!\param[out] clouds    real, (ix,nlay,nf_clds), cloud profiles
+!!\n                    (:,:,1) - layer total cloud fraction
+!!\n                    (:,:,2) - layer cloud liq water path (g/m**2)
+!!\n                    (:,:,3) - mean eff radius for liq cloud (micron)
+!!\n                    (:,:,4) - layer cloud ice water path (g/m**2)
+!!\n                    (:,:,5) - mean eff radius for ice cloud (micron)
+!!\n                    (:,:,6) - layer rain drop water path         not assigned
+!!\n                    (:,:,7) - mean eff radius for rain drop (micron)
+!!\n                    (:,:,8) - layer snow flake water path        not assigned
 !!\n                    (:,:,9) - mean eff radius for snow flake(micron)
 !!\param[out] clds      real, (ix,5), fraction of clouds for low, mid, hi, tot, bl
-!!\param[out] mtop      integer, (ix,3), vertical indices for low, mid, hi cloud tops 
-!!\param[out] mbot      integer, (ix,3), vertical indices for low, mid, hi cloud bases  
+!!\param[out] mtop      integer, (ix,3), vertical indices for low, mid, hi cloud tops
+!!\param[out] mbot      integer, (ix,3), vertical indices for low, mid, hi cloud bases
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld3                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,          &
-     &       xlat,xlon,slmsk,                                           &
-     &       ix, nlay, nlp1,                                            &
-     &       deltaq,sup,kdt,me,                                         &
-!  ---  outputs:
-     &       clouds,clds,mtop,mbot                                      &
+      subroutine progcld3
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,         !  ---  inputs
+     &       xlat,xlon,slmsk,
+     &       ix, nlay, nlp1,
+     &       deltaq,sup,kdt,me,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1442,7 +1434,7 @@
 !  ---  inputs
       integer,  intent(in) :: ix, nlay, nlp1,kdt
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw
 !     &       tlyr, tvly, qlyr, qstl, rhly, clw, cnvw, cnvc
 !      real (kind=kind_phys), dimension(:,:), intent(in) :: deltaq
@@ -1451,7 +1443,7 @@
       real (kind=kind_phys), intent(in) :: sup
       real (kind=kind_phys), parameter :: epsq = 1.0e-12
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
       integer :: me
 
@@ -1761,39 +1753,34 @@
 !> @}
 
 !> This subroutine computes cloud fractions for radiation calculations.
-!!\param[in] plyr      real, (IX,NLAY), model layer mean pressure in mb (100Pa) 
-!!\param[in] plvl      real, (IX,NLP1), model level pressure in mb (100Pa)  
-!!\param[in] tlyr      real, (IX,NLAY), model layer mean temperature in K   
-!!\param[in] rhly      real, (IX,NLAY), layer relative humidity 
-!!\param[in] vvel      real, (IX,NLAY), layer mean vertical velocity in mb/sec  
-!!\param[in] cv        real, (IX), fraction of convective cloud 
+!!\param[in] plyr      real, (IX,NLAY), model layer mean pressure in mb (100Pa)
+!!\param[in] plvl      real, (IX,NLP1), model level pressure in mb (100Pa)
+!!\param[in] tlyr      real, (IX,NLAY), model layer mean temperature in K
+!!\param[in] rhly      real, (IX,NLAY), layer relative humidity
+!!\param[in] vvel      real, (IX,NLAY), layer mean vertical velocity in mb/sec
+!!\param[in] cv        real, (IX), fraction of convective cloud
 !!\param[in] cvt, cvb  real, (IX), conv cloud top/bottom pressure in mb
-!!\param[in] xlat      real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment  
-!!\param[in] xlon      real, (IX), grid longitude in radians, ok for both 0->2pi or -pi -> +pi ranges     
-!!\param[in] slmsk     real, (IX), sea/land mask array (sea:0,land:1,sea-ice:2) 
-!!\param[in] IX        integer, horizontal dimention 
-!!\param[in] NLAY,NLP1       integer, vertical layer/level dimensions 
-!!\param[out] clouds         real, (IX,NLAY,NF_CLDS), cloud profiles   
-!!\n                         (:,:,1) - layer total cloud fraction  
-!!\n                         (:,:,2) - layer cloud optical depth 
-!!\n                         (:,:,3) - layer cloud single scattering albedo   
-!!\n                         (:,:,4) - layer cloud asymmetry factor    
-!!\param[out] clds           real, (IX,5), fraction of clouds for low, mid, hi, tot, bl 
-!!\param[out] mtop           integer, (IX,3), vertical indices for low, mid, hi cloud tops 
-!!\param[out] mbot           real, (IX,3), vertical indices for low, mid, hi cloud bases 
+!!\param[in] xlat      real, (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param[in] xlon      real, (IX), grid longitude in radians, ok for both 0->2pi or -pi -> +pi ranges
+!!\param[in] slmsk     real, (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
+!!\param[in] IX        integer, horizontal dimention
+!!\param[in] NLAY,NLP1       integer, vertical layer/level dimensions
+!!\param[out] clouds         real, (IX,NLAY,NF_CLDS), cloud profiles
+!!\n                         (:,:,1) - layer total cloud fraction
+!!\n                         (:,:,2) - layer cloud optical depth
+!!\n                         (:,:,3) - layer cloud single scattering albedo
+!!\n                         (:,:,4) - layer cloud asymmetry factor
+!!\param[out] clds           real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
+!!\param[out] mtop           integer, (IX,3), vertical indices for low, mid, hi cloud tops
+!!\param[out] mbot           real, (IX,3), vertical indices for low, mid, hi cloud bases
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine diagcld1                                               &
-
-!...................................
-
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                       &
-     &       xlat,xlon,slmsk,                                           &
-     &       IX, NLAY, NLP1,                                            &
-!  ---  outputs:
-     &       clouds,clds,mtop,mbot                                      &
+      subroutine diagcld1
+     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                       !  ---  inputs:
+     &       xlat,xlon,slmsk,
+     &       IX, NLAY, NLP1,
+     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1858,10 +1845,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, rhly, vvel
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk, cv, cvt, cvb
 
 !  ---  outputs
@@ -2066,9 +2053,9 @@
         enddo
 
         do i = 1, IX
-        
+
 !>    - Find the stratosphere cut off layer for high cloud (about 250mb).
-!!      It is assumed to be above the layerwith dthdp less than -0.25 in 
+!!      It is assumed to be above the layerwith dthdp less than -0.25 in
 !!      the high cloud domain
 !  ---  find the stratosphere cut off layer for high cloud (about 250mb).
 !       it is assumed to be above the layer with dthdp less than -0.25 in
@@ -2113,7 +2100,7 @@
           endif
 
         enddo                ! end_do_i_loop
-        
+
 !>    - Calculate stratiform cloud and put into array 'cldtot' using the cld-rh relationship
 !!      from table look-up.where tables obtained using k.mitchell frequency distribution tuning
 !  ---  calculate stratiform cloud and put into array 'cldtot' using
@@ -2378,7 +2365,7 @@
         enddo
       enddo
 
-!> -# Calling gethml, to compute low, mid, high, total, and boundary layer cloud fractions 
+!> -# Calling gethml, to compute low, mid, high, total, and boundary layer cloud fractions
 !! and cloud top/bottom layer indices for low, mid, and high clouds.
 !
 !===> ... compute low, mid, high, total, and boundary layer cloud fractions
@@ -2405,14 +2392,10 @@
 !> This subroutine computes high, mid, low, total, and boundary cloud fractions
 !! and cloud top/bottom layer indices for model diagnostic output.
 !-----------------------------------                                    !
-      subroutine gethml                                                 &
-!...................................                                    !
-
-!  ---  inputs:
-     &     ( plyr, ptop1, cldtot, cldcnv,                               &
-     &       IX, NLAY,                                                  &
-!  ---  outputs:
-     &       clds, mtop, mbot                                           &
+      subroutine gethml
+     &     ( plyr, ptop1, cldtot, cldcnv,                             !  ---  inputs:
+     &       IX, NLAY,
+     &       clds, mtop, mbot                                       !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -2728,13 +2711,10 @@
 
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !
-      subroutine rhtable                                                &
-!...................................                                    !
+      subroutine rhtable
+     &     ( me                                                       !  ---  inputs
+     &,      ier )                                                     !  ---  outputs
 
-!  ---  inputs:
-     &     ( me                                                         &
-!  ---  outputs:
-     &,      ier )
 
 !  ===================================================================  !
 !                                                                       !
@@ -2995,4 +2975,4 @@
 !........................................!
       end module module_radiation_clouds !
 !========================================!
-
+!> @}

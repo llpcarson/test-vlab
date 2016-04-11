@@ -1,3 +1,11 @@
+!>  \file radlw_param.f
+!!  This file contains LW band parameters setup.
+
+!>  \addtogroup rad
+!!  @{
+!!  \addtogroup module_radlw_main
+!!  @{
+
 !!!!!  ==============================================================  !!!!!
 !!!!!             lw-rrtm3 radiation package description               !!!!!
 !!!!!  ==============================================================  !!!!!
@@ -53,6 +61,7 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
+!> \defgroup module_radlw_parameters
 !> This module contains LW band parameters set up.
 !========================================!
       module module_radlw_parameters     !
@@ -156,3 +165,5 @@
 !........................................!
       end module module_radlw_parameters !
 !========================================!
+!> @}
+!! @}

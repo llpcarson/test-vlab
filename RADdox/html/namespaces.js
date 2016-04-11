@@ -46,7 +46,5 @@ var namespaces =
     [ "module_radsw_main", "namespacemodule__radsw__main.html", null ],
     [ "module_radsw_parameters", "namespacemodule__radsw__parameters.html", null ],
     [ "module_radsw_ref", "namespacemodule__radsw__ref.html", null ],
-    [ "module_radsw_sflux", "namespacemodule__radsw__sflux.html", null ],
-    [ "physcons", "namespacephyscons.html", null ],
-    [ "physparam", "namespacephysparam.html", null ]
+    [ "module_radsw_sflux", "namespacemodule__radsw__sflux.html", null ]
 ];

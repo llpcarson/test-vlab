@@ -1,3 +1,9 @@
+!>  \file radiation_gases.f
+!!  This file contains routines that set up ozone climatological profiles and other constant gas
+!!   profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All
+!!   data are entered as mixing ratio by volume, except ozone which is
+!!   mass mixing ratio (g/g).
+
 !  ==========================================================  !!!!!
 !              'module_radiation_gases'  description           !!!!!
 !  ==========================================================  !!!!!
@@ -98,10 +104,13 @@
 !!!!!  ==========================================================  !!!!!
 
 
-!> This module sets up ozone climatological profiles and other constant gas       
-!! profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All 
-!! data are entered as mixing ratio by volume, except ozone which is 
-!! mass mixing ratio (g/g). 
+!> \ingroup rad
+!! \defgroup module_radiation_gases module_radiation_gases
+!! @{
+!> This module sets up ozone climatological profiles and other constant gas
+!! profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All
+!! data are entered as mixing ratio by volume, except ozone which is
+!! mass mixing ratio (g/g).
 !========================================!
       module module_radiation_gases      !
 !........................................!
@@ -189,7 +198,7 @@
       contains
 ! =================
 
-!> This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then 
+!> This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then
 !! read in monthly ozone data.
 !!\param[in] me         integer, 1, print message control flag
 !!\param[out] NONE
@@ -212,11 +221,8 @@
 !!\n physparam::co2usr_file   - external co2 user defined data table
 !!\n physparam::co2cyc_file   - external co2 climotology monthly cycle data table
 !-----------------------------------
-      subroutine gas_init                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( me )
+      subroutine gas_init
+     &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
 !  ===================================================================  !
@@ -503,14 +509,14 @@
 !> This subroutine reads in 2-d monthly co2 data set for a specified year.
 !! data are in a 15 degree lat/lon horizontal resolution.
 
-!!\param[in] iyear      integer, 1, year of the requested data for fcst 
-!!\param[in] imon       integer, 1, month of the year    
-!!\param[in] iday       integer, 1, day of the month      
-!!\param[in] ihour      integer, 1, hour of the day 
-!!\param[in] loz1st     logical, 1, clim ozone 1st time update control flag 
-!!\param[in] ldoco2     logical, 1, co2 update control flag      
+!!\param[in] iyear      integer, 1, year of the requested data for fcst
+!!\param[in] imon       integer, 1, month of the year
+!!\param[in] iday       integer, 1, day of the month
+!!\param[in] ihour      integer, 1, hour of the day
+!!\param[in] loz1st     logical, 1, clim ozone 1st time update control flag
+!!\param[in] ldoco2     logical, 1, co2 update control flag
 !!\param[in] me         integer, 1, print message control flag
-!!\param[out] NONE       
+!!\param[out] NONE
 !!\section external External Module Variables:
 !!\n physparam::ico2flg    - co2 data source control flag
 !!\n                         =0: use prescribed co2 global mean value
@@ -530,11 +536,8 @@
 !!\n physparam::co2usr_file   - external co2 user defined data table
 !!\n physparam::co2cyc_file   - external co2 climotology monthly cycle data table
 !-----------------------------------
-      subroutine gas_update                                             &
-!...................................
-
-!  ---  inputs:
-     &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )
+      subroutine gas_update
+     &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
 !  ---  outputs: ( none )
 
 !  ===================================================================  !
@@ -903,30 +906,30 @@
       end subroutine gas_update
 !-----------------------------------
 
-!> This subroutine sets up global distribution of radiation absorbing gases in volume 
-!! mixing ratio. currently only co2 has the options from observed values, all other 
+!> This subroutine sets up global distribution of radiation absorbing gases in volume
+!! mixing ratio. currently only co2 has the options from observed values, all other
 !! gases are asigned to the climatological values.
 !!\param[in] plvl       real, (IMAX,LMAX+1), pressure at model layer interfaces (mb)
-!!\param[in] xlon       real, (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements  
-!!\param[in] xlat       real, (IMAX), grid latitude in radians, default range to pi/2 -> -pi/2, otherwise see in-line comment 
+!!\param[in] xlon       real, (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements
+!!\param[in] xlat       real, (IMAX), grid latitude in radians, default range to pi/2 -> -pi/2, otherwise see in-line comment
 !!\param[in] IMAX, LMAX       integer, horiz/vert dimensions for output data
-!!\param[out] gasdat    real, (IMAX,LMAX,NF_VGAS) - gases volume mixing ratioes 
-!!\n                    (:,:,1)           - co2  
-!!\n                    (:,:,2)           - n2o    
-!!\n                    (:,:,3)           - ch4     
-!!\n                    (:,:,4)           - o2  
-!!\n                    (:,:,5)           - co 
+!!\param[out] gasdat    real, (IMAX,LMAX,NF_VGAS) - gases volume mixing ratioes
+!!\n                    (:,:,1)           - co2
+!!\n                    (:,:,2)           - n2o
+!!\n                    (:,:,3)           - ch4
+!!\n                    (:,:,4)           - o2
+!!\n                    (:,:,5)           - co
 !!\n                    (:,:,6)           - cfc11
-!!\n                    (:,:,7)           - cfc12  
+!!\n                    (:,:,7)           - cfc12
 !!\n                    (:,:,8)           - cfc22
 !!\n                    (:,:,9)           - ccl4
-!!\n                    (:,:,10)          - cfc113  
+!!\n                    (:,:,10)          - cfc113
 !!\section external External Module Variables
-!!\n physparam::ico2flg    - co2 data source control flag             
-!!\n                         =0: use prescribed co2 global mean value  
-!!\n                         =1: use input global mean co2 value (co2_glb) 
-!!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav) 
-!!\n physparam::ivflip     - vertical profile indexing flag                
+!!\n physparam::ico2flg    - co2 data source control flag
+!!\n                         =0: use prescribed co2 global mean value
+!!\n                         =1: use input global mean co2 value (co2_glb)
+!!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav)
+!!\n physparam::ivflip     - vertical profile indexing flag
 !-----------------------------------
       subroutine getgases                                               &
 !...................................
@@ -1077,18 +1080,14 @@
 !> This subroutine sets up climatological ozone profile for radiation calculation
 !! this code is originally written by Shrinivas Moorthi.
 !!\param[in] prslk       real, (IMAX,LM), exner function = \f$(p/p0)^{rocp}\f$
-!!\param[in] xlat        real, (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment 
-!!\param[in] IMAX, LM    integer, horizontal and vertical dimensions   
+!!\param[in] xlat        real, (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param[in] IMAX, LM    integer, horizontal and vertical dimensions
 !!\param[out] o3mmr      real, (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
 !-----------------------------------
-      subroutine getozn                                                 &
-!...................................
-
-!  ---  inputs:
-     &     ( prslk,xlat,                                                &
-     &       IMAX, LM,                                                  &
-!  ---  outputs:
-     &       o3mmr                                                      &
+      subroutine getozn
+     &     ( prslk,xlat,                                                !  ---  inputs
+     &       IMAX, LM,
+     &       o3mmr                                                      !  ---  outputs
      &     )
 
 !  ===================================================================  !
@@ -1128,7 +1127,7 @@
 !  ---  locals:
       real (kind=kind_phys) :: o3i(IMAX,LOZ), wk1(IMAX), deglat, elte,  &
      &                         tem, tem1, tem2, tem3, tem4, temp
-                                                                               
+
       integer :: i, j, k, l, j1, j2, ll
 !
 !===> ...  begin here
@@ -1196,3 +1195,4 @@
 !........................................!
       end module module_radiation_gases  !
 !========================================!
+!> @}

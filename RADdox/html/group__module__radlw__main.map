@@ -1,0 +1,23 @@
+<map id="module_radlw_main" name="module_radlw_main">
+<area shape="rect" id="node1" href="$group__module__radlw__kgb01.html" title="This module sets up absorption coefficients for band 01: 10&#45;250 cm&#45;1 (low &#45; h2o; high &#45; h2o) ..." alt="" coords="431,5,574,32"/>
+<area shape="rect" id="node2" href="$group__module__radlw__kgb02.html" title="This module sets up absorption coefficients for band 02: 250&#45;500 cm&#45;1 (low &#45; h2o; high &#45; h2o) ..." alt="" coords="431,56,574,83"/>
+<area shape="rect" id="node3" href="$group__module__radlw__kgb03.html" title="This module sets up absorption coefficients for band 03: 500&#45;630 cm&#45;1 (low &#45; h2o, co2; high &#45; h2o..." alt="" coords="431,107,574,133"/>
+<area shape="rect" id="node4" href="$group__module__radlw__kgb04.html" title="This module sets up absorption coefficients for band 04: 630&#45;700 cm&#45;1 (low &#45; h2o, co2; high &#45; co2..." alt="" coords="431,157,574,184"/>
+<area shape="rect" id="node5" href="$group__module__radlw__kgb05.html" title="This module sets up absorption coefficients for band 05: 700&#45;820 cm&#45;1 (low &#45; h2o, co2; high &#45; co2..." alt="" coords="431,208,574,235"/>
+<area shape="rect" id="node6" href="$group__module__radlw__kgb06.html" title="This module sets up absorption coefficients for band 06: 820&#45;980 cm&#45;1 (low &#45; h2o; high &#45; /) ..." alt="" coords="431,259,574,285"/>
+<area shape="rect" id="node7" href="$group__module__radlw__kgb07.html" title="This module sets up absorption coefficients for band 07: 980&#45;1080 cm&#45;1 (low &#45; h2o, o3; high &#45; o3) " alt="" coords="431,309,574,336"/>
+<area shape="rect" id="node8" href="$group__module__radlw__kgb08.html" title="This module sets up absorption coefficients for band 08: 1080&#45;1180 cm&#45;1 (low &#45; h2o; high &#45; o3) ..." alt="" coords="431,360,574,387"/>
+<area shape="rect" id="node9" href="$group__module__radlw__kgb09.html" title="This module sets up absorption coefficients for band 09: 1180&#45;1390 cm&#45;1 (low &#45; h2o, ch4; high &#45; ch4) " alt="" coords="431,411,574,437"/>
+<area shape="rect" id="node10" href="$group__module__radlw__kgb10.html" title="This module sets up absorption coefficients for band 10: 1390&#45;1480 cm&#45;1 (low &#45; h2o; high &#45; h2o) ..." alt="" coords="431,461,574,488"/>
+<area shape="rect" id="node11" href="$group__module__radlw__kgb11.html" title="This module sets up absorption coefficients for band 11: 1480&#45;1800 cm&#45;1 (low &#45; h2o; high &#45; h2o) ..." alt="" coords="431,512,574,539"/>
+<area shape="rect" id="node12" href="$group__module__radlw__kgb12.html" title="This module sets up absorption coefficients for band 12: 1800&#45;2080 cm&#45;1 (low &#45; h2o, co2; high &#45; /) " alt="" coords="431,563,574,589"/>
+<area shape="rect" id="node13" href="$group__module__radlw__kgb13.html" title="This module sets up absorption coefficients for band 13: 2080&#45;2250 cm&#45;1 (low &#45; h2o, n2o; high &#45; /) " alt="" coords="431,613,574,640"/>
+<area shape="rect" id="node14" href="$group__module__radlw__kgb14.html" title="This module sets up absorption coefficients for band 14: 2250&#45;2380 cm&#45;1 (low &#45; co2; high &#45; co2) ..." alt="" coords="431,664,574,691"/>
+<area shape="rect" id="node15" href="$group__module__radlw__kgb15.html" title="This module sets up absorption coefficients for band 15: 2380&#45;2600 cm&#45;1 (low &#45; n2o, co2; high &#45; /) " alt="" coords="431,715,574,741"/>
+<area shape="rect" id="node16" href="$group__module__radlw__kgb16.html" title="This module sets up absorption coefficients for band 16: 2600&#45;3000 cm&#45;1 (low &#45; h2o, ch4; high &#45; /) " alt="" coords="431,765,574,792"/>
+<area shape="rect" id="node17" href="$group__module__radlw__cldprlw.html" title="This module contains cloud property coefficients. " alt="" coords="429,816,577,843"/>
+<area shape="rect" id="node18" href="$group__module__radlw__parameters.html" title="This module contains LW band parameters set up. " alt="" coords="416,867,589,893"/>
+<area shape="rect" id="node19" href="$group__rad.html" title="one line description " alt="" coords="5,487,184,513"/>
+<area shape="rect" id="node21" href="$group__module__radlw__avplank.html" title="This module contains plank flux data. " alt="" coords="427,917,578,944"/>
+<area shape="rect" id="node22" href="$group__module__radlw__ref.html" title="This module contains reference temperature and pressure. " alt="" coords="441,968,564,995"/>
+</map>

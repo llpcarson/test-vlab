@@ -1,0 +1,26 @@
+\hypertarget{zhang__orig_2radiation__surface_8f}{}\section{zhang\+\_\+orig/radiation\+\_\+surface.f File Reference}
+\label{zhang__orig_2radiation__surface_8f}\index{zhang\+\_\+orig/radiation\+\_\+surface.\+f@{zhang\+\_\+orig/radiation\+\_\+surface.\+f}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacemodule__radiation__surface}{module\+\_\+radiation\+\_\+surface}
+\begin{DoxyCompactList}\small\item\em This module sets up surface albedo for sw radiation and surface emissivity for lw radiation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{group__module__radiation__surface_ga498f81178239045860c84680f3622362}{module\+\_\+radiation\+\_\+surface\+::sfc\+\_\+init}
+\begin{DoxyCompactList}\small\item\em This subroutine is the initialization program for surface radiation related quantities (albedo, emissivity, etc.) \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{group__module__radiation__surface_ga9b989fb8c2f3e384c3cf15c1b2470dc6}{module\+\_\+radiation\+\_\+surface\+::setalb}
+\begin{DoxyCompactList}\small\item\em This subroutine computes four components of surface albedos (i.\+e., vis-\/nir, direct-\/diffused) according to control flag ialbflg. ~\newline
+ 1) climatological surface albedo scheme (briegleb 1992) ~\newline
+ 2) modis retrieval based scheme from boston univ. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{group__module__radiation__surface_ga896fc2234aac2330a62f0076bab97634}{module\+\_\+radiation\+\_\+surface\+::setemis}
+\begin{DoxyCompactList}\small\item\em This subroutine computes surface emissivity for LW radiation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+

@@ -1,5 +1,10 @@
 \hypertarget{module__bfmicrophysics_8f}{}\section{module\+\_\+bfmicrophysics.\+f File Reference}
 \label{module__bfmicrophysics_8f}\index{module\+\_\+bfmicrophysics.\+f@{module\+\_\+bfmicrophysics.\+f}}
+
+
+In the radiation context, this file has the rsipath2 subroutine used in the radiation\+\_\+clouds module.  
+
+
 \subsection*{Modules}
 \begin{DoxyCompactItemize}
 \item 
@@ -16,18 +21,18 @@ subroutine \hyperlink{namespacemodule__microphysics_a9273c6542f2e983e0f9040c8090
 \item 
 subroutine \hyperlink{namespacemodule__microphysics_a0090b42e85bd381e5459a9e8db9dc120}{module\+\_\+microphysics\+::rain\+\_\+lookup}
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_a7a0b4005a965eda2890022b02f807bb7}{module\+\_\+microphysics\+::gsmcolumn} (A\+R\+A\+I\+NG, A\+S\+N\+O\+WG, D\+T\+PG, I\+\_\+index, J\+\_\+index,    
+subroutine \hyperlink{namespacemodule__microphysics_a9874b115916d29a6688228ce0a5c2886}{module\+\_\+microphysics\+::gsmcolumn} (A\+R\+A\+I\+NG, A\+S\+N\+O\+WG, D\+T\+PG, I\+\_\+index, J\+\_\+index,           L\+S\+FC, P\+\_\+col, Q\+I\+\_\+col, Q\+R\+\_\+col, Q\+V\+\_\+col, Q\+W\+\_\+col, Rime\+F\+\_\+col, T\+\_\+col,       T\+H\+I\+C\+K\+\_\+col, W\+C\+\_\+col, LM, R\+H\+C\+\_\+col, X\+N\+CW, F\+L\+Gmin, P\+R\+I\+N\+T\+\_\+diag, psfc)
 \item 
 real function \hyperlink{module__bfmicrophysics_8f_ac3e5788798119e5db1749932012a1096}{condense} (PP, QW, R\+Hgrd, TK, WV)
 \item 
 real function \hyperlink{module__bfmicrophysics_8f_a3c00353fd3ab0fba51a524a05a5fc640}{deposit} (PP, R\+Hgrd, Tdum, W\+Vdum)
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_a9cf7964ff1097213773b2b91e13d18d0}{module\+\_\+microphysics\+::rsipath} (im, ix, ix2, levs, prsl, prsi, t, q, clw          
+subroutine \hyperlink{namespacemodule__microphysics_a3e5e830e9ac0ef923bf65dda93abce33}{module\+\_\+microphysics\+::rsipath} (im, ix, ix2, levs, prsl, prsi, t, q, clw                   ,                                                               f\+\_\+ice, f\+\_\+rain, f\+\_\+rime, flgmin                                                               ,                                                               cwatp, cicep, rainp, snowp                                                                           ,                                                               recwat, rerain, resnow, lprnt, ipr)
 \end{DoxyCompactItemize}
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f}{module\+\_\+microphysics\+::rsipath2}                                                                                           
+subroutine \hyperlink{group__module__radiation__clouds_ga3645dec44f2cc7e30b57d32531f74ba4}{module\+\_\+microphysics\+::rsipath2}
 \begin{DoxyCompactList}\small\item\em This subroutine is a modified version of ferrier\textquotesingle{}s original \char`\"{}rsipath\char`\"{} subprogram. It computes layer\textquotesingle{}s cloud liquid, ice, rain, and snow water condensate path and the partical effective radius for liquid droplet, rain drop, and snow flake. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 \subsection*{Variables}
@@ -43,6 +48,42 @@ real, private \hyperlink{namespacemodule__microphysics_a1c6192a9baafa2b341b19628
 \item 
 real, private \hyperlink{namespacemodule__microphysics_ac36c8de45d04aab21833d22133311284}{module\+\_\+microphysics\+::c\+\_\+n0r0}
 \item 
+real, private \hyperlink{namespacemodule__microphysics_a4b8b65e65be09b3e9a5cceca947fc408}{module\+\_\+microphysics\+::cn0r0}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_abd42b2566e31b5d29c6f69471cb3ec5d}{module\+\_\+microphysics\+::cn0r\+\_\+dmrmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a3757ff5b4210247ec04e08537dfa9696}{module\+\_\+microphysics\+::cn0r\+\_\+dmrmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ac2d7886b9a3b896fbfdce0e3bf3b805a}{module\+\_\+microphysics\+::cracw}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_aa70387aeb638af57989b45128bfe387d}{module\+\_\+microphysics\+::craut}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a74a1e9686afb4c7b7b7913cf9615ee0c}{module\+\_\+microphysics\+::esw0}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a207d110ab05ae003282c44232b6bb8b1}{module\+\_\+microphysics\+::qautx}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a733f21868223ca01612507355d0b85be}{module\+\_\+microphysics\+::rfmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ada6772b0bc7347f6ebb3c31f2df43563}{module\+\_\+microphysics\+::rqr\+\_\+dr1}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ab0d5f615986c3482d2fad8542c4f52b8}{module\+\_\+microphysics\+::rqr\+\_\+dr2}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a1408a4c383136f8beb5d92049a5461a1}{module\+\_\+microphysics\+::rqr\+\_\+dr3}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_af455571cfd5c41222b9cf86fd014a30f}{module\+\_\+microphysics\+::rqr\+\_\+drmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ae58b71fa9e96b0836c12a143455ca83b}{module\+\_\+microphysics\+::rqr\+\_\+drmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a6f0adb81dca26899ff77f0a454206559}{module\+\_\+microphysics\+::rr\+\_\+drmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a31a6bca21f180e2715bbefa18ef32b08}{module\+\_\+microphysics\+::rr\+\_\+dr1}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a47ffe9826a0f85b6bf41c1cf06cf148f}{module\+\_\+microphysics\+::rr\+\_\+dr2}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_afbed7ecd787abc8db3c7ff6160412fa1}{module\+\_\+microphysics\+::rr\+\_\+dr3}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_af631f5533a9284cf93087bb35396a9de}{module\+\_\+microphysics\+::rr\+\_\+drmax}
+\item 
 integer, private \hyperlink{namespacemodule__microphysics_acb3899d31d6f2079a2d41c3e551e3443}{module\+\_\+microphysics\+::mic\+\_\+step}
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aae73524f22f4bc2373aaa5d8a6f7e7d6}{module\+\_\+microphysics\+::my\+\_\+t1} =1
@@ -55,13 +96,39 @@ real, parameter, private \hyperlink{namespacemodule__microphysics_a10a6db795f339
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_ab71ad8ff5f6f170585e96194373be5cc}{module\+\_\+microphysics\+::dmimax} =1.e-\/3
 \item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ac355dc0d92140f99522cb35dc025e9b3}{module\+\_\+microphysics\+::xmimin} =1.e6$\ast$D\+M\+Imin
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ae678585401e3fd39ce21f225ae430677}{module\+\_\+microphysics\+::xmimax} =1.e6$\ast$D\+M\+Imax
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a50ee0e811da6e52c191f977407e9e47d}{module\+\_\+microphysics\+::deldmi} =1.e-\/6
+\item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a81bcf203ed1a75b10ea2c7f97ac56a21}{module\+\_\+microphysics\+::mdimin} =X\+M\+Imin
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a28b728213c1425c1bd5c05c9a469b92a}{module\+\_\+microphysics\+::mdimax} =X\+M\+Imax
 \item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a85112c2881ca373d648a39bd0c5843fa}{module\+\_\+microphysics\+::accri}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a399ef7965cf1f4f6e4aef482e33f9b16}{module\+\_\+microphysics\+::massi}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_ab31a2c459480d3b9ba2388d3f60db179}{module\+\_\+microphysics\+::sdens}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_acd06af071ee4f0a5bb4599f239916dd7}{module\+\_\+microphysics\+::vsnowi}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a420fb71de46ebdf9a097147bf9f9debe}{module\+\_\+microphysics\+::venti1}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a340e6633b234e32289115c3ff08277c5}{module\+\_\+microphysics\+::venti2}
+\item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a67a841cda9f172633fa4895d1a3433e7}{module\+\_\+microphysics\+::dmrmin} =.\+05e-\/3
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a5faae0c4f54f72f04b2874f5588276f5}{module\+\_\+microphysics\+::dmrmax} =.\+45e-\/3
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a77fb6cadd143fc66a45cfdae1569cd81}{module\+\_\+microphysics\+::xmrmin} =1.e6$\ast$D\+M\+Rmin
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ad2c7abf18a4c75103e965cb9c856e6f7}{module\+\_\+microphysics\+::xmrmax} =1.e6$\ast$D\+M\+Rmax
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a8196aeaa83acb0941194563281aa721b}{module\+\_\+microphysics\+::deldmr} =1.e-\/6
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a9a5f8e03c03725a03b9fc923d095e31a}{module\+\_\+microphysics\+::nlimin} =100.
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aa9201f3dba87b517d0fe88af177c4281}{module\+\_\+microphysics\+::mdrmin} =X\+M\+Rmin
 \item 
@@ -70,6 +137,18 @@ integer, parameter, private \hyperlink{namespacemodule__microphysics_aa21f2a4aa4
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a48966fa99ac5a7268ef5f473a675eeb2}{module\+\_\+microphysics\+::indexsmin} =100
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a86f747f0e2a77aee3a2c8270a0f2fc6d}{module\+\_\+microphysics\+::rerainmin} =1.\+5$\ast$X\+M\+Rmin
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_ac58ee32a06efc573a2c380d77cd4e5c5}{module\+\_\+microphysics\+::accrr}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a3b33f42c343ef0fbfe6585bbeccc99c7}{module\+\_\+microphysics\+::massr}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a481bd873812c291fe7ddce951cf6440d}{module\+\_\+microphysics\+::rrate}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_aa57b0e61801d417b3866f69269e886b2}{module\+\_\+microphysics\+::vrain}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a17a8a4c24d0e7bd36c202103141dc1f8}{module\+\_\+microphysics\+::ventr1}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a95936805512ce6f13a072461b3694020}{module\+\_\+microphysics\+::ventr2}
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aaea427462ab04c90a0e8188c08e102c2}{module\+\_\+microphysics\+::nrime} =40
 \item 
@@ -107,7 +186,7 @@ real, parameter, private \hyperlink{namespacemodule__microphysics_a14f276771aea7
 )}\hypertarget{module__bfmicrophysics_8f_ac3e5788798119e5db1749932012a1096}{}\label{module__bfmicrophysics_8f_ac3e5788798119e5db1749932012a1096}
 
 
-Definition at line 2521 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 2525 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -115,7 +194,8 @@ Referenced by module\+\_\+microphysics\+::gsmcolumn().
 
 
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -136,7 +216,7 @@ Here is the caller graph for this function\+:\nopagebreak
 )}\hypertarget{module__bfmicrophysics_8f_a3c00353fd3ab0fba51a524a05a5fc640}{}\label{module__bfmicrophysics_8f_a3c00353fd3ab0fba51a524a05a5fc640}
 
 
-Definition at line 2588 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 2592 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -144,7 +224,8 @@ Referenced by module\+\_\+microphysics\+::gsmcolumn().
 
 
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

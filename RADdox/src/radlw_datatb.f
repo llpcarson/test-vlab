@@ -1,3 +1,15 @@
+!>  \file radlw_datatb.f
+!!  This file contains the following:
+!!    - module_radlw_avplank     (plank flux data)
+!!    - module_radlw_ref         (reference temperature and pressure)
+!!    - module_radlw_cldprlw     (cloud property coefficients)
+!!    - module_radlw_kgbnn       (absorption coeffients for 16 bands, where nn = 01-16)
+
+!>  \addtogroup rad
+!!  @{
+!!  \addtogroup module_radlw_main
+!!  @{
+
 !  ==============================================================  !!!!!
 !             lw-rrtm3 radiation package description               !!!!!
 !  ==============================================================  !!!!!
@@ -53,7 +65,8 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> This module contains plank flux data
+!> \defgroup module_radlw_avplank
+!! This module contains plank flux data
 !========================================!
       module module_radlw_avplank        !
 !........................................!
@@ -728,7 +741,8 @@
       end module module_radlw_avplank    !
 !========================================!
 
-!> This module contains reference temperature and pressure
+!> \defgroup module_radlw_ref
+!! This module contains reference temperature and pressure
 !========================================!
       module module_radlw_ref            !
 !........................................!
@@ -905,7 +919,8 @@
       end module module_radlw_ref        !
 !========================================!
 
-!> This module contains cloud property coefficients
+!> \defgroup module_radlw_cldprlw
+!! This module contains cloud property coefficients
 !========================================!
       module module_radlw_cldprlw        !
 !........................................!
@@ -922,7 +937,7 @@
 ! --- ipat is bands index for ebert & curry ice cloud (for iflagice=1)
       data ipat / 1, 2, 3,3,3, 4,4,4, 5,5,5,5,5,5,5,5 /
 
-!> absrain is the rain drop absorption coefficient (m2/g) 
+!> absrain is the rain drop absorption coefficient (m2/g)
 ! --- absrain is the rain drop absorption coefficient (m2/g)
 !     real (kind=kind_phys), parameter :: absrain = 3.07e-3       ! chou coeff
       real (kind=kind_phys), parameter :: absrain = 0.33e-3       ! ncar coeff
@@ -947,7 +962,7 @@
 ! --- for iflagliq = 1
 !     hu and stamnes method. the absorption coef's are listed for a range of
 !     effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.
-!> Hu and Stamnes method. the liquid water absorption coefficients are listed for a 
+!> Hu and Stamnes method. the liquid water absorption coefficients are listed for a
 !! range of effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.
       real (kind=kind_phys), dimension(58,NBANDS) :: absliq1
 
@@ -1184,7 +1199,7 @@
 !     (microns*m^2/g)).
 ! --- for iflagice = 2 or 3, absice0 is used for large ice partical size
 !     such as refice > 131 microns.
-!> for iflagice = 2 or 3, absice0 are the ice water absorption coefficients used for 
+!> for iflagice = 2 or 3, absice0 are the ice water absorption coefficients used for
 !! large ice partical size such as refice > 131 microns.
       real (kind=kind_phys), dimension(2) :: absice0
 
@@ -1193,7 +1208,7 @@
 
 ! --- for iflagice = 1
 !     ebert and curry method.
-!> for iflagice = 1, absice1 are the ice water absorption coefficients used for 
+!> for iflagice = 1, absice1 are the ice water absorption coefficients used for
 !! ebert and curry method
       real (kind=kind_phys), dimension(2,5) :: absice1
 
@@ -1205,7 +1220,7 @@
 !     radii from 5.0 to 131.0 microns in increments of 3.0 microns.
 !     spherical ice particle parameterization absorption units (abs coef/iwc):
 !     [(m^-1)/(g m^-3)]
-!> for iflagice =2, absice2 are the ice water absorption coefficients used for 
+!> for iflagice =2, absice2 are the ice water absorption coefficients used for
 !! streamer method. the absorption coefficients are listed for a range of effective
 !! radii from 5.0 to 131.0 microns in increments of 3.0 microns. spherical ice
 !! particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]
@@ -1393,7 +1408,7 @@
 !     fu parameterization. particle size 5 - 140 micron in increments of
 !     3 microns. units = m2/g. hexagonal ice particle parameterization
 !     absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]
-!> for iflagice = 3, absice3 are the ice water absorption coefficients used for 
+!> for iflagice = 3, absice3 are the ice water absorption coefficients used for
 !! fu parameterization. particle size 5 - 140 micron in increments of 3 microns.
 !! units = m2/g. hexagonal ice particle parameterization absorption units (abs coef/iwc):
 !! [(m^-1)/(g m^-3)]
@@ -1602,6 +1617,7 @@
 !                                                                     !
 ! *********    *********    end description    *********    ********* !
 
+!> \defgroup module_radlw_kgb01
 !> This module sets up absorption coefficients for band 01: 10-250 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb01          !
@@ -2398,7 +2414,8 @@
       end module module_radlw_kgb01      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 02: 250-500 cm-1 (low - h2o; high - h2o)
+!> \defgroup module_radlw_kgb02
+!! This module sets up absorption coefficients for band 02: 250-500 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb02          !
 !........................................!
@@ -3241,7 +3258,8 @@
       end module module_radlw_kgb02      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 03: 500-630 cm-1 (low - h2o, co2; high - h2o, co2)
+!> \defgroup module_radlw_kgb03
+!! This module sets up absorption coefficients for band 03: 500-630 cm-1 (low - h2o, co2; high - h2o, co2)
 !========================================!
       module module_radlw_kgb03          !
 !........................................!
@@ -10043,7 +10061,8 @@
       end module module_radlw_kgb03      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 04: 630-700 cm-1 (low - h2o, co2; high - co2, o3)
+!> \defgroup module_radlw_kgb04
+!! This module sets up absorption coefficients for band 04: 630-700 cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb04          !
 !........................................!
@@ -15222,7 +15241,8 @@
       end module module_radlw_kgb04      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 05: 700-820 cm-1 (low - h2o, co2; high - co2, o3)
+!> \defgroup module_radlw_kgb05
+!! This module sets up absorption coefficients for band 05: 700-820 cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb05          !
 !........................................!
@@ -21694,7 +21714,8 @@
       end module module_radlw_kgb05      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 06: 820-980 cm-1 (low - h2o; high - /)
+!> \defgroup module_radlw_kgb06
+!! This module sets up absorption coefficients for band 06: 820-980 cm-1 (low - h2o; high - /)
 !========================================!
       module module_radlw_kgb06          !
 !........................................!
@@ -21932,7 +21953,8 @@
       end module module_radlw_kgb06      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 07: 980-1080 cm-1 (low - h2o, o3; high - o3)
+!> \defgroup module_radlw_kgb07
+!! This module sets up absorption coefficients for band 07: 980-1080 cm-1 (low - h2o, o3; high - o3)
 !========================================!
       module module_radlw_kgb07          !
 !........................................!
@@ -24558,7 +24580,8 @@
       end module module_radlw_kgb07      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 08: 1080-1180 cm-1 (low - h2o; high - o3)
+!> \defgroup module_radlw_kgb08
+!! This module sets up absorption coefficients for band 08: 1080-1180 cm-1 (low - h2o; high - o3)
 !========================================!
       module module_radlw_kgb08          !
 !........................................!
@@ -25342,6 +25365,7 @@
       end module module_radlw_kgb08      !
 !========================================!
 
+!> \defgroup module_radlw_kgb09
 !> This module sets up absorption coefficients for band 09: 1180-1390 cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
       module module_radlw_kgb09          !
@@ -27982,6 +28006,7 @@
       end module module_radlw_kgb09      !
 !========================================!
 
+!> \defgroup module_radlw_kgb10
 !> This module sets up absorption coefficients for band 10: 1390-1480 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb10          !
@@ -28440,6 +28465,7 @@
       end module module_radlw_kgb10      !
 !========================================!
 
+!> \defgroup module_radlw_kgb11
 !> This module sets up absorption coefficients for band 11: 1480-1800 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb11          !
@@ -29108,6 +29134,7 @@
       end module module_radlw_kgb11      !
 !========================================!
 
+!> \defgroup module_radlw_kgb12
 !> This module sets up absorption coefficients for band 12: 1800-2080 cm-1 (low - h2o, co2; high - /)
 !========================================!
       module module_radlw_kgb12          !
@@ -30162,6 +30189,7 @@
       end module module_radlw_kgb12      !
 !========================================!
 
+!> \defgroup module_radlw_kgb13
 !> This module sets up absorption coefficients for band 13: 2080-2250 cm-1 (low - h2o, n2o; high - /)
 !========================================!
       module module_radlw_kgb13          !
@@ -31039,6 +31067,7 @@
       end module module_radlw_kgb13      !
 !========================================!
 
+!> \defgroup module_radlw_kgb14
 !> This module sets up absorption coefficients for band 14: 2250-2380 cm-1 (low - co2; high - co2)
 !========================================!
       module module_radlw_kgb14          !
@@ -31239,6 +31268,7 @@
       end module module_radlw_kgb14      !
 !========================================!
 
+!> \defgroup module_radlw_kgb15
 !> This module sets up absorption coefficients for band 15: 2380-2600 cm-1 (low - n2o, co2; high - /)
 !========================================!
       module module_radlw_kgb15          !
@@ -31630,6 +31660,7 @@
       end module module_radlw_kgb15      !
 !========================================!
 
+!> \defgroup module_radlw_kgb16
 !> This module sets up absorption coefficients for band 16: 2600-3000 cm-1 (low - h2o, ch4; high - /)
 !========================================!
       module module_radlw_kgb16          !
@@ -32049,4 +32080,5 @@
 !........................................!
       end module module_radlw_kgb16      !
 !========================================!
-
+!> @}
+!! @}

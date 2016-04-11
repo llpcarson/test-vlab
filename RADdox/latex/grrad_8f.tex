@@ -1,27 +1,32 @@
 \hypertarget{grrad_8f}{}\section{grrad.\+f File Reference}
 \label{grrad_8f}\index{grrad.\+f@{grrad.\+f}}
+
+
+This file is the radiation driver module. it prepares atmospheric profiles and invokes main radiation calculation.  
+
+
 \subsection*{Modules}
 \begin{DoxyCompactItemize}
 \item 
 module \hyperlink{namespacemodule__radiation__driver}{module\+\_\+radiation\+\_\+driver}
-\begin{DoxyCompactList}\small\item\em This file is the radiation driver module. it prepares atmospheric profiles and invokes main radiation calculation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 \subsection*{Functions/\+Subroutines}
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine, public \hyperlink{namespacemodule__radiation__driver_af039e0c23dc6ab8d2f8b1c1c796ac0da}{module\+\_\+radiation\+\_\+driver\+::radinit}                                                                                             
+subroutine, public \hyperlink{group__module__radiation__driver_ga866dcd42f95b3e7df6b448833fe7c33b}{module\+\_\+radiation\+\_\+driver\+::radinit} (si, N\+L\+AY, me)
 \begin{DoxyCompactList}\small\item\em This subroutine is the initialization of radiation calculations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine, public \hyperlink{namespacemodule__radiation__driver_a47f0e4defe607fbfc751f6c9274f459a}{module\+\_\+radiation\+\_\+driver\+::radupdate}                                                                                         
+subroutine, public \hyperlink{group__module__radiation__driver_gab34c4eb6e32fd200a6385ae70c5dab12}{module\+\_\+radiation\+\_\+driver\+::radupdate} (idate, jdate, deltsw, deltim, lsswr, me,
 \begin{DoxyCompactList}\small\item\em This subroutine calls many update subroutines to check and update radiation required but time varying data sets and module variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine, public \hyperlink{namespacemodule__radiation__driver_a8285cf6a4d2e1ed25b0afff8e269ec63}{module\+\_\+radiation\+\_\+driver\+::grrad}                                                                                                 
+subroutine, public \hyperlink{group__module__radiation__driver_ga955c841d2ffda6975007d94101b79f7a}{module\+\_\+radiation\+\_\+driver\+::grrad}
 \begin{DoxyCompactList}\small\item\em This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for radiation input, including clouds, surface albedos, atmospheric aerosols, ozone, etc. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 \subsection*{Variables}
@@ -29,27 +34,27 @@ subroutine, public \hyperlink{namespacemodule__radiation__driver_a8285cf6a4d2e1e
 \item 
 character(40), parameter \hyperlink{namespacemodule__radiation__driver_a70a36595385cf1f5794f9c5859e52ab6}{module\+\_\+radiation\+\_\+driver\+::vtagrad} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+driver v5.\+2 Jan 2013 \textquotesingle{}
 \item 
-real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__driver_afdc2a7e1dbfb075ac33a2388564d9428}{module\+\_\+radiation\+\_\+driver\+::qmin}
+real(kind=kind\+\_\+phys) \hyperlink{group__module__radiation__driver_gafdc2a7e1dbfb075ac33a2388564d9428}{module\+\_\+radiation\+\_\+driver\+::qmin}
 \item 
-real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__driver_ab671cb80142c71dab5f41f01ccdcc088}{module\+\_\+radiation\+\_\+driver\+::qme5}
+real(kind=kind\+\_\+phys) \hyperlink{group__module__radiation__driver_gab671cb80142c71dab5f41f01ccdcc088}{module\+\_\+radiation\+\_\+driver\+::qme5}
 \item 
-real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__driver_a4916e37c472b2f824b6f566ff67200cd}{module\+\_\+radiation\+\_\+driver\+::qme6}
+real(kind=kind\+\_\+phys) \hyperlink{group__module__radiation__driver_ga4916e37c472b2f824b6f566ff67200cd}{module\+\_\+radiation\+\_\+driver\+::qme6}
 \item 
-real(kind=kind\+\_\+phys) \hyperlink{namespacemodule__radiation__driver_a0b0bf0fa8723b80d0891ec3327d187d7}{module\+\_\+radiation\+\_\+driver\+::epsq}
+real(kind=kind\+\_\+phys) \hyperlink{group__module__radiation__driver_ga0b0bf0fa8723b80d0891ec3327d187d7}{module\+\_\+radiation\+\_\+driver\+::epsq}
 \item 
-real, parameter \hyperlink{namespacemodule__radiation__driver_a3fc43ca0d2c5f69a380ddb4f0926ecc7}{module\+\_\+radiation\+\_\+driver\+::prsmin} = 1.\+0e-\/6
+real, parameter \hyperlink{group__module__radiation__driver_ga3fc43ca0d2c5f69a380ddb4f0926ecc7}{module\+\_\+radiation\+\_\+driver\+::prsmin} = 1.\+0e-\/6
 \item 
-integer \hyperlink{namespacemodule__radiation__driver_a9ee6a89464bf206cc07ea30d7eeaaeb8}{module\+\_\+radiation\+\_\+driver\+::itsfc} =0
+integer \hyperlink{group__module__radiation__driver_ga9ee6a89464bf206cc07ea30d7eeaaeb8}{module\+\_\+radiation\+\_\+driver\+::itsfc} =0
 \item 
-integer \hyperlink{namespacemodule__radiation__driver_a6eb268f296c77047f389ed6fac5f95be}{module\+\_\+radiation\+\_\+driver\+::month0} =0
+integer \hyperlink{group__module__radiation__driver_ga6eb268f296c77047f389ed6fac5f95be}{module\+\_\+radiation\+\_\+driver\+::month0} =0
 \item 
-integer \hyperlink{namespacemodule__radiation__driver_a4d755de48d0aa83f337a2a907ac7d8a2}{module\+\_\+radiation\+\_\+driver\+::iyear0} =0
+integer \hyperlink{group__module__radiation__driver_ga4d755de48d0aa83f337a2a907ac7d8a2}{module\+\_\+radiation\+\_\+driver\+::iyear0} =0
 \item 
-integer \hyperlink{namespacemodule__radiation__driver_ac4baf8ff048aaa5b85d03cc42c579c7b}{module\+\_\+radiation\+\_\+driver\+::monthd} =0
+integer \hyperlink{group__module__radiation__driver_gac4baf8ff048aaa5b85d03cc42c579c7b}{module\+\_\+radiation\+\_\+driver\+::monthd} =0
 \item 
-logical \hyperlink{namespacemodule__radiation__driver_af6e0e1ef2ebb78f57c897ebaf633edd2}{module\+\_\+radiation\+\_\+driver\+::loz1st} =.true.
+logical \hyperlink{group__module__radiation__driver_gaf6e0e1ef2ebb78f57c897ebaf633edd2}{module\+\_\+radiation\+\_\+driver\+::loz1st} =.true.
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__driver_aab2535e9906afd709124056f4ca1e470}{module\+\_\+radiation\+\_\+driver\+::ltp} = 0
+integer, parameter \hyperlink{group__module__radiation__driver_gaab2535e9906afd709124056f4ca1e470}{module\+\_\+radiation\+\_\+driver\+::ltp} = 0
 \item 
-logical, parameter \hyperlink{namespacemodule__radiation__driver_ad27b36d0186c8147fe839eb5c268d157}{module\+\_\+radiation\+\_\+driver\+::lextop} = (L\+TP $>$ 0)
+logical, parameter \hyperlink{group__module__radiation__driver_gad27b36d0186c8147fe839eb5c268d157}{module\+\_\+radiation\+\_\+driver\+::lextop} = (L\+TP $>$ 0)
 \end{DoxyCompactItemize}

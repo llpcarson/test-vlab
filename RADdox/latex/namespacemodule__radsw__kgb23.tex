@@ -1,105 +1,31 @@
 \hypertarget{namespacemodule__radsw__kgb23}{}\section{module\+\_\+radsw\+\_\+kgb23 Module Reference}
 \label{namespacemodule__radsw__kgb23}\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-
-
-This module sets up absorption coeffients for band 23\+: 8050-\/12850 cm-\/1 (low -\/ h2o; high -\/ nothing)  
-
-
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 integer, public \hyperlink{namespacemodule__radsw__kgb23_a744e7ef73b8d3cc01ff9c6a6010d95d7}{msa23}
 \item 
-integer, public \hyperlink{namespacemodule__radsw__kgb23_ab96959c26232963a568609451483843e}{msf23}
+integer, public \hyperlink{group__module__radsw__main_gab96959c26232963a568609451483843e}{msf23}
 \item 
-integer, public \hyperlink{namespacemodule__radsw__kgb23_a78b43ec4bc2afd4f520480a8410d9df5}{mfr23}
+integer, public \hyperlink{group__module__radsw__main_ga78b43ec4bc2afd4f520480a8410d9df5}{mfr23}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb23_a78b43ec4bc2afd4f520480a8410d9df5}{mfr23}, ng23), public \hyperlink{namespacemodule__radsw__kgb23_a18fabad311919ee30b2d367fbe250bcc}{forref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radsw__main_ga78b43ec4bc2afd4f520480a8410d9df5}{mfr23}, ng23), public \hyperlink{group__module__radsw__main_ga18fabad311919ee30b2d367fbe250bcc}{forref}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb23_a744e7ef73b8d3cc01ff9c6a6010d95d7}{msa23}, ng23), public \hyperlink{namespacemodule__radsw__kgb23_a2541e41c7d445a2ce73283e2fb76270c}{absa}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb23_a744e7ef73b8d3cc01ff9c6a6010d95d7}{msa23}, ng23), public \hyperlink{group__module__radsw__main_ga2541e41c7d445a2ce73283e2fb76270c}{absa}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb23_ab96959c26232963a568609451483843e}{msf23}, ng23), public \hyperlink{namespacemodule__radsw__kgb23_ae4e51bcb3c3cbaaf1476d5ab18b072e5}{selfref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radsw__main_gab96959c26232963a568609451483843e}{msf23}, ng23), public \hyperlink{group__module__radsw__main_gae4e51bcb3c3cbaaf1476d5ab18b072e5}{selfref}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng23), public \hyperlink{namespacemodule__radsw__kgb23_a40006f284543c7347eced417b9de2fc6}{rayl}
+real(kind=kind\+\_\+phys), dimension(ng23), public \hyperlink{group__module__radsw__main_ga40006f284543c7347eced417b9de2fc6}{rayl}
 \item 
-real(kind=kind\+\_\+phys), parameter, public \hyperlink{namespacemodule__radsw__kgb23_a5f6ced06169db4b7470e20d5639ac54c}{givfac} = 1.\+029
+real(kind=kind\+\_\+phys), parameter, public \hyperlink{group__module__radsw__main_ga5f6ced06169db4b7470e20d5639ac54c}{givfac} = 1.\+029
 \end{DoxyCompactItemize}
 
 
 \subsection{Variable Documentation}
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!absa@{absa}}
-\index{absa@{absa}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{absa}{absa}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msa23},ng23), public module\+\_\+radsw\+\_\+kgb23\+::absa}\hypertarget{namespacemodule__radsw__kgb23_a2541e41c7d445a2ce73283e2fb76270c}{}\label{namespacemodule__radsw__kgb23_a2541e41c7d445a2ce73283e2fb76270c}
-
-
-Definition at line 15976 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol23().
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!forref@{forref}}
-\index{forref@{forref}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{forref}{forref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf mfr23},ng23), public module\+\_\+radsw\+\_\+kgb23\+::forref}\hypertarget{namespacemodule__radsw__kgb23_a18fabad311919ee30b2d367fbe250bcc}{}\label{namespacemodule__radsw__kgb23_a18fabad311919ee30b2d367fbe250bcc}
-
-
-Definition at line 15976 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol23().
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!givfac@{givfac}}
-\index{givfac@{givfac}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{givfac}{givfac}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter, public module\+\_\+radsw\+\_\+kgb23\+::givfac = 1.\+029}\hypertarget{namespacemodule__radsw__kgb23_a5f6ced06169db4b7470e20d5639ac54c}{}\label{namespacemodule__radsw__kgb23_a5f6ced06169db4b7470e20d5639ac54c}
-
-
-Definition at line 15980 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol23().
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!mfr23@{mfr23}}
-\index{mfr23@{mfr23}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{mfr23}{mfr23}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb23\+::mfr23}\hypertarget{namespacemodule__radsw__kgb23_a78b43ec4bc2afd4f520480a8410d9df5}{}\label{namespacemodule__radsw__kgb23_a78b43ec4bc2afd4f520480a8410d9df5}
-
-
-Definition at line 15973 of file radsw\+\_\+datatb.\+f.
-
 \index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!msa23@{msa23}}
 \index{msa23@{msa23}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
 \subsubsection[{\texorpdfstring{msa23}{msa23}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb23\+::msa23}\hypertarget{namespacemodule__radsw__kgb23_a744e7ef73b8d3cc01ff9c6a6010d95d7}{}\label{namespacemodule__radsw__kgb23_a744e7ef73b8d3cc01ff9c6a6010d95d7}
 
 
-Definition at line 15973 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!msf23@{msf23}}
-\index{msf23@{msf23}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{msf23}{msf23}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb23\+::msf23}\hypertarget{namespacemodule__radsw__kgb23_ab96959c26232963a568609451483843e}{}\label{namespacemodule__radsw__kgb23_ab96959c26232963a568609451483843e}
-
-
-Definition at line 15973 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!rayl@{rayl}}
-\index{rayl@{rayl}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{rayl}{rayl}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng23), public module\+\_\+radsw\+\_\+kgb23\+::rayl}\hypertarget{namespacemodule__radsw__kgb23_a40006f284543c7347eced417b9de2fc6}{}\label{namespacemodule__radsw__kgb23_a40006f284543c7347eced417b9de2fc6}
-
-
-Definition at line 15976 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol23().
-
-\index{module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}!selfref@{selfref}}
-\index{selfref@{selfref}!module\+\_\+radsw\+\_\+kgb23@{module\+\_\+radsw\+\_\+kgb23}}
-\subsubsection[{\texorpdfstring{selfref}{selfref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msf23},ng23), public module\+\_\+radsw\+\_\+kgb23\+::selfref}\hypertarget{namespacemodule__radsw__kgb23_ae4e51bcb3c3cbaaf1476d5ab18b072e5}{}\label{namespacemodule__radsw__kgb23_ae4e51bcb3c3cbaaf1476d5ab18b072e5}
-
-
-Definition at line 15976 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol23().
+Definition at line 15996 of file radsw\+\_\+datatb.\+f.
 

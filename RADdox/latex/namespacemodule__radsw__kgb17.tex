@@ -1,114 +1,33 @@
 \hypertarget{namespacemodule__radsw__kgb17}{}\section{module\+\_\+radsw\+\_\+kgb17 Module Reference}
 \label{namespacemodule__radsw__kgb17}\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-
-
-This module sets up absorption coeffients for band 17\+: 3250-\/4000 cm-\/1 (low -\/ h2o,co2; high -\/ h2o,co2)  
-
-
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 integer, public \hyperlink{namespacemodule__radsw__kgb17_ac139ff93555c22e658cb767fa7142e08}{msa17}
 \item 
-integer, public \hyperlink{namespacemodule__radsw__kgb17_afbb056103147b8e5f4d5a8af40420ea0}{msb17}
+integer, public \hyperlink{group__module__radsw__main_gafbb056103147b8e5f4d5a8af40420ea0}{msb17}
 \item 
-integer, public \hyperlink{namespacemodule__radsw__kgb17_a6864c3b95515fb2f408e21298da3952f}{msf17}
+integer, public \hyperlink{group__module__radsw__main_ga6864c3b95515fb2f408e21298da3952f}{msf17}
 \item 
-integer, public \hyperlink{namespacemodule__radsw__kgb17_add099d7e1b5e7767d77de6d96673e26f}{mfr17}
+integer, public \hyperlink{group__module__radsw__main_gadd099d7e1b5e7767d77de6d96673e26f}{mfr17}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb17_a6864c3b95515fb2f408e21298da3952f}{msf17}, ng17), public \hyperlink{namespacemodule__radsw__kgb17_aade34dfbe8c5f380088b6e03acc727c9}{selfref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radsw__main_ga6864c3b95515fb2f408e21298da3952f}{msf17}, ng17), public \hyperlink{group__module__radsw__main_gaade34dfbe8c5f380088b6e03acc727c9}{selfref}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb17_ac139ff93555c22e658cb767fa7142e08}{msa17}, ng17), public \hyperlink{namespacemodule__radsw__kgb17_a19083764c3dfe437282b032517baf3ed}{absa}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb17_ac139ff93555c22e658cb767fa7142e08}{msa17}, ng17), public \hyperlink{group__module__radsw__main_ga19083764c3dfe437282b032517baf3ed}{absa}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb17_afbb056103147b8e5f4d5a8af40420ea0}{msb17}, ng17), public \hyperlink{namespacemodule__radsw__kgb17_aef407d13a88f5e1bfd20652ab3010e2f}{absb}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radsw__main_gafbb056103147b8e5f4d5a8af40420ea0}{msb17}, ng17), public \hyperlink{group__module__radsw__main_gaef407d13a88f5e1bfd20652ab3010e2f}{absb}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radsw__kgb17_add099d7e1b5e7767d77de6d96673e26f}{mfr17}, ng17), public \hyperlink{namespacemodule__radsw__kgb17_a5041a137ba35dca9a767ce854748dd49}{forref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radsw__main_gadd099d7e1b5e7767d77de6d96673e26f}{mfr17}, ng17), public \hyperlink{group__module__radsw__main_ga5041a137ba35dca9a767ce854748dd49}{forref}
 \item 
-real(kind=kind\+\_\+phys), parameter, public \hyperlink{namespacemodule__radsw__kgb17_aa4862628a06e0e08d1db5637bc62ffa5}{rayl} = 6.\+86e-\/10
+real(kind=kind\+\_\+phys), parameter, public \hyperlink{group__module__radsw__main_gaa4862628a06e0e08d1db5637bc62ffa5}{rayl} = 6.\+86e-\/10
 \end{DoxyCompactItemize}
 
 
 \subsection{Variable Documentation}
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!absa@{absa}}
-\index{absa@{absa}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{absa}{absa}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msa17},ng17), public module\+\_\+radsw\+\_\+kgb17\+::absa}\hypertarget{namespacemodule__radsw__kgb17_a19083764c3dfe437282b032517baf3ed}{}\label{namespacemodule__radsw__kgb17_a19083764c3dfe437282b032517baf3ed}
-
-
-Definition at line 3314 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol17().
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!absb@{absb}}
-\index{absb@{absb}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{absb}{absb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msb17},ng17), public module\+\_\+radsw\+\_\+kgb17\+::absb}\hypertarget{namespacemodule__radsw__kgb17_aef407d13a88f5e1bfd20652ab3010e2f}{}\label{namespacemodule__radsw__kgb17_aef407d13a88f5e1bfd20652ab3010e2f}
-
-
-Definition at line 3314 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol17().
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!forref@{forref}}
-\index{forref@{forref}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{forref}{forref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf mfr17},ng17), public module\+\_\+radsw\+\_\+kgb17\+::forref}\hypertarget{namespacemodule__radsw__kgb17_a5041a137ba35dca9a767ce854748dd49}{}\label{namespacemodule__radsw__kgb17_a5041a137ba35dca9a767ce854748dd49}
-
-
-Definition at line 3314 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol17().
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!mfr17@{mfr17}}
-\index{mfr17@{mfr17}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{mfr17}{mfr17}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb17\+::mfr17}\hypertarget{namespacemodule__radsw__kgb17_add099d7e1b5e7767d77de6d96673e26f}{}\label{namespacemodule__radsw__kgb17_add099d7e1b5e7767d77de6d96673e26f}
-
-
-Definition at line 3311 of file radsw\+\_\+datatb.\+f.
-
 \index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!msa17@{msa17}}
 \index{msa17@{msa17}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
 \subsubsection[{\texorpdfstring{msa17}{msa17}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb17\+::msa17}\hypertarget{namespacemodule__radsw__kgb17_ac139ff93555c22e658cb767fa7142e08}{}\label{namespacemodule__radsw__kgb17_ac139ff93555c22e658cb767fa7142e08}
 
 
-Definition at line 3311 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!msb17@{msb17}}
-\index{msb17@{msb17}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{msb17}{msb17}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb17\+::msb17}\hypertarget{namespacemodule__radsw__kgb17_afbb056103147b8e5f4d5a8af40420ea0}{}\label{namespacemodule__radsw__kgb17_afbb056103147b8e5f4d5a8af40420ea0}
-
-
-Definition at line 3311 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!msf17@{msf17}}
-\index{msf17@{msf17}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{msf17}{msf17}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radsw\+\_\+kgb17\+::msf17}\hypertarget{namespacemodule__radsw__kgb17_a6864c3b95515fb2f408e21298da3952f}{}\label{namespacemodule__radsw__kgb17_a6864c3b95515fb2f408e21298da3952f}
-
-
-Definition at line 3311 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!rayl@{rayl}}
-\index{rayl@{rayl}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{rayl}{rayl}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter, public module\+\_\+radsw\+\_\+kgb17\+::rayl = 6.\+86e-\/10}\hypertarget{namespacemodule__radsw__kgb17_aa4862628a06e0e08d1db5637bc62ffa5}{}\label{namespacemodule__radsw__kgb17_aa4862628a06e0e08d1db5637bc62ffa5}
-
-
-Definition at line 3318 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol17().
-
-\index{module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}!selfref@{selfref}}
-\index{selfref@{selfref}!module\+\_\+radsw\+\_\+kgb17@{module\+\_\+radsw\+\_\+kgb17}}
-\subsubsection[{\texorpdfstring{selfref}{selfref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf msf17},ng17), public module\+\_\+radsw\+\_\+kgb17\+::selfref}\hypertarget{namespacemodule__radsw__kgb17_aade34dfbe8c5f380088b6e03acc727c9}{}\label{namespacemodule__radsw__kgb17_aade34dfbe8c5f380088b6e03acc727c9}
-
-
-Definition at line 3314 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by taumol17().
+Definition at line 3328 of file radsw\+\_\+datatb.\+f.
 

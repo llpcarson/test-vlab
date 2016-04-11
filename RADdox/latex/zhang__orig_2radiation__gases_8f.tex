@@ -1,0 +1,18 @@
+\hypertarget{zhang__orig_2radiation__gases_8f}{}\section{zhang\+\_\+orig/radiation\+\_\+gases.f File Reference}
+\label{zhang__orig_2radiation__gases_8f}\index{zhang\+\_\+orig/radiation\+\_\+gases.\+f@{zhang\+\_\+orig/radiation\+\_\+gases.\+f}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacemodule__radiation__gases}{module\+\_\+radiation\+\_\+gases}
+\begin{DoxyCompactList}\small\item\em This module sets up ozone climatological profiles and other constant gas profiles, such as co2, ch4, n2o, o2, and those of cfc gases. All data are entered as mixing ratio by volume, except ozone which is mass mixing ratio (g/g). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \hyperlink{group__module__radiation__gases_ga4da9f6de694145959915285c6836c031}{module\+\_\+radiation\+\_\+gases\+::gas\+\_\+init}
+\begin{DoxyCompactList}\small\item\em This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then read in monthly ozone data. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{group__module__radiation__gases_gaf8e71c57af361256a0af70ba1816f4b1}{module\+\_\+radiation\+\_\+gases\+::gas\+\_\+update}
+\begin{DoxyCompactList}\small\item\em This subroutine reads in 2-\/d monthly co2 data set for a specified year. data are in a 15 degree lat/lon horizontal resolution. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{group__module__radiation__gases_ga275547cc97aaf0c1c54b78f677411a71}{module\+\_\+radiation\+\_\+gases\+::getgases}                                                                                           
+\begin{DoxyCompactList}\small\item\em This subroutine sets up global distribution of radiation absorbing gases in volume mixing ratio. currently only co2 has the options from observed values, all other gases are asigned to the climatological values. \end{DoxyCompactList}\item 
+subroutine, public \hyperlink{group__module__radiation__gases_gab8f1a497cce49db1c1eedc01a03d549a}{module\+\_\+radiation\+\_\+gases\+::getozn}
+\begin{DoxyCompactList}\small\item\em This subroutine sets up climatological ozone profile for radiation calculation this code is originally written by Shrinivas Moorthi. \end{DoxyCompactList}\end{DoxyCompactItemize}

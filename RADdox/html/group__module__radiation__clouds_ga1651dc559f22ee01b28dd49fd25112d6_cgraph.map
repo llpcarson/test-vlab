@@ -1,0 +1,4 @@
+<map id="module_radiation_clouds::progcld2" name="module_radiation_clouds::progcld2">
+<area shape="rect" id="node2" href="$group__module__radiation__clouds.html#gade00b72417f507bb7b07bc58dad58a61" title="This subroutine computes high, mid, low, total, and boundary cloud fractions and cloud top/bottom lay..." alt="" coords="219,5,384,47"/>
+<area shape="rect" id="node3" href="$group__module__radiation__clouds.html#ga3645dec44f2cc7e30b57d32531f74ba4" title="This subroutine is a modified version of ferrier&#39;s original &quot;rsipath&quot; subprogram. It computes layer&#39;s..." alt="" coords="227,71,375,112"/>
+</map>

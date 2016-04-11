@@ -1,18 +1,17 @@
 var searchData=
 [
-  ['rad_5finitialize',['rad_initialize',['../rad__initialize_8f.html#ab7a9e7fc4a9c2dd77df4a55e967e9ade',1,'rad_initialize.f']]],
-  ['radclimaer',['radclimaer',['../radiation__aerosols_8f.html#ae60b55ebc37825b2c3c95f95b23ed558',1,'radiation_aerosols.f']]],
-  ['radinit',['radinit',['../namespacemodule__radiation__driver.html#af039e0c23dc6ab8d2f8b1c1c796ac0da',1,'module_radiation_driver']]],
-  ['radupdate',['radupdate',['../namespacemodule__radiation__driver.html#a47f0e4defe607fbfc751f6c9274f459a',1,'module_radiation_driver']]],
+  ['radclimaer',['radclimaer',['../group__module__radiation__aerosols.html#gae60b55ebc37825b2c3c95f95b23ed558',1,'radiation_aerosols.f']]],
+  ['radinit',['radinit',['../group__module__radiation__driver.html#ga866dcd42f95b3e7df6b448833fe7c33b',1,'module_radiation_driver']]],
+  ['radupdate',['radupdate',['../group__module__radiation__driver.html#gab34c4eb6e32fd200a6385ae70c5dab12',1,'module_radiation_driver']]],
   ['rain_5flookup',['rain_lookup',['../namespacemodule__microphysics.html#a0090b42e85bd381e5459a9e8db9dc120',1,'module_microphysics']]],
-  ['rd_5fgocart_5fclim',['rd_gocart_clim',['../radiation__aerosols_8f.html#a15bad8499ffd17d967e5788cd6721c4d',1,'radiation_aerosols.f']]],
-  ['rd_5fgocart_5fluts',['rd_gocart_luts',['../radiation__aerosols_8f.html#a8b6a882f91674d1c0f7f71f297a5f92e',1,'radiation_aerosols.f']]],
-  ['rhtable',['rhtable',['../namespacemodule__radiation__clouds.html#a7b3ef3c22abd161058fd8880d86b538a',1,'module_radiation_clouds']]],
-  ['rlwinit',['rlwinit',['../namespacemodule__radlw__main.html#ad1f036ae760a7e9dcbbdd93492617bb3',1,'module_radlw_main']]],
-  ['rsipath',['rsipath',['../namespacemodule__microphysics.html#a9cf7964ff1097213773b2b91e13d18d0',1,'module_microphysics']]],
-  ['rsipath2',['rsipath2',['../namespacemodule__microphysics.html#ac80bc526194e30c9e1a97e7833a2a77f',1,'module_microphysics']]],
-  ['rswinit',['rswinit',['../namespacemodule__radsw__main.html#afab73c508f778203d0f4b5181f1cbca9',1,'module_radsw_main']]],
-  ['rtrn',['rtrn',['../namespacemodule__radlw__main.html#a34aff059dd13272a3c45818ec40ba6d3',1,'module_radlw_main']]],
-  ['rtrnmc',['rtrnmc',['../namespacemodule__radlw__main.html#a51d42f46321972ffdca4880185506ac5',1,'module_radlw_main']]],
-  ['rtrnmr',['rtrnmr',['../namespacemodule__radlw__main.html#ad8f07b8a0e3dfa639b970d756824b9d3',1,'module_radlw_main']]]
+  ['rd_5fgocart_5fclim',['rd_gocart_clim',['../group__module__radiation__aerosols.html#ga15bad8499ffd17d967e5788cd6721c4d',1,'radiation_aerosols.f']]],
+  ['rd_5fgocart_5fluts',['rd_gocart_luts',['../group__module__radiation__aerosols.html#ga8b6a882f91674d1c0f7f71f297a5f92e',1,'radiation_aerosols.f']]],
+  ['rhtable',['rhtable',['../group__module__radiation__clouds.html#gaf2368d9f176e9ab76bd9bd7cd687f491',1,'module_radiation_clouds']]],
+  ['rlwinit',['rlwinit',['../group__module__radlw__main.html#ga916dc850de8c1d18ff9bfd6f63b65d30',1,'module_radlw_main']]],
+  ['rsipath',['rsipath',['../namespacemodule__microphysics.html#a3e5e830e9ac0ef923bf65dda93abce33',1,'module_microphysics']]],
+  ['rsipath2',['rsipath2',['../group__module__radiation__clouds.html#ga3645dec44f2cc7e30b57d32531f74ba4',1,'module_microphysics']]],
+  ['rswinit',['rswinit',['../group__module__radsw__main.html#ga9288a5da63d182f20c99e0044ca52f29',1,'module_radsw_main']]],
+  ['rtrn',['rtrn',['../group__module__radlw__main.html#gaa42d8cb56a431d3693d3db44733c11e3',1,'module_radlw_main']]],
+  ['rtrnmc',['rtrnmc',['../group__module__radlw__main.html#gaf0e13eadc5dad88e144734d2c6b9fd0f',1,'module_radlw_main']]],
+  ['rtrnmr',['rtrnmr',['../group__module__radlw__main.html#gab0d2454aa5b29643b52fa31abe2f97b0',1,'module_radlw_main']]]
 ];

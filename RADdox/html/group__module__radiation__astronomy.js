@@ -1,0 +1,26 @@
+var group__module__radiation__astronomy =
+[
+    [ "module_radiation_astronomy", "namespacemodule__radiation__astronomy.html", null ],
+    [ "coszmn", "group__module__radiation__astronomy.html#gae8382ae3394204b9b4c30fe6210a2f9d", null ],
+    [ "prtime", "group__module__radiation__astronomy.html#ga44ddc71547a446b199afaa05dc9dd868", null ],
+    [ "sol_init", "group__module__radiation__astronomy.html#gae467712e3e8cd9a7d8e87533e17d3ecb", null ],
+    [ "sol_update", "group__module__radiation__astronomy.html#gaf1997565a45e04ac5261be36708384cf", null ],
+    [ "solar", "group__module__radiation__astronomy.html#gab295ff320cb8720fde46e80ee6573f08", null ],
+    [ "anginc", "group__module__radiation__astronomy.html#ga723159a44491e4ae974128123a1e8dcd", null ],
+    [ "cosdec", "group__module__radiation__astronomy.html#ga07386e90045639b8023abd826e0e2768", null ],
+    [ "czlimt", "group__module__radiation__astronomy.html#gafeb2fccbe8137de6099a09035762ff5e", null ],
+    [ "degrad", "group__module__radiation__astronomy.html#ga220d2b997b3073cf2985d62111c5405d", null ],
+    [ "f12", "group__module__radiation__astronomy.html#gad59856e8f877eb05a6b22610f14a391d", null ],
+    [ "f3600", "group__module__radiation__astronomy.html#ga37b491dde50d06e339effb4a31d9f245", null ],
+    [ "hpi", "group__module__radiation__astronomy.html#ga7369d8561566f5e7e51ccc40e09f2520", null ],
+    [ "isolflg", "group__module__radiation__astronomy.html#ga7ea431b6d4f4d6ee1f6545d6baeee44f", null ],
+    [ "iyr_sav", "group__module__radiation__astronomy.html#ga83370fbee96388e545a89eb25ed6df90", null ],
+    [ "nstp", "group__module__radiation__astronomy.html#gab93fe36440da3cc1f1d64cae2ec4c25b", null ],
+    [ "pid12", "group__module__radiation__astronomy.html#gadbf9cdfc7b55d882f015a4bc4ef276ab", null ],
+    [ "sindec", "group__module__radiation__astronomy.html#gae195d9c834e2789170f89c988d28b01e", null ],
+    [ "smon_sav", "group__module__radiation__astronomy.html#gab68b4488022a4c6340cb60dca3feff6a", null ],
+    [ "solar_fname", "group__module__radiation__astronomy.html#ga05ee7e378d38b90242738b9bf6c40c00", null ],
+    [ "solc0", "group__module__radiation__astronomy.html#ga37e08872f67023b11f839ac15151af09", null ],
+    [ "sollag", "group__module__radiation__astronomy.html#ga264a011aa71fb670339ac555dc24e486", null ],
+    [ "tpi", "group__module__radiation__astronomy.html#ga4fbf4be04e17f1f8d0674ee2e20506b0", null ]
+];

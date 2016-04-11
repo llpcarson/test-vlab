@@ -11,14 +11,14 @@ subroutine \hyperlink{namespacemodule__microphysics_a9273c6542f2e983e0f9040c8090
 \item 
 subroutine \hyperlink{namespacemodule__microphysics_a0090b42e85bd381e5459a9e8db9dc120}{rain\+\_\+lookup}
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_a7a0b4005a965eda2890022b02f807bb7}{gsmcolumn} (A\+R\+A\+I\+NG, A\+S\+N\+O\+WG, D\+T\+PG, I\+\_\+index, J\+\_\+index,    
+subroutine \hyperlink{namespacemodule__microphysics_a9874b115916d29a6688228ce0a5c2886}{gsmcolumn} (A\+R\+A\+I\+NG, A\+S\+N\+O\+WG, D\+T\+PG, I\+\_\+index, J\+\_\+index,           L\+S\+FC, P\+\_\+col, Q\+I\+\_\+col, Q\+R\+\_\+col, Q\+V\+\_\+col, Q\+W\+\_\+col, Rime\+F\+\_\+col, T\+\_\+col,       T\+H\+I\+C\+K\+\_\+col, W\+C\+\_\+col, LM, R\+H\+C\+\_\+col, X\+N\+CW, F\+L\+Gmin, P\+R\+I\+N\+T\+\_\+diag, psfc)
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_a9cf7964ff1097213773b2b91e13d18d0}{rsipath} (im, ix, ix2, levs, prsl, prsi, t, q, clw          
+subroutine \hyperlink{namespacemodule__microphysics_a3e5e830e9ac0ef923bf65dda93abce33}{rsipath} (im, ix, ix2, levs, prsl, prsi, t, q, clw                   ,                                                               f\+\_\+ice, f\+\_\+rain, f\+\_\+rime, flgmin                                                               ,                                                               cwatp, cicep, rainp, snowp                                                                           ,                                                               recwat, rerain, resnow, lprnt, ipr)
 \end{DoxyCompactItemize}
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine \hyperlink{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f}{rsipath2}                                                                                           
+subroutine \hyperlink{group__module__radiation__clouds_ga3645dec44f2cc7e30b57d32531f74ba4}{rsipath2}
 \begin{DoxyCompactList}\small\item\em This subroutine is a modified version of ferrier\textquotesingle{}s original \char`\"{}rsipath\char`\"{} subprogram. It computes layer\textquotesingle{}s cloud liquid, ice, rain, and snow water condensate path and the partical effective radius for liquid droplet, rain drop, and snow flake. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 \subsection*{Variables}
@@ -34,6 +34,42 @@ real, private \hyperlink{namespacemodule__microphysics_a1c6192a9baafa2b341b19628
 \item 
 real, private \hyperlink{namespacemodule__microphysics_ac36c8de45d04aab21833d22133311284}{c\+\_\+n0r0}
 \item 
+real, private \hyperlink{namespacemodule__microphysics_a4b8b65e65be09b3e9a5cceca947fc408}{cn0r0}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_abd42b2566e31b5d29c6f69471cb3ec5d}{cn0r\+\_\+dmrmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a3757ff5b4210247ec04e08537dfa9696}{cn0r\+\_\+dmrmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ac2d7886b9a3b896fbfdce0e3bf3b805a}{cracw}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_aa70387aeb638af57989b45128bfe387d}{craut}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a74a1e9686afb4c7b7b7913cf9615ee0c}{esw0}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a207d110ab05ae003282c44232b6bb8b1}{qautx}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a733f21868223ca01612507355d0b85be}{rfmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ada6772b0bc7347f6ebb3c31f2df43563}{rqr\+\_\+dr1}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ab0d5f615986c3482d2fad8542c4f52b8}{rqr\+\_\+dr2}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a1408a4c383136f8beb5d92049a5461a1}{rqr\+\_\+dr3}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_af455571cfd5c41222b9cf86fd014a30f}{rqr\+\_\+drmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_ae58b71fa9e96b0836c12a143455ca83b}{rqr\+\_\+drmax}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a6f0adb81dca26899ff77f0a454206559}{rr\+\_\+drmin}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a31a6bca21f180e2715bbefa18ef32b08}{rr\+\_\+dr1}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_a47ffe9826a0f85b6bf41c1cf06cf148f}{rr\+\_\+dr2}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_afbed7ecd787abc8db3c7ff6160412fa1}{rr\+\_\+dr3}
+\item 
+real, private \hyperlink{namespacemodule__microphysics_af631f5533a9284cf93087bb35396a9de}{rr\+\_\+drmax}
+\item 
 integer, private \hyperlink{namespacemodule__microphysics_acb3899d31d6f2079a2d41c3e551e3443}{mic\+\_\+step}
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aae73524f22f4bc2373aaa5d8a6f7e7d6}{my\+\_\+t1} =1
@@ -46,13 +82,39 @@ real, parameter, private \hyperlink{namespacemodule__microphysics_a10a6db795f339
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_ab71ad8ff5f6f170585e96194373be5cc}{dmimax} =1.e-\/3
 \item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ac355dc0d92140f99522cb35dc025e9b3}{xmimin} =1.e6$\ast$D\+M\+Imin
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ae678585401e3fd39ce21f225ae430677}{xmimax} =1.e6$\ast$D\+M\+Imax
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a50ee0e811da6e52c191f977407e9e47d}{deldmi} =1.e-\/6
+\item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a81bcf203ed1a75b10ea2c7f97ac56a21}{mdimin} =X\+M\+Imin
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a28b728213c1425c1bd5c05c9a469b92a}{mdimax} =X\+M\+Imax
 \item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a85112c2881ca373d648a39bd0c5843fa}{accri}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a399ef7965cf1f4f6e4aef482e33f9b16}{massi}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_ab31a2c459480d3b9ba2388d3f60db179}{sdens}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_acd06af071ee4f0a5bb4599f239916dd7}{vsnowi}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a420fb71de46ebdf9a097147bf9f9debe}{venti1}
+\item 
+real, dimension(mdimin\+:mdimax), private \hyperlink{namespacemodule__microphysics_a340e6633b234e32289115c3ff08277c5}{venti2}
+\item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a67a841cda9f172633fa4895d1a3433e7}{dmrmin} =.\+05e-\/3
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a5faae0c4f54f72f04b2874f5588276f5}{dmrmax} =.\+45e-\/3
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a77fb6cadd143fc66a45cfdae1569cd81}{xmrmin} =1.e6$\ast$D\+M\+Rmin
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_ad2c7abf18a4c75103e965cb9c856e6f7}{xmrmax} =1.e6$\ast$D\+M\+Rmax
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a8196aeaa83acb0941194563281aa721b}{deldmr} =1.e-\/6
+\item 
+real, parameter, private \hyperlink{namespacemodule__microphysics_a9a5f8e03c03725a03b9fc923d095e31a}{nlimin} =100.
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aa9201f3dba87b517d0fe88af177c4281}{mdrmin} =X\+M\+Rmin
 \item 
@@ -61,6 +123,18 @@ integer, parameter, private \hyperlink{namespacemodule__microphysics_aa21f2a4aa4
 integer, parameter, private \hyperlink{namespacemodule__microphysics_a48966fa99ac5a7268ef5f473a675eeb2}{indexsmin} =100
 \item 
 real, parameter, private \hyperlink{namespacemodule__microphysics_a86f747f0e2a77aee3a2c8270a0f2fc6d}{rerainmin} =1.\+5$\ast$X\+M\+Rmin
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_ac58ee32a06efc573a2c380d77cd4e5c5}{accrr}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a3b33f42c343ef0fbfe6585bbeccc99c7}{massr}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a481bd873812c291fe7ddce951cf6440d}{rrate}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_aa57b0e61801d417b3866f69269e886b2}{vrain}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a17a8a4c24d0e7bd36c202103141dc1f8}{ventr1}
+\item 
+real, dimension(mdrmin\+:mdrmax), private \hyperlink{namespacemodule__microphysics_a95936805512ce6f13a072461b3694020}{ventr2}
 \item 
 integer, parameter, private \hyperlink{namespacemodule__microphysics_aaea427462ab04c90a0e8188c08e102c2}{nrime} =40
 \item 
@@ -87,22 +161,38 @@ real, parameter, private \hyperlink{namespacemodule__microphysics_a14f276771aea7
 \subsection{Function/\+Subroutine Documentation}
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!gsmcolumn@{gsmcolumn}}
 \index{gsmcolumn@{gsmcolumn}!module\+\_\+microphysics@{module\+\_\+microphysics}}
-\subsubsection[{\texorpdfstring{gsmcolumn(\+A\+R\+A\+I\+N\+G, A\+S\+N\+O\+W\+G, D\+T\+P\+G, I\+\_\+index, J\+\_\+index,    }{gsmcolumn(ARAING, ASNOWG, DTPG, I_index, J_index,    }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+microphysics\+::gsmcolumn (
+\subsubsection[{\texorpdfstring{gsmcolumn(\+A\+R\+A\+I\+N\+G, A\+S\+N\+O\+W\+G, D\+T\+P\+G, I\+\_\+index, J\+\_\+index,           L\+S\+F\+C, P\+\_\+col, Q\+I\+\_\+col, Q\+R\+\_\+col, Q\+V\+\_\+col, Q\+W\+\_\+col, Rime\+F\+\_\+col, T\+\_\+col,       T\+H\+I\+C\+K\+\_\+col, W\+C\+\_\+col, L\+M, R\+H\+C\+\_\+col, X\+N\+C\+W, F\+L\+Gmin, P\+R\+I\+N\+T\+\_\+diag, psfc)}{gsmcolumn(ARAING, ASNOWG, DTPG, I_index, J_index,           LSFC, P_col, QI_col, QR_col, QV_col, QW_col, RimeF_col, T_col,       THICK_col, WC_col, LM, RHC_col, XNCW, FLGmin, PRINT_diag, psfc)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+microphysics\+::gsmcolumn (
 \begin{DoxyParamCaption}
 \item[{real}]{A\+R\+A\+I\+NG, }
 \item[{real}]{A\+S\+N\+O\+WG, }
-\item[{}]{D\+T\+PG, }
+\item[{real}]{D\+T\+PG, }
 \item[{integer}]{I\+\_\+index, }
-\item[{integer}]{J\+\_\+index}
+\item[{integer}]{J\+\_\+index, }
+\item[{integer}]{L\+S\+FC, }
+\item[{real, dimension(lm)}]{P\+\_\+col, }
+\item[{real, dimension(lm)}]{Q\+I\+\_\+col, }
+\item[{real, dimension(lm)}]{Q\+R\+\_\+col, }
+\item[{real, dimension(lm)}]{Q\+V\+\_\+col, }
+\item[{real, dimension(lm)}]{Q\+W\+\_\+col, }
+\item[{real, dimension(lm)}]{Rime\+F\+\_\+col, }
+\item[{real, dimension(lm)}]{T\+\_\+col, }
+\item[{real, dimension(lm)}]{T\+H\+I\+C\+K\+\_\+col, }
+\item[{real, dimension(lm)}]{W\+C\+\_\+col, }
+\item[{integer}]{LM, }
+\item[{real, dimension(lm)}]{R\+H\+C\+\_\+col, }
+\item[{real, dimension(lm)}]{X\+N\+CW, }
+\item[{real}]{F\+L\+Gmin, }
+\item[{logical}]{P\+R\+I\+N\+T\+\_\+diag, }
+\item[{real}]{psfc}
 \end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__microphysics_a7a0b4005a965eda2890022b02f807bb7}{}\label{namespacemodule__microphysics_a7a0b4005a965eda2890022b02f807bb7}
+)}\hypertarget{namespacemodule__microphysics_a9874b115916d29a6688228ce0a5c2886}{}\label{namespacemodule__microphysics_a9874b115916d29a6688228ce0a5c2886}
 
 
-Definition at line 1132 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 1138 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
-References abfr, cbfr, ciacr, ciacw, condense(), deposit(), dmimax, ithi, itlo, mdimax, mdrmax, mdrmin, mic\+\_\+step, my\+\_\+growth, my\+\_\+t1, my\+\_\+t2, nrime, nstats, qmax, qtot, toler, and vel\+\_\+rf.
+References abfr, accri, accrr, cbfr, ciacr, ciacw, cn0r0, cn0r\+\_\+dmrmax, cn0r\+\_\+dmrmin, condense(), cracw, craut, deldmi, deposit(), dmimax, esw0, ithi, itlo, massi, mdimax, mdrmax, mdrmin, mic\+\_\+step, my\+\_\+growth, my\+\_\+t1, my\+\_\+t2, nlimin, nrime, nstats, qautx, qmax, qtot, rfmax, rqr\+\_\+drmax, rqr\+\_\+drmin, rr\+\_\+dr1, rr\+\_\+dr2, rr\+\_\+dr3, rr\+\_\+drmax, rr\+\_\+drmin, toler, vel\+\_\+rf, venti1, venti2, ventr1, ventr2, vrain, vsnowi, xmimax, and xmimin.
 
 
 
@@ -110,7 +200,7 @@ Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=286pt]{namespacemodule__microphysics_a7a0b4005a965eda2890022b02f807bb7_cgraph}
+\includegraphics[width=286pt]{namespacemodule__microphysics_a9874b115916d29a6688228ce0a5c2886_cgraph}
 \end{center}
 \end{figure}
 
@@ -126,11 +216,11 @@ Here is the call graph for this function\+:\nopagebreak
 )}\hypertarget{namespacemodule__microphysics_ad5f89457c2cd2ba431b1c60d5ecbecc4}{}\label{namespacemodule__microphysics_ad5f89457c2cd2ba431b1c60d5ecbecc4}
 
 
-Definition at line 119 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 123 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
-References abfr, c\+\_\+n0r0, cbfr, ciacr, ciacw, dmrmax, dmrmin, ice\+\_\+lookup(), mdimax, mdimin, mdrmax, mdrmin, mic\+\_\+step, my\+\_\+growth\+\_\+rates(), nrime, rain\+\_\+lookup(), and vel\+\_\+rf.
+References abfr, accri, accrr, c\+\_\+n0r0, cbfr, ciacr, ciacw, cn0r0, cn0r\+\_\+dmrmax, cn0r\+\_\+dmrmin, cracw, craut, dmrmax, dmrmin, esw0, ice\+\_\+lookup(), massi, massr, mdimax, mdimin, mdrmax, mdrmin, mic\+\_\+step, my\+\_\+growth\+\_\+rates(), nrime, qautx, rain\+\_\+lookup(), rfmax, rqr\+\_\+dr1, rqr\+\_\+dr2, rqr\+\_\+dr3, rqr\+\_\+drmax, rqr\+\_\+drmin, rr\+\_\+dr1, rr\+\_\+dr2, rr\+\_\+dr3, rr\+\_\+drmax, rr\+\_\+drmin, rrate, sdens, vel\+\_\+rf, venti1, venti2, ventr1, ventr2, vrain, and vsnowi.
 
 
 
@@ -152,11 +242,11 @@ Here is the call graph for this function\+:\nopagebreak
 )}\hypertarget{namespacemodule__microphysics_a9273c6542f2e983e0f9040c80907b3c6}{}\label{namespacemodule__microphysics_a9273c6542f2e983e0f9040c80907b3c6}
 
 
-Definition at line 434 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 438 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
-References mdimax, mdimin, nrime, and vel\+\_\+rf.
+References accri, deldmi, massi, mdimax, mdimin, nrime, vel\+\_\+rf, venti1, venti2, and vsnowi.
 
 
 
@@ -182,7 +272,7 @@ Here is the caller graph for this function\+:\nopagebreak
 )}\hypertarget{namespacemodule__microphysics_aa41d6b0b3b4eca4b41999d6c6aadb317}{}\label{namespacemodule__microphysics_aa41d6b0b3b4eca4b41999d6c6aadb317}
 
 
-Definition at line 392 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 396 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -212,11 +302,11 @@ Here is the caller graph for this function\+:\nopagebreak
 )}\hypertarget{namespacemodule__microphysics_a0090b42e85bd381e5459a9e8db9dc120}{}\label{namespacemodule__microphysics_a0090b42e85bd381e5459a9e8db9dc120}
 
 
-Definition at line 969 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 973 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
-References mdrmax, and mdrmin.
+References accrr, deldmr, massr, mdrmax, mdrmin, rrate, ventr1, ventr2, and vrain.
 
 
 
@@ -235,7 +325,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!rsipath@{rsipath}}
 \index{rsipath@{rsipath}!module\+\_\+microphysics@{module\+\_\+microphysics}}
-\subsubsection[{\texorpdfstring{rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw          }{rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+microphysics\+::rsipath (
+\subsubsection[{\texorpdfstring{rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw                   ,                                                               f\+\_\+ice, f\+\_\+rain, f\+\_\+rime, flgmin                                                               ,                                                               cwatp, cicep, rainp, snowp                                                                           ,                                                               recwat, rerain, resnow, lprnt, ipr)}{rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw                   ,                                                               f_ice, f_rain, f_rime, flgmin                                                               ,                                                               cwatp, cicep, rainp, snowp                                                                           ,                                                               recwat, rerain, resnow, lprnt, ipr)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+microphysics\+::rsipath (
 \begin{DoxyParamCaption}
 \item[{integer}]{im, }
 \item[{integer}]{ix, }
@@ -245,102 +335,29 @@ Here is the caller graph for this function\+:\nopagebreak
 \item[{real, dimension(ix,levs+1)}]{prsi, }
 \item[{real, dimension(ix,levs)}]{t, }
 \item[{real, dimension(ix,levs)}]{q, }
-\item[{}]{clw}
+\item[{real, dimension(ix2,levs)}]{clw, }
+\item[{real, dimension(ix2,levs)}]{f\+\_\+ice, }
+\item[{real, dimension(ix2,levs)}]{f\+\_\+rain, }
+\item[{real, dimension(ix2,levs)}]{f\+\_\+rime, }
+\item[{real}]{flgmin, }
+\item[{real, dimension(ix,levs)}]{cwatp, }
+\item[{real, dimension(ix,levs)}]{cicep, }
+\item[{real, dimension(ix,levs)}]{rainp, }
+\item[{real, dimension(ix,levs)}]{snowp, }
+\item[{real, dimension(ix,levs)}]{recwat, }
+\item[{real, dimension(ix,levs)}]{rerain, }
+\item[{real, dimension(ix,levs)}]{resnow, }
+\item[{logical}]{lprnt, }
+\item[{integer}]{ipr}
 \end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__microphysics_a9cf7964ff1097213773b2b91e13d18d0}{}\label{namespacemodule__microphysics_a9cf7964ff1097213773b2b91e13d18d0}
+)}\hypertarget{namespacemodule__microphysics_a3e5e830e9ac0ef923bf65dda93abce33}{}\label{namespacemodule__microphysics_a3e5e830e9ac0ef923bf65dda93abce33}
 
 
-Definition at line 2634 of file module\+\_\+bfmicrophysics.\+f.
-
-
-
-References indexsmin, mdimax, mdimin, rerainmin, thom, and tnw.
-
-\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rsipath2@{rsipath2}}
-\index{rsipath2@{rsipath2}!module\+\_\+microphysics@{module\+\_\+microphysics}}
-\subsubsection[{\texorpdfstring{rsipath2                                                                                          }{rsipath2                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+microphysics\+::rsipath2 (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f}{}\label{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em plyr} & real, (IM,L\+E\+VS), model layer mean pressure in mb (100\+Pa) \\
-\hline
-\mbox{\tt in}  & {\em plvl} & real, (IM,L\+E\+V\+S+1), model level pressure in mb (100\+Pa) \\
-\hline
-\mbox{\tt in}  & {\em tlyr} & real, (IM,L\+E\+VS), model layer mean temperature in K \\
-\hline
-\mbox{\tt in}  & {\em qlyr} & real, (IM,L\+E\+VS), layer specific humidity in gm/gm \\
-\hline
-\mbox{\tt in}  & {\em qcwat} & real, (IM,L\+E\+VS), layer cloud liquid water condensate amount \\
-\hline
-\mbox{\tt in}  & {\em qcice} & real, (IM,L\+E\+VS), layer cloud ice water condensate amount \\
-\hline
-\mbox{\tt in}  & {\em qrain} & real, (IM,L\+E\+VS), layer rain drop water amount \\
-\hline
-\mbox{\tt in}  & {\em rrime} & real, (IM,L\+E\+VS), mass ratio of total to unrimed ice ( $>$= 1 ) \\
-\hline
-\mbox{\tt in}  & {\em IM} & integer, horizontal dimention \\
-\hline
-\mbox{\tt in}  & {\em L\+E\+VS} & integer, vertical layer dimensions \\
-\hline
-\mbox{\tt in}  & {\em iflip} & integer, control flag for in/out vertical indexing ~\newline
- =0\+: index from toa to surface ~\newline
- =1\+: index from surface to toa \\
-\hline
-\mbox{\tt in}  & {\em flgmin} & real, minimum large ice fraction \\
-\hline
-\mbox{\tt in}  & {\em lprnt} & logical, logical check print control flag \\
-\hline
-\mbox{\tt out}  & {\em cwatp} & real, (IM,L\+E\+VS), layer cloud liquid water path \\
-\hline
-\mbox{\tt out}  & {\em cicep} & real, (IM,L\+E\+VS), layer cloud ice water path \\
-\hline
-\mbox{\tt out}  & {\em rainp} & real, (IM,L\+E\+VS), layer rain water path \\
-\hline
-\mbox{\tt out}  & {\em snowp} & real, (IM,L\+E\+VS), layer snow water path \\
-\hline
-\mbox{\tt out}  & {\em recwat} & real, (IM,L\+E\+VS), layer cloud eff radius for liqid water (micron) \\
-\hline
-\mbox{\tt out}  & {\em rerain} & real, (IM,L\+E\+VS), layer rain water effective radius (micron) \\
-\hline
-\mbox{\tt out}  & {\em resnow} & real, (IM,L\+E\+VS), layer snow flake effective radius (micron) \\
-\hline
-\mbox{\tt out}  & {\em snden} & real, (IM,L\+E\+VS), 1/snow density \\
-\hline
-\end{DoxyParams}
-\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
-\textbackslash{} 
-\begin{DoxyEnumerate}
-\item Set up pressure related arrays, convert unit from mb to cb (10\+Pa). The rest part uses cb in computation.
-\item Compute air density (rho), model mass thickness (cpath), and temperature in C (tc)
-\item For cloud water, compute effective raius (recwat) and total water path (cwatp)\+: assume monodisperse distribution of droplets (no factor of 1.\+5)
-\item For rain water, compute effective radius (rerain) and total water path (rainp)\+: factor of 1.\+5 accounts for $ r^3/r^2 $ moments for exponentially distributed drops in effective raius calculations (from m.\+d. chou\textquotesingle{}s code provided to y.-\/t. hou)
-\item For cloud ice, ~\newline
- -\/ mean particle size following houze et al. (jas, 1979, p.\+160), converted from fig.\+5 plot of lamdas. An analogous set of relationships also shown by fig.\+8 of ryan (bams, 1996, p.\+66), but with a variaty of different relationships parallel the houze curves. 
-\end{DoxyEnumerate}
-
-Definition at line 2927 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 2641 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
-References indexsmin, mdimax, mdimin, rerainmin, and tnw.
-
-
-
-Referenced by module\+\_\+radiation\+\_\+clouds\+::progcld2().
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__microphysics_ac80bc526194e30c9e1a97e7833a2a77f_icgraph}
-\end{center}
-\end{figure}
-
+References cn0r0, indexsmin, massi, mdimax, mdimin, nlimin, rerainmin, sdens, thom, tnw, xmimax, xmrmax, and xmrmin.
 
 
 
@@ -350,18 +367,40 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection[{\texorpdfstring{abfr}{abfr}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::abfr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a8f4f8d798ec89d8bb550fa6b6f8eda06}{}\label{namespacemodule__microphysics_a8f4f8d798ec89d8bb550fa6b6f8eda06}
 
 
-Definition at line 13 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!accri@{accri}}
+\index{accri@{accri}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{accri}{accri}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::accri\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a85112c2881ca373d648a39bd0c5843fa}{}\label{namespacemodule__microphysics_a85112c2881ca373d648a39bd0c5843fa}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!accrr@{accrr}}
+\index{accrr@{accrr}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{accrr}{accrr}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::accrr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ac58ee32a06efc573a2c380d77cd4e5c5}{}\label{namespacemodule__microphysics_ac58ee32a06efc573a2c380d77cd4e5c5}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!c\+\_\+n0r0@{c\+\_\+n0r0}}
 \index{c\+\_\+n0r0@{c\+\_\+n0r0}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{c\+\_\+n0r0}{c_n0r0}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::c\+\_\+n0r0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ac36c8de45d04aab21833d22133311284}{}\label{namespacemodule__microphysics_ac36c8de45d04aab21833d22133311284}
 
 
-Definition at line 13 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -372,7 +411,7 @@ Referenced by gsmconst().
 \subsubsection[{\texorpdfstring{cbfr}{cbfr}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::cbfr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_afdcb4cd9370ca50745e65221becb6eae}{}\label{namespacemodule__microphysics_afdcb4cd9370ca50745e65221becb6eae}
 
 
-Definition at line 13 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -383,7 +422,7 @@ Referenced by gsmcolumn(), and gsmconst().
 \subsubsection[{\texorpdfstring{ciacr}{ciacr}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::ciacr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a1c6192a9baafa2b341b19628e00c19b5}{}\label{namespacemodule__microphysics_a1c6192a9baafa2b341b19628e00c19b5}
 
 
-Definition at line 13 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -394,18 +433,95 @@ Referenced by gsmcolumn(), and gsmconst().
 \subsubsection[{\texorpdfstring{ciacw}{ciacw}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::ciacw\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a9e41f7e6287fe7ede81f17b9e041c09e}{}\label{namespacemodule__microphysics_a9e41f7e6287fe7ede81f17b9e041c09e}
 
 
-Definition at line 13 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!cn0r0@{cn0r0}}
+\index{cn0r0@{cn0r0}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{cn0r0}{cn0r0}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::cn0r0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a4b8b65e65be09b3e9a5cceca947fc408}{}\label{namespacemodule__microphysics_a4b8b65e65be09b3e9a5cceca947fc408}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), rsipath(), and rsipath2().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!cn0r\+\_\+dmrmax@{cn0r\+\_\+dmrmax}}
+\index{cn0r\+\_\+dmrmax@{cn0r\+\_\+dmrmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{cn0r\+\_\+dmrmax}{cn0r_dmrmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::cn0r\+\_\+dmrmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a3757ff5b4210247ec04e08537dfa9696}{}\label{namespacemodule__microphysics_a3757ff5b4210247ec04e08537dfa9696}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!cn0r\+\_\+dmrmin@{cn0r\+\_\+dmrmin}}
+\index{cn0r\+\_\+dmrmin@{cn0r\+\_\+dmrmin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{cn0r\+\_\+dmrmin}{cn0r_dmrmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::cn0r\+\_\+dmrmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_abd42b2566e31b5d29c6f69471cb3ec5d}{}\label{namespacemodule__microphysics_abd42b2566e31b5d29c6f69471cb3ec5d}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!cracw@{cracw}}
+\index{cracw@{cracw}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{cracw}{cracw}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::cracw\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ac2d7886b9a3b896fbfdce0e3bf3b805a}{}\label{namespacemodule__microphysics_ac2d7886b9a3b896fbfdce0e3bf3b805a}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!craut@{craut}}
+\index{craut@{craut}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{craut}{craut}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::craut\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aa70387aeb638af57989b45128bfe387d}{}\label{namespacemodule__microphysics_aa70387aeb638af57989b45128bfe387d}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!deldmi@{deldmi}}
+\index{deldmi@{deldmi}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{deldmi}{deldmi}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::deldmi =1.e-\/6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a50ee0e811da6e52c191f977407e9e47d}{}\label{namespacemodule__microphysics_a50ee0e811da6e52c191f977407e9e47d}
+
+
+Definition at line 39 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!deldmr@{deldmr}}
+\index{deldmr@{deldmr}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{deldmr}{deldmr}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::deldmr =1.e-\/6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a8196aeaa83acb0941194563281aa721b}{}\label{namespacemodule__microphysics_a8196aeaa83acb0941194563281aa721b}
+
+
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by rain\+\_\+lookup().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!dmimax@{dmimax}}
 \index{dmimax@{dmimax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{dmimax}{dmimax}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::dmimax =1.e-\/3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ab71ad8ff5f6f170585e96194373be5cc}{}\label{namespacemodule__microphysics_ab71ad8ff5f6f170585e96194373be5cc}
 
 
-Definition at line 35 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 39 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -416,14 +532,14 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{dmimin}{dmimin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::dmimin =.\+05e-\/3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a10a6db795f339c47c5afd6916d0c196b}{}\label{namespacemodule__microphysics_a10a6db795f339c47c5afd6916d0c196b}
 
 
-Definition at line 35 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 39 of file module\+\_\+bfmicrophysics.\+f.
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!dmrmax@{dmrmax}}
 \index{dmrmax@{dmrmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{dmrmax}{dmrmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::dmrmax =.\+45e-\/3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a5faae0c4f54f72f04b2874f5588276f5}{}\label{namespacemodule__microphysics_a5faae0c4f54f72f04b2874f5588276f5}
 
 
-Definition at line 48 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -434,18 +550,29 @@ Referenced by gsmconst().
 \subsubsection[{\texorpdfstring{dmrmin}{dmrmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::dmrmin =.\+05e-\/3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a67a841cda9f172633fa4895d1a3433e7}{}\label{namespacemodule__microphysics_a67a841cda9f172633fa4895d1a3433e7}
 
 
-Definition at line 48 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!esw0@{esw0}}
+\index{esw0@{esw0}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{esw0}{esw0}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::esw0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a74a1e9686afb4c7b7b7913cf9615ee0c}{}\label{namespacemodule__microphysics_a74a1e9686afb4c7b7b7913cf9615ee0c}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!indexsmin@{indexsmin}}
 \index{indexsmin@{indexsmin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{indexsmin}{indexsmin}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::indexsmin =100\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a48966fa99ac5a7268ef5f473a675eeb2}{}\label{namespacemodule__microphysics_a48966fa99ac5a7268ef5f473a675eeb2}
 
 
-Definition at line 60 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 64 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -456,7 +583,7 @@ Referenced by rsipath(), and rsipath2().
 \subsubsection[{\texorpdfstring{ithi}{ithi}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+microphysics\+::ithi =40}\hypertarget{namespacemodule__microphysics_aac47e36935bcfaf088e6d0cb266d74f5}{}\label{namespacemodule__microphysics_aac47e36935bcfaf088e6d0cb266d74f5}
 
 
-Definition at line 87 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 91 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -467,18 +594,40 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{itlo}{itlo}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+microphysics\+::itlo =-\/60}\hypertarget{namespacemodule__microphysics_ada649157311835e0fa4c4d24057d5aa4}{}\label{namespacemodule__microphysics_ada649157311835e0fa4c4d24057d5aa4}
 
 
-Definition at line 87 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 91 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!massi@{massi}}
+\index{massi@{massi}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{massi}{massi}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::massi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a399ef7965cf1f4f6e4aef482e33f9b16}{}\label{namespacemodule__microphysics_a399ef7965cf1f4f6e4aef482e33f9b16}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), ice\+\_\+lookup(), rsipath(), and rsipath2().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!massr@{massr}}
+\index{massr@{massr}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{massr}{massr}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::massr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a3b33f42c343ef0fbfe6585bbeccc99c7}{}\label{namespacemodule__microphysics_a3b33f42c343ef0fbfe6585bbeccc99c7}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst(), and rain\+\_\+lookup().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!mdimax@{mdimax}}
 \index{mdimax@{mdimax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{mdimax}{mdimax}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::mdimax =X\+M\+Imax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a28b728213c1425c1bd5c05c9a469b92a}{}\label{namespacemodule__microphysics_a28b728213c1425c1bd5c05c9a469b92a}
 
 
-Definition at line 38 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 42 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -489,7 +638,7 @@ Referenced by gsmcolumn(), gsmconst(), ice\+\_\+lookup(), rsipath(), and rsipath
 \subsubsection[{\texorpdfstring{mdimin}{mdimin}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::mdimin =X\+M\+Imin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a81bcf203ed1a75b10ea2c7f97ac56a21}{}\label{namespacemodule__microphysics_a81bcf203ed1a75b10ea2c7f97ac56a21}
 
 
-Definition at line 38 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 42 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -500,7 +649,7 @@ Referenced by gsmconst(), ice\+\_\+lookup(), rsipath(), and rsipath2().
 \subsubsection[{\texorpdfstring{mdrmax}{mdrmax}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::mdrmax =X\+M\+Rmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aa21f2a4aa4dc086cbe80493ae7da6b8b}{}\label{namespacemodule__microphysics_aa21f2a4aa4dc086cbe80493ae7da6b8b}
 
 
-Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 56 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -511,7 +660,7 @@ Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
 \subsubsection[{\texorpdfstring{mdrmin}{mdrmin}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::mdrmin =X\+M\+Rmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aa9201f3dba87b517d0fe88af177c4281}{}\label{namespacemodule__microphysics_aa9201f3dba87b517d0fe88af177c4281}
 
 
-Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 56 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -522,7 +671,7 @@ Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
 \subsubsection[{\texorpdfstring{mic\+\_\+step}{mic_step}}]{\setlength{\rightskip}{0pt plus 5cm}integer, private module\+\_\+microphysics\+::mic\+\_\+step\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_acb3899d31d6f2079a2d41c3e551e3443}{}\label{namespacemodule__microphysics_acb3899d31d6f2079a2d41c3e551e3443}
 
 
-Definition at line 18 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 22 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -533,7 +682,7 @@ Referenced by gsmcolumn(), and gsmconst().
 \subsubsection[{\texorpdfstring{my\+\_\+growth}{my_growth}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(my\+\_\+t1\+:my\+\_\+t2), private module\+\_\+microphysics\+::my\+\_\+growth\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a05041f6bd94be58f8b3bddac6b374b41}{}\label{namespacemodule__microphysics_a05041f6bd94be58f8b3bddac6b374b41}
 
 
-Definition at line 28 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 32 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -544,7 +693,7 @@ Referenced by gsmcolumn(), and my\+\_\+growth\+\_\+rates().
 \subsubsection[{\texorpdfstring{my\+\_\+t1}{my_t1}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::my\+\_\+t1 =1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aae73524f22f4bc2373aaa5d8a6f7e7d6}{}\label{namespacemodule__microphysics_aae73524f22f4bc2373aaa5d8a6f7e7d6}
 
 
-Definition at line 27 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 31 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -555,18 +704,29 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{my\+\_\+t2}{my_t2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::my\+\_\+t2 =35\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a01af6bac32c88fd12ba020f66ad0ae80}{}\label{namespacemodule__microphysics_a01af6bac32c88fd12ba020f66ad0ae80}
 
 
-Definition at line 27 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 31 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!nlimin@{nlimin}}
+\index{nlimin@{nlimin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{nlimin}{nlimin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::nlimin =100.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a9a5f8e03c03725a03b9fc923d095e31a}{}\label{namespacemodule__microphysics_a9a5f8e03c03725a03b9fc923d095e31a}
+
+
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), rsipath(), and rsipath2().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!nrime@{nrime}}
 \index{nrime@{nrime}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{nrime}{nrime}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, private module\+\_\+microphysics\+::nrime =40\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aaea427462ab04c90a0e8188c08e102c2}{}\label{namespacemodule__microphysics_aaea427462ab04c90a0e8188c08e102c2}
 
 
-Definition at line 82 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 86 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -577,18 +737,29 @@ Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
 \subsubsection[{\texorpdfstring{nstats}{nstats}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(itlo\+:ithi,4) module\+\_\+microphysics\+::nstats}\hypertarget{namespacemodule__microphysics_a8893b7e5e0d04741a7e155c999480f92}{}\label{namespacemodule__microphysics_a8893b7e5e0d04741a7e155c999480f92}
 
 
-Definition at line 88 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 92 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!qautx@{qautx}}
+\index{qautx@{qautx}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{qautx}{qautx}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::qautx\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a207d110ab05ae003282c44232b6bb8b1}{}\label{namespacemodule__microphysics_a207d110ab05ae003282c44232b6bb8b1}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!qmax@{qmax}}
 \index{qmax@{qmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{qmax}{qmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(itlo\+:ithi,5) module\+\_\+microphysics\+::qmax}\hypertarget{namespacemodule__microphysics_ae783e9f9007b2cc25590b9e967461ef7}{}\label{namespacemodule__microphysics_ae783e9f9007b2cc25590b9e967461ef7}
 
 
-Definition at line 89 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 93 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -599,7 +770,7 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{qtot}{qtot}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(itlo\+:ithi,22) module\+\_\+microphysics\+::qtot}\hypertarget{namespacemodule__microphysics_a1ca8e1d6e01d0b1bfb406608ccfeff5d}{}\label{namespacemodule__microphysics_a1ca8e1d6e01d0b1bfb406608ccfeff5d}
 
 
-Definition at line 89 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 93 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -610,18 +781,161 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{rerainmin}{rerainmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::rerainmin =1.\+5$\ast$X\+M\+Rmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a86f747f0e2a77aee3a2c8270a0f2fc6d}{}\label{namespacemodule__microphysics_a86f747f0e2a77aee3a2c8270a0f2fc6d}
 
 
-Definition at line 61 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 65 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by rsipath(), and rsipath2().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rfmax@{rfmax}}
+\index{rfmax@{rfmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rfmax}{rfmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rfmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a733f21868223ca01612507355d0b85be}{}\label{namespacemodule__microphysics_a733f21868223ca01612507355d0b85be}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rqr\+\_\+dr1@{rqr\+\_\+dr1}}
+\index{rqr\+\_\+dr1@{rqr\+\_\+dr1}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rqr\+\_\+dr1}{rqr_dr1}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rqr\+\_\+dr1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ada6772b0bc7347f6ebb3c31f2df43563}{}\label{namespacemodule__microphysics_ada6772b0bc7347f6ebb3c31f2df43563}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rqr\+\_\+dr2@{rqr\+\_\+dr2}}
+\index{rqr\+\_\+dr2@{rqr\+\_\+dr2}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rqr\+\_\+dr2}{rqr_dr2}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rqr\+\_\+dr2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ab0d5f615986c3482d2fad8542c4f52b8}{}\label{namespacemodule__microphysics_ab0d5f615986c3482d2fad8542c4f52b8}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rqr\+\_\+dr3@{rqr\+\_\+dr3}}
+\index{rqr\+\_\+dr3@{rqr\+\_\+dr3}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rqr\+\_\+dr3}{rqr_dr3}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rqr\+\_\+dr3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a1408a4c383136f8beb5d92049a5461a1}{}\label{namespacemodule__microphysics_a1408a4c383136f8beb5d92049a5461a1}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rqr\+\_\+drmax@{rqr\+\_\+drmax}}
+\index{rqr\+\_\+drmax@{rqr\+\_\+drmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rqr\+\_\+drmax}{rqr_drmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rqr\+\_\+drmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ae58b71fa9e96b0836c12a143455ca83b}{}\label{namespacemodule__microphysics_ae58b71fa9e96b0836c12a143455ca83b}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rqr\+\_\+drmin@{rqr\+\_\+drmin}}
+\index{rqr\+\_\+drmin@{rqr\+\_\+drmin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rqr\+\_\+drmin}{rqr_drmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rqr\+\_\+drmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_af455571cfd5c41222b9cf86fd014a30f}{}\label{namespacemodule__microphysics_af455571cfd5c41222b9cf86fd014a30f}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rr\+\_\+dr1@{rr\+\_\+dr1}}
+\index{rr\+\_\+dr1@{rr\+\_\+dr1}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rr\+\_\+dr1}{rr_dr1}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rr\+\_\+dr1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a31a6bca21f180e2715bbefa18ef32b08}{}\label{namespacemodule__microphysics_a31a6bca21f180e2715bbefa18ef32b08}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rr\+\_\+dr2@{rr\+\_\+dr2}}
+\index{rr\+\_\+dr2@{rr\+\_\+dr2}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rr\+\_\+dr2}{rr_dr2}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rr\+\_\+dr2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a47ffe9826a0f85b6bf41c1cf06cf148f}{}\label{namespacemodule__microphysics_a47ffe9826a0f85b6bf41c1cf06cf148f}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rr\+\_\+dr3@{rr\+\_\+dr3}}
+\index{rr\+\_\+dr3@{rr\+\_\+dr3}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rr\+\_\+dr3}{rr_dr3}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rr\+\_\+dr3\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_afbed7ecd787abc8db3c7ff6160412fa1}{}\label{namespacemodule__microphysics_afbed7ecd787abc8db3c7ff6160412fa1}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rr\+\_\+drmax@{rr\+\_\+drmax}}
+\index{rr\+\_\+drmax@{rr\+\_\+drmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rr\+\_\+drmax}{rr_drmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rr\+\_\+drmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_af631f5533a9284cf93087bb35396a9de}{}\label{namespacemodule__microphysics_af631f5533a9284cf93087bb35396a9de}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rr\+\_\+drmin@{rr\+\_\+drmin}}
+\index{rr\+\_\+drmin@{rr\+\_\+drmin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rr\+\_\+drmin}{rr_drmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, private module\+\_\+microphysics\+::rr\+\_\+drmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a6f0adb81dca26899ff77f0a454206559}{}\label{namespacemodule__microphysics_a6f0adb81dca26899ff77f0a454206559}
+
+
+Definition at line 17 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), and gsmconst().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!rrate@{rrate}}
+\index{rrate@{rrate}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{rrate}{rrate}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::rrate\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a481bd873812c291fe7ddce951cf6440d}{}\label{namespacemodule__microphysics_a481bd873812c291fe7ddce951cf6440d}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst(), and rain\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!sdens@{sdens}}
+\index{sdens@{sdens}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{sdens}{sdens}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::sdens\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ab31a2c459480d3b9ba2388d3f60db179}{}\label{namespacemodule__microphysics_ab31a2c459480d3b9ba2388d3f60db179}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmconst(), rsipath(), and rsipath2().
 
 \index{module\+\_\+microphysics@{module\+\_\+microphysics}!thom@{thom}}
 \index{thom@{thom}!module\+\_\+microphysics@{module\+\_\+microphysics}}
 \subsubsection[{\texorpdfstring{thom}{thom}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::thom =T\+\_\+\+I\+CE\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ae6cb25c6ef4d76e53988a1390c99bacb}{}\label{namespacemodule__microphysics_ae6cb25c6ef4d76e53988a1390c99bacb}
 
 
-Definition at line 99 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 103 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -632,7 +946,7 @@ Referenced by rsipath().
 \subsubsection[{\texorpdfstring{tnw}{tnw}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::tnw =50.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a7759795319d20ea93e3ceb6755333fa1}{}\label{namespacemodule__microphysics_a7759795319d20ea93e3ceb6755333fa1}
 
 
-Definition at line 99 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 103 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -643,7 +957,7 @@ Referenced by rsipath(), and rsipath2().
 \subsubsection[{\texorpdfstring{toler}{toler}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::toler =1.\+0\+E-\/20\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a14f276771aea75d768df7e65c93e0092}{}\label{namespacemodule__microphysics_a14f276771aea75d768df7e65c93e0092}
 
 
-Definition at line 99 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 103 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
@@ -654,9 +968,119 @@ Referenced by gsmcolumn().
 \subsubsection[{\texorpdfstring{vel\+\_\+rf}{vel_rf}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(2\+:9,0\+:{\bf nrime}), private module\+\_\+microphysics\+::vel\+\_\+rf\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a2979744b6713e1ea75813ce1329967c6}{}\label{namespacemodule__microphysics_a2979744b6713e1ea75813ce1329967c6}
 
 
-Definition at line 83 of file module\+\_\+bfmicrophysics.\+f.
+Definition at line 87 of file module\+\_\+bfmicrophysics.\+f.
 
 
 
 Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!venti1@{venti1}}
+\index{venti1@{venti1}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{venti1}{venti1}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::venti1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a420fb71de46ebdf9a097147bf9f9debe}{}\label{namespacemodule__microphysics_a420fb71de46ebdf9a097147bf9f9debe}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!venti2@{venti2}}
+\index{venti2@{venti2}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{venti2}{venti2}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::venti2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a340e6633b234e32289115c3ff08277c5}{}\label{namespacemodule__microphysics_a340e6633b234e32289115c3ff08277c5}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!ventr1@{ventr1}}
+\index{ventr1@{ventr1}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{ventr1}{ventr1}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::ventr1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a17a8a4c24d0e7bd36c202103141dc1f8}{}\label{namespacemodule__microphysics_a17a8a4c24d0e7bd36c202103141dc1f8}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!ventr2@{ventr2}}
+\index{ventr2@{ventr2}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{ventr2}{ventr2}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::ventr2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a95936805512ce6f13a072461b3694020}{}\label{namespacemodule__microphysics_a95936805512ce6f13a072461b3694020}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!vrain@{vrain}}
+\index{vrain@{vrain}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{vrain}{vrain}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdrmin\+:mdrmax), private module\+\_\+microphysics\+::vrain\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_aa57b0e61801d417b3866f69269e886b2}{}\label{namespacemodule__microphysics_aa57b0e61801d417b3866f69269e886b2}
+
+
+Definition at line 77 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and rain\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!vsnowi@{vsnowi}}
+\index{vsnowi@{vsnowi}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{vsnowi}{vsnowi}}]{\setlength{\rightskip}{0pt plus 5cm}real, dimension(mdimin\+:mdimax), private module\+\_\+microphysics\+::vsnowi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_acd06af071ee4f0a5bb4599f239916dd7}{}\label{namespacemodule__microphysics_acd06af071ee4f0a5bb4599f239916dd7}
+
+
+Definition at line 46 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), gsmconst(), and ice\+\_\+lookup().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!xmimax@{xmimax}}
+\index{xmimax@{xmimax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{xmimax}{xmimax}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::xmimax =1.e6$\ast$D\+M\+Imax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ae678585401e3fd39ce21f225ae430677}{}\label{namespacemodule__microphysics_ae678585401e3fd39ce21f225ae430677}
+
+
+Definition at line 39 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn(), rsipath(), and rsipath2().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!xmimin@{xmimin}}
+\index{xmimin@{xmimin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{xmimin}{xmimin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::xmimin =1.e6$\ast$D\+M\+Imin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ac355dc0d92140f99522cb35dc025e9b3}{}\label{namespacemodule__microphysics_ac355dc0d92140f99522cb35dc025e9b3}
+
+
+Definition at line 39 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by gsmcolumn().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!xmrmax@{xmrmax}}
+\index{xmrmax@{xmrmax}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{xmrmax}{xmrmax}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::xmrmax =1.e6$\ast$D\+M\+Rmax\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_ad2c7abf18a4c75103e965cb9c856e6f7}{}\label{namespacemodule__microphysics_ad2c7abf18a4c75103e965cb9c856e6f7}
+
+
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by rsipath(), and rsipath2().
+
+\index{module\+\_\+microphysics@{module\+\_\+microphysics}!xmrmin@{xmrmin}}
+\index{xmrmin@{xmrmin}!module\+\_\+microphysics@{module\+\_\+microphysics}}
+\subsubsection[{\texorpdfstring{xmrmin}{xmrmin}}]{\setlength{\rightskip}{0pt plus 5cm}real, parameter, private module\+\_\+microphysics\+::xmrmin =1.e6$\ast$D\+M\+Rmin\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__microphysics_a77fb6cadd143fc66a45cfdae1569cd81}{}\label{namespacemodule__microphysics_a77fb6cadd143fc66a45cfdae1569cd81}
+
+
+Definition at line 52 of file module\+\_\+bfmicrophysics.\+f.
+
+
+
+Referenced by rsipath(), and rsipath2().
 

@@ -52,6 +52,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="namespaces.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Types&#160;List</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -112,168 +114,41 @@ $(document).ready(function(){initNavTree('namespacemodule__radlw__cldprlw.html',
   <div class="summary">
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">module_radlw_cldprlw Module Reference</div>  </div>
+<div class="title">module_radlw_cldprlw Module Reference<div class="ingroups"><a class="el" href="group__rad.html">RRTMG Radiation Scheme</a> &raquo; <a class="el" href="group__module__radlw__main.html">module_radlw_main</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This module contains cloud property coefficients.  
-</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a9e8ebd81d5d62c2be4c006a595493aed"><td class="memItemLeft" align="right" valign="top">integer, dimension(nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a9e8ebd81d5d62c2be4c006a595493aed">ipat</a></td></tr>
 <tr class="memdesc:a9e8ebd81d5d62c2be4c006a595493aed"><td class="mdescLeft">&#160;</td><td class="mdescRight">ipat is bands index for ebert&amp;curry ice cloud (for iflagice=1)  <a href="#a9e8ebd81d5d62c2be4c006a595493aed">More...</a><br /></td></tr>
 <tr class="separator:a9e8ebd81d5d62c2be4c006a595493aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04bff194fec27e0586ab1b4770319882"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a04bff194fec27e0586ab1b4770319882">absrain</a> = 0.33e-3</td></tr>
-<tr class="memdesc:a04bff194fec27e0586ab1b4770319882"><td class="mdescLeft">&#160;</td><td class="mdescRight">absrain is the rain drop absorption coefficient (m2/g)  <a href="#a04bff194fec27e0586ab1b4770319882">More...</a><br /></td></tr>
-<tr class="separator:a04bff194fec27e0586ab1b4770319882"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a4bcd58c6a7e9abdfbb8f8ec7d925d143">abssnow0</a> = 1.5</td></tr>
-<tr class="memdesc:a4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="mdescLeft">&#160;</td><td class="mdescRight">abssnow0 is the snow flake absorption coefficient (micron), fu coeff  <a href="#a4bcd58c6a7e9abdfbb8f8ec7d925d143">More...</a><br /></td></tr>
-<tr class="separator:a4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d12b328d9dec0c525a4b0824ae7ab44"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a7d12b328d9dec0c525a4b0824ae7ab44">abssnow1</a> = 2.34e-3</td></tr>
-<tr class="memdesc:a7d12b328d9dec0c525a4b0824ae7ab44"><td class="mdescLeft">&#160;</td><td class="mdescRight">abssnow1 is the snow flake absorption coefficient (m2/g), ncar coeff  <a href="#a7d12b328d9dec0c525a4b0824ae7ab44">More...</a><br /></td></tr>
-<tr class="separator:a7d12b328d9dec0c525a4b0824ae7ab44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57896538226e9184c3750440d9f62166"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(58, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a57896538226e9184c3750440d9f62166">absliq1</a></td></tr>
-<tr class="memdesc:a57896538226e9184c3750440d9f62166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hu and Stamnes method. the liquid water absorption coefficients are listed for a range of effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.  <a href="#a57896538226e9184c3750440d9f62166">More...</a><br /></td></tr>
-<tr class="separator:a57896538226e9184c3750440d9f62166"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6610d37cab9ccd4de89237c5de536cfb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(2)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a6610d37cab9ccd4de89237c5de536cfb">absice0</a></td></tr>
-<tr class="memdesc:a6610d37cab9ccd4de89237c5de536cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 2 or 3, absice0 are the ice water absorption coefficients used for large ice partical size such as refice &gt; 131 microns.  <a href="#a6610d37cab9ccd4de89237c5de536cfb">More...</a><br /></td></tr>
-<tr class="separator:a6610d37cab9ccd4de89237c5de536cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b86ff9d6791d95170d3b3ab61cd8291"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(2, 5)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a3b86ff9d6791d95170d3b3ab61cd8291">absice1</a></td></tr>
-<tr class="memdesc:a3b86ff9d6791d95170d3b3ab61cd8291"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 1, absice1 are the ice water absorption coefficients used for ebert and curry method  <a href="#a3b86ff9d6791d95170d3b3ab61cd8291">More...</a><br /></td></tr>
-<tr class="separator:a3b86ff9d6791d95170d3b3ab61cd8291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2238686c0e6d1c5d74bcfdde1542e1d"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(43, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#ad2238686c0e6d1c5d74bcfdde1542e1d">absice2</a></td></tr>
-<tr class="memdesc:ad2238686c0e6d1c5d74bcfdde1542e1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice =2, absice2 are the ice water absorption coefficients used for streamer method. the absorption coefficients are listed for a range of effective radii from 5.0 to 131.0 microns in increments of 3.0 microns. spherical ice particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]  <a href="#ad2238686c0e6d1c5d74bcfdde1542e1d">More...</a><br /></td></tr>
-<tr class="separator:ad2238686c0e6d1c5d74bcfdde1542e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aa04541d0b809367f88ef8aa0eafdbb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(46, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemodule__radlw__cldprlw.html#a3aa04541d0b809367f88ef8aa0eafdbb">absice3</a></td></tr>
-<tr class="memdesc:a3aa04541d0b809367f88ef8aa0eafdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 3, absice3 are the ice water absorption coefficients used for fu parameterization. particle size 5 - 140 micron in increments of 3 microns. units = m2/g. hexagonal ice particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]  <a href="#a3aa04541d0b809367f88ef8aa0eafdbb">More...</a><br /></td></tr>
-<tr class="separator:a3aa04541d0b809367f88ef8aa0eafdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04bff194fec27e0586ab1b4770319882"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga04bff194fec27e0586ab1b4770319882">absrain</a> = 0.33e-3</td></tr>
+<tr class="memdesc:ga04bff194fec27e0586ab1b4770319882"><td class="mdescLeft">&#160;</td><td class="mdescRight">absrain is the rain drop absorption coefficient (m2/g)  <a href="group__module__radlw__main.html#ga04bff194fec27e0586ab1b4770319882">More...</a><br /></td></tr>
+<tr class="separator:ga04bff194fec27e0586ab1b4770319882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga4bcd58c6a7e9abdfbb8f8ec7d925d143">abssnow0</a> = 1.5</td></tr>
+<tr class="memdesc:ga4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="mdescLeft">&#160;</td><td class="mdescRight">abssnow0 is the snow flake absorption coefficient (micron), fu coeff  <a href="group__module__radlw__main.html#ga4bcd58c6a7e9abdfbb8f8ec7d925d143">More...</a><br /></td></tr>
+<tr class="separator:ga4bcd58c6a7e9abdfbb8f8ec7d925d143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d12b328d9dec0c525a4b0824ae7ab44"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga7d12b328d9dec0c525a4b0824ae7ab44">abssnow1</a> = 2.34e-3</td></tr>
+<tr class="memdesc:ga7d12b328d9dec0c525a4b0824ae7ab44"><td class="mdescLeft">&#160;</td><td class="mdescRight">abssnow1 is the snow flake absorption coefficient (m2/g), ncar coeff  <a href="group__module__radlw__main.html#ga7d12b328d9dec0c525a4b0824ae7ab44">More...</a><br /></td></tr>
+<tr class="separator:ga7d12b328d9dec0c525a4b0824ae7ab44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57896538226e9184c3750440d9f62166"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(58, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga57896538226e9184c3750440d9f62166">absliq1</a></td></tr>
+<tr class="memdesc:ga57896538226e9184c3750440d9f62166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hu and Stamnes method. the liquid water absorption coefficients are listed for a range of effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.  <a href="group__module__radlw__main.html#ga57896538226e9184c3750440d9f62166">More...</a><br /></td></tr>
+<tr class="separator:ga57896538226e9184c3750440d9f62166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6610d37cab9ccd4de89237c5de536cfb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(2)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga6610d37cab9ccd4de89237c5de536cfb">absice0</a></td></tr>
+<tr class="memdesc:ga6610d37cab9ccd4de89237c5de536cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 2 or 3, absice0 are the ice water absorption coefficients used for large ice partical size such as refice &gt; 131 microns.  <a href="group__module__radlw__main.html#ga6610d37cab9ccd4de89237c5de536cfb">More...</a><br /></td></tr>
+<tr class="separator:ga6610d37cab9ccd4de89237c5de536cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b86ff9d6791d95170d3b3ab61cd8291"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(2, 5)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga3b86ff9d6791d95170d3b3ab61cd8291">absice1</a></td></tr>
+<tr class="memdesc:ga3b86ff9d6791d95170d3b3ab61cd8291"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 1, absice1 are the ice water absorption coefficients used for ebert and curry method  <a href="group__module__radlw__main.html#ga3b86ff9d6791d95170d3b3ab61cd8291">More...</a><br /></td></tr>
+<tr class="separator:ga3b86ff9d6791d95170d3b3ab61cd8291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad2238686c0e6d1c5d74bcfdde1542e1d"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(43, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#gad2238686c0e6d1c5d74bcfdde1542e1d">absice2</a></td></tr>
+<tr class="memdesc:gad2238686c0e6d1c5d74bcfdde1542e1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice =2, absice2 are the ice water absorption coefficients used for streamer method. the absorption coefficients are listed for a range of effective radii from 5.0 to 131.0 microns in increments of 3.0 microns. spherical ice particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]  <a href="group__module__radlw__main.html#gad2238686c0e6d1c5d74bcfdde1542e1d">More...</a><br /></td></tr>
+<tr class="separator:gad2238686c0e6d1c5d74bcfdde1542e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3aa04541d0b809367f88ef8aa0eafdbb"><td class="memItemLeft" align="right" valign="top">real(kind=kind_phys), dimension(46, nbands)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__module__radlw__main.html#ga3aa04541d0b809367f88ef8aa0eafdbb">absice3</a></td></tr>
+<tr class="memdesc:ga3aa04541d0b809367f88ef8aa0eafdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">for iflagice = 3, absice3 are the ice water absorption coefficients used for fu parameterization. particle size 5 - 140 micron in increments of 3 microns. units = m2/g. hexagonal ice particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]  <a href="group__module__radlw__main.html#ga3aa04541d0b809367f88ef8aa0eafdbb">More...</a><br /></td></tr>
+<tr class="separator:ga3aa04541d0b809367f88ef8aa0eafdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="a6610d37cab9ccd4de89237c5de536cfb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(2) module_radlw_cldprlw::absice0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01189">1189</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3b86ff9d6791d95170d3b3ab61cd8291"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(2,5) module_radlw_cldprlw::absice1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01198">1198</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad2238686c0e6d1c5d74bcfdde1542e1d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(43,nbands) module_radlw_cldprlw::absice2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01212">1212</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3aa04541d0b809367f88ef8aa0eafdbb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(46,nbands) module_radlw_cldprlw::absice3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l01400">1400</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a57896538226e9184c3750440d9f62166"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), dimension(58,nbands) module_radlw_cldprlw::absliq1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00952">952</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a04bff194fec27e0586ab1b4770319882"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), parameter module_radlw_cldprlw::absrain = 0.33e-3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00928">928</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4bcd58c6a7e9abdfbb8f8ec7d925d143"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), parameter module_radlw_cldprlw::abssnow0 = 1.5</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00932">932</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7d12b328d9dec0c525a4b0824ae7ab44"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">real (kind=kind_phys), parameter module_radlw_cldprlw::abssnow1 = 2.34e-3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00935">935</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a9e8ebd81d5d62c2be4c006a595493aed"></a>
 <div class="memitem">
 <div class="memproto">
@@ -284,9 +159,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00921">921</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
+<p>Definition at line <a class="el" href="radlw__datatb_8f_source.html#l00936">936</a> of file <a class="el" href="radlw__datatb_8f_source.html">radlw_datatb.f</a>.</p>
 
-<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01475">module_radlw_main::cldprop()</a>.</p>
+<p>Referenced by <a class="el" href="radlw__main_8f_source.html#l01474">module_radlw_main::cldprop()</a>.</p>
 
 </div>
 </div>

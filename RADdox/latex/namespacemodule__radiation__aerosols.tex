@@ -1,10 +1,5 @@
 \hypertarget{namespacemodule__radiation__aerosols}{}\section{module\+\_\+radiation\+\_\+aerosols Module Reference}
 \label{namespacemodule__radiation__aerosols}\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-
-
-This module contains climatological atmospheric aerosol schemes for radiation computations.  
-
-
 \subsection*{Data Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -15,26 +10,26 @@ type \hyperlink{structmodule__radiation__aerosols_1_1tracer__index__type}{tracer
 \subsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-subroutine, public \hyperlink{namespacemodule__radiation__aerosols_a6086afe5183a09ca64810af7fe2a12ac}{aer\+\_\+init}                                                                                           
+subroutine, public \hyperlink{group__module__radiation__aerosols_gabe52f1b6f62b158154e70a7b5058ad20}{aer\+\_\+init}
 \begin{DoxyCompactList}\small\item\em The initialization program to set up necessary parameters and working arrays. \end{DoxyCompactList}\item 
-subroutine \hyperlink{namespacemodule__radiation__aerosols_a30bd5bb6d72adc8f635e6718e2541f5f}{clim\+\_\+aerinit}                                                                                   
+subroutine \hyperlink{group__module__radiation__aerosols_ga0f5df46b558d8bd64f80161e83542222}{clim\+\_\+aerinit}
 \begin{DoxyCompactList}\small\item\em This subroutine is the opac-\/climatology aerosol initialization program to set up necessary parameters and working arrays. \end{DoxyCompactList}\item 
-subroutine, public \hyperlink{namespacemodule__radiation__aerosols_a2a91dba33725576c80b4b0f556031707}{aer\+\_\+update}                                                                                       
+subroutine, public \hyperlink{group__module__radiation__aerosols_ga1828b8076c7413903e66794b20ce1d37}{aer\+\_\+update}
 \begin{DoxyCompactList}\small\item\em This subroutine checks and updates time varying climatology aerosol data sets. \end{DoxyCompactList}\item 
-subroutine \hyperlink{namespacemodule__radiation__aerosols_a5db43ed91d1c7c83dfee64f12f2bf354}{gocart\+\_\+init}                                                                                     
+subroutine \hyperlink{group__module__radiation__aerosols_gaed41923d67caaf1174eaa4303afdc55d}{gocart\+\_\+init}
 \begin{DoxyCompactList}\small\item\em the initialization program for gocart aerosols \end{DoxyCompactList}\item 
-subroutine \hyperlink{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4}{setgocartaer}                                                                                   
+subroutine \hyperlink{group__module__radiation__aerosols_ga685dc5ac4b7da2a375800bef712cbb8b}{setgocartaer}
 \begin{DoxyCompactList}\small\item\em This subroutine computes SW + LW aerosol optical properties for gocart aerosol species (merged from fcst and clim fields). \end{DoxyCompactList}\end{DoxyCompactItemize}
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine, public \hyperlink{namespacemodule__radiation__aerosols_a94a9a162f822d2ee5c5bff611403dd06}{setaer}                                                                                               
+subroutine, public \hyperlink{group__module__radiation__aerosols_ga559549bedb091683f71a705a875222d8}{setaer}
 \begin{DoxyCompactList}\small\item\em This subroutine computes aerosols optical properties. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-subroutine \hyperlink{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd}{aer\+\_\+property}                                                                                   
+subroutine \hyperlink{group__module__radiation__aerosols_ga021aee92f6c64f78fc11e26d5b2288cf}{aer\+\_\+property}
 \begin{DoxyCompactList}\small\item\em This subroutine maps the 5 degree global climatological aerosol data set onto model grids, and compute aerosol optical properties for SW and LW radiations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 \subsection*{Variables}
@@ -42,1749 +37,217 @@ subroutine \hyperlink{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c
 \item 
 character(40), parameter \hyperlink{namespacemodule__radiation__aerosols_a6d0e0cbcb4a13c1f80f6b1c41b13d3b8}{vtagaer} =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+aerosols v5.\+2 Jan 2013 \textquotesingle{}
 \item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_ae0d9615fa694e2a5dfe8fb48e99b7e76}{nf\+\_\+aesw} = 3
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_gae0d9615fa694e2a5dfe8fb48e99b7e76}{nf\+\_\+aesw} = 3
 \begin{DoxyCompactList}\small\item\em num of output fields for sw rad \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_afba0069cd611248a9595a126a13f5203}{nf\+\_\+aelw} = 3
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_gafba0069cd611248a9595a126a13f5203}{nf\+\_\+aelw} = 3
 \begin{DoxyCompactList}\small\item\em num of output fields for lw rad \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_a654ab60d433133542d3c07edd2244566}{nlwstr} = 1
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_ga654ab60d433133542d3c07edd2244566}{nlwstr} = 1
 \begin{DoxyCompactList}\small\item\em starting band number in ir region \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_a3d126c465af80bb698d9d1a288c181bb}{nspc} = 5
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_ga3d126c465af80bb698d9d1a288c181bb}{nspc} = 5
 \begin{DoxyCompactList}\small\item\em num of species for output aod (opnl) \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_a476c0181513603112dec3f4d2a2ec839}{nspc1} = N\+S\+PC + 1
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_ga476c0181513603112dec3f4d2a2ec839}{nspc1} = N\+S\+PC + 1
 \begin{DoxyCompactList}\small\item\em total+species \end{DoxyCompactList}\item 
-real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__aerosols_a7db1adcf476a9a5532230aa11fcc3bb7}{f\+\_\+zero} = 0.\+0
+real(kind=kind\+\_\+phys), parameter \hyperlink{group__module__radiation__aerosols_ga7db1adcf476a9a5532230aa11fcc3bb7}{f\+\_\+zero} = 0.\+0
 \item 
-real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__aerosols_a63babe7f9ec4ff6a0364993f4be3768e}{f\+\_\+one} = 1.\+0
+real(kind=kind\+\_\+phys), parameter \hyperlink{group__module__radiation__aerosols_ga63babe7f9ec4ff6a0364993f4be3768e}{f\+\_\+one} = 1.\+0
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a1d6c41e3bb818aa8b6f8f10d1c3f38a7}{nswbnd} = N\+B\+D\+SW
+integer, save \hyperlink{group__module__radiation__aerosols_ga1d6c41e3bb818aa8b6f8f10d1c3f38a7}{nswbnd} = N\+B\+D\+SW
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_ab17b7f75d6d737fd2fc81eae44cba81d}{nlwbnd} = N\+B\+D\+LW
+integer, save \hyperlink{group__module__radiation__aerosols_gab17b7f75d6d737fd2fc81eae44cba81d}{nlwbnd} = N\+B\+D\+LW
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_ab77b3b4aa76361277d828c7ba5dc3eda}{nswlwbd} = N\+B\+D\+SW+N\+B\+D\+LW
+integer, save \hyperlink{group__module__radiation__aerosols_gab77b3b4aa76361277d828c7ba5dc3eda}{nswlwbd} = N\+B\+D\+SW+N\+B\+D\+LW
 \item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_a2e0dc6d161d1906050efd67c471673c9}{nwvsol} = 151
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_ga2e0dc6d161d1906050efd67c471673c9}{nwvsol} = 151
 \begin{DoxyCompactList}\small\item\em num of wvnum regions where solar flux is constant \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_ae94df49c8ff8c0ec8e6b8adb891f3c6b}{nwvtot} = 57600
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_gae94df49c8ff8c0ec8e6b8adb891f3c6b}{nwvtot} = 57600
 \begin{DoxyCompactList}\small\item\em total num of wvnum included \end{DoxyCompactList}\item 
-integer, parameter, public \hyperlink{namespacemodule__radiation__aerosols_a45b2c26ccba5d4fd2dfccf31bcc02824}{nwvtir} = 4000
+integer, parameter, public \hyperlink{group__module__radiation__aerosols_ga45b2c26ccba5d4fd2dfccf31bcc02824}{nwvtir} = 4000
 \begin{DoxyCompactList}\small\item\em total num of wvnum in ir range \end{DoxyCompactList}\item 
-integer, dimension(\hyperlink{namespacemodule__radiation__aerosols_a2e0dc6d161d1906050efd67c471673c9}{nwvsol}), save \hyperlink{namespacemodule__radiation__aerosols_a80194c8356dfb92a43306abbe7097711}{nwvns0}
+integer, dimension(\hyperlink{group__module__radiation__aerosols_ga2e0dc6d161d1906050efd67c471673c9}{nwvsol}), save \hyperlink{group__module__radiation__aerosols_ga80194c8356dfb92a43306abbe7097711}{nwvns0}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_a2e0dc6d161d1906050efd67c471673c9}{nwvsol}), save \hyperlink{namespacemodule__radiation__aerosols_aed8bb8a8bc26d72a6c3d31ed4430941f}{s0intv}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_ga2e0dc6d161d1906050efd67c471673c9}{nwvsol}), save \hyperlink{group__module__radiation__aerosols_gaed8bb8a8bc26d72a6c3d31ed4430941f}{s0intv}
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ab37644d8cc2c222af700b86db91f05e7}{minvyr} = 1850
+integer, parameter \hyperlink{group__module__radiation__aerosols_gab37644d8cc2c222af700b86db91f05e7}{minvyr} = 1850
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ad856a3d564ff84043219626759673f27}{maxvyr} = 1999
+integer, parameter \hyperlink{group__module__radiation__aerosols_gad856a3d564ff84043219626759673f27}{maxvyr} = 1999
 \item 
-integer, dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_ab016f51c81a1157ee234dc82f8f114ee}{ivolae}
+integer, dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gab016f51c81a1157ee234dc82f8f114ee}{ivolae}
 \item 
-integer \hyperlink{namespacemodule__radiation__aerosols_af224f7d7991e3d48aeaa4d221da50f41}{kyrstr}
+integer \hyperlink{group__module__radiation__aerosols_gaf224f7d7991e3d48aeaa4d221da50f41}{kyrstr}
 \item 
-integer \hyperlink{namespacemodule__radiation__aerosols_a79127786cce93bccf8749ef8c85f6467}{kyrend}
+integer \hyperlink{group__module__radiation__aerosols_ga79127786cce93bccf8749ef8c85f6467}{kyrend}
 \item 
-integer \hyperlink{namespacemodule__radiation__aerosols_a928c08857f866e4b848873a23a1d49e7}{kyrsav}
+integer \hyperlink{group__module__radiation__aerosols_ga928c08857f866e4b848873a23a1d49e7}{kyrsav}
 \item 
-integer \hyperlink{namespacemodule__radiation__aerosols_a302ae8a5aa2b8fb08ad366ef124cee45}{kmonsav}
+integer \hyperlink{group__module__radiation__aerosols_ga302ae8a5aa2b8fb08ad366ef124cee45}{kmonsav}
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a1fffbb55ad2986a216b721a6c103c4cf}{nxc} = 5
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga1fffbb55ad2986a216b721a6c103c4cf}{nxc} = 5
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}{nae} = 7
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga45121ca4dcb3194e8afb4090fa810657}{nae} = 7
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}{ndm} = 5
+integer, parameter \hyperlink{group__module__radiation__aerosols_gae77b22f76f193cef19b6e6c3ee8e0773}{ndm} = 5
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{imxae} = 72
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga52cda855a397136f75768d205292ddbb}{imxae} = 72
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{jmxae} = 37
+integer, parameter \hyperlink{group__module__radiation__aerosols_gafdfdd058364062349b02cec9c712ea80}{jmxae} = 37
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ae8ffb66e7e617f045663ce2732743b4a}{naerbnd} =61
+integer, parameter \hyperlink{group__module__radiation__aerosols_gae8ffb66e7e617f045663ce2732743b4a}{naerbnd} =61
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_aa6d18b0588e80cb40871cc75870d09ba}{nrhlev} =8
+integer, parameter \hyperlink{group__module__radiation__aerosols_gaa6d18b0588e80cb40871cc75870d09ba}{nrhlev} =8
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ac6bc533a79d4b19129834cbc9a9fbc18}{ncm1} = 6
+integer, parameter \hyperlink{group__module__radiation__aerosols_gac6bc533a79d4b19129834cbc9a9fbc18}{ncm1} = 6
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a61dbcce5b0bb02dd31d4a37983887a7b}{ncm2} = 4
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga61dbcce5b0bb02dd31d4a37983887a7b}{ncm2} = 4
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ab46e61a4a386794a5e9e97d8ef7d98a5}{ncm} = N\+C\+M1+N\+C\+M2
+integer, parameter \hyperlink{group__module__radiation__aerosols_gab46e61a4a386794a5e9e97d8ef7d98a5}{ncm} = N\+C\+M1+N\+C\+M2
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_aa6d18b0588e80cb40871cc75870d09ba}{nrhlev}), save \hyperlink{namespacemodule__radiation__aerosols_a6aa3218393ea05cab77ab7867cfeab90}{rhlev}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_gaa6d18b0588e80cb40871cc75870d09ba}{nrhlev}), save \hyperlink{group__module__radiation__aerosols_ga6aa3218393ea05cab77ab7867cfeab90}{rhlev}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{namespacemodule__radiation__aerosols_a8ce24a58afb33dd372995bf5aaf95be9}{haer}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_gae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{group__module__radiation__aerosols_ga45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{group__module__radiation__aerosols_ga8ce24a58afb33dd372995bf5aaf95be9}{haer}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{namespacemodule__radiation__aerosols_a274fad1b6e00e66375882e32494d61c0}{prsref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_gae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{group__module__radiation__aerosols_ga45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{group__module__radiation__aerosols_ga274fad1b6e00e66375882e32494d61c0}{prsref}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{namespacemodule__radiation__aerosols_a227ac7558dc0f33c34c34544771617ec}{sigref}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_gae77b22f76f193cef19b6e6c3ee8e0773}{ndm}, \hyperlink{group__module__radiation__aerosols_ga45121ca4dcb3194e8afb4090fa810657}{nae}), save \hyperlink{group__module__radiation__aerosols_ga227ac7558dc0f33c34c34544771617ec}{sigref}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a40447f925f01790155c4d98ff8b0c04d}{extrhi}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga40447f925f01790155c4d98ff8b0c04d}{extrhi}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a439929b1de549fadecc8537bae13e9de}{scarhi}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga439929b1de549fadecc8537bae13e9de}{scarhi}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_ae4e1ead8bb34371c2d9f1b428846c10c}{ssarhi}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gae4e1ead8bb34371c2d9f1b428846c10c}{ssarhi}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_aac2d735c117dd7d1e72264e611764f79}{asyrhi}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gaac2d735c117dd7d1e72264e611764f79}{asyrhi}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a1c69f7b8ff0c98252e94def83dabfed4}{extrhd}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga1c69f7b8ff0c98252e94def83dabfed4}{extrhd}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a859ba893a7b0b727ce02f3f29906a0a6}{scarhd}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga859ba893a7b0b727ce02f3f29906a0a6}{scarhd}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_ac0714d386ee3dc2ca7f6692905566274}{ssarhd}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gac0714d386ee3dc2ca7f6692905566274}{ssarhd}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a090d37e62ba333db64e28bf89e89a08d}{asyrhd}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga090d37e62ba333db64e28bf89e89a08d}{asyrhd}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_ac0c59f22f472671cd86221cc1ed46c60}{extstra}
+real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gac0c59f22f472671cd86221cc1ed46c60}{extstra}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_a1fffbb55ad2986a216b721a6c103c4cf}{nxc}, \hyperlink{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{namespacemodule__radiation__aerosols_a358c83599fb321a59c958e54d9f284d9}{cmixg}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_ga1fffbb55ad2986a216b721a6c103c4cf}{nxc}, \hyperlink{group__module__radiation__aerosols_ga52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{group__module__radiation__aerosols_gafdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{group__module__radiation__aerosols_ga358c83599fb321a59c958e54d9f284d9}{cmixg}
 \item 
-real(kind=kind\+\_\+phys), dimension(2,\hyperlink{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{namespacemodule__radiation__aerosols_a0ccc698bc870cb6ccbc1c2b64a3f45f6}{denng}
+real(kind=kind\+\_\+phys), dimension(2,\hyperlink{group__module__radiation__aerosols_ga52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{group__module__radiation__aerosols_gafdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{group__module__radiation__aerosols_ga0ccc698bc870cb6ccbc1c2b64a3f45f6}{denng}
 \item 
-integer, dimension(\hyperlink{namespacemodule__radiation__aerosols_a1fffbb55ad2986a216b721a6c103c4cf}{nxc}, \hyperlink{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{namespacemodule__radiation__aerosols_a4cb38abaf6ece5a0ed717edd6f6b4078}{idxcg}
+integer, dimension(\hyperlink{group__module__radiation__aerosols_ga1fffbb55ad2986a216b721a6c103c4cf}{nxc}, \hyperlink{group__module__radiation__aerosols_ga52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{group__module__radiation__aerosols_gafdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{group__module__radiation__aerosols_ga4cb38abaf6ece5a0ed717edd6f6b4078}{idxcg}
 \item 
-integer, dimension(     \hyperlink{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{namespacemodule__radiation__aerosols_a28df10ba381278cc7474bea0bfdaa870}{kprfg}
+integer, dimension(     \hyperlink{group__module__radiation__aerosols_ga52cda855a397136f75768d205292ddbb}{imxae}, \hyperlink{group__module__radiation__aerosols_gafdfdd058364062349b02cec9c712ea80}{jmxae}), save \hyperlink{group__module__radiation__aerosols_ga28df10ba381278cc7474bea0bfdaa870}{kprfg}
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ad345c77fc29d8b02de34990162645a66}{kaerbnd} =61
+integer, parameter \hyperlink{group__module__radiation__aerosols_gad345c77fc29d8b02de34990162645a66}{kaerbnd} =61
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a33f2d4489a1730a27cbdc2e2add0f977}{krhlev} =36
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga33f2d4489a1730a27cbdc2e2add0f977}{krhlev} =36
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a92b09dd26cc321af3b5da0b1c310a588}{kcm1} = 0
+integer, save \hyperlink{group__module__radiation__aerosols_ga92b09dd26cc321af3b5da0b1c310a588}{kcm1} = 0
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_ab2be28697a95bcec8d5cd8de7ebd4328}{kcm2} = 0
+integer, save \hyperlink{group__module__radiation__aerosols_gab2be28697a95bcec8d5cd8de7ebd4328}{kcm2} = 0
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a4816bc93b826ff2fad9ff0805ea39fd5}{kcm}
+integer, save \hyperlink{group__module__radiation__aerosols_ga4816bc93b826ff2fad9ff0805ea39fd5}{kcm}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:) \hyperlink{namespacemodule__radiation__aerosols_ace40d50e36de1fc08c4ff35f6d8dbda9}{rhlev\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:) \hyperlink{group__module__radiation__aerosols_gace40d50e36de1fc08c4ff35f6d8dbda9}{rhlev\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\hyperlink{namespacemodule__radiation__aerosols_a33f2d4489a1730a27cbdc2e2add0f977}{krhlev}) \hyperlink{namespacemodule__radiation__aerosols_a1248e740e53498ed7a06f7d475b1fb25}{data}
+real(kind=kind\+\_\+phys), dimension(\hyperlink{group__module__radiation__aerosols_ga33f2d4489a1730a27cbdc2e2add0f977}{krhlev}) \hyperlink{group__module__radiation__aerosols_ga1248e740e53498ed7a06f7d475b1fb25}{data}
 \item 
-integer, dimension(\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_ac755c4235327053fff060ffa3b2ee2a3}{iendwv\+\_\+grt}
+integer, dimension(\+:), allocatable \hyperlink{group__module__radiation__aerosols_gac755c4235327053fff060ffa3b2ee2a3}{iendwv\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_a6683021bded82850053c16eb3e906998}{rhidext0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_ga6683021bded82850053c16eb3e906998}{rhidext0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_aea46db63db26a316e73640bc63f75383}{rhidssa0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_gaea46db63db26a316e73640bc63f75383}{rhidssa0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_a8491a714c86e9bd7ebdc401662f5068e}{rhidasy0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_ga8491a714c86e9bd7ebdc401662f5068e}{rhidasy0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_a35a5c7b67a3cf11c5016a693e115d384}{rhdpext0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_ga35a5c7b67a3cf11c5016a693e115d384}{rhdpext0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_a40d680662eadf30221997dadcce734b1}{rhdpssa0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_ga40d680662eadf30221997dadcce734b1}{rhdpssa0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_ab5a0bbefbfed6b393f0abad26e6e4d04}{rhdpasy0\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable \hyperlink{group__module__radiation__aerosols_gab5a0bbefbfed6b393f0abad26e6e4d04}{rhdpasy0\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_acb7ff037be78e950ea42d956816c93d5}{extrhi\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gacb7ff037be78e950ea42d956816c93d5}{extrhi\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_ae8587d9b4ebd9cf5d363a82d15049324}{ssarhi\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gae8587d9b4ebd9cf5d363a82d15049324}{ssarhi\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a4b5f80817af9f2116618d6c8f0e194de}{asyrhi\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga4b5f80817af9f2116618d6c8f0e194de}{asyrhi\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a07bfe1ada075519d1d3ceabe21b65a96}{extrhd\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga07bfe1ada075519d1d3ceabe21b65a96}{extrhd\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a4aa91ab1d0b9d71c704dc565ef4704bf}{ssarhd\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga4aa91ab1d0b9d71c704dc565ef4704bf}{ssarhd\+\_\+grt}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a2da45b8bd425415ca417f6590cc54da6}{asyrhd\+\_\+grt}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga2da45b8bd425415ca417f6590cc54da6}{asyrhd\+\_\+grt}
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_aa7b2e0e1d0669af4efc75cb32301f1f1}{imxg} = 144
+integer, parameter \hyperlink{group__module__radiation__aerosols_gaa7b2e0e1d0669af4efc75cb32301f1f1}{imxg} = 144
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a816ee06781e63adf8752a9a67ab2da2d}{jmxg} = 91
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga816ee06781e63adf8752a9a67ab2da2d}{jmxg} = 91
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_a5339e589d92fab8cbb310b84b6ca3d9e}{kmxg} = 30
+integer, parameter \hyperlink{group__module__radiation__aerosols_ga5339e589d92fab8cbb310b84b6ca3d9e}{kmxg} = 30
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_adb4c4cdc8e3212777229d1f54e79bb05}{nmxg}
+integer, save \hyperlink{group__module__radiation__aerosols_gadb4c4cdc8e3212777229d1f54e79bb05}{nmxg}
 \item 
-real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__aerosols_a084315fde4afcad23cd3aeb18a4d8a4e}{dltx} = 360.\+0 / float(I\+M\+XG)
+real(kind=kind\+\_\+phys), parameter \hyperlink{group__module__radiation__aerosols_ga084315fde4afcad23cd3aeb18a4d8a4e}{dltx} = 360.\+0 / float(I\+M\+XG)
 \item 
-real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__aerosols_a499bb3c75e9802c5ee7fd6cdb6660f7e}{dlty} = 180.\+0 / float(J\+M\+XG-\/1)
+real(kind=kind\+\_\+phys), parameter \hyperlink{group__module__radiation__aerosols_ga499bb3c75e9802c5ee7fd6cdb6660f7e}{dlty} = 180.\+0 / float(J\+M\+XG-\/1)
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a942aa3a9f61cb40592bd0879a91c2ede}{psclmg}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga942aa3a9f61cb40592bd0879a91c2ede}{psclmg}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:,\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a123d552c7f98f7371565f4e2017efd45}{dmclmg}
+real(kind=kind\+\_\+phys), dimension(\+:,\+:,\+:,\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga123d552c7f98f7371565f4e2017efd45}{dmclmg}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a1a0e35ab33517e765898870b8b1ab1ad}{geos\+\_\+rlon}
+real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga1a0e35ab33517e765898870b8b1ab1ad}{geos\+\_\+rlon}
 \item 
-real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_aef43bfbd28ef9b87e8d6973ba7331a18}{geos\+\_\+rlat}
+real(kind=kind\+\_\+phys), dimension(\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_gaef43bfbd28ef9b87e8d6973ba7331a18}{geos\+\_\+rlat}
 \item 
-character $\ast$4, save \hyperlink{namespacemodule__radiation__aerosols_ab8118108e60a4795a8caa5af71232399}{gocart\+\_\+climo} = \textquotesingle{}xxxx\textquotesingle{}
+character $\ast$4, save \hyperlink{group__module__radiation__aerosols_gab8118108e60a4795a8caa5af71232399}{gocart\+\_\+climo} = \textquotesingle{}xxxx\textquotesingle{}
 \item 
-real(kind=kind\+\_\+io4), dimension(\+:), allocatable \hyperlink{namespacemodule__radiation__aerosols_a166e63abaa518ec795f8eea6d115f03c}{molwgt}
+real(kind=kind\+\_\+io4), dimension(\+:), allocatable \hyperlink{group__module__radiation__aerosols_ga166e63abaa518ec795f8eea6d115f03c}{molwgt}
 \item 
-logical, save \hyperlink{namespacemodule__radiation__aerosols_aa27bf6912bfd67b78381892d4f555c51}{lgrtint} = .true.
+logical, save \hyperlink{group__module__radiation__aerosols_gaa27bf6912bfd67b78381892d4f555c51}{lgrtint} = .true.
 \item 
-logical, save \hyperlink{namespacemodule__radiation__aerosols_a018d5414597049069c1ddd1094285371}{lckprnt} = .false.
+logical, save \hyperlink{group__module__radiation__aerosols_ga018d5414597049069c1ddd1094285371}{lckprnt} = .false.
 \item 
-real(kind=kind\+\_\+phys), save \hyperlink{namespacemodule__radiation__aerosols_a4b0aa142aee31c40361dadc390ccc68e}{ctaer} = \hyperlink{namespacemodule__radiation__aerosols_a7db1adcf476a9a5532230aa11fcc3bb7}{f\+\_\+zero}
+real(kind=kind\+\_\+phys), save \hyperlink{group__module__radiation__aerosols_ga4b0aa142aee31c40361dadc390ccc68e}{ctaer} = \hyperlink{group__module__radiation__aerosols_ga7db1adcf476a9a5532230aa11fcc3bb7}{f\+\_\+zero}
 \item 
-logical, save \hyperlink{namespacemodule__radiation__aerosols_a36f851e49de5e1f7da38da5fa6ea445c}{get\+\_\+fcst} = .true.
+logical, save \hyperlink{group__module__radiation__aerosols_ga36f851e49de5e1f7da38da5fa6ea445c}{get\+\_\+fcst} = .true.
 \item 
-logical, save \hyperlink{namespacemodule__radiation__aerosols_a7fe1943010fe47c9d86ef4c993848459}{get\+\_\+clim} = .true.
+logical, save \hyperlink{group__module__radiation__aerosols_ga7fe1943010fe47c9d86ef4c993848459}{get\+\_\+clim} = .true.
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_aa9aa876f65d1e1e971607bff4ffbddad}{isoot}
+integer, save \hyperlink{group__module__radiation__aerosols_gaa9aa876f65d1e1e971607bff4ffbddad}{isoot}
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_ad15292f4a185c28ad44687d95ef4d3a4}{iwaso}
+integer, save \hyperlink{group__module__radiation__aerosols_gad15292f4a185c28ad44687d95ef4d3a4}{iwaso}
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_acddb4dccea82201fd3b193c15c85ec78}{isuso}
+integer, save \hyperlink{group__module__radiation__aerosols_gacddb4dccea82201fd3b193c15c85ec78}{isuso}
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_ab64435256571a80bbb577fc4f27b39ee}{issam}
+integer, save \hyperlink{group__module__radiation__aerosols_gab64435256571a80bbb577fc4f27b39ee}{issam}
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a762cff73e22fefab8adf68d08d5c4df1}{isscm}
+integer, save \hyperlink{group__module__radiation__aerosols_ga762cff73e22fefab8adf68d08d5c4df1}{isscm}
 \item 
-type(\hyperlink{structmodule__radiation__aerosols_1_1gocart__index__type}{gocart\+\_\+index\+\_\+type}), save \hyperlink{namespacemodule__radiation__aerosols_a70c58693c0aac6e4dbb6cf425fb0ce6a}{dm\+\_\+indx}
+type(\hyperlink{structmodule__radiation__aerosols_1_1gocart__index__type}{gocart\+\_\+index\+\_\+type}), save \hyperlink{group__module__radiation__aerosols_ga70c58693c0aac6e4dbb6cf425fb0ce6a}{dm\+\_\+indx}
 \item 
-type(\hyperlink{structmodule__radiation__aerosols_1_1tracer__index__type}{tracer\+\_\+index\+\_\+type}), save \hyperlink{namespacemodule__radiation__aerosols_ad6c4782fbaae13df20891197b67568ec}{dmfcs\+\_\+indx}
+type(\hyperlink{structmodule__radiation__aerosols_1_1tracer__index__type}{tracer\+\_\+index\+\_\+type}), save \hyperlink{group__module__radiation__aerosols_gad6c4782fbaae13df20891197b67568ec}{dmfcs\+\_\+indx}
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a6ddeb7b34ad2d6ab1575be3520e85891}{num\+\_\+gridcomp} = 0
+integer, save \hyperlink{group__module__radiation__aerosols_ga6ddeb7b34ad2d6ab1575be3520e85891}{num\+\_\+gridcomp} = 0
 \item 
-character, dimension(\+:), allocatable, save \hyperlink{namespacemodule__radiation__aerosols_a48c2c6c9c509f5c37fea5d788040ad7a}{gridcomp}
+character, dimension(\+:), allocatable, save \hyperlink{group__module__radiation__aerosols_ga48c2c6c9c509f5c37fea5d788040ad7a}{gridcomp}
 \item 
-integer, parameter \hyperlink{namespacemodule__radiation__aerosols_ad1187b5d87889c68cbe5929e20e83ac7}{max\+\_\+num\+\_\+gridcomp} = 5
+integer, parameter \hyperlink{group__module__radiation__aerosols_gad1187b5d87889c68cbe5929e20e83ac7}{max\+\_\+num\+\_\+gridcomp} = 5
 \item 
-character $\ast$2, dimension(\hyperlink{namespacemodule__radiation__aerosols_ad1187b5d87889c68cbe5929e20e83ac7}{max\+\_\+num\+\_\+gridcomp}) \hyperlink{namespacemodule__radiation__aerosols_ac8278b0db773d6ba6ab4d71c9bb1b109}{max\+\_\+gridcomp}
+character $\ast$2, dimension(\hyperlink{group__module__radiation__aerosols_gad1187b5d87889c68cbe5929e20e83ac7}{max\+\_\+num\+\_\+gridcomp}) \hyperlink{group__module__radiation__aerosols_gac8278b0db773d6ba6ab4d71c9bb1b109}{max\+\_\+gridcomp}
 \item 
-integer, dimension(\hyperlink{namespacemodule__radiation__aerosols_ab46e61a4a386794a5e9e97d8ef7d98a5}{ncm}) \hyperlink{namespacemodule__radiation__aerosols_a8ca79ca1e5161374aff3cad4121b360f}{idxspc}
+integer, dimension(\hyperlink{group__module__radiation__aerosols_gab46e61a4a386794a5e9e97d8ef7d98a5}{ncm}) \hyperlink{group__module__radiation__aerosols_ga8ca79ca1e5161374aff3cad4121b360f}{idxspc}
 \item 
-real(kind=kind\+\_\+phys), parameter \hyperlink{namespacemodule__radiation__aerosols_a4555a127ac5bab48353628ea81c55e4e}{wvn550} = 1.\+0e4/0.\+55
+real(kind=kind\+\_\+phys), parameter \hyperlink{group__module__radiation__aerosols_ga4555a127ac5bab48353628ea81c55e4e}{wvn550} = 1.\+0e4/0.\+55
 \item 
-integer, save \hyperlink{namespacemodule__radiation__aerosols_a112670c954eb372efc017253b1096b17}{nv\+\_\+aod} = 1
+integer, save \hyperlink{group__module__radiation__aerosols_ga112670c954eb372efc017253b1096b17}{nv\+\_\+aod} = 1
 \end{DoxyCompactItemize}
 
 
-\subsection{Function/\+Subroutine Documentation}
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!aer\+\_\+init@{aer\+\_\+init}}
-\index{aer\+\_\+init@{aer\+\_\+init}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{aer\+\_\+init                                                                                          }{aer_init                                                                                          }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+aerosols\+::aer\+\_\+init (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__radiation__aerosols_a6086afe5183a09ca64810af7fe2a12ac}{}\label{namespacemodule__radiation__aerosols_a6086afe5183a09ca64810af7fe2a12ac}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em N\+L\+AY} & integer, number of model vertical layers (not used) \\
-\hline
-\mbox{\tt in}  & {\em me} & integer, print message control flag \\
-\hline
-\mbox{\tt in}  & {\em N\+O\+NE} & \\
-\hline
-\end{DoxyParams}
-\hypertarget{namespacemodule__radsw__main_external}{}\subsection{External Module Variables}\label{namespacemodule__radsw__main_external}
-~\newline
- \hyperlink{namespacephysparam_a6fe54722a9d657514d7e4df8f49395fc}{physparam\+::iaermdl}\+: tropospheric aerosol model scheme flag. =0 opac-\/clim; =1 gocart-\/clim; =2 gocart-\/prognostic ~\newline
- \hyperlink{namespacephysparam_aeec2f09912564e297253bf32bf362928}{physparam\+::lalwflg}\+: logical lw aerosol effect control flag. =t compute lw aerosol optical property ~\newline
- \hyperlink{namespacephysparam_aed1b9ce25d416e9149353f2075030bfa}{physparam\+::laswflg}\+: logical sw aerosols effect control flag. =t compute sw aerosol optical property ~\newline
- \hyperlink{namespacephysparam_a70a2b7af2c7f6f631ef05cb05ba6eb8c}{physparam\+::lavoflg}\+: logical stratosphere volcanic aerosol control flag. =t include volcanic aerosol effect ~\newline
- \hyperlink{namespacephysparam_a7ca56a779d7583fcd17b538bf6eb8a84}{physparam\+::lalw1bd}\+: logical lw aerosol property 1 band vs multi-\/band control flag. =t use 1 broad band optical property; =f use multi bands optical property \hypertarget{namespacemodule__radiation__aerosols_subprograms}{}\subsection{Subprograms Called}\label{namespacemodule__radiation__aerosols_subprograms}
-~\newline
- -\/ clim\+\_\+aerinit\+: This subprogram is the opac-\/climatology aerosol initialization program to set up necessary parameters and working arrays. ~\newline
- -\/ wrt\+\_\+aerlog\+: This subprogram writes aerosol parameter configuration to run log file. ~\newline
- -\/ set\+\_\+volcaer\+: This is the initialization program for stratospheric volcanic aerosols. ~\newline
- -\/ set\+\_\+spectrum\+: This subprogram defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the one wavenumber ir fluxes based on black-\/body emission distribution at a predefined temperature. ~\newline
- -\/ set\+\_\+aercoef\+: This is the initialization program for climatological aerosols. The program reads and maps the pre-\/tabulated aerosol optical spectral data onto corresponding sw radiation spectral bands. ~\newline
- -\/ optavg\+: This subprogram computes mean aerosols optical properties over each sw radiation spectral band for each of the species components. This program follows gfdl\textquotesingle{}s approach for thick cloud optical property in sw radiation scheme. 
-
-Definition at line 565 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References clim\+\_\+aerinit(), physparam\+::iaerflg, physparam\+::iaermdl, kmonsav, kyrend, kyrsav, kyrstr, physparam\+::lalw1bd, physparam\+::lalwflg, physparam\+::laswflg, physparam\+::lavoflg, module\+\_\+radlw\+\_\+parameters\+::nbdlw, module\+\_\+radsw\+\_\+parameters\+::nbdsw, nlwbnd, nswbnd, nswlwbd, set\+\_\+spectrum(), set\+\_\+volcaer(), and wrt\+\_\+aerlog().
-
-
-
-Referenced by module\+\_\+radiation\+\_\+driver\+::radinit().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a6086afe5183a09ca64810af7fe2a12ac_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a6086afe5183a09ca64810af7fe2a12ac_icgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!aer\+\_\+property@{aer\+\_\+property}}
-\index{aer\+\_\+property@{aer\+\_\+property}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{aer\+\_\+property                                                                                  }{aer_property                                                                                  }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+aerosols\+::aer\+\_\+property (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd}{}\label{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em prsi} & real, (I\+M\+AX,N\+L\+P1), pressure at interface in mb \\
-\hline
-\mbox{\tt in}  & {\em prsl} & real, (I\+M\+AX,N\+L\+AY), layer mean pressure(not used) \\
-\hline
-\mbox{\tt in}  & {\em prslk} & real, (I\+M\+AX,N\+L\+AY), exner function= $(p/p0)^{rocp}$ (not used) \\
-\hline
-\mbox{\tt in}  & {\em tvly} & real, (I\+M\+AX,N\+L\+AY), layer virtual temperature (not used) \\
-\hline
-\mbox{\tt in}  & {\em rhlay} & real, (I\+M\+AX,N\+L\+AY), layer mean relative humidity \\
-\hline
-\mbox{\tt in}  & {\em dz} & real, (I\+M\+AX,N\+L\+AY), layer thickness in m \\
-\hline
-\mbox{\tt in}  & {\em hz} & real, (I\+M\+AX,N\+L\+P1), level high in m \\
-\hline
-\mbox{\tt in}  & {\em tracer} & real, (I\+M\+AX,N\+L\+AY,N\+T\+R\+AC), aer tracer concentrations (not used) \\
-\hline
-\mbox{\tt in}  & {\em alon,alat} & real, (I\+M\+AX), longitude and latitude of given points in degree \\
-\hline
-\mbox{\tt in}  & {\em slmsk} & real, (I\+M\+AX), sea/land mask (sea\+:0,land\+:1,sea-\/ice\+:2) \\
-\hline
-\mbox{\tt in}  & {\em laersw,laerlw} & logical, 1, logical flag for sw/lw aerosol calculations \\
-\hline
-\mbox{\tt in}  & {\em I\+M\+AX} & integer, 1, horizontal dimension of arrays \\
-\hline
-\mbox{\tt in}  & {\em N\+L\+AY,N\+L\+P1} & integer, 1, vertical dimensions of arrays \\
-\hline
-\mbox{\tt in}  & {\em N\+S\+PC} & integer, 1, num of species for optional aod output fields \\
-\hline
-\mbox{\tt out}  & {\em aerosw} & real, (I\+M\+AX,N\+L\+AY,N\+B\+D\+SW,N\+F\+\_\+\+A\+E\+SW), aeros opt properties for sw ~\newline
- (\+:,\+:,\+:,1)\+: optical depth ~\newline
- (\+:,\+:,\+:,2)\+: single scattering albedo ~\newline
- (\+:,\+:,\+:,3)\+: asymmetry parameter \\
-\hline
-\mbox{\tt out}  & {\em aerolw} & real, (I\+M\+AX,N\+L\+AY,N\+B\+D\+LW,N\+F\+\_\+\+A\+E\+LW), aeros opt properties for lw ~\newline
- (\+:,\+:,\+:,1)\+: optical depth ~\newline
- (\+:,\+:,\+:,2)\+: single scattering albedo ~\newline
- (\+:,\+:,\+:,3)\+: asymmetry parameter \\
-\hline
-\mbox{\tt out}  & {\em aerodp} & real, (I\+M\+AX,N\+S\+P\+C+1), vertically integrated aer-\/opt-\/depth \\
-\hline
-\end{DoxyParams}
-
-\begin{DoxyEnumerate}
-\item Map aerosol data to model grids
-\begin{DoxyItemize}
-\item Map grid in longitude direction, lon from 0 to 355 deg resolution
-\item Map grid in latitude direction, lat from 90n to 90s in 5 deg resolution
-\end{DoxyItemize}
-\item Determin the type of aerosol profile (kp) and scale hight for domain 1 (h1) to be used at this grid point
-\item Compute horizontal bi-\/linear interpolation weights
-\item Do horizontal bi-\/linear interpolation on aerosol partical density (denn)
-\item Do horizontal bi-\/linear interpolation on mixing ratios
-\item Prepare to setup domain index array and effective layer thickness. also convert pressure level to sigma level to follow the terrain
-\item Call \hyperlink{radiation__aerosols_8f_ae60b55ebc37825b2c3c95f95b23ed558}{radclimaer()} to calculate sw/lw aerosol optical properties for the corresponding frequency bands 
-\end{DoxyEnumerate}
-
-Definition at line 2608 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References cmixg, denng, f\+\_\+one, f\+\_\+zero, haer, idxcg, imxae, physparam\+::ivflip, jmxae, kprfg, module\+\_\+radlw\+\_\+parameters\+::nbdlw, module\+\_\+radsw\+\_\+parameters\+::nbdsw, nlwbnd, nspc, nswbnd, nv\+\_\+aod, nxc, prsref, radclimaer(), and sigref.
-
-
-
-Referenced by setaer().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=310pt]{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd_icgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!aer\+\_\+update@{aer\+\_\+update}}
-\index{aer\+\_\+update@{aer\+\_\+update}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{aer\+\_\+update                                                                                      }{aer_update                                                                                      }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+aerosols\+::aer\+\_\+update (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__radiation__aerosols_a2a91dba33725576c80b4b0f556031707}{}\label{namespacemodule__radiation__aerosols_a2a91dba33725576c80b4b0f556031707}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em iyear} & integer, 1, 4-\/digit calender year \\
-\hline
-\mbox{\tt in}  & {\em imon} & integer, 1, month of the year \\
-\hline
-\mbox{\tt in}  & {\em me} & integer, 1, print message control flag \\
-\hline
-\mbox{\tt out}  & {\em N\+O\+NE} & \\
-\hline
-\end{DoxyParams}
-\hypertarget{namespacemodule__radsw__main_external}{}\subsection{External Module Variables}\label{namespacemodule__radsw__main_external}
-~\newline
- \hyperlink{namespacephysparam_aeec2f09912564e297253bf32bf362928}{physparam\+::lalwflg} -\/ control flag for tropospheric lw aerosol ~\newline
- \hyperlink{namespacephysparam_aed1b9ce25d416e9149353f2075030bfa}{physparam\+::laswflg} -\/ control flag for tropospheric sw aerosol ~\newline
- \hyperlink{namespacephysparam_a70a2b7af2c7f6f631ef05cb05ba6eb8c}{physparam\+::lavoflg} -\/ control flag for stratospheric volcanic aerosol \hypertarget{namespacemodule__radiation__aerosols_subprograms}{}\subsection{Subprograms Called}\label{namespacemodule__radiation__aerosols_subprograms}
-~\newline
- -\/ trop\+\_\+update\+: This subprogram updates the monthly global distribution of aerosol profiles in five degree horizontal resolution. ~\newline
- -\/ volc\+\_\+update\+: This subprogram searches historical volcanic data sets to find and read in monthly 45-\/degree lat-\/zone band data of optical depth 
-
-Definition at line 1648 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References physparam\+::lalwflg, physparam\+::laswflg, physparam\+::lavoflg, trop\+\_\+update(), and volc\+\_\+update().
-
-
-
-Referenced by module\+\_\+radiation\+\_\+driver\+::radupdate().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=316pt]{namespacemodule__radiation__aerosols_a2a91dba33725576c80b4b0f556031707_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a2a91dba33725576c80b4b0f556031707_icgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!clim\+\_\+aerinit@{clim\+\_\+aerinit}}
-\index{clim\+\_\+aerinit@{clim\+\_\+aerinit}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{clim\+\_\+aerinit                                                                                  }{clim_aerinit                                                                                  }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+aerosols\+::clim\+\_\+aerinit (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a30bd5bb6d72adc8f635e6718e2541f5f}{}\label{namespacemodule__radiation__aerosols_a30bd5bb6d72adc8f635e6718e2541f5f}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em solfwv} & real, (N\+W\+V\+T\+OT), solar flux for each individual wavenumber $(w/m^2)$ \\
-\hline
-\mbox{\tt in}  & {\em eirfwv} & real, (N\+W\+V\+T\+IR), ir flux(273k) for each individual wavenum $(w/m^2)$ \\
-\hline
-\mbox{\tt in}  & {\em me} & integer, 1, print message control flag \\
-\hline
-\end{DoxyParams}
-
-
-Definition at line 946 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References set\+\_\+aercoef().
-
-
-
-Referenced by aer\+\_\+init().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a30bd5bb6d72adc8f635e6718e2541f5f_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a30bd5bb6d72adc8f635e6718e2541f5f_icgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!gocart\+\_\+init@{gocart\+\_\+init}}
-\index{gocart\+\_\+init@{gocart\+\_\+init}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{gocart\+\_\+init                                                                                    }{gocart_init                                                                                    }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+aerosols\+::gocart\+\_\+init (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a5db43ed91d1c7c83dfee64f12f2bf354}{}\label{namespacemodule__radiation__aerosols_a5db43ed91d1c7c83dfee64f12f2bf354}
-
-\begin{DoxyItemize}
-\item determine weight and index for aerosol composition/luts
-\item read in monthly global distribution of gocart aerosols
-\item read and map the tabulated aerosol optical spectral data onto corresponding S\+W/\+LW radiation spectral bands. 
-\end{DoxyItemize}
-
-Definition at line 3374 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References extrhd\+\_\+grt, extrhi\+\_\+grt, f\+\_\+zero, get\+\_\+clim, iendwv\+\_\+grt, kaerbnd, krhlev, lckprnt, lgrtint, module\+\_\+radsw\+\_\+parameters\+::nbdsw, nlwbnd, nswlwbd, module\+\_\+radsw\+\_\+parameters\+::nswstr, nv\+\_\+aod, nwvtir, nwvtot, optavg\+\_\+grt(), rd\+\_\+gocart\+\_\+clim(), rd\+\_\+gocart\+\_\+luts(), rhdpasy0\+\_\+grt, rhdpext0\+\_\+grt, rhdpssa0\+\_\+grt, rhidasy0\+\_\+grt, rhidext0\+\_\+grt, rhidssa0\+\_\+grt, rhlev\+\_\+grt, set\+\_\+aerspc(), module\+\_\+radlw\+\_\+parameters\+::wvnlw1, and module\+\_\+radlw\+\_\+parameters\+::wvnlw2.
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=328pt]{namespacemodule__radiation__aerosols_a5db43ed91d1c7c83dfee64f12f2bf354_cgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!setaer@{setaer}}
-\index{setaer@{setaer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{setaer                                                                                              }{setaer                                                                                              }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine, public module\+\_\+radiation\+\_\+aerosols\+::setaer (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{namespacemodule__radiation__aerosols_a94a9a162f822d2ee5c5bff611403dd06}{}\label{namespacemodule__radiation__aerosols_a94a9a162f822d2ee5c5bff611403dd06}
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em prsi} & (I\+M\+AX,N\+L\+P1), pressure at interface in mb \\
-\hline
-\mbox{\tt in}  & {\em prsl} & (I\+M\+AX,N\+L\+AY), layer mean pressure in mb \\
-\hline
-\mbox{\tt in}  & {\em prslk} & (I\+M\+AX,N\+L\+AY), exner function = $(p/p0)^{rocp}$ \\
-\hline
-\mbox{\tt in}  & {\em tvly} & (I\+M\+AX,N\+L\+AY), layer virtual temperature in K \\
-\hline
-\mbox{\tt in}  & {\em rhlay} & (I\+M\+AX,N\+L\+AY), layer mean relative humidity \\
-\hline
-\mbox{\tt in}  & {\em slmsk} & (I\+M\+AX), sea/land mask (sea\+:0,land\+:1,sea-\/ice\+:2) \\
-\hline
-\mbox{\tt in}  & {\em tracer} & (I\+M\+AX,N\+L\+AY,N\+T\+R\+AC), aerosol tracer concentration \\
-\hline
-\mbox{\tt in}  & {\em xlon} & (I\+M\+AX), longitude of given points in radiance, ok for both 0-\/$>$2pi or -\/pi-\/$>$+pi ranges \\
-\hline
-\mbox{\tt in}  & {\em xlat} & (I\+M\+AX), latitude of given points in radiance, default to pi/2 -\/$>$ -\/pi/2, otherwise see in-\/line comment \\
-\hline
-\mbox{\tt in}  & {\em I\+M\+AX} & 1, horizontal dimension of arrays \\
-\hline
-\mbox{\tt in}  & {\em N\+L\+AY,N\+L\+P1} & 1, vertical dimensions of arrays \\
-\hline
-\mbox{\tt in}  & {\em lsswr,lslwr} & logical flags for sw/lw radiation calls \\
-\hline
-\mbox{\tt out}  & {\em aerosw} & (I\+M\+AX,N\+L\+AY,N\+B\+D\+SW,N\+F\+\_\+\+A\+E\+SW), aeros opt properties for sw ~\newline
- (\+:,\+:,\+:,1)\+: optical depth ~\newline
- (\+:,\+:,\+:,2)\+: single scattering albedo ~\newline
- (\+:,\+:,\+:,3)\+: asymmetry parameter \\
-\hline
-\mbox{\tt out}  & {\em aerolw} & (I\+M\+AX,N\+L\+AY,N\+B\+D\+LW,N\+F\+\_\+\+A\+E\+LW), aeros opt properties for lw ~\newline
- (\+:,\+:,\+:,1)\+: optical depth ~\newline
- (\+:,\+:,\+:,2)\+: single scattering albedo ~\newline
- (\+:,\+:,\+:,3)\+: asymmetry parameter \\
-\hline
-\mbox{\tt out}  & {\em tau\+\_\+gocart} & (I\+M\+AX,N\+L\+AY,M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+G\+R\+I\+D\+C\+O\+MP), 550nm aeros opt depth \\
-\hline
-\mbox{\tt out}  & {\em aerodp} & (I\+M\+AX,N\+S\+P\+C1), vertically integrated optical depth \\
-\hline
-\end{DoxyParams}
-\hypertarget{namespacemodule__radsw__main_general}{}\subsection{General Algorithm}\label{namespacemodule__radsw__main_general}
-
-\begin{DoxyEnumerate}
-\item Convert lat/lon from radiance to degree
-\item Compute level height and layer thickness
-\item Calculate sw aerosol optical properties for the corresponding frequency bands
-\begin{DoxyItemize}
-\item if opac aerosol climatology is used, call \hyperlink{namespacemodule__radiation__aerosols_a0c8525abbb12f5f03e3c136c851c11bd}{aer\+\_\+property()}\+: this subroutine maps the 5 degree global climatological aerosol data set onto model grids, and compute aerosol optical properties for sw and lw radiations.
-\item if gocart aerosol scheme is used, call \hyperlink{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4}{setgocartaer()}\+: this subroutine computes sw + lw aerosol optical properties for gocart aerosol species (merged from fcst and clim fields)
-\end{DoxyItemize}
-\item Compute stratosphere volcanic forcing
-\begin{DoxyItemize}
-\item select data in 4 lat bands, interpolation at the boundaries
-\item Find lower boundary of stratosphere\+: polar, fixed at 25000pa (250mb); tropic, fixed at 15000pa (150mb); mid-\/lat, interpolation
-\item sw\+: add volcanic aerosol optical depth to the background value
-\item Smoothing profile at boundary if needed
-\item lw\+: add volcanic aerosol optical depth to the background value 
-\end{DoxyItemize}
-\end{DoxyEnumerate}
-
-Definition at line 2019 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References aer\+\_\+property(), physcons\+::con\+\_\+g, f\+\_\+one, f\+\_\+zero, physparam\+::iaerflg, physparam\+::iaermdl, physparam\+::ivflip, ivolae, kmonsav, kyrsav, physparam\+::lalwflg, physparam\+::laswflg, physparam\+::lavoflg, module\+\_\+radlw\+\_\+parameters\+::nbdlw, module\+\_\+radsw\+\_\+parameters\+::nbdsw, nf\+\_\+aelw, nf\+\_\+aesw, nlwbnd, nspc1, nswlwbd, module\+\_\+radsw\+\_\+parameters\+::nswstr, setgocartaer(), module\+\_\+radlw\+\_\+parameters\+::wvnlw1, and module\+\_\+radlw\+\_\+parameters\+::wvnlw2.
-
-
-
-Referenced by module\+\_\+radiation\+\_\+driver\+::grrad().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a94a9a162f822d2ee5c5bff611403dd06_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_a94a9a162f822d2ee5c5bff611403dd06_icgraph}
-\end{center}
-\end{figure}
-
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!setgocartaer@{setgocartaer}}
-\index{setgocartaer@{setgocartaer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{setgocartaer                                                                                  }{setgocartaer                                                                                  }}]{\setlength{\rightskip}{0pt plus 5cm}subroutine module\+\_\+radiation\+\_\+aerosols\+::setgocartaer (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4}{}\label{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4}
-
-
-Definition at line 4706 of file radiation\+\_\+aerosols.\+f.
-
-
-
-References aeropt\+\_\+grt(), physcons\+::con\+\_\+amd, physcons\+::con\+\_\+rd, ctaer, dmclmg, f\+\_\+one, f\+\_\+zero, geos\+\_\+rlat, geos\+\_\+rlon, get\+\_\+clim, get\+\_\+fcst, gocart\+\_\+climo, imxg, physparam\+::ivflip, jmxg, kmxg, physparam\+::lalwflg, physparam\+::laswflg, map\+\_\+aermr(), molwgt, module\+\_\+radlw\+\_\+parameters\+::nbdlw, module\+\_\+radsw\+\_\+parameters\+::nbdsw, nlwbnd, nmxg, nswlwbd, and psclmg.
-
-
-
-Referenced by setaer().
-
-
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=313pt]{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4_cgraph}
-\end{center}
-\end{figure}
-
-
-
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacemodule__radiation__aerosols_abb28d29c21a8905eda601bfe5bfb3df4_icgraph}
-\end{center}
-\end{figure}
-
-
-
-
 \subsection{Variable Documentation}
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!asyrhd@{asyrhd}}
-\index{asyrhd@{asyrhd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{asyrhd}{asyrhd}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::asyrhd\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a090d37e62ba333db64e28bf89e89a08d}{}\label{namespacemodule__radiation__aerosols_a090d37e62ba333db64e28bf89e89a08d}
-
-
-Definition at line 299 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!asyrhd\+\_\+grt@{asyrhd\+\_\+grt}}
-\index{asyrhd\+\_\+grt@{asyrhd\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{asyrhd\+\_\+grt}{asyrhd_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::asyrhd\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a2da45b8bd425415ca417f6590cc54da6}{}\label{namespacemodule__radiation__aerosols_a2da45b8bd425415ca417f6590cc54da6}
-
-
-Definition at line 385 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!asyrhi@{asyrhi}}
-\index{asyrhi@{asyrhi}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{asyrhi}{asyrhi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::asyrhi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aac2d735c117dd7d1e72264e611764f79}{}\label{namespacemodule__radiation__aerosols_aac2d735c117dd7d1e72264e611764f79}
-
-
-Definition at line 297 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!asyrhi\+\_\+grt@{asyrhi\+\_\+grt}}
-\index{asyrhi\+\_\+grt@{asyrhi\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{asyrhi\+\_\+grt}{asyrhi_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::asyrhi\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4b5f80817af9f2116618d6c8f0e194de}{}\label{namespacemodule__radiation__aerosols_a4b5f80817af9f2116618d6c8f0e194de}
-
-
-Definition at line 383 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!cmixg@{cmixg}}
-\index{cmixg@{cmixg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{cmixg}{cmixg}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf nxc},{\bf imxae},{\bf jmxae}), save module\+\_\+radiation\+\_\+aerosols\+::cmixg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a358c83599fb321a59c958e54d9f284d9}{}\label{namespacemodule__radiation__aerosols_a358c83599fb321a59c958e54d9f284d9}
-
-
-Definition at line 311 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ctaer@{ctaer}}
-\index{ctaer@{ctaer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ctaer}{ctaer}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), save module\+\_\+radiation\+\_\+aerosols\+::ctaer = {\bf f\+\_\+zero}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4b0aa142aee31c40361dadc390ccc68e}{}\label{namespacemodule__radiation__aerosols_a4b0aa142aee31c40361dadc390ccc68e}
-
-
-Definition at line 450 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aerspc(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!data@{data}}
-\index{data@{data}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{data}{data}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf krhlev}) module\+\_\+radiation\+\_\+aerosols\+::data\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a1248e740e53498ed7a06f7d475b1fb25}{}\label{namespacemodule__radiation__aerosols_a1248e740e53498ed7a06f7d475b1fb25}
-
-
-Definition at line 331 of file radiation\+\_\+aerosols.\+f.
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!denng@{denng}}
-\index{denng@{denng}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{denng}{denng}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension( 2 ,{\bf imxae},{\bf jmxae}), save module\+\_\+radiation\+\_\+aerosols\+::denng\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a0ccc698bc870cb6ccbc1c2b64a3f45f6}{}\label{namespacemodule__radiation__aerosols_a0ccc698bc870cb6ccbc1c2b64a3f45f6}
-
-
-Definition at line 312 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!dltx@{dltx}}
-\index{dltx@{dltx}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{dltx}{dltx}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+aerosols\+::dltx = 360.\+0 / float(I\+M\+XG)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a084315fde4afcad23cd3aeb18a4d8a4e}{}\label{namespacemodule__radiation__aerosols_a084315fde4afcad23cd3aeb18a4d8a4e}
-
-
-Definition at line 410 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!dlty@{dlty}}
-\index{dlty@{dlty}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{dlty}{dlty}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+aerosols\+::dlty = 180.\+0 / float(J\+M\+XG-\/1)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a499bb3c75e9802c5ee7fd6cdb6660f7e}{}\label{namespacemodule__radiation__aerosols_a499bb3c75e9802c5ee7fd6cdb6660f7e}
-
-
-Definition at line 411 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!dm\+\_\+indx@{dm\+\_\+indx}}
-\index{dm\+\_\+indx@{dm\+\_\+indx}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{dm\+\_\+indx}{dm_indx}}]{\setlength{\rightskip}{0pt plus 5cm}type ({\bf gocart\+\_\+index\+\_\+type}), save module\+\_\+radiation\+\_\+aerosols\+::dm\+\_\+indx\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a70c58693c0aac6e4dbb6cf425fb0ce6a}{}\label{namespacemodule__radiation__aerosols_a70c58693c0aac6e4dbb6cf425fb0ce6a}
-
-
-Definition at line 491 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), map\+\_\+aermr(), rd\+\_\+gocart\+\_\+clim(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!dmclmg@{dmclmg}}
-\index{dmclmg@{dmclmg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{dmclmg}{dmclmg}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::dmclmg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a123d552c7f98f7371565f4e2017efd45}{}\label{namespacemodule__radiation__aerosols_a123d552c7f98f7371565f4e2017efd45}
-
-
-Definition at line 419 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!dmfcs\+\_\+indx@{dmfcs\+\_\+indx}}
-\index{dmfcs\+\_\+indx@{dmfcs\+\_\+indx}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{dmfcs\+\_\+indx}{dmfcs_indx}}]{\setlength{\rightskip}{0pt plus 5cm}type ({\bf tracer\+\_\+index\+\_\+type}), save module\+\_\+radiation\+\_\+aerosols\+::dmfcs\+\_\+indx\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ad6c4782fbaae13df20891197b67568ec}{}\label{namespacemodule__radiation__aerosols_ad6c4782fbaae13df20891197b67568ec}
-
-
-Definition at line 501 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by map\+\_\+aermr(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!extrhd@{extrhd}}
-\index{extrhd@{extrhd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{extrhd}{extrhd}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::extrhd\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a1c69f7b8ff0c98252e94def83dabfed4}{}\label{namespacemodule__radiation__aerosols_a1c69f7b8ff0c98252e94def83dabfed4}
-
-
-Definition at line 299 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!extrhd\+\_\+grt@{extrhd\+\_\+grt}}
-\index{extrhd\+\_\+grt@{extrhd\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{extrhd\+\_\+grt}{extrhd_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::extrhd\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a07bfe1ada075519d1d3ceabe21b65a96}{}\label{namespacemodule__radiation__aerosols_a07bfe1ada075519d1d3ceabe21b65a96}
-
-
-Definition at line 385 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), gocart\+\_\+init(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!extrhi@{extrhi}}
-\index{extrhi@{extrhi}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{extrhi}{extrhi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::extrhi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a40447f925f01790155c4d98ff8b0c04d}{}\label{namespacemodule__radiation__aerosols_a40447f925f01790155c4d98ff8b0c04d}
-
-
-Definition at line 297 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!extrhi\+\_\+grt@{extrhi\+\_\+grt}}
-\index{extrhi\+\_\+grt@{extrhi\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{extrhi\+\_\+grt}{extrhi_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::extrhi\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_acb7ff037be78e950ea42d956816c93d5}{}\label{namespacemodule__radiation__aerosols_acb7ff037be78e950ea42d956816c93d5}
-
-
-Definition at line 383 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), gocart\+\_\+init(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!extstra@{extstra}}
-\index{extstra@{extstra}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{extstra}{extstra}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::extstra\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ac0c59f22f472671cd86221cc1ed46c60}{}\label{namespacemodule__radiation__aerosols_ac0c59f22f472671cd86221cc1ed46c60}
-
-
-Definition at line 301 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!f\+\_\+one@{f\+\_\+one}}
-\index{f\+\_\+one@{f\+\_\+one}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{f\+\_\+one}{f_one}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+aerosols\+::f\+\_\+one = 1.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a63babe7f9ec4ff6a0364993f4be3768e}{}\label{namespacemodule__radiation__aerosols_a63babe7f9ec4ff6a0364993f4be3768e}
-
-
-Definition at line 156 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), aeropt\+\_\+grt(), optavg(), optavg\+\_\+grt(), radclimaer(), set\+\_\+aerspc(), setaer(), setgocartaer(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!f\+\_\+zero@{f\+\_\+zero}}
-\index{f\+\_\+zero@{f\+\_\+zero}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{f\+\_\+zero}{f_zero}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+aerosols\+::f\+\_\+zero = 0.\+0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a7db1adcf476a9a5532230aa11fcc3bb7}{}\label{namespacemodule__radiation__aerosols_a7db1adcf476a9a5532230aa11fcc3bb7}
-
-
-Definition at line 155 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), aeropt\+\_\+grt(), gocart\+\_\+init(), map\+\_\+aermr(), optavg(), optavg\+\_\+grt(), radclimaer(), rd\+\_\+gocart\+\_\+clim(), set\+\_\+aercoef(), set\+\_\+aerspc(), setaer(), setgocartaer(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!geos\+\_\+rlat@{geos\+\_\+rlat}}
-\index{geos\+\_\+rlat@{geos\+\_\+rlat}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{geos\+\_\+rlat}{geos_rlat}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::geos\+\_\+rlat\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aef43bfbd28ef9b87e8d6973ba7331a18}{}\label{namespacemodule__radiation__aerosols_aef43bfbd28ef9b87e8d6973ba7331a18}
-
-
-Definition at line 423 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!geos\+\_\+rlon@{geos\+\_\+rlon}}
-\index{geos\+\_\+rlon@{geos\+\_\+rlon}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{geos\+\_\+rlon}{geos_rlon}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::geos\+\_\+rlon\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a1a0e35ab33517e765898870b8b1ab1ad}{}\label{namespacemodule__radiation__aerosols_a1a0e35ab33517e765898870b8b1ab1ad}
-
-
-Definition at line 423 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!get\+\_\+clim@{get\+\_\+clim}}
-\index{get\+\_\+clim@{get\+\_\+clim}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{get\+\_\+clim}{get_clim}}]{\setlength{\rightskip}{0pt plus 5cm}logical, save module\+\_\+radiation\+\_\+aerosols\+::get\+\_\+clim = .true.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a7fe1943010fe47c9d86ef4c993848459}{}\label{namespacemodule__radiation__aerosols_a7fe1943010fe47c9d86ef4c993848459}
-
-
-Definition at line 454 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), set\+\_\+aerspc(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!get\+\_\+fcst@{get\+\_\+fcst}}
-\index{get\+\_\+fcst@{get\+\_\+fcst}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{get\+\_\+fcst}{get_fcst}}]{\setlength{\rightskip}{0pt plus 5cm}logical, save module\+\_\+radiation\+\_\+aerosols\+::get\+\_\+fcst = .true.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a36f851e49de5e1f7da38da5fa6ea445c}{}\label{namespacemodule__radiation__aerosols_a36f851e49de5e1f7da38da5fa6ea445c}
-
-
-Definition at line 453 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aerspc(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!gocart\+\_\+climo@{gocart\+\_\+climo}}
-\index{gocart\+\_\+climo@{gocart\+\_\+climo}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{gocart\+\_\+climo}{gocart_climo}}]{\setlength{\rightskip}{0pt plus 5cm}character$\ast$4, save module\+\_\+radiation\+\_\+aerosols\+::gocart\+\_\+climo = \textquotesingle{}xxxx\textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab8118108e60a4795a8caa5af71232399}{}\label{namespacemodule__radiation__aerosols_ab8118108e60a4795a8caa5af71232399}
-
-
-Definition at line 428 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!gridcomp@{gridcomp}}
-\index{gridcomp@{gridcomp}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{gridcomp}{gridcomp}}]{\setlength{\rightskip}{0pt plus 5cm}character, dimension(\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::gridcomp\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a48c2c6c9c509f5c37fea5d788040ad7a}{}\label{namespacemodule__radiation__aerosols_a48c2c6c9c509f5c37fea5d788040ad7a}
-
-
-Definition at line 505 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+clim(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!haer@{haer}}
-\index{haer@{haer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{haer}{haer}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf ndm},{\bf nae}), save module\+\_\+radiation\+\_\+aerosols\+::haer\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a8ce24a58afb33dd372995bf5aaf95be9}{}\label{namespacemodule__radiation__aerosols_a8ce24a58afb33dd372995bf5aaf95be9}
-
-
-Definition at line 274 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!idxcg@{idxcg}}
-\index{idxcg@{idxcg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{idxcg}{idxcg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension({\bf nxc},{\bf imxae},{\bf jmxae}), save module\+\_\+radiation\+\_\+aerosols\+::idxcg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4cb38abaf6ece5a0ed717edd6f6b4078}{}\label{namespacemodule__radiation__aerosols_a4cb38abaf6ece5a0ed717edd6f6b4078}
-
-
-Definition at line 313 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!idxspc@{idxspc}}
-\index{idxspc@{idxspc}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{idxspc}{idxspc}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension({\bf ncm}) module\+\_\+radiation\+\_\+aerosols\+::idxspc\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a8ca79ca1e5161374aff3cad4121b360f}{}\label{namespacemodule__radiation__aerosols_a8ca79ca1e5161374aff3cad4121b360f}
-
-
-Definition at line 524 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by radclimaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!iendwv\+\_\+grt@{iendwv\+\_\+grt}}
-\index{iendwv\+\_\+grt@{iendwv\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{iendwv\+\_\+grt}{iendwv_grt}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::iendwv\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ac755c4235327053fff060ffa3b2ee2a3}{}\label{namespacemodule__radiation__aerosols_ac755c4235327053fff060ffa3b2ee2a3}
-
-
-Definition at line 368 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!imxae@{imxae}}
-\index{imxae@{imxae}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{imxae}{imxae}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::imxae = 72\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}{}\label{namespacemodule__radiation__aerosols_a52cda855a397136f75768d205292ddbb}
-
-
-Definition at line 256 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), set\+\_\+aercoef(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!imxg@{imxg}}
-\index{imxg@{imxg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{imxg}{imxg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::imxg = 144\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aa7b2e0e1d0669af4efc75cb32301f1f1}{}\label{namespacemodule__radiation__aerosols_aa7b2e0e1d0669af4efc75cb32301f1f1}
-
-
-Definition at line 404 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!isoot@{isoot}}
-\index{isoot@{isoot}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{isoot}{isoot}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::isoot\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aa9aa876f65d1e1e971607bff4ffbddad}{}\label{namespacemodule__radiation__aerosols_aa9aa876f65d1e1e971607bff4ffbddad}
-
-
-Definition at line 476 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!issam@{issam}}
-\index{issam@{issam}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{issam}{issam}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::issam\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab64435256571a80bbb577fc4f27b39ee}{}\label{namespacemodule__radiation__aerosols_ab64435256571a80bbb577fc4f27b39ee}
-
-
-Definition at line 476 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!isscm@{isscm}}
-\index{isscm@{isscm}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{isscm}{isscm}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::isscm\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a762cff73e22fefab8adf68d08d5c4df1}{}\label{namespacemodule__radiation__aerosols_a762cff73e22fefab8adf68d08d5c4df1}
-
-
-Definition at line 476 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!isuso@{isuso}}
-\index{isuso@{isuso}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{isuso}{isuso}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::isuso\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_acddb4dccea82201fd3b193c15c85ec78}{}\label{namespacemodule__radiation__aerosols_acddb4dccea82201fd3b193c15c85ec78}
-
-
-Definition at line 476 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ivolae@{ivolae}}
-\index{ivolae@{ivolae}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ivolae}{ivolae}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::ivolae\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab016f51c81a1157ee234dc82f8f114ee}{}\label{namespacemodule__radiation__aerosols_ab016f51c81a1157ee234dc82f8f114ee}
-
-
-Definition at line 242 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+volcaer(), setaer(), and volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!iwaso@{iwaso}}
-\index{iwaso@{iwaso}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{iwaso}{iwaso}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::iwaso\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ad15292f4a185c28ad44687d95ef4d3a4}{}\label{namespacemodule__radiation__aerosols_ad15292f4a185c28ad44687d95ef4d3a4}
-
-
-Definition at line 476 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!jmxae@{jmxae}}
-\index{jmxae@{jmxae}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{jmxae}{jmxae}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::jmxae = 37\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}{}\label{namespacemodule__radiation__aerosols_afdfdd058364062349b02cec9c712ea80}
-
-
-Definition at line 257 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), set\+\_\+aercoef(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!jmxg@{jmxg}}
-\index{jmxg@{jmxg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{jmxg}{jmxg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::jmxg = 91\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a816ee06781e63adf8752a9a67ab2da2d}{}\label{namespacemodule__radiation__aerosols_a816ee06781e63adf8752a9a67ab2da2d}
-
-
-Definition at line 405 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kaerbnd@{kaerbnd}}
-\index{kaerbnd@{kaerbnd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kaerbnd}{kaerbnd}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::kaerbnd =61\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ad345c77fc29d8b02de34990162645a66}{}\label{namespacemodule__radiation__aerosols_ad345c77fc29d8b02de34990162645a66}
-
-
-Definition at line 322 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kcm@{kcm}}
-\index{kcm@{kcm}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kcm}{kcm}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::kcm\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4816bc93b826ff2fad9ff0805ea39fd5}{}\label{namespacemodule__radiation__aerosols_a4816bc93b826ff2fad9ff0805ea39fd5}
-
-
-Definition at line 329 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kcm1@{kcm1}}
-\index{kcm1@{kcm1}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kcm1}{kcm1}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::kcm1 = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a92b09dd26cc321af3b5da0b1c310a588}{}\label{namespacemodule__radiation__aerosols_a92b09dd26cc321af3b5da0b1c310a588}
-
-
-Definition at line 327 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), optavg\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kcm2@{kcm2}}
-\index{kcm2@{kcm2}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kcm2}{kcm2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::kcm2 = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab2be28697a95bcec8d5cd8de7ebd4328}{}\label{namespacemodule__radiation__aerosols_ab2be28697a95bcec8d5cd8de7ebd4328}
-
-
-Definition at line 328 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg\+\_\+grt(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kmonsav@{kmonsav}}
-\index{kmonsav@{kmonsav}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kmonsav}{kmonsav}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+aerosols\+::kmonsav\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a302ae8a5aa2b8fb08ad366ef124cee45}{}\label{namespacemodule__radiation__aerosols_a302ae8a5aa2b8fb08ad366ef124cee45}
-
-
-Definition at line 245 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), setaer(), and volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kmxg@{kmxg}}
-\index{kmxg@{kmxg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kmxg}{kmxg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::kmxg = 30\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a5339e589d92fab8cbb310b84b6ca3d9e}{}\label{namespacemodule__radiation__aerosols_a5339e589d92fab8cbb310b84b6ca3d9e}
-
-
-Definition at line 406 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kprfg@{kprfg}}
-\index{kprfg@{kprfg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kprfg}{kprfg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(    {\bf imxae},{\bf jmxae}), save module\+\_\+radiation\+\_\+aerosols\+::kprfg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a28df10ba381278cc7474bea0bfdaa870}{}\label{namespacemodule__radiation__aerosols_a28df10ba381278cc7474bea0bfdaa870}
-
-
-Definition at line 314 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!krhlev@{krhlev}}
-\index{krhlev@{krhlev}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{krhlev}{krhlev}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::krhlev =36\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a33f2d4489a1730a27cbdc2e2add0f977}{}\label{namespacemodule__radiation__aerosols_a33f2d4489a1730a27cbdc2e2add0f977}
-
-
-Definition at line 323 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kyrend@{kyrend}}
-\index{kyrend@{kyrend}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kyrend}{kyrend}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+aerosols\+::kyrend\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a79127786cce93bccf8749ef8c85f6467}{}\label{namespacemodule__radiation__aerosols_a79127786cce93bccf8749ef8c85f6467}
-
-
-Definition at line 245 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), and volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kyrsav@{kyrsav}}
-\index{kyrsav@{kyrsav}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kyrsav}{kyrsav}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+aerosols\+::kyrsav\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a928c08857f866e4b848873a23a1d49e7}{}\label{namespacemodule__radiation__aerosols_a928c08857f866e4b848873a23a1d49e7}
-
-
-Definition at line 245 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), setaer(), and volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!kyrstr@{kyrstr}}
-\index{kyrstr@{kyrstr}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{kyrstr}{kyrstr}}]{\setlength{\rightskip}{0pt plus 5cm}integer module\+\_\+radiation\+\_\+aerosols\+::kyrstr\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_af224f7d7991e3d48aeaa4d221da50f41}{}\label{namespacemodule__radiation__aerosols_af224f7d7991e3d48aeaa4d221da50f41}
-
-
-Definition at line 245 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), and volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!lckprnt@{lckprnt}}
-\index{lckprnt@{lckprnt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{lckprnt}{lckprnt}}]{\setlength{\rightskip}{0pt plus 5cm}logical, save module\+\_\+radiation\+\_\+aerosols\+::lckprnt = .false.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a018d5414597049069c1ddd1094285371}{}\label{namespacemodule__radiation__aerosols_a018d5414597049069c1ddd1094285371}
-
-
-Definition at line 445 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), rd\+\_\+gocart\+\_\+luts(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!lgrtint@{lgrtint}}
-\index{lgrtint@{lgrtint}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{lgrtint}{lgrtint}}]{\setlength{\rightskip}{0pt plus 5cm}logical, save module\+\_\+radiation\+\_\+aerosols\+::lgrtint = .true.\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aa27bf6912bfd67b78381892d4f555c51}{}\label{namespacemodule__radiation__aerosols_aa27bf6912bfd67b78381892d4f555c51}
-
-
-Definition at line 441 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!max\+\_\+gridcomp@{max\+\_\+gridcomp}}
-\index{max\+\_\+gridcomp@{max\+\_\+gridcomp}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{max\+\_\+gridcomp}{max_gridcomp}}]{\setlength{\rightskip}{0pt plus 5cm}character$\ast$2, dimension({\bf max\+\_\+num\+\_\+gridcomp}) module\+\_\+radiation\+\_\+aerosols\+::max\+\_\+gridcomp\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ac8278b0db773d6ba6ab4d71c9bb1b109}{}\label{namespacemodule__radiation__aerosols_ac8278b0db773d6ba6ab4d71c9bb1b109}
-
-
-Definition at line 509 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!max\+\_\+num\+\_\+gridcomp@{max\+\_\+num\+\_\+gridcomp}}
-\index{max\+\_\+num\+\_\+gridcomp@{max\+\_\+num\+\_\+gridcomp}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{max\+\_\+num\+\_\+gridcomp}{max_num_gridcomp}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::max\+\_\+num\+\_\+gridcomp = 5\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ad1187b5d87889c68cbe5929e20e83ac7}{}\label{namespacemodule__radiation__aerosols_ad1187b5d87889c68cbe5929e20e83ac7}
-
-
-Definition at line 508 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!maxvyr@{maxvyr}}
-\index{maxvyr@{maxvyr}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{maxvyr}{maxvyr}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::maxvyr = 1999\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ad856a3d564ff84043219626759673f27}{}\label{namespacemodule__radiation__aerosols_ad856a3d564ff84043219626759673f27}
-
-
-Definition at line 239 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!minvyr@{minvyr}}
-\index{minvyr@{minvyr}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{minvyr}{minvyr}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::minvyr = 1850\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab37644d8cc2c222af700b86db91f05e7}{}\label{namespacemodule__radiation__aerosols_ab37644d8cc2c222af700b86db91f05e7}
-
-
-Definition at line 238 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by volc\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!molwgt@{molwgt}}
-\index{molwgt@{molwgt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{molwgt}{molwgt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+io4), dimension(\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::molwgt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a166e63abaa518ec795f8eea6d115f03c}{}\label{namespacemodule__radiation__aerosols_a166e63abaa518ec795f8eea6d115f03c}
-
-
-Definition at line 431 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nae@{nae}}
-\index{nae@{nae}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nae}{nae}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::nae = 7\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}{}\label{namespacemodule__radiation__aerosols_a45121ca4dcb3194e8afb4090fa810657}
-
-
-Definition at line 254 of file radiation\+\_\+aerosols.\+f.
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!naerbnd@{naerbnd}}
-\index{naerbnd@{naerbnd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{naerbnd}{naerbnd}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::naerbnd =61\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ae8ffb66e7e617f045663ce2732743b4a}{}\label{namespacemodule__radiation__aerosols_ae8ffb66e7e617f045663ce2732743b4a}
-
-
-Definition at line 258 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ncm@{ncm}}
-\index{ncm@{ncm}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ncm}{ncm}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::ncm = N\+C\+M1+N\+C\+M2\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab46e61a4a386794a5e9e97d8ef7d98a5}{}\label{namespacemodule__radiation__aerosols_ab46e61a4a386794a5e9e97d8ef7d98a5}
-
-
-Definition at line 262 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by radclimaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ncm1@{ncm1}}
-\index{ncm1@{ncm1}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ncm1}{ncm1}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::ncm1 = 6\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ac6bc533a79d4b19129834cbc9a9fbc18}{}\label{namespacemodule__radiation__aerosols_ac6bc533a79d4b19129834cbc9a9fbc18}
-
-
-Definition at line 260 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ncm2@{ncm2}}
-\index{ncm2@{ncm2}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ncm2}{ncm2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::ncm2 = 4\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a61dbcce5b0bb02dd31d4a37983887a7b}{}\label{namespacemodule__radiation__aerosols_a61dbcce5b0bb02dd31d4a37983887a7b}
-
-
-Definition at line 261 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ndm@{ndm}}
-\index{ndm@{ndm}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ndm}{ndm}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::ndm = 5\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}{}\label{namespacemodule__radiation__aerosols_ae77b22f76f193cef19b6e6c3ee8e0773}
-
-
-Definition at line 255 of file radiation\+\_\+aerosols.\+f.
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nf\+\_\+aelw@{nf\+\_\+aelw}}
-\index{nf\+\_\+aelw@{nf\+\_\+aelw}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nf\+\_\+aelw}{nf_aelw}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nf\+\_\+aelw = 3}\hypertarget{namespacemodule__radiation__aerosols_afba0069cd611248a9595a126a13f5203}{}\label{namespacemodule__radiation__aerosols_afba0069cd611248a9595a126a13f5203}
-
-
-Definition at line 147 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by setaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nf\+\_\+aesw@{nf\+\_\+aesw}}
-\index{nf\+\_\+aesw@{nf\+\_\+aesw}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nf\+\_\+aesw}{nf_aesw}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nf\+\_\+aesw = 3}\hypertarget{namespacemodule__radiation__aerosols_ae0d9615fa694e2a5dfe8fb48e99b7e76}{}\label{namespacemodule__radiation__aerosols_ae0d9615fa694e2a5dfe8fb48e99b7e76}
+\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!vtagaer@{vtagaer}}
+\index{vtagaer@{vtagaer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
+\subsubsection[{\texorpdfstring{vtagaer}{vtagaer}}]{\setlength{\rightskip}{0pt plus 5cm}character(40), parameter module\+\_\+radiation\+\_\+aerosols\+::vtagaer =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+aerosols v5.\+2 Jan 2013 \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a6d0e0cbcb4a13c1f80f6b1c41b13d3b8}{}\label{namespacemodule__radiation__aerosols_a6d0e0cbcb4a13c1f80f6b1c41b13d3b8}
 
 
 Definition at line 145 of file radiation\+\_\+aerosols.\+f.
 
 
 
-Referenced by setaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nlwbnd@{nlwbnd}}
-\index{nlwbnd@{nlwbnd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nlwbnd}{nlwbnd}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::nlwbnd = N\+B\+D\+LW\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab17b7f75d6d737fd2fc81eae44cba81d}{}\label{namespacemodule__radiation__aerosols_ab17b7f75d6d737fd2fc81eae44cba81d}
-
-
-Definition at line 161 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), aer\+\_\+property(), gocart\+\_\+init(), optavg(), set\+\_\+aercoef(), setaer(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nlwstr@{nlwstr}}
-\index{nlwstr@{nlwstr}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nlwstr}{nlwstr}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nlwstr = 1}\hypertarget{namespacemodule__radiation__aerosols_a654ab60d433133542d3c07edd2244566}{}\label{namespacemodule__radiation__aerosols_a654ab60d433133542d3c07edd2244566}
-
-
-Definition at line 149 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nmxg@{nmxg}}
-\index{nmxg@{nmxg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nmxg}{nmxg}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::nmxg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_adb4c4cdc8e3212777229d1f54e79bb05}{}\label{namespacemodule__radiation__aerosols_adb4c4cdc8e3212777229d1f54e79bb05}
-
-
-Definition at line 408 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), set\+\_\+aerspc(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nrhlev@{nrhlev}}
-\index{nrhlev@{nrhlev}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nrhlev}{nrhlev}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::nrhlev =8\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aa6d18b0588e80cb40871cc75870d09ba}{}\label{namespacemodule__radiation__aerosols_aa6d18b0588e80cb40871cc75870d09ba}
-
-
-Definition at line 259 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nspc@{nspc}}
-\index{nspc@{nspc}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nspc}{nspc}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nspc = 5}\hypertarget{namespacemodule__radiation__aerosols_a3d126c465af80bb698d9d1a288c181bb}{}\label{namespacemodule__radiation__aerosols_a3d126c465af80bb698d9d1a288c181bb}
-
-
-Definition at line 151 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nspc1@{nspc1}}
-\index{nspc1@{nspc1}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nspc1}{nspc1}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nspc1 = N\+S\+PC + 1}\hypertarget{namespacemodule__radiation__aerosols_a476c0181513603112dec3f4d2a2ec839}{}\label{namespacemodule__radiation__aerosols_a476c0181513603112dec3f4d2a2ec839}
-
-
-Definition at line 153 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by setaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nswbnd@{nswbnd}}
-\index{nswbnd@{nswbnd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nswbnd}{nswbnd}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::nswbnd = N\+B\+D\+SW\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a1d6c41e3bb818aa8b6f8f10d1c3f38a7}{}\label{namespacemodule__radiation__aerosols_a1d6c41e3bb818aa8b6f8f10d1c3f38a7}
-
-
-Definition at line 159 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), aer\+\_\+property(), optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nswlwbd@{nswlwbd}}
-\index{nswlwbd@{nswlwbd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nswlwbd}{nswlwbd}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::nswlwbd = N\+B\+D\+SW+N\+B\+D\+LW\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab77b3b4aa76361277d828c7ba5dc3eda}{}\label{namespacemodule__radiation__aerosols_ab77b3b4aa76361277d828c7ba5dc3eda}
-
-
-Definition at line 163 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+init(), gocart\+\_\+init(), radclimaer(), set\+\_\+aercoef(), setaer(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!num\+\_\+gridcomp@{num\+\_\+gridcomp}}
-\index{num\+\_\+gridcomp@{num\+\_\+gridcomp}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{num\+\_\+gridcomp}{num_gridcomp}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::num\+\_\+gridcomp = 0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a6ddeb7b34ad2d6ab1575be3520e85891}{}\label{namespacemodule__radiation__aerosols_a6ddeb7b34ad2d6ab1575be3520e85891}
-
-
-Definition at line 504 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), rd\+\_\+gocart\+\_\+clim(), and set\+\_\+aerspc().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nv\+\_\+aod@{nv\+\_\+aod}}
-\index{nv\+\_\+aod@{nv\+\_\+aod}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nv\+\_\+aod}{nv_aod}}]{\setlength{\rightskip}{0pt plus 5cm}integer, save module\+\_\+radiation\+\_\+aerosols\+::nv\+\_\+aod = 1\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a112670c954eb372efc017253b1096b17}{}\label{namespacemodule__radiation__aerosols_a112670c954eb372efc017253b1096b17}
-
-
-Definition at line 531 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), aeropt\+\_\+grt(), gocart\+\_\+init(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nwvns0@{nwvns0}}
-\index{nwvns0@{nwvns0}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nwvns0}{nwvns0}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension({\bf nwvsol}), save module\+\_\+radiation\+\_\+aerosols\+::nwvns0\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a80194c8356dfb92a43306abbe7097711}{}\label{namespacemodule__radiation__aerosols_a80194c8356dfb92a43306abbe7097711}
-
-
-Definition at line 180 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+spectrum().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nwvsol@{nwvsol}}
-\index{nwvsol@{nwvsol}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nwvsol}{nwvsol}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nwvsol = 151}\hypertarget{namespacemodule__radiation__aerosols_a2e0dc6d161d1906050efd67c471673c9}{}\label{namespacemodule__radiation__aerosols_a2e0dc6d161d1906050efd67c471673c9}
-
-
-Definition at line 172 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+spectrum().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nwvtir@{nwvtir}}
-\index{nwvtir@{nwvtir}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nwvtir}{nwvtir}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nwvtir = 4000}\hypertarget{namespacemodule__radiation__aerosols_a45b2c26ccba5d4fd2dfccf31bcc02824}{}\label{namespacemodule__radiation__aerosols_a45b2c26ccba5d4fd2dfccf31bcc02824}
-
-
-Definition at line 177 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), and set\+\_\+spectrum().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nwvtot@{nwvtot}}
-\index{nwvtot@{nwvtot}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nwvtot}{nwvtot}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter, public module\+\_\+radiation\+\_\+aerosols\+::nwvtot = 57600}\hypertarget{namespacemodule__radiation__aerosols_ae94df49c8ff8c0ec8e6b8adb891f3c6b}{}\label{namespacemodule__radiation__aerosols_ae94df49c8ff8c0ec8e6b8adb891f3c6b}
-
-
-Definition at line 175 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!nxc@{nxc}}
-\index{nxc@{nxc}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{nxc}{nxc}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radiation\+\_\+aerosols\+::nxc = 5\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a1fffbb55ad2986a216b721a6c103c4cf}{}\label{namespacemodule__radiation__aerosols_a1fffbb55ad2986a216b721a6c103c4cf}
-
-
-Definition at line 253 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and trop\+\_\+update().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!prsref@{prsref}}
-\index{prsref@{prsref}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{prsref}{prsref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf ndm},{\bf nae}), save module\+\_\+radiation\+\_\+aerosols\+::prsref\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a274fad1b6e00e66375882e32494d61c0}{}\label{namespacemodule__radiation__aerosols_a274fad1b6e00e66375882e32494d61c0}
-
-
-Definition at line 274 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!psclmg@{psclmg}}
-\index{psclmg@{psclmg}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{psclmg}{psclmg}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::psclmg\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a942aa3a9f61cb40592bd0879a91c2ede}{}\label{namespacemodule__radiation__aerosols_a942aa3a9f61cb40592bd0879a91c2ede}
-
-
-Definition at line 419 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by rd\+\_\+gocart\+\_\+clim(), and setgocartaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhdpasy0\+\_\+grt@{rhdpasy0\+\_\+grt}}
-\index{rhdpasy0\+\_\+grt@{rhdpasy0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhdpasy0\+\_\+grt}{rhdpasy0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhdpasy0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ab5a0bbefbfed6b393f0abad26e6e4d04}{}\label{namespacemodule__radiation__aerosols_ab5a0bbefbfed6b393f0abad26e6e4d04}
-
-
-Definition at line 371 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhdpext0\+\_\+grt@{rhdpext0\+\_\+grt}}
-\index{rhdpext0\+\_\+grt@{rhdpext0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhdpext0\+\_\+grt}{rhdpext0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhdpext0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a35a5c7b67a3cf11c5016a693e115d384}{}\label{namespacemodule__radiation__aerosols_a35a5c7b67a3cf11c5016a693e115d384}
-
-
-Definition at line 371 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhdpssa0\+\_\+grt@{rhdpssa0\+\_\+grt}}
-\index{rhdpssa0\+\_\+grt@{rhdpssa0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhdpssa0\+\_\+grt}{rhdpssa0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhdpssa0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a40d680662eadf30221997dadcce734b1}{}\label{namespacemodule__radiation__aerosols_a40d680662eadf30221997dadcce734b1}
-
-
-Definition at line 371 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhidasy0\+\_\+grt@{rhidasy0\+\_\+grt}}
-\index{rhidasy0\+\_\+grt@{rhidasy0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhidasy0\+\_\+grt}{rhidasy0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhidasy0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a8491a714c86e9bd7ebdc401662f5068e}{}\label{namespacemodule__radiation__aerosols_a8491a714c86e9bd7ebdc401662f5068e}
-
-
-Definition at line 369 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhidext0\+\_\+grt@{rhidext0\+\_\+grt}}
-\index{rhidext0\+\_\+grt@{rhidext0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhidext0\+\_\+grt}{rhidext0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhidext0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a6683021bded82850053c16eb3e906998}{}\label{namespacemodule__radiation__aerosols_a6683021bded82850053c16eb3e906998}
-
-
-Definition at line 369 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhidssa0\+\_\+grt@{rhidssa0\+\_\+grt}}
-\index{rhidssa0\+\_\+grt@{rhidssa0\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhidssa0\+\_\+grt}{rhidssa0_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable module\+\_\+radiation\+\_\+aerosols\+::rhidssa0\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aea46db63db26a316e73640bc63f75383}{}\label{namespacemodule__radiation__aerosols_aea46db63db26a316e73640bc63f75383}
-
-
-Definition at line 369 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by gocart\+\_\+init(), optavg\+\_\+grt(), and rd\+\_\+gocart\+\_\+luts().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhlev@{rhlev}}
-\index{rhlev@{rhlev}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhlev}{rhlev}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf nrhlev}), save module\+\_\+radiation\+\_\+aerosols\+::rhlev\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a6aa3218393ea05cab77ab7867cfeab90}{}\label{namespacemodule__radiation__aerosols_a6aa3218393ea05cab77ab7867cfeab90}
-
-
-Definition at line 264 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by radclimaer().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!rhlev\+\_\+grt@{rhlev\+\_\+grt}}
-\index{rhlev\+\_\+grt@{rhlev\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{rhlev\+\_\+grt}{rhlev_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension (\+:) module\+\_\+radiation\+\_\+aerosols\+::rhlev\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ace40d50e36de1fc08c4ff35f6d8dbda9}{}\label{namespacemodule__radiation__aerosols_ace40d50e36de1fc08c4ff35f6d8dbda9}
-
-
-Definition at line 331 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and gocart\+\_\+init().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!s0intv@{s0intv}}
-\index{s0intv@{s0intv}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{s0intv}{s0intv}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf nwvsol}), save module\+\_\+radiation\+\_\+aerosols\+::s0intv\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_aed8bb8a8bc26d72a6c3d31ed4430941f}{}\label{namespacemodule__radiation__aerosols_aed8bb8a8bc26d72a6c3d31ed4430941f}
-
-
-Definition at line 196 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+spectrum().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!scarhd@{scarhd}}
-\index{scarhd@{scarhd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{scarhd}{scarhd}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::scarhd\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a859ba893a7b0b727ce02f3f29906a0a6}{}\label{namespacemodule__radiation__aerosols_a859ba893a7b0b727ce02f3f29906a0a6}
-
-
-Definition at line 299 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!scarhi@{scarhi}}
-\index{scarhi@{scarhi}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{scarhi}{scarhi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::scarhi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a439929b1de549fadecc8537bae13e9de}{}\label{namespacemodule__radiation__aerosols_a439929b1de549fadecc8537bae13e9de}
-
-
-Definition at line 297 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!sigref@{sigref}}
-\index{sigref@{sigref}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{sigref}{sigref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension({\bf ndm},{\bf nae}), save module\+\_\+radiation\+\_\+aerosols\+::sigref\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a227ac7558dc0f33c34c34544771617ec}{}\label{namespacemodule__radiation__aerosols_a227ac7558dc0f33c34c34544771617ec}
-
-
-Definition at line 274 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aer\+\_\+property(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ssarhd@{ssarhd}}
-\index{ssarhd@{ssarhd}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ssarhd}{ssarhd}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::ssarhd\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ac0714d386ee3dc2ca7f6692905566274}{}\label{namespacemodule__radiation__aerosols_ac0714d386ee3dc2ca7f6692905566274}
-
-
-Definition at line 299 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ssarhd\+\_\+grt@{ssarhd\+\_\+grt}}
-\index{ssarhd\+\_\+grt@{ssarhd\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ssarhd\+\_\+grt}{ssarhd_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::ssarhd\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4aa91ab1d0b9d71c704dc565ef4704bf}{}\label{namespacemodule__radiation__aerosols_a4aa91ab1d0b9d71c704dc565ef4704bf}
-
-
-Definition at line 385 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ssarhi@{ssarhi}}
-\index{ssarhi@{ssarhi}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ssarhi}{ssarhi}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::ssarhi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ae4e1ead8bb34371c2d9f1b428846c10c}{}\label{namespacemodule__radiation__aerosols_ae4e1ead8bb34371c2d9f1b428846c10c}
-
-
-Definition at line 297 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by optavg(), radclimaer(), and set\+\_\+aercoef().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!ssarhi\+\_\+grt@{ssarhi\+\_\+grt}}
-\index{ssarhi\+\_\+grt@{ssarhi\+\_\+grt}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{ssarhi\+\_\+grt}{ssarhi_grt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(\+:,\+:), allocatable, save module\+\_\+radiation\+\_\+aerosols\+::ssarhi\+\_\+grt\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_ae8587d9b4ebd9cf5d363a82d15049324}{}\label{namespacemodule__radiation__aerosols_ae8587d9b4ebd9cf5d363a82d15049324}
-
-
-Definition at line 383 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by aeropt\+\_\+grt(), and optavg\+\_\+grt().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!vtagaer@{vtagaer}}
-\index{vtagaer@{vtagaer}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{vtagaer}{vtagaer}}]{\setlength{\rightskip}{0pt plus 5cm}character(40), parameter module\+\_\+radiation\+\_\+aerosols\+::vtagaer =\textquotesingle{}N\+C\+EP-\/Radiation\+\_\+aerosols v5.\+2 Jan 2013 \textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a6d0e0cbcb4a13c1f80f6b1c41b13d3b8}{}\label{namespacemodule__radiation__aerosols_a6d0e0cbcb4a13c1f80f6b1c41b13d3b8}
-
-
-Definition at line 138 of file radiation\+\_\+aerosols.\+f.
-
-
-
 Referenced by wrt\+\_\+aerlog().
-
-\index{module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}!wvn550@{wvn550}}
-\index{wvn550@{wvn550}!module\+\_\+radiation\+\_\+aerosols@{module\+\_\+radiation\+\_\+aerosols}}
-\subsubsection[{\texorpdfstring{wvn550}{wvn550}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter module\+\_\+radiation\+\_\+aerosols\+::wvn550 = 1.\+0e4/0.\+55\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{namespacemodule__radiation__aerosols_a4555a127ac5bab48353628ea81c55e4e}{}\label{namespacemodule__radiation__aerosols_a4555a127ac5bab48353628ea81c55e4e}
-
-
-Definition at line 530 of file radiation\+\_\+aerosols.\+f.
-
-
-
-Referenced by set\+\_\+aercoef().
 

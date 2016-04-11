@@ -1,136 +1,37 @@
 \hypertarget{namespacemodule__radlw__kgb16}{}\section{module\+\_\+radlw\+\_\+kgb16 Module Reference}
 \label{namespacemodule__radlw__kgb16}\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-
-
-This module sets up absorption coefficients for band 16\+: 2600-\/3000 cm-\/1 (low -\/ h2o, ch4; high -\/ /)  
-
-
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 integer, public \hyperlink{namespacemodule__radlw__kgb16_a95bf5395b579ca6619de3fc40c7ded79}{msa16}
 \item 
-integer, public \hyperlink{namespacemodule__radlw__kgb16_a18ad5b461d6c71b1aa2d82d5694beb03}{msb16}
+integer, public \hyperlink{group__module__radlw__main_ga18ad5b461d6c71b1aa2d82d5694beb03}{msb16}
 \item 
-integer, public \hyperlink{namespacemodule__radlw__kgb16_a8601911604c1d6a1b32e434159ae95d2}{msf16}
+integer, public \hyperlink{group__module__radlw__main_ga8601911604c1d6a1b32e434159ae95d2}{msf16}
 \item 
-integer, public \hyperlink{namespacemodule__radlw__kgb16_a82777667b951207c62955e3e1492d79d}{mfr16}
+integer, public \hyperlink{group__module__radlw__main_ga82777667b951207c62955e3e1492d79d}{mfr16}
 \item 
-integer, public \hyperlink{namespacemodule__radlw__kgb16_aae4c96f4a2ae49c573189f2d63ccd4a3}{maf16}
+integer, public \hyperlink{group__module__radlw__main_gaae4c96f4a2ae49c573189f2d63ccd4a3}{maf16}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_a82777667b951207c62955e3e1492d79d}{mfr16}), public \hyperlink{namespacemodule__radlw__kgb16_a4402ed68e18459813a6c9ede5d6ba9cc}{forref}
+real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{group__module__radlw__main_ga82777667b951207c62955e3e1492d79d}{mfr16}), public \hyperlink{group__module__radlw__main_ga4402ed68e18459813a6c9ede5d6ba9cc}{forref}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_a95bf5395b579ca6619de3fc40c7ded79}{msa16}), public \hyperlink{namespacemodule__radlw__kgb16_a2734b420b7e8e8393a8bf1b595a3cf09}{absa}
+real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_a95bf5395b579ca6619de3fc40c7ded79}{msa16}), public \hyperlink{group__module__radlw__main_ga2734b420b7e8e8393a8bf1b595a3cf09}{absa}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_a18ad5b461d6c71b1aa2d82d5694beb03}{msb16}), public \hyperlink{namespacemodule__radlw__kgb16_ae856b42252b71d4d588ea5e19e871cac}{absb}
+real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{group__module__radlw__main_ga18ad5b461d6c71b1aa2d82d5694beb03}{msb16}), public \hyperlink{group__module__radlw__main_gae856b42252b71d4d588ea5e19e871cac}{absb}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_a8601911604c1d6a1b32e434159ae95d2}{msf16}), public \hyperlink{namespacemodule__radlw__kgb16_afaa2554e1161bd6c983ce630d39d703a}{selfref}
+real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{group__module__radlw__main_ga8601911604c1d6a1b32e434159ae95d2}{msf16}), public \hyperlink{group__module__radlw__main_gafaa2554e1161bd6c983ce630d39d703a}{selfref}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{namespacemodule__radlw__kgb16_aae4c96f4a2ae49c573189f2d63ccd4a3}{maf16}), public \hyperlink{namespacemodule__radlw__kgb16_a355dcc9f6f4955ab3d7ee0a22005c8ba}{fracrefa}
+real(kind=kind\+\_\+phys), dimension(ng16, \hyperlink{group__module__radlw__main_gaae4c96f4a2ae49c573189f2d63ccd4a3}{maf16}), public \hyperlink{group__module__radlw__main_ga355dcc9f6f4955ab3d7ee0a22005c8ba}{fracrefa}
 \item 
-real(kind=kind\+\_\+phys), dimension(ng16), public \hyperlink{namespacemodule__radlw__kgb16_ab93affafac8e2bb182982133a6449de4}{fracrefb}
+real(kind=kind\+\_\+phys), dimension(ng16), public \hyperlink{group__module__radlw__main_gab93affafac8e2bb182982133a6449de4}{fracrefb}
 \end{DoxyCompactItemize}
 
 
 \subsection{Variable Documentation}
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!absa@{absa}}
-\index{absa@{absa}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{absa}{absa}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16,{\bf msa16}), public module\+\_\+radlw\+\_\+kgb16\+::absa}\hypertarget{namespacemodule__radlw__kgb16_a2734b420b7e8e8393a8bf1b595a3cf09}{}\label{namespacemodule__radlw__kgb16_a2734b420b7e8e8393a8bf1b595a3cf09}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!absb@{absb}}
-\index{absb@{absb}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{absb}{absb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16,{\bf msb16}), public module\+\_\+radlw\+\_\+kgb16\+::absb}\hypertarget{namespacemodule__radlw__kgb16_ae856b42252b71d4d588ea5e19e871cac}{}\label{namespacemodule__radlw__kgb16_ae856b42252b71d4d588ea5e19e871cac}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!forref@{forref}}
-\index{forref@{forref}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{forref}{forref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16,{\bf mfr16}), public module\+\_\+radlw\+\_\+kgb16\+::forref}\hypertarget{namespacemodule__radlw__kgb16_a4402ed68e18459813a6c9ede5d6ba9cc}{}\label{namespacemodule__radlw__kgb16_a4402ed68e18459813a6c9ede5d6ba9cc}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!fracrefa@{fracrefa}}
-\index{fracrefa@{fracrefa}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{fracrefa}{fracrefa}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16,{\bf maf16}), public module\+\_\+radlw\+\_\+kgb16\+::fracrefa}\hypertarget{namespacemodule__radlw__kgb16_a355dcc9f6f4955ab3d7ee0a22005c8ba}{}\label{namespacemodule__radlw__kgb16_a355dcc9f6f4955ab3d7ee0a22005c8ba}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!fracrefb@{fracrefb}}
-\index{fracrefb@{fracrefb}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{fracrefb}{fracrefb}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16), public module\+\_\+radlw\+\_\+kgb16\+::fracrefb}\hypertarget{namespacemodule__radlw__kgb16_ab93affafac8e2bb182982133a6449de4}{}\label{namespacemodule__radlw__kgb16_ab93affafac8e2bb182982133a6449de4}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!maf16@{maf16}}
-\index{maf16@{maf16}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{maf16}{maf16}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radlw\+\_\+kgb16\+::maf16}\hypertarget{namespacemodule__radlw__kgb16_aae4c96f4a2ae49c573189f2d63ccd4a3}{}\label{namespacemodule__radlw__kgb16_aae4c96f4a2ae49c573189f2d63ccd4a3}
-
-
-Definition at line 31645 of file radlw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!mfr16@{mfr16}}
-\index{mfr16@{mfr16}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{mfr16}{mfr16}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radlw\+\_\+kgb16\+::mfr16}\hypertarget{namespacemodule__radlw__kgb16_a82777667b951207c62955e3e1492d79d}{}\label{namespacemodule__radlw__kgb16_a82777667b951207c62955e3e1492d79d}
-
-
-Definition at line 31645 of file radlw\+\_\+datatb.\+f.
-
 \index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!msa16@{msa16}}
 \index{msa16@{msa16}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
 \subsubsection[{\texorpdfstring{msa16}{msa16}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radlw\+\_\+kgb16\+::msa16}\hypertarget{namespacemodule__radlw__kgb16_a95bf5395b579ca6619de3fc40c7ded79}{}\label{namespacemodule__radlw__kgb16_a95bf5395b579ca6619de3fc40c7ded79}
 
 
-Definition at line 31645 of file radlw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!msb16@{msb16}}
-\index{msb16@{msb16}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{msb16}{msb16}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radlw\+\_\+kgb16\+::msb16}\hypertarget{namespacemodule__radlw__kgb16_a18ad5b461d6c71b1aa2d82d5694beb03}{}\label{namespacemodule__radlw__kgb16_a18ad5b461d6c71b1aa2d82d5694beb03}
-
-
-Definition at line 31645 of file radlw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!msf16@{msf16}}
-\index{msf16@{msf16}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{msf16}{msf16}}]{\setlength{\rightskip}{0pt plus 5cm}integer, public module\+\_\+radlw\+\_\+kgb16\+::msf16}\hypertarget{namespacemodule__radlw__kgb16_a8601911604c1d6a1b32e434159ae95d2}{}\label{namespacemodule__radlw__kgb16_a8601911604c1d6a1b32e434159ae95d2}
-
-
-Definition at line 31645 of file radlw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}!selfref@{selfref}}
-\index{selfref@{selfref}!module\+\_\+radlw\+\_\+kgb16@{module\+\_\+radlw\+\_\+kgb16}}
-\subsubsection[{\texorpdfstring{selfref}{selfref}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ng16,{\bf msf16}), public module\+\_\+radlw\+\_\+kgb16\+::selfref}\hypertarget{namespacemodule__radlw__kgb16_afaa2554e1161bd6c983ce630d39d703a}{}\label{namespacemodule__radlw__kgb16_afaa2554e1161bd6c983ce630d39d703a}
-
-
-Definition at line 31648 of file radlw\+\_\+datatb.\+f.
-
-
-
-Referenced by taugb16().
+Definition at line 31676 of file radlw\+\_\+datatb.\+f.
 

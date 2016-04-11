@@ -1,197 +1,47 @@
 \hypertarget{namespacemodule__radsw__sflux}{}\section{module\+\_\+radsw\+\_\+sflux Module Reference}
 \label{namespacemodule__radsw__sflux}\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-
-
-This module contains spectral distribution of solar radiation flux used to obtain the incoming solar flux at toa.  
-
-
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 integer, parameter \hyperlink{namespacemodule__radsw__sflux_aba08e6f9d4dccd130e87300e6fd0ed58}{mfs01} = 1
 \item 
-integer, parameter \hyperlink{namespacemodule__radsw__sflux_acca3bbc0dd125a3e8c3734c58c48e79b}{mfs02} = 5
+integer, parameter \hyperlink{group__module__radsw__main_gacca3bbc0dd125a3e8c3734c58c48e79b}{mfs02} = 5
 \item 
-integer, parameter \hyperlink{namespacemodule__radsw__sflux_a5bd55a5106ce82bd47250d38d9b8f22a}{mfs03} = 9
+integer, parameter \hyperlink{group__module__radsw__main_ga5bd55a5106ce82bd47250d38d9b8f22a}{mfs03} = 9
 \item 
-integer, parameter \hyperlink{namespacemodule__radsw__sflux_a08a0f1278962ac27634169ea7632bc70}{mfb01} = 7
+integer, parameter \hyperlink{group__module__radsw__main_ga08a0f1278962ac27634169ea7632bc70}{mfb01} = 7
 \item 
-integer, parameter \hyperlink{namespacemodule__radsw__sflux_afdf71cabed6ae0076d98ff0e563dbc61}{mfb02} = 2
+integer, parameter \hyperlink{group__module__radsw__main_gafdf71cabed6ae0076d98ff0e563dbc61}{mfb02} = 2
 \item 
-integer, parameter \hyperlink{namespacemodule__radsw__sflux_a2e3b510d781c596fa0bb9b1359a988dd}{mfb03} = 5
+integer, parameter \hyperlink{group__module__radsw__main_ga2e3b510d781c596fa0bb9b1359a988dd}{mfb03} = 5
 \item 
-real(kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_aee2a2275da028b0960c5c1c8a34f46cf}{strrat}
+real(kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_gaee2a2275da028b0960c5c1c8a34f46cf}{strrat}
 \item 
-real(kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_a7d1a386e92555bcb09239ab098d8b398}{specwt}
+real(kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_ga7d1a386e92555bcb09239ab098d8b398}{specwt}
 \item 
-integer, dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_a90c56da1bcadbea0b42e12487c1c1eec}{layreffr}
+integer, dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_ga90c56da1bcadbea0b42e12487c1c1eec}{layreffr}
 \item 
-integer, dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_ac2864b4501e9bc3804d45d14f4aab472}{ix1}
+integer, dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_gac2864b4501e9bc3804d45d14f4aab472}{ix1}
 \item 
-integer, dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_a92703c3e826f7e81267c6b7ae31ebe42}{ix2}
+integer, dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_ga92703c3e826f7e81267c6b7ae31ebe42}{ix2}
 \item 
-integer, dimension(nblow\+:nbhgh), public \hyperlink{namespacemodule__radsw__sflux_acb1498ecf044449dbe6d7a5630fdc375}{ibx}
+integer, dimension(nblow\+:nbhgh), public \hyperlink{group__module__radsw__main_gacb1498ecf044449dbe6d7a5630fdc375}{ibx}
 \item 
-real(kind=kind\+\_\+phys), parameter, public \hyperlink{namespacemodule__radsw__sflux_a2f3280a36f27cea89fc66d71e799cf6d}{scalekur} =50.\+15/48.\+37
+real(kind=kind\+\_\+phys), parameter, public \hyperlink{group__module__radsw__main_ga2f3280a36f27cea89fc66d71e799cf6d}{scalekur} =50.\+15/48.\+37
 \item 
-real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{namespacemodule__radsw__sflux_aba08e6f9d4dccd130e87300e6fd0ed58}{mfs01}, \hyperlink{namespacemodule__radsw__sflux_a08a0f1278962ac27634169ea7632bc70}{mfb01}), target, public \hyperlink{namespacemodule__radsw__sflux_a84205f359fb3e1a0e1d03e755c52dc78}{sfluxref01}
+real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{namespacemodule__radsw__sflux_aba08e6f9d4dccd130e87300e6fd0ed58}{mfs01}, \hyperlink{group__module__radsw__main_ga08a0f1278962ac27634169ea7632bc70}{mfb01}), target, public \hyperlink{group__module__radsw__main_ga84205f359fb3e1a0e1d03e755c52dc78}{sfluxref01}
 \item 
-real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{namespacemodule__radsw__sflux_acca3bbc0dd125a3e8c3734c58c48e79b}{mfs02}, \hyperlink{namespacemodule__radsw__sflux_afdf71cabed6ae0076d98ff0e563dbc61}{mfb02}), target, public \hyperlink{namespacemodule__radsw__sflux_aa57fca862289bd57327b9c3ef27e3e2f}{sfluxref02}
+real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{group__module__radsw__main_gacca3bbc0dd125a3e8c3734c58c48e79b}{mfs02}, \hyperlink{group__module__radsw__main_gafdf71cabed6ae0076d98ff0e563dbc61}{mfb02}), target, public \hyperlink{group__module__radsw__main_gaa57fca862289bd57327b9c3ef27e3e2f}{sfluxref02}
 \item 
-real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{namespacemodule__radsw__sflux_a5bd55a5106ce82bd47250d38d9b8f22a}{mfs03}, \hyperlink{namespacemodule__radsw__sflux_a2e3b510d781c596fa0bb9b1359a988dd}{mfb03}), target, public \hyperlink{namespacemodule__radsw__sflux_a95d2640cf0e6cf0ba4a8ca1758806e48}{sfluxref03}
+real(kind=kind\+\_\+phys), dimension(ngmax, \hyperlink{group__module__radsw__main_ga5bd55a5106ce82bd47250d38d9b8f22a}{mfs03}, \hyperlink{group__module__radsw__main_ga2e3b510d781c596fa0bb9b1359a988dd}{mfb03}), target, public \hyperlink{group__module__radsw__main_ga95d2640cf0e6cf0ba4a8ca1758806e48}{sfluxref03}
 \end{DoxyCompactItemize}
 
 
 \subsection{Variable Documentation}
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!ibx@{ibx}}
-\index{ibx@{ibx}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{ibx}{ibx}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::ibx}\hypertarget{namespacemodule__radsw__sflux_acb1498ecf044449dbe6d7a5630fdc375}{}\label{namespacemodule__radsw__sflux_acb1498ecf044449dbe6d7a5630fdc375}
-
-
-Definition at line 1870 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!ix1@{ix1}}
-\index{ix1@{ix1}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{ix1}{ix1}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::ix1}\hypertarget{namespacemodule__radsw__sflux_ac2864b4501e9bc3804d45d14f4aab472}{}\label{namespacemodule__radsw__sflux_ac2864b4501e9bc3804d45d14f4aab472}
-
-
-Definition at line 1870 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!ix2@{ix2}}
-\index{ix2@{ix2}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{ix2}{ix2}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::ix2}\hypertarget{namespacemodule__radsw__sflux_a92703c3e826f7e81267c6b7ae31ebe42}{}\label{namespacemodule__radsw__sflux_a92703c3e826f7e81267c6b7ae31ebe42}
-
-
-Definition at line 1870 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!layreffr@{layreffr}}
-\index{layreffr@{layreffr}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{layreffr}{layreffr}}]{\setlength{\rightskip}{0pt plus 5cm}integer, dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::layreffr}\hypertarget{namespacemodule__radsw__sflux_a90c56da1bcadbea0b42e12487c1c1eec}{}\label{namespacemodule__radsw__sflux_a90c56da1bcadbea0b42e12487c1c1eec}
-
-
-Definition at line 1870 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfb01@{mfb01}}
-\index{mfb01@{mfb01}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{mfb01}{mfb01}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfb01 = 7}\hypertarget{namespacemodule__radsw__sflux_a08a0f1278962ac27634169ea7632bc70}{}\label{namespacemodule__radsw__sflux_a08a0f1278962ac27634169ea7632bc70}
-
-
-Definition at line 1852 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfb02@{mfb02}}
-\index{mfb02@{mfb02}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{mfb02}{mfb02}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfb02 = 2}\hypertarget{namespacemodule__radsw__sflux_afdf71cabed6ae0076d98ff0e563dbc61}{}\label{namespacemodule__radsw__sflux_afdf71cabed6ae0076d98ff0e563dbc61}
-
-
-Definition at line 1853 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfb03@{mfb03}}
-\index{mfb03@{mfb03}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{mfb03}{mfb03}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfb03 = 5}\hypertarget{namespacemodule__radsw__sflux_a2e3b510d781c596fa0bb9b1359a988dd}{}\label{namespacemodule__radsw__sflux_a2e3b510d781c596fa0bb9b1359a988dd}
-
-
-Definition at line 1854 of file radsw\+\_\+datatb.\+f.
-
 \index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfs01@{mfs01}}
 \index{mfs01@{mfs01}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
 \subsubsection[{\texorpdfstring{mfs01}{mfs01}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfs01 = 1}\hypertarget{namespacemodule__radsw__sflux_aba08e6f9d4dccd130e87300e6fd0ed58}{}\label{namespacemodule__radsw__sflux_aba08e6f9d4dccd130e87300e6fd0ed58}
 
 
-Definition at line 1849 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfs02@{mfs02}}
-\index{mfs02@{mfs02}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{mfs02}{mfs02}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfs02 = 5}\hypertarget{namespacemodule__radsw__sflux_acca3bbc0dd125a3e8c3734c58c48e79b}{}\label{namespacemodule__radsw__sflux_acca3bbc0dd125a3e8c3734c58c48e79b}
-
-
-Definition at line 1850 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!mfs03@{mfs03}}
-\index{mfs03@{mfs03}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{mfs03}{mfs03}}]{\setlength{\rightskip}{0pt plus 5cm}integer, parameter module\+\_\+radsw\+\_\+sflux\+::mfs03 = 9}\hypertarget{namespacemodule__radsw__sflux_a5bd55a5106ce82bd47250d38d9b8f22a}{}\label{namespacemodule__radsw__sflux_a5bd55a5106ce82bd47250d38d9b8f22a}
-
-
-Definition at line 1851 of file radsw\+\_\+datatb.\+f.
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!scalekur@{scalekur}}
-\index{scalekur@{scalekur}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{scalekur}{scalekur}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), parameter, public module\+\_\+radsw\+\_\+sflux\+::scalekur =50.\+15/48.\+37}\hypertarget{namespacemodule__radsw__sflux_a2f3280a36f27cea89fc66d71e799cf6d}{}\label{namespacemodule__radsw__sflux_a2f3280a36f27cea89fc66d71e799cf6d}
-
-
-Definition at line 1877 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!sfluxref01@{sfluxref01}}
-\index{sfluxref01@{sfluxref01}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{sfluxref01}{sfluxref01}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ngmax,{\bf mfs01},{\bf mfb01}), target, public module\+\_\+radsw\+\_\+sflux\+::sfluxref01}\hypertarget{namespacemodule__radsw__sflux_a84205f359fb3e1a0e1d03e755c52dc78}{}\label{namespacemodule__radsw__sflux_a84205f359fb3e1a0e1d03e755c52dc78}
-
-
-Definition at line 1879 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!sfluxref02@{sfluxref02}}
-\index{sfluxref02@{sfluxref02}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{sfluxref02}{sfluxref02}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ngmax,{\bf mfs02},{\bf mfb02}), target, public module\+\_\+radsw\+\_\+sflux\+::sfluxref02}\hypertarget{namespacemodule__radsw__sflux_aa57fca862289bd57327b9c3ef27e3e2f}{}\label{namespacemodule__radsw__sflux_aa57fca862289bd57327b9c3ef27e3e2f}
-
-
-Definition at line 1879 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!sfluxref03@{sfluxref03}}
-\index{sfluxref03@{sfluxref03}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{sfluxref03}{sfluxref03}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(ngmax,{\bf mfs03},{\bf mfb03}), target, public module\+\_\+radsw\+\_\+sflux\+::sfluxref03}\hypertarget{namespacemodule__radsw__sflux_a95d2640cf0e6cf0ba4a8ca1758806e48}{}\label{namespacemodule__radsw__sflux_a95d2640cf0e6cf0ba4a8ca1758806e48}
-
-
-Definition at line 1879 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!specwt@{specwt}}
-\index{specwt@{specwt}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{specwt}{specwt}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::specwt}\hypertarget{namespacemodule__radsw__sflux_a7d1a386e92555bcb09239ab098d8b398}{}\label{namespacemodule__radsw__sflux_a7d1a386e92555bcb09239ab098d8b398}
-
-
-Definition at line 1856 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol().
-
-\index{module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}!strrat@{strrat}}
-\index{strrat@{strrat}!module\+\_\+radsw\+\_\+sflux@{module\+\_\+radsw\+\_\+sflux}}
-\subsubsection[{\texorpdfstring{strrat}{strrat}}]{\setlength{\rightskip}{0pt plus 5cm}real (kind=kind\+\_\+phys), dimension(nblow\+:nbhgh), public module\+\_\+radsw\+\_\+sflux\+::strrat}\hypertarget{namespacemodule__radsw__sflux_aee2a2275da028b0960c5c1c8a34f46cf}{}\label{namespacemodule__radsw__sflux_aee2a2275da028b0960c5c1c8a34f46cf}
-
-
-Definition at line 1856 of file radsw\+\_\+datatb.\+f.
-
-
-
-Referenced by module\+\_\+radsw\+\_\+main\+::taumol(), taumol16(), taumol17(), taumol18(), taumol19(), taumol21(), taumol22(), taumol24(), and taumol28().
+Definition at line 1864 of file radsw\+\_\+datatb.\+f.
 
