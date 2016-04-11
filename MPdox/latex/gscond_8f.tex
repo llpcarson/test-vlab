@@ -1,0 +1,123 @@
+\hypertarget{gscond_8f}{}\section{gscond.\+f File Reference}
+\label{gscond_8f}\index{gscond.\+f@{gscond.\+f}}
+\subsection*{Functions/\+Subroutines}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \hyperlink{gscond_8f_a02cb3895f68b86a4b7e259c8c098ecc1}{gscond} (im, ix, km, dt, dtf, prsl, ps, q, cwm, t                                                           ,                                                               tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)
+\begin{DoxyCompactList}\small\item\em This subroutine is for grid-\/scale condensation\&evaporation for the mrf model at N\+C\+EP. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+
+\subsection{Function/\+Subroutine Documentation}
+\index{gscond.\+f@{gscond.\+f}!gscond@{gscond}}
+\index{gscond@{gscond}!gscond.\+f@{gscond.\+f}}
+\subsubsection[{\texorpdfstring{gscond(im, ix, km, dt, dtf, prsl, ps, q, cwm, t                                                           ,                                                               tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)}{gscond(im, ix, km, dt, dtf, prsl, ps, q, cwm, t                                                           ,                                                               tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)}}]{\setlength{\rightskip}{0pt plus 5cm}subroutine gscond (
+\begin{DoxyParamCaption}
+\item[{integer}]{im, }
+\item[{integer}]{ix, }
+\item[{integer}]{km, }
+\item[{}]{dt, }
+\item[{}]{dtf, }
+\item[{}]{prsl, }
+\item[{}]{ps, }
+\item[{real (kind=kind\+\_\+phys), dimension(ix,km)}]{q, }
+\item[{real (kind=kind\+\_\+phys), dimension(ix,km)}]{cwm, }
+\item[{real (kind=kind\+\_\+phys), dimension(ix,km)}]{t, }
+\item[{}]{tp, }
+\item[{}]{qp, }
+\item[{}]{psp, }
+\item[{}]{tp1, }
+\item[{}]{qp1, }
+\item[{}]{psp1, }
+\item[{real (kind=kind\+\_\+phys), dimension(im,km)}]{u, }
+\item[{logical}]{lprnt, }
+\item[{integer}]{ipr}
+\end{DoxyParamCaption}
+)}\hypertarget{gscond_8f_a02cb3895f68b86a4b7e259c8c098ecc1}{}\label{gscond_8f_a02cb3895f68b86a4b7e259c8c098ecc1}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em ix,im} & integer, 1, horizontal dimension and num of used pts \\
+\hline
+\mbox{\tt in}  & {\em km} & integer, 1, vertical layer dimension \\
+\hline
+\mbox{\tt in}  & {\em dt} & real, 1, physics time step in seconds \\
+\hline
+\mbox{\tt in}  & {\em dtf} & real, 1, dynamics time step in seconds \\
+\hline
+\mbox{\tt in}  & {\em prsl} & real, (ix,km), mean layer pressure \\
+\hline
+\mbox{\tt in}  & {\em ps} & real, (im), surface pressure (Pa) \\
+\hline
+\mbox{\tt in,out}  & {\em q} & real, (ix,km), updated tracers (gq0(\+:,\+:,1)) \\
+\hline
+\mbox{\tt in,out}  & {\em cwm} & real, (ix,km), updated tracers (gq0(\+:,\+:,ntcw)) \\
+\hline
+\mbox{\tt in,out}  & {\em t} & real, (ix,km), updated temperature \\
+\hline
+\mbox{\tt in,out}  & {\em tp} & real, (ix,km), see phy\+\_\+f3d(\+:,\+:,1) \\
+\hline
+\mbox{\tt in,out}  & {\em qp} & real, (ix,km), see phy\+\_\+f3d(\+:,\+:,2) \\
+\hline
+\mbox{\tt in,out}  & {\em psp} & real, (im), see phy\+\_\+f2d(\+:,1) \\
+\hline
+\mbox{\tt in,out}  & {\em tp1} & real, (ix,km), see phy\+\_\+f3d(\+:,\+:,3) \\
+\hline
+\mbox{\tt in,out}  & {\em qp1} & real, (ix,km), see phy\+\_\+f3d(\+:,\+:,4) \\
+\hline
+\mbox{\tt in,out}  & {\em psp1} & real, (im), see phy\+\_\+f2d(\+:,2) \\
+\hline
+\mbox{\tt in}  & {\em u} & real, (im,km), the critical value of relative humidity for large-\/scale condensation \\
+\hline
+\mbox{\tt in}  & {\em lprnt} & logical print flag \\
+\hline
+\mbox{\tt in}  & {\em ipr} & integer, 1, check print point for debugging \\
+\hline
+\end{DoxyParams}
+\hypertarget{gscond_8f_general}{}\subsection{General Algorithm}\label{gscond_8f_general}
+
+\begin{DoxyEnumerate}
+\item Compute ice-\/water id number IW.
+\begin{DoxyItemize}
+\item see Table 2 in Zhao and Carr (1997)\+: The distinction between cloud water and cloud ice is made by the cloud identification number IW, which is zero for cloud water and unity for cloud ice.
+\item All clouds are defined to consist of liquid water below the freezing level ( $T>0^oC$) and of ice particles above the $T=-15^oC$ level.
+\item In the temperature region between these two, clouds may be either cloud water or cloud ice. If there are cloud ice particles above this point at the previous or current time step, or if the cloud at this point at the previous time step consists of ice particles, then the cloud substance at this point should also be ice particles because of the cloud seeding effect and the cloud memory of its content.
+\item Otherwise, all clouds in this region are considered to contain supercooled cloud water.
+\end{DoxyItemize}
+\item Condensation and evaporation of cloud
+\begin{DoxyItemize}
+\item Compute at,aq and ap, which are the changes in t,q and p caused by all the processes except grid-\/scale condensation and evaporation.
+\item Compute the satuation specific humidity and the relative humidity
+\item According to Sunqvist et al. (1989), cloud fraction $b$ at a grid point can be estimated from relative humidity using the equation \[ b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2} \] for $f>f_{0}$, and $ccr=0$ for $f<f_{0}$. where $f_{s}=1.0$ is the relative humidity in a cloud region. $f_{0}$ is the critical value of relative humidity for large-\/scale condensation. ~\newline
+ Since both temperature and moisture may vary at scales smaller than model grid scale, it is possible for condensation to occur before the grid-\/average relative humidity reaches 100\%. Therefore $f_{0}$ needs to be less than 1.\+0 to account for the subgrid-\/scale variation of temperature and moisture fields.
+\item If cloud cover $\leq $ cclimitm then evaporate any existing cloud condensate ( $E_{c}$) ~\newline
+ If $q_{0}$ represents the specific humidity at relative humidity $f_{0}$, then \[ q_{0}=f_{0}q_{s} \] ~\newline
+ if the cloud water/ice at this point is enough to be evaporated until $f_{0}$ is reached, then the evaporation rate $E_{c}$, if we assume that the evaporation process occurs in one time step, is determined by \[ E_{c}=\frac{q_{0}-q}{\triangle t} \] ~\newline
+ using $q_{0}=f_{0}q_{s}$ and the equation $q=fq_{s}$, $E_{c}$ then becomes \[ E_{c}=\frac{q_{s}}{\triangle t}(f_{0}-f) \] where $\triangle t$ is the time step for precipitation calculation in the model.\+It is a simplified version of a higher-\/order cloud evaporation algorithm (Rutledge and Hobbs 1983).
+\item If cloud over $>$ cclimit, condense water vapor in to cloud condensate ( $C_{g}$) ~\newline
+ Following Sundqvist et al.(1989), the grid-\/scale condensation rate is solving ( $C_{g}$) from Eqs (6) and (7) with equations $q=fq_{s}$, $q_{s}=\epsilon e_{s}/p$, and the Clausius-\/\+Clapeyron equation $de_{s}/dT=\epsilon Le_{s}/RT^{2}$,where $q_{s}$ is the saturation specific humidity, $e_{s}$ is the saturation vapor pressure, $R$ is the specific gas constant for dry air, $P$ is the pressure, $f$ is the relative humidity, and $\epsilon=0.622$. The expression for $C_{g}$ has the form \[ C_{g}=\frac{M-q_{s}f_{t}}{1+(f\epsilon L^{2}q_{s}/RC_{p}T^{2})}+E_{c} \] where \[ M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}\partial p}{p\partial t} \] To close the system, an equation for relative humidity tendency $f_{t}$ was derived by Sundqvist et al. (1989) using the hypothesis that the quantity $M+E_{c}$ is divided into one part, $bM$,which condenses in the already cloudy portion of a grid square, and another part, $(1-b)M+E_{c}$,which is used to increase the relative humidity of the cloud-\/free portion and to increase the cloudiness in the square. The equation is written as \[ f_{t}=\frac{2(1-b)(f_{s}-f_{0})[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-f_{0})+m/b} \]
+\item Check \& correct if over condensation occurs
+\item Update of t, q and cwm (see Eqs(6),(7) in Zhao and Carr (1997)) \[ cwm=cwm+(C_{g}-E_{c})\times dt \] \[ q=q-(C_{g}-E_{c})\times dt \] \[ t=t+\frac{L}{C_{p}}(C_{g}-E_{c})\times dt \] ~\newline
+ where $L$ is the latent heat of condensation/deposition, $C_{p}$ is the specific heat of air at constant pressure.
+\end{DoxyItemize}
+\item Store $t$, $q$, $ps$ for next time step 
+\end{DoxyEnumerate}
+
+Definition at line 27 of file gscond.\+f.
+
+
+
+Referenced by gbphys().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=212pt]{gscond_8f_a02cb3895f68b86a4b7e259c8c098ecc1_icgraph}
+\end{center}
+\end{figure}
+
+
