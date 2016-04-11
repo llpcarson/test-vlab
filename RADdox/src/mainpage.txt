@@ -35,6 +35,16 @@ The following links take you to more information about each module.
 + Surface Module: module_radiation_surface
 + Gases Module: module_radiation_gases
 
+@section component Cloud Properties in Radiation
+The cloud cover is calculated based on Xu and Randall (1996).
+\f[
+\sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
+\f]
+Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity, 
+\f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into 
+cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on 
+temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996)). Maximum-randomly cloud 
+overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
 
 @section component Features Under Development for GFS
 + Updated and optimized RRTMG + Neural Net Emulator option
@@ -112,6 +122,7 @@ Staylor, W. F. and A. C. Wilbur, 1990: Global surface albedos estimated from ERB
 
 Stephens, G. L., 1984: The parameterization of radiation for numerical weather prediction and climate models. Mon. Wea. Rev., 112, 826-867.
 
+Xu, K. M., and D. A. Randall, 1996: A semiempirical cloudiness parameterization for use in climate models. J. Atmos. Sci., 53, 3084-3102.
 Zdunkowski, W. G., Welsch, R. M., and Korb, G. J., 1980: An investigation of the structure of typical 2-stream methods for the calculation of solar fluxes and heating rates in clouds. Contrib. Atms. Phys., 53, 215-238.
 
 */
