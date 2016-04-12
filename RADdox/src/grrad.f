@@ -1,14 +1,13 @@
 !> \file grrad.f This file is the radiation driver module. it prepares atmospheric profiles
 !! and invokes main radiation calculation.
 
-!> \defgroup rad RRTMG Radiation Scheme
+!> \defgroup rad RRTMG Shortwave/Longwave Radiation Scheme
 !! @{
-!!  \brief one line description
-!!
-!!  Radiative process is one of the most complex and computational intensive part of all model physics.
+!!  \brief  Radiative process is one of the most complex and computational intensive part of all model physics.
 !!  As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
 !!  and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
-!!  has standardized component modules. The schematic radiation module structure is shown in table 1.
+!!  has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html 
+!!  schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 !!
 !!  Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative
 !!  flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
@@ -18,20 +17,58 @@
 !!  the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
 !!  have strong dynamic effect on cloud evolution.
 !!
-!!  \section diagram Calling Hierarchy Diagram
-!!  \image html schematic_Rad_mod.png "caption" width=10cm
+!!  The shortwave radiation parameterization is based on Chou and Suarez (1999) and was modified by Hou et al.(2002) for 
+!!  the GFS. It contains eight spectral bands in the ultraviolet and visible region and one spectral band in the near-infrared 
+!!  region. It includes absorption by ozone, water vapor,carbon dioxide, and oxygen. A random-maximum cloud overlapping is 
+!!  assumed for radiative transfer calculations in the operational GFS. Cloud optical depth is parameterized as a function 
+!!  of the predicted cloud condensate path and the effective radius of cloud particles (\f$r_e\f$). Cloud particle single-scattering 
+!!  albedo and asymmetry factors are functions of \f$r_e\f$. For water droplets. \f$r_e\f$ is fixed at \f$10\mu m\f$ over 
+!!  the ocean, and specified as \f$r_e=min[max(5-0.25T_c , 5),10]\mu m\f$ over land, where \f$T_c\f$ is temperature in degrees 
+!!  Celsius. For ice particles, \f$r_e\f$ is an empirical function of ice water content and temperature that follows Heymsfield 
+!!  and McFarquhar (1996). The radiative effects of rain and snow are not included in the operational GFS, but the direct radiative 
+!!  effect of atmospheric aerosols is included. The surface albedo over land varies with the surface type, solar spectral band, 
+!!  and season, and is further adjusted by a solar zenith-angle-dependent factor for the direct solar beam. When the ground has 
+!!  snow cover the grid-mean surface albedo is first computed separately for snow-free and snow-covered areas, and then combined 
+!!  using a snow-cover fraction that depends on the surface roughness and snow depth. Snow albedo depends on the solar zenith angle 
+!!  (Briegleb 1992).
+!!
+!!  A major change was made in longwave radiation on 28 August 2003. The Geophysical Fluid Dynamics Laboratory (GFDL) model 
+!!  (Schwarzkopf and Fels 1991) was replaced by the Rapid Radiative Transfer Model (RRTM; Mlawer et al. 1997). The RRTM computes 
+!!  longwave absorption and emission by water vapor,carbon dioxide,ozone,cloud particles, and various trace gases including 
+!!  \f$N_2O\f$,\f$CH_4\f$,\f$O_2\f$,and four types of halocarbons[chlorofluorocarbons(CFCs)].Aerosol effects are not included. 
+!!  For consistency with the earlier GFDL module, no trace gases are included in the RRTM for the GFS forecasts. 
+!!  The RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth 
+!!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands. 
+!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992) to compute absorption by water vapor 
+!!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
+!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993; Ebert and Curry 1992).
+!!
 !!  \section intraphysics Intraphysics Communication
-!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information calculated in this scheme is used in other scheme types.
-!!  \section mainpage-components Radiation Scheme Modules
-!!  The following links take you to more information about each module.
-!!  + Driver Module: \ref module_radiation_driver
-!!  + Shortwave(SW) Module: \ref module_radsw_main
-!!  + Longwave(LW) Module: \ref module_radlw_main
-!!  + Astronomy Module: \ref module_radiation_astronomy
-!!  + Aerosol Module: \ref module_radiation_aerosols
-!!  + Cloud Module: \ref module_radiation_clouds
-!!  + Surface Module: \ref module_radiation_surface
-!!  + Gases Module: \ref module_radiation_gases
+!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information 
+!!  calculated in this scheme is used in other scheme types.
+!!
+!!  \section component Cloud Properties in Radiation
+!!  The cloud cover is calculated based on Xu and Randall (1996).
+!!  \f[
+!!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
+!!  \f]
+!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
+!!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
+!!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
+!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996)). Maximum-randomly cloud
+!!  overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
+!!
+!!  \n Features Under Development for GFS
+!!  + Updated and optimized RRTMG + Neural Net Emulator option
+!!  + Higher frequency of radiation calls (possibly every time step with NN)
+!!  + Uncorrelated cloud overlap & inhomogeneous water/ice clouds with rain/snow
+!!  + Updated CO2 with vertically varying profile
+!!  + Observed estimate of trace gases - prescribed global mean climatology
+!!  + Mean solar constant of 1361 \f$W/m^2\f$ (with 11 year solar cycle - Van Den Dool)
+!!  + GOCART interactive aerosol model, updated with vertical profile
+!!  + Land albedo using MODIS retrieval based monthly data
+!!  + Ocean albedo based on salinity, surface wind and Cosz
+!!  + Spectrally varing emissivity
 
 !> \defgroup module_radiation_driver module_radiation_driver
 !! @{
