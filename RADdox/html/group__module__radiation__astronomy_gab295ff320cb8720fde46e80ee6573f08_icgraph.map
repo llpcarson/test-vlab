@@ -1,4 +1,0 @@
-<map id="module_radiation_astronomy::solar" name="module_radiation_astronomy::solar">
-<area shape="rect" id="node2" href="$group__module__radiation__astronomy.html#gaf1997565a45e04ac5261be36708384cf" title="This subroutine computes solar parameters at forecast time. " alt="" coords="241,5,429,47"/>
-<area shape="rect" id="node3" href="$group__module__radiation__driver.html#gab34c4eb6e32fd200a6385ae70c5dab12" title="This subroutine calls many update subroutines to check and update radiation required but time varying..." alt="" coords="477,5,635,47"/>
-</map>

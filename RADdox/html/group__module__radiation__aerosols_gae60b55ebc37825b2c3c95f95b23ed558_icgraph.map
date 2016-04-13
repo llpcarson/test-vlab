@@ -1,5 +1,0 @@
-<map id="radclimaer" name="radclimaer">
-<area shape="rect" id="node2" href="$group__module__radiation__aerosols.html#ga021aee92f6c64f78fc11e26d5b2288cf" title="This subroutine maps the 5 degree global climatological aerosol data set onto model grids..." alt="" coords="136,5,312,47"/>
-<area shape="rect" id="node3" href="$group__module__radiation__aerosols.html#ga559549bedb091683f71a705a875222d8" title="This subroutine computes aerosols optical properties. " alt="" coords="360,5,536,47"/>
-<area shape="rect" id="node4" href="$group__module__radiation__driver.html#ga955c841d2ffda6975007d94101b79f7a" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="584,5,741,47"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="module_radsw_main::taumol" name="module_radsw_main::taumol">
-<area shape="rect" id="node2" href="$namespacemodule__radsw__main.html#ad9b28f997232642658b4d15a7eb70fcd" title="This subroutine is the main sw radiation routine. " alt="" coords="201,5,349,47"/>
-<area shape="rect" id="node3" href="$namespacemodule__radiation__driver.html#a8285cf6a4d2e1ed25b0afff8e269ec63" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="397,5,555,47"/>
-</map>

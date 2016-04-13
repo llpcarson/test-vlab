@@ -1,4 +1,0 @@
-<map id="module_radiation_clouds::rhtable" name="module_radiation_clouds::rhtable">
-<area shape="rect" id="node2" href="$group__module__radiation__clouds.html#ga026c2d6859be7119ee7ff11fe760dfcc" title="This subroutine is an initialization program for cloud&#45;radiation calculations. It sets up boundary la..." alt="" coords="219,5,384,47"/>
-<area shape="rect" id="node3" href="$group__module__radiation__driver.html#ga866dcd42f95b3e7df6b448833fe7c33b" title="This subroutine is the initialization of radiation calculations. " alt="" coords="432,5,589,47"/>
-</map>

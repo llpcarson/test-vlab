@@ -1,4 +1,0 @@
-<map id="module_radiation_surface::setalb" name="module_radiation_surface::setalb">
-<area shape="rect" id="node2" href="$group__module__radiation__driver.html#ga4e6655c28036ea47bc70541f7db0f1ce" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="223,5,380,47"/>
-<area shape="rect" id="node3" href="$namespacemodule__radiation__driver.html#a47f0e4defe607fbfc751f6c9274f459a" title="This subroutine calls many update subroutines to check and update radiation required but time varying..." alt="" coords="223,71,380,112"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="calpreciptype" name="calpreciptype">
-<area shape="rect" id="node2" href="$calpreciptype_8f.html#ace3ba03fce51ab8bd25977ff03a99c1d" title="This subroutine computes precipitation type using a decision tree approach that uses variables such a..." alt="" coords="182,5,241,32"/>
-<area shape="rect" id="node3" href="$calpreciptype_8f.html#aeb6ff6c9bfe0ac826d6b0e28c0592223" title="This subrtouien computes precipitation type using a decision tree approach that uses the so&#45;called &quot;e..." alt="" coords="162,56,261,83"/>
-<area shape="rect" id="node4" href="$calpreciptype_8f.html#aa8cf475c2ada385565809d05de8fb215" title="This subroutine takes the precip type solutions from different algorithms and sums them up to give a ..." alt="" coords="152,107,271,133"/>
-<area shape="rect" id="node5" href="$calpreciptype_8f.html#a84b16fee5df628928b15bfbde86ee0ca" title="The subroutine computes precipitation type using explicit fields from the model microphysics. " alt="" coords="158,157,265,184"/>
-<area shape="rect" id="node6" href="$calpreciptype_8f.html#a1359538b0437522a5643286d47cb956d" title="This subroutine is written and provided by Jim Ramer at NOAA/FSL. " alt="" coords="162,208,261,235"/>
-<area shape="rect" id="node7" href="$calpreciptype_8f.html#aea4e1369bc96598ada546c7aa96988cd" title="This subroutine computes precipitation type using a decision tree approach that uses variables such a..." alt="" coords="158,259,265,285"/>
-</map>

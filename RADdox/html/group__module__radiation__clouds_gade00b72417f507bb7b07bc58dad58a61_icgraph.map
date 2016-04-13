@@ -1,7 +1,0 @@
-<map id="module_radiation_clouds::gethml" name="module_radiation_clouds::gethml">
-<area shape="rect" id="node2" href="$group__module__radiation__clouds.html#gab477be986b08fe827c44dbe352a23d39" title="This subroutine computes cloud fractions for radiation calculations. " alt="" coords="219,5,384,47"/>
-<area shape="rect" id="node4" href="$group__module__radiation__clouds.html#gae0f48ab3ed8fcd777d7abaa4f26f2eaf" title="This subroutine computes cloud related quantities using zhao/moorthi&#39;s prognostic cloud microphysics ..." alt="" coords="219,71,384,112"/>
-<area shape="rect" id="node5" href="$group__module__radiation__clouds.html#ga1651dc559f22ee01b28dd49fd25112d6" title="This subroutine computes cloud related quantities using ferrier&#39;s prognostic cloud microphysics schem..." alt="" coords="219,136,384,177"/>
-<area shape="rect" id="node6" href="$group__module__radiation__clouds.html#ga51a721a68d1bb9f5b2d8b1541aacf28d" title="This subroutine computes cloud related quantities using zhao/moorthi&#39;s prognostic cloud microphysics ..." alt="" coords="219,201,384,243"/>
-<area shape="rect" id="node3" href="$group__module__radiation__driver.html#ga955c841d2ffda6975007d94101b79f7a" title="This subroutine is the driver of radiation calculation subroutines. It sets up profile variables for ..." alt="" coords="432,104,589,145"/>
-</map>
