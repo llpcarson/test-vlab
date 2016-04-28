@@ -6,8 +6,8 @@
 !!  \brief  Radiative process is one of the most complex and computational intensive part of all model physics.
 !!  As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
 !!  and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
-!!  has standardized component modules. The schematic radiation module structure is shown in table 1. \image html 
-!!  schematic_Rad_mod.png "Schematic Radiation Module Structure" width=10cm
+!!  has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html 
+!!  schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 !!
 !!  Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative
 !!  flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
@@ -41,10 +41,34 @@
 !!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands. 
 !!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992) to compute absorption by water vapor 
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
-!! the effective radius of ice particles and water droplets (Hu and Stamnes 1993; Ebert and Curry 1992).
+!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993; Ebert and Curry 1992).
 !!
 !!  \section intraphysics Intraphysics Communication
-!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information calculated in this scheme is used in other scheme types.
+!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information 
+!!  calculated in this scheme is used in other scheme types.
+!!
+!!  \section component Cloud Properties in Radiation
+!!  The cloud cover is calculated based on Xu and Randall (1996).
+!!  \f[
+!!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
+!!  \f]
+!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
+!!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
+!!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
+!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996)). Maximum-randomly cloud
+!!  overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
+!!
+!!  \n Features Under Development for GFS
+!!  + Updated and optimized RRTMG + Neural Net Emulator option
+!!  + Higher frequency of radiation calls (possibly every time step with NN)
+!!  + Uncorrelated cloud overlap & inhomogeneous water/ice clouds with rain/snow
+!!  + Updated CO2 with vertically varying profile
+!!  + Observed estimate of trace gases - prescribed global mean climatology
+!!  + Mean solar constant of 1361 \f$W/m^2\f$ (with 11 year solar cycle - Van Den Dool)
+!!  + GOCART interactive aerosol model, updated with vertical profile
+!!  + Land albedo using MODIS retrieval based monthly data
+!!  + Ocean albedo based on salinity, surface wind and Cosz
+!!  + Spectrally varing emissivity
 
 !> \defgroup module_radiation_driver module_radiation_driver
 !! @{
