@@ -1,34 +1,35 @@
 !> \file gscond.f
 !! This file contains the subroutine that calculates grid-scale condensation and evaporation for use
 !! in the Zhao and Carr (1997) scheme.
+
 !> \defgroup MPscheme Grid-scale Condensation, Evaporation and Precipitation
 !! @{
-!! \brief The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997). 
+!! \brief The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997).
 !! The prognostic cloud condensate was implemented into GFS in 2001 (Moorthi et al. 2001, T170L42).
 !!
 !! Figure 1 shows a  schematic illustration of the precipitation scheme.
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
-!! The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale 
-!! condensate. The grid-scale condensate is based on Zhao and Carr (1997),which in turn is based on Sundqvist et al. 
-!! (1989). The sinks of cloud condensate are grid-scale precipitation which is parameterized following Zhao and Carr 
-!! (1997) for ice, and Sundqvist et al. (1989) for liquid water, and evaporation of the cloud condensate which also 
-!! follows Zhao and Carr (1997). Evaporation of rain in the unsaturated layers below the level of condensation is also 
+!! The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale
+!! condensate. The grid-scale condensate is based on Zhao and Carr (1997),which in turn is based on Sundqvist et al.
+!! (1989). The sinks of cloud condensate are grid-scale precipitation which is parameterized following Zhao and Carr
+!! (1997) for ice, and Sundqvist et al. (1989) for liquid water, and evaporation of the cloud condensate which also
+!! follows Zhao and Carr (1997). Evaporation of rain in the unsaturated layers below the level of condensation is also
 !! taken into account.All precipitation that penetrates the bottom atmospheric layers is allowed to fall to the surface.
-!! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed 
-!! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an 
+!! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
+!! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
 !! empirically based calculation of the effective radius for ice crystals (Hemysfield and McFarquhar 1996).
 !!
 !! \section intraphysics Intraphysics Communication
-!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or 
+!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or
 !!  how information calculated in this scheme is used in other scheme types.
 !! \brief subroutine for grid-scale condensation & evaporation
-!! \param[in] ix         horizontal dimension 
+!! \param[in] ix         horizontal dimension
 !! \param[in] im         number of used pts
 !! \param[in] km         vertical layer dimension
 !! \param[in] dt         physics time step in seconds
 !! \param[in] dtf        dynamics time step in seconds
 !! \param[in] prsl       mean layer pressure
-!! \param[in] ps         surface pressure (Pa)   
+!! \param[in] ps         surface pressure (Pa)
 !! \param[in,out] q      updated tracers (gq0(:,:,1))
 !! \param[in,out] cwm    updated tracers (gq0(:,:,ntcw))
 !! \param[in,out] t      updated temperature
@@ -39,11 +40,11 @@
 !! \param[in,out] qp1    see phy_f3d(:,:,4)
 !! \param[in,out] psp1   see phy_f2d(:,2)
 !! \param[in] u          the critical value of relative humidity for large-scale condensation
-!! \param[in] lprnt      logical print flag 
+!! \param[in] lprnt      logical print flag
 !! \param[in] ipr        check print point for debugging
 !! \section general General Algorithm
 !! @{
-      subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t            
+      subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t
      &,                  tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)
 !
 !     ******************************************************************
@@ -60,8 +61,8 @@
 !     *  references:                                                   *
 !     *                                                                *
 !     ******************************************************************
-!---------------------------------------------------------------------- 
-!---------------------------------------------------------------------- 
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
 !
       use machine , only : kind_phys
       use funcphys , only : fpvs
@@ -92,7 +93,7 @@
       real (kind=kind_phys)  qi(im), qint(im), u(im,km), ccrik, e0
      &,                      cond,   rdt, us, cclimit, climit
      &,                      tmt0, tmt15, qik, cwmik
-     &,                      ai, qw, u00ik, tik, pres, pp0, fi 
+     &,                      ai, qw, u00ik, tik, pres, pp0, fi
      &,                      at, aq, ap, fiw, elv, qc, rqik
      &,                      rqikk, tx1, tx2, tx3, es, qs
      &,                      tsq, delq, condi, cone0, us00, ccrik1
@@ -143,7 +144,7 @@
 !       vprs(:) = 0.001 * fpvs(t(:,k))       ! fpvs in pa
 !-----------------------------------------------------------------------
 !------------------qw, qi and qint--------------------------------------
-        do i = 1, im                                    
+        do i = 1, im
           tmt0  = t(i,k)-273.16
           tmt15 = min(tmt0,cons_m15)
           qik   = max(q(i,k),epsq)
@@ -172,23 +173,23 @@
 !> -# Compute ice-water id number IW.
 !!    - see Table 2 in Zhao and Carr (1997): The distinction between cloud
 !! water and cloud ice is made by the cloud identification number IW, which
-!! is zero for cloud water and unity for cloud ice.  
+!! is zero for cloud water and unity for cloud ice.
 !!    - All clouds are defined to consist of liquid water below
 !! the freezing level (\f$T>0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
-!! level. 
+!! level.
 !!    - In the temperature region between these two, clouds may be either cloud
 !! water or cloud ice. If there are cloud ice particles above this point at the
 !! previous or current time step, or if the cloud at this point at the previous
 !! time step consists of ice particles, then the cloud substance at this point
 !! should also be ice particles because of the cloud seeding effect and the cloud
 !! memory of its content.
-!!    - Otherwise, all clouds in this region are considered to contain supercooled 
+!!    - Otherwise, all clouds in this region are considered to contain supercooled
 !! cloud water.
 !-------------------ice-water id number iw------------------------------
           if(tmt0.lt.-15.0) then
             u00ik = u(i,k)
-            fi    = qik - u00ik*qi(i)    
-            if(fi > d00.or.cwmik > climit) then                    
+            fi    = qik - u00ik*qi(i)
+            if(fi > d00.or.cwmik > climit) then
                iw(i,k) = 1
             else
               iw(i,k) = 0
@@ -209,7 +210,7 @@
 !> -# Condensation and evaporation of cloud
 !--------------condensation and evaporation of cloud--------------------
         do i = 1, im
-!>    - Compute at,aq and ap, which are the changes in t,q and p caused by 
+!>    - Compute at,aq and ap, which are the changes in t,q and p caused by
 !! all the processes except grid-scale condensation and evaporation.
 !------------------------at, aq and dp/dt-------------------------------
           qik   = max(q(i,k),epsq)
@@ -230,28 +231,28 @@
 !     if (lprnt) print *,' qc=',qc,' qint=',qint(i),' qi=',qi(i)
 !----------------the relative humidity----------------------------------
           if(qc.le.1.0e-10) then
-            rqik=d00 
+            rqik=d00
           else
             rqik = qik/qc
           endif
 !>    - According to Sunqvist et al. (1989), cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
-!!\f[ 
-!!       b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2} 
+!!\f[
+!!       b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2}
 !!\f]
-!! for \f$f>f_{0}\f$, and \f$ccr=0\f$ for \f$f<f_{0}\f$. where \f$f_{s}=1.0\f$ is the 
+!! for \f$f>f_{0}\f$, and \f$ccr=0\f$ for \f$f<f_{0}\f$. where \f$f_{s}=1.0\f$ is the
 !! relative humidity in a cloud region.\f$f_{0}\f$ is the critical value of relative humidity for large-scale condensation.
 !!\n Since both temperature and moisture may vary at scales smaller than model
-!!grid scale, it is possible for condensation to occur before the grid-average 
-!!relative humidity reaches 100%. Therefore \f$f_{0}\f$ needs to be less than 
-!!1.0 to account for the subgrid-scale variation of temperature and moisture 
+!!grid scale, it is possible for condensation to occur before the grid-average
+!!relative humidity reaches 100%. Therefore \f$f_{0}\f$ needs to be less than
+!!1.0 to account for the subgrid-scale variation of temperature and moisture
 !!fields.
 !!    - If cloud cover \f$\leq \f$ cclimitm then evaporate any existing cloud condensate (\f$E_{c}\f$)
 !!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$f_{0}\f$, then
 !!\f[
 !!           q_{0}=f_{0}q_{s}
 !!\f]
-!!\n if the cloud water/ice at this point is enough to be evaporated until \f$f_{0}\f$ is 
-!! reached, then the evaporation rate \f$E_{c}\f$, if we assume that the evaporation process 
+!!\n if the cloud water/ice at this point is enough to be evaporated until \f$f_{0}\f$ is
+!! reached, then the evaporation rate \f$E_{c}\f$, if we assume that the evaporation process
 !! occurs in one time step, is determined by
 !!\f[
 !!           E_{c}=\frac{q_{0}-q}{\triangle t}
@@ -260,28 +261,28 @@
 !!\f[
 !!  E_{c}=\frac{q_{s}}{\triangle t}(f_{0}-f)
 !!\f]
-!! where \f$\triangle t\f$ is the time step for precipitation calculation in the model.It is 
+!! where \f$\triangle t\f$ is the time step for precipitation calculation in the model.It is
 !! a simplified version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983).
 !!    - If cloud over > cclimit, condense water vapor in to cloud condensate (\f$C_{g}\f$)
-!!\n Following Sundqvist et al.(1989), the grid-scale condensation rate is solving (\f$C_{g}\f$) from 
-!! Eqs (6) and (7) with equations \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron 
+!!\n Following Sundqvist et al.(1989), the grid-scale condensation rate is solving (\f$C_{g}\f$) from
+!! Eqs (6) and (7) with equations \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
 !! equation \f$de_{s}/dT=\epsilon Le_{s}/RT^{2}\f$,where \f$q_{s}\f$ is the saturation specific humidity,\f$e_{s}\f$
 !! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,\f$P\f$ is the pressure,
 !! \f$f\f$ is the relative humidity, and \f$\epsilon=0.622\f$. The expression for \f$C_{g}\f$ has the form
 !!\f[
 !!       C_{g}=\frac{M-q_{s}f_{t}}{1+(f\epsilon L^{2}q_{s}/RC_{p}T^{2})}+E_{c}
 !!\f]
-!! where 
+!! where
 !!\f[
 !!       M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}\partial p}{p\partial t}
 !!\f]
 !! To close the system, an equation for relative humidity tendency \f$f_{t}\f$ was derived by Sundqvist et al.
 !! (1989) using the hypothesis that the quantity \f$M+E_{c}\f$ is divided into one part,\f$bM\f$,which condenses
 !! in the already cloudy portion of a grid square, and another part,\f$(1-b)M+E_{c}\f$,which is used to increase
-!! the relative humidity of the cloud-free portion and to increase the cloudiness in the square. The equation is 
-!! written as 
+!! the relative humidity of the cloud-free portion and to increase the cloudiness in the square. The equation is
+!! written as
 !!\f[
-!!  f_{t}=\frac{2(1-b)(f_{s}-f_{0})[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-f_{0})+m/b} 
+!!  f_{t}=\frac{2(1-b)(f_{s}-f_{0})[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-f_{0})+m/b}
 !!\f]
 !!    - Check & correct if over condensation occurs
 !!    - Update of t, q and cwm (see Eqs(6),(7) in Zhao and Carr (1997))
@@ -294,7 +295,7 @@
 !!\f[
 !!   t=t+\frac{L}{C_{p}}(C_{g}-E_{c})\times dt
 !!\f]
-!!\n where \f$L\f$ is the latent heat of condensation/deposition,\f$C_{p}\f$ is the 
+!!\n where \f$L\f$ is the latent heat of condensation/deposition,\f$C_{p}\f$ is the
 !! specific heat of air at constant pressure.
 !----------------cloud cover ratio ccrik--------------------------------
           if (rqik .lt. u00ik) then
@@ -314,7 +315,7 @@
 !   if no cloud exists then evaporate any existing cloud condensate
 !----------------evaporation of cloud water-----------------------------
           e0 = d00
-          if (ccrik <= cclimit.and. cwmik > climit)  then 
+          if (ccrik <= cclimit.and. cwmik > climit)  then
 !
 !   first iteration - increment halved
 !
@@ -363,7 +364,7 @@
           cond = d00
 !         if (ccrik .gt. 0.20 .and. qc .gt. epsq) then
           if (ccrik .gt. cclimit .and. qc .gt. epsq) then
-             us00   = us  - u00ik 
+             us00   = us  - u00ik
              ccrik1 = 1.0 - ccrik
              aa     = eps*elv*pres*qik
              ab     = ccrik*ccrik1*qc*us00
@@ -442,5 +443,5 @@
 !-----------------------------------------------------------------------
       return
       end
-!! @}
+!> @}
 !! @}
