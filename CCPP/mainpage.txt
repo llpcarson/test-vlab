@@ -1,7 +1,7 @@
 /**
 	\mainpage GFS Operational Physics
 	
-	Documentation for the operational physics suite can be found here. As of January 2015, the following schemes are used:
+	Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
 	- Radiation - RRTMG
 	- Turbulent Transport (PBL) - Hybrid EDMF
 	- Penetrative Convection - SAS
