@@ -79,7 +79,10 @@
 
 !  ---  reference pressure and temperature
 !     real (kind=kind_phys), dimension(59) :: pref, preflog, tref
-      real (kind=kind_phys), dimension(59) :: preflog, tref
+!> reference pressure
+      real (kind=kind_phys), dimension(59) :: preflog 
+!> reference temperature
+      real (kind=kind_phys), dimension(59) :: tref
 
 !  ...  these pressures are chosen such that the ln of the first pressure
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -190,15 +193,43 @@
 !     cloud optical properties are external inputs to the main program
 
 ! === everything below is for iflagliq >= 1.
-
-      real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::       &
-     &       extliq1, ssaliq1, asyliq1
-      real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::       &
-     &       extice2, ssaice2, asyice2
-      real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::       &
-     &       extice3, ssaice3, asyice3, fdlice3
-      real (kind=kind_phys), dimension(5), public ::                    &
+!> extinction coefficient from hu and stamnes
+      real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
+     &       extliq1
+!> single scattering albedo from hu and stamnes
+      real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
+     &       ssaliq1
+!> asymmetry parameter from hu and stamnes
+      real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
+     &       asyliq1
+!> spherical ice particle parameterization from streamer v3,
+!! extinction units (ext coef/iwc): \f$\frac{m^{-1}}{gm^{-3}}\f$
+      real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
+     &       extice2
+!> single-scattering albedo from streamer v3, unitless
+      real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
+     &       ssaice2
+!> asymmetry factor from streamer v3, unitless
+      real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
+     &       asyice2   
+!> hexagonal ice particle parameterization from fu,
+!! extinction units (ext coef/iwc): \f$\frac{m^{-1}}{gm^{-3}}\f$
+      real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
+     &       extice3
+!> single-scattering albedo from fu, unitless
+      real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
+     &       ssaice3
+!> asymmetry factor from fu, unitless
+      real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
+     &       asyice3
+!> fdelta from fu, unitless
+      real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
+     &       fdlice3
+!> \name coefficients from ebert and curry method
+!!@{
+      real (kind=kind_phys), dimension(5), public ::                   &
      &       abari, bbari, cbari, dbari, ebari, fbari
+!!@}
 
 !  --- ...  coefficients from ebert and curry method
       data abari(:)/ 3.448e-03,3.448e-03,3.448e-03,3.448e-03,3.448e-03 /
@@ -1814,10 +1845,12 @@
 
 !  --- ...  coefficients to compute tau, ssa, asy for rain drop and
 !           (chou 1999), and snowflake (fu 2001 private communication)
+!> \name coefficients to compute tau, ssa, asy for rain drop and (chou 1999), and snowflake (fu 2001 private communication)
+!!@{
       real (kind=kind_phys), public  :: a0r, a1r, a0s, a1s
       data a0r,a1r / 3.07e-3, 0.0 /,    a0s,a1s / 0.0,     1.5 /  ! fu's coeff
 
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::         &
      &       b0r, b0s, b1s, c0r, c0s
       data b0r  / 0.466, 0.437, 0.416, 0.391, 0.374, 0.352, 0.183,      &
      &            0.048, 0.012, 0.000, 0.000, 0.000, 0.000, 0.496 /
@@ -1826,6 +1859,7 @@
       data b0s  / 7*0.460, 2*0.000,   4*0.000, 0.460 /
       data b1s  / 7*0.000, 2*1.62e-5, 4*0.000, 0.000 /
       data c0s  / 7*0.970, 2*0.970,   4*0.700, 0.970 /
+!!@}
 
 
 !........................................!
@@ -1861,14 +1895,14 @@
 !
       public
 !
-      integer, parameter :: MFS01 = 1      !
-      integer, parameter :: MFS02 = 5      !
-      integer, parameter :: MFS03 = 9      !
-      integer, parameter :: MFB01 = 7      !
-      integer, parameter :: MFB02 = 2      !
-      integer, parameter :: MFB03 = 5      !
+      integer, parameter :: MFS01 = 1      
+      integer, parameter :: MFS02 = 5      
+      integer, parameter :: MFS03 = 9      
+      integer, parameter :: MFB01 = 7      
+      integer, parameter :: MFB02 = 2     
+      integer, parameter :: MFB03 = 5    
 !
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::        &
      &       strrat, specwt
 
 !  ---  original strrat
@@ -1891,9 +1925,9 @@
 
       real (kind=kind_phys), parameter, public :: scalekur=50.15/48.37
 !
-      real (kind=kind_phys), target, public ::                          &
-     &       sfluxref01(NGMAX,MFS01,MFB01),                             &
-     &       sfluxref02(NGMAX,MFS02,MFB02),                             &
+      real (kind=kind_phys), target, public ::                         &
+     &       sfluxref01(NGMAX,MFS01,MFB01),                            &
+     &       sfluxref02(NGMAX,MFS02,MFB02),                            &
      &       sfluxref03(NGMAX,MFS03,MFB03)
 
 !  ---  setup solar sfluxref01
@@ -2175,13 +2209,57 @@
 !
       private
 !
-      integer,  public :: MSA16, MSB16, MSF16, MFR16
+!> msa16=585
+      integer,  public :: MSA16
+!> msb16=235
+      integer,  public :: MSB16
+!> msf16=10
+      integer,  public :: MSF16
+!> mfr16=3
+      integer,  public :: MFR16
       parameter (MSA16=585, MSB16=235, MSF16=10, MFR16=3)
 
-      real (kind=kind_phys), public ::           selfref(MSF16,NG16),   &
-     &       absa(MSA16,NG16), absb(MSB16,NG16), forref(MFR16,NG16)
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 6).
+      real (kind=kind_phys), public ::  selfref(MSF16,NG16)
+
+!>    the array absa(585,NG16) (ka(9,5,13,NG16)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first  index in the array, js, runs from 1 to 9, and corresponds
+!!    to different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 6, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public ::  absa(MSA16,NG16)
+
+!>    the array absb(235,6) (kb(5,13:59,6)) contains absorption coefs at
+!!     the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!     temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!     corresponds to different temperatures.  more specifically, jt = 3 means
+!!     that the data are for the reference temperature tref for this pressure
+!!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!     the second index, jp, runs from 13 to 59 and refers to the jpth
+!!     reference pressure level (see taumol.f for the value of these
+!!     pressure levels in mb).  the third index, ig, goes from 1 to 6,
+!!     and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public ::  absb(MSB16,NG16)
+
+      real (kind=kind_phys), public ::  forref(MFR16,NG16)
 
 !  ---  rayleigh extinction coefficient at v = 2925 cm-1.
+!> rayleigh extinction coefficient at v = \f$2925 cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 2.91e-10
 
 !     the array absa(585,NG16) (ka(9,5,13,NG16)) contains absorption coefs at
@@ -3325,30 +3403,58 @@
 !
       private
 !
-      integer,  public :: MSA17, MSB17, MSF17, MFR17
+!> msa17=585
+      integer,  public :: MSA17
+!> msb17=1175
+      integer,  public :: MSB17
+!> msf17=10
+      integer,  public :: MSF17
+!> mfr17=4
+      integer,  public :: MFR17
       parameter (MSA17=585, MSB17=1175, MSF17=10, MFR17=4)
 
-      real (kind=kind_phys), public ::           selfref(MSF17,NG17),   &
-     &       absa(MSA17,NG17), absb(MSB17,NG17), forref(MFR17,NG17)
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!     refers to temperature in 7.2 degree increments.  for instance,
+!!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!     etc.  the second index runs over the g-channel (1 to NG17).
+      real (kind=kind_phys), public ::   selfref(MSF17,NG17)
+
+!>    the array absa(585,NG17) (ka((9,5,13,NG17)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 12, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public ::   absa(MSA17,NG17)
+
+!>    the array absb(1175,12) (kb(5,5,13:59,12)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 12,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public ::   absb(MSB17,NG17)
+
+      real (kind=kind_phys), public ::   forref(MFR17,NG17)
 
 !  ---  rayleigh extinction coefficient at v = 3625 cm-1.
+!> rayleigh extinction coefficient at v = 3625 \f$cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 6.86e-10
-
-!     the array absa(585,NG17) (ka((9,5,13,NG17)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 12, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .1113400E-05,.3209200E-03,.5566300E-03,.7822700E-03,.9942100E-03,&
@@ -4849,20 +4955,6 @@
      & .2807593E+03,.2662071E+03,.2851390E+03,.3330291E+03,.3880528E+03,&
      & .4442749E+03,.4356281E+03,.3814241E+03,.3273328E+03,.2789760E+03,&
      & .2624596E+03,.2797763E+03,.3260499E+03,.3798827E+03,.4349494E+03/
-
-!     -----------------------------------------------------------------
-!     the array absb(1175,12) (kb(5,5,13:59,12)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 12,
-!     and tells us which g-interval the absorption coefficients are for.
-!     -----------------------------------------------------------------
 
       data   absb(  1:175, 1)   /                                       &
      & .1055400E-06,.3859600E-04,.6540200E-04,.8854000E-04,.1960100E-03,&
@@ -7864,12 +7956,6 @@
      & .4032414E-01,.3589280E-01,.4839280E-01,.4772840E-01,.3806840E-01,&
      & .3879400E-01,.5074618E-01,.4940565E-01,.4711472E-01,.3831108E-01/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG17).
-
       data   selfref(1:10,1:12)  /                                      &
      & .1605370E-01,.1490380E-01,.1383630E-01,.1284520E-01,.1192510E-01,&
      & .1107090E-01,.1027790E-01,.9541750E-02,.8858290E-02,.8223790E-02,&
@@ -7926,30 +8012,58 @@
 !
       private
 !
-      integer,  public :: MSA18, MSB18, MSF18, MFR18
+!> msa18=585
+      integer,  public :: MSA18
+!> msb18=235
+      integer,  public :: MSB18
+!> msf18=10
+      integer,  public :: MSF18
+!> mfr18=3
+      integer,  public :: MFR18
       parameter (MSA18=585, MSB18=235, MSF18=10, MFR18=3)
 
-      real (kind=kind_phys), public ::           selfref(MSF18,NG18),   &
-     &       absa(MSA18,NG18), absb(MSB18,NG18), forref(MFR18,NG18)
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 8).
+      real (kind=kind_phys), public :: selfref(MSF18,NG18)
+
+!>    the array absa(585,NG18) (ka(9,5,13,NG18)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds
+!!    to different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, Jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 8, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA18,NG18)
+
+!>    the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 8,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB18,NG18)
+
+      real (kind=kind_phys), public :: forref(MFR18,NG18)
 
 !  ---  rayleigh extinction coefficient at v = 4325 cm-1.
+!> rayleigh extinction coefficient at \f$v=4325 cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 1.39e-09
-
-!     the array absa(585,NG18) (ka(9,5,13,NG18)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds
-!     to different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, Jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 8, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .1481300E-04,.3984200E-04,.4336200E-04,.4309500E-04,.3981100E-04,&
@@ -8951,17 +9065,6 @@
      & .3941719E+00,.2087774E+00,.1996808E+00,.2143237E+00,.2388436E+00,&
      & .2697785E+00,.3069660E+00,.3509603E+00,.4031790E+00,.4260779E+00/
 
-!     the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 8,
-!     and tells us which g-interval the absorption coefficients are for.
 
       data   absb(  1:120, 1)  /                                        &
      & .1281000E-03,.1289100E-03,.1289000E-03,.1271300E-03,.1247700E-03,&
@@ -9379,11 +9482,6 @@
      & .2517591E-03,.2051344E-03,.5589648E-04,.3341543E-03,.2978433E-03,&
      & .5905554E-04,.4375873E-03,.4018119E-03,.2342177E-03/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 8).
 
       data   selfref(1:10,1: 8)  /                                      &
      & .7503700E-03,.6449380E-03,.5543210E-03,.4764360E-03,.4094940E-03,&
@@ -9433,13 +9531,57 @@
 !
       private
 !
-      integer,  public :: MSA19, MSB19, MSF19, MFR19
+!> MSA19=585
+      integer,  public :: MSA19
+!> MSB19=235
+      integer,  public :: MSB19
+!> MSF19=10
+      integer,  public :: MSF19
+!> MFR19=3
+      integer,  public :: MFR19
       parameter (MSA19=585, MSB19=235, MSF19=10, MFR19=3)
 
-      real (kind=kind_phys), public ::           selfref(MSF19,NG19),   &
-     &       absa(MSA19,NG19), absb(MSB19,NG19), forref(MFR19,NG19)
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 8).
+      real (kind=kind_phys), public :: selfref(MSF19,NG19)
+
+!>    the array absa(585,NG19) (ka(9,5,13,NG19)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 8, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA19,NG19)
+
+!>    the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 8,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB19,NG19)
+
+      real (kind=kind_phys), public :: forref(MFR19,NG19)
 
 !  ---  rayleigh extinction coefficient at v = 4900 cm-1.
+!> rayleigh extinction coefficient at \f$v=4900cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 2.29e-09
 
 !     the array absa(585,NG19) (ka(9,5,13,NG19)) contains absorption coefs at
@@ -10458,18 +10600,6 @@
      & .1426012E+00,.2869377E+00,.2542235E+00,.2278499E+00,.2081519E+00,&
      & .1935477E+00,.1842067E+00,.1812086E+00,.1856280E+00,.1773106E+00/
 
-!     the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 8,
-!     and tells us which g-interval the absorption coefficients are for.
-
       data   absb(  1:120, 1)   /                                       &
      & .8084900E-06,.8136200E-06,.8139100E-06,.8183200E-06,.8100000E-06,&
      & .6259300E-06,.6309000E-06,.6315800E-06,.6282100E-06,.6250200E-06,&
@@ -10887,11 +11017,6 @@
      & .1958190E-03,.1469074E-03,.7616317E-04,.2991387E-03,.1425125E-03,&
      & .6636773E-04,.4406950E-03,.1586718E-03,.3817266E-04/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 8).
 
       data   selfref(1:10,1: 8)  /                                      &
      & .3317280E-03,.2874800E-03,.2491350E-03,.2159040E-03,.1871060E-03,&
@@ -10941,30 +11066,61 @@
 !
       private
 !
-      integer,  public :: MSA20, MSB20, MSF20, MFR20
+!> msa20=65
+      integer,  public :: MSA20
+!> msb20=235
+      integer,  public :: MSB20
+!> msf20=10
+      integer,  public :: MSF20
+!> mfr20=4
+      integer,  public :: MFR20
       parameter (MSA20=65, MSB20=235, MSF20=10, MFR20=4)
+      
+      real (kind=kind_phys), public :: forref(MFR20,NG20)
 
-      real (kind=kind_phys), public :: forref(MFR20,NG20), absch4(NG20),&
-     &       absa(MSA20,NG20), absb(MSB20,NG20), selfref(MSF20,NG20)
+!> ch4
+      real (kind=kind_phys), public :: absch4(NG20)
+
+!>    the array absa(65,NG20) (ka(5,13,NG20)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 10, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA20,NG20)
+
+!>    the array absb(235,10) (kb(5,13:59,10)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 10,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB20,NG20)
+
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  For instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 10).
+      real (kind=kind_phys), public :: selfref(MSF20,NG20)
 
 !  ---  rayleigh extinction coefficient at v = 5670 cm-1.
+!> rayleigh extinction coefficient at \f$v=5670cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 4.12e-09
-
-!     the array absa(65,NG20) (ka(5,13,NG20)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 10, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1: 65, 1)   /                                       &
      & .7838300E-06,.8622000E-06,.9535900E-06,.1059000E-05,.1178200E-05,&
@@ -11115,18 +11271,6 @@
      & .6260183E+01,.6230003E+01,.6201202E+01,.6173485E+01,.6146273E+01,&
      & .6409424E+01,.6381513E+01,.6354613E+01,.6328684E+01,.6301983E+01,&
      & .6564707E+01,.6537322E+01,.6510214E+01,.6481775E+01,.6454592E+01/
-
-!     the array absb(235,10) (kb(5,13:59,10)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 10,
-!     and tells us which g-interval the absorption coefficients are for.
 
       data   absb(  1:120, 1)   /                                       &
      & .2959700E-05,.3192900E-05,.3415900E-05,.3625600E-05,.3826400E-05,&
@@ -11649,12 +11793,6 @@
      & .4502450E-02,.3367180E-02,.4682248E-02,.4680093E-02,.4684726E-02,&
      & .3680135E-02,.5243173E-02,.5159096E-02,.5132896E-02,.3931064E-02/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  For instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 10).
-
       data   selfref(1:10,1:10)  /                                      &
      & .2170580E-03,.1763910E-03,.1433420E-03,.1164860E-03,.9466140E-04,&
      & .7692570E-04,.6251310E-04,.5080070E-04,.4128280E-04,.3354810E-04,&
@@ -11712,30 +11850,58 @@
 !
       private
 !
-      integer,  public :: MSA21, MSB21, MSF21, MFR21
+!> msa21=585
+      integer,  public :: MSA21
+!> msb21=1175
+      integer,  public :: MSB21
+!> msf21=10
+      integer,  public :: MSF21
+!> mfr21=4
+      integer,  public :: MFR21
       parameter (MSA21=585, MSB21=1175, MSF21=10, MFR21=4)
 
-      real (kind=kind_phys), public ::           forref(MFR21,NG21),    &
-     &       absa(MSA21,NG21), absb(MSB21,NG21), selfref(MSF21,NG21)
+      real (kind=kind_phys), public :: forref(MFR21,NG21)
+
+!>    the array absa(585,NG21) (ka((9,5,13,NG21)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 10, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA21,NG21)
+
+!>    the array absb(1175,10) (kb(5,5,13:59,10)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 10,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB21,NG21)
+
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 10).
+      real (kind=kind_phys), public :: selfref(MSF21,NG21)
 
 !  ---  rayleigh extinction coefficient at v = 6925 cm-1.
+!> rayleigh extinction coefficient at \f$v=6925cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 9.41e-09
-
-!     the array absa(585,NG21) (ka((9,5,13,NG21)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 10, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .3148200E-07,.6401000E-05,.9501700E-05,.1173500E-04,.1356100E-04,&
@@ -12986,18 +13152,6 @@
      & .2920139E+01,.2909436E+01,.2922425E+01,.2961874E+01,.3037648E+01,&
      & .3239868E+01,.3205483E+01,.3018784E+01,.2942726E+01,.2905212E+01,&
      & .2895638E+01,.2910719E+01,.2952008E+01,.3029378E+01,.3233244E+01/
-
-!     the array absb(1175,10) (kb(5,5,13:59,10)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 10,
-!     and tells us which g-interval the absorption coefficients are for.
 
       data   absb(  1:175, 1)   /                                       &
      & .4063300E-08,.6471800E-06,.7956700E-06,.8126400E-06,.2508000E-07,&
@@ -15500,11 +15654,6 @@
      & .2795010E-02,.2080760E-02,.3591895E-02,.3399762E-02,.3018810E-02,&
      & .1801670E-02,.4302254E-02,.4229914E-02,.3954639E-02,.2291698E-02/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 10).
 
       data   selfref(1:10,1:10)  /                                      &
      & .1158870E-03,.9265370E-04,.7407830E-04,.5922700E-04,.4735300E-04,&
@@ -15558,30 +15707,59 @@
 !
       private
 !
-      integer,  public :: MSA22, MSB22, MSF22, MFR22
+!> msa22=585
+      integer,  public :: MSA22
+!> msb22=235
+      integer,  public :: MSB22
+!> msf22=10
+      integer,  public :: MSF22
+!> mfr22=3
+      integer,  public :: MFR22
       parameter (MSA22=585, MSB22=235, MSF22=10, MFR22=3)
 
-      real (kind=kind_phys), public ::           forref(MFR22,NG22),    &
-     &       absa(MSA22,NG22), absb(MSB22,NG22), selfref(MSF22,NG22)
+      real (kind=kind_phys), public :: forref(MFR22,NG22)
+
+!>    the array absa(585,NG22) (ka(9,5,13,NG22)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 2, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA22,NG22)
+
+!>    the array absb(235,2) (kb(5,13:59,2)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 2,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB22,NG22)
+
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 2).
+      real (kind=kind_phys), public :: selfref(MSF22,NG22)
 
 !  ---  rayleigh extinction coefficient at v = 8000 cm-1.
+!> rayleigh extinction coefficient at \f$v=8000cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 1.54e-08
 
-!     the array absa(585,NG22) (ka(9,5,13,NG22)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 2, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .4811305E-05,.6129178E-05,.6975295E-05,.7459097E-05,.7681764E-05,&
@@ -15833,18 +16011,6 @@
      & .1698933E-03,.3839069E-03,.3546918E-03,.3299208E-03,.3063646E-03,&
      & .2835973E-03,.2614972E-03,.2400614E-03,.2193165E-03,.2060528E-03/
 
-!     the array iabsb(235,2) (kb(5,13:59,2)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 2,
-!     and tells us which g-interval the absorption coefficients are for.
-
       data   absb(  1:120, 1)   /                                       &
      & .1148431E-07,.1166076E-07,.1181018E-07,.1191914E-07,.1198918E-07,&
      & .9447302E-08,.9588853E-08,.9702321E-08,.9781170E-08,.9829657E-08,&
@@ -15951,11 +16117,6 @@
       data   forref(1:3,1: 2)    /                         .8005249E-06,&
      & .8929867E-06,.9310644E-06,.2367132E-05,.8712965E-06,.2553141E-06/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 2).
 
       data   selfref(1:10,1: 2)  /                                      &
      & .1890754E-03,.1626696E-03,.1404954E-03,.1218179E-03,.1060361E-03,&
@@ -15993,13 +16154,45 @@
 !
       private
 !
-      integer,  public :: MSA23, MSF23, MFR23
+!> msa23=65
+      integer,  public :: MSA23
+!> msf23=10
+      integer,  public :: MSF23
+!> mfr23=3
+      integer,  public :: MFR23
       parameter (MSA23=65, MSF23=10, MFR23=3)
 
-      real (kind=kind_phys), public ::              forref(MFR23,NG23), &
-     &       absa(MSA23,NG23), selfref(MSF23,NG23), rayl(NG23)
+      real (kind=kind_phys), public :: forref(MFR23,NG23)
+
+!>    the array absa(65,NG23) (ka(5,13,NG23)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 10, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA23,NG23)
+
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 10).
+      real (kind=kind_phys), public :: selfref(MSF23,NG23)
+
+!> rayleigh extinction coefficient at all v
+      real (kind=kind_phys), public :: rayl(NG23)
 
 !  ---  average giver et al. correction factor for this band.
+!> average giver et al. correction factor for this band.
       real (kind=kind_phys), parameter, public :: givfac = 1.029
 
 !  ---  rayleigh extinction coefficient at all v
@@ -16182,12 +16375,6 @@
      & .1428640E-03,.2204120E-03,.1829430E-03,.1509410E-03,.2312169E-03,&
      & .2065332E-03,.1728525E-03,.2740557E-03,.2606475E-03,.2434367E-03/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 10).
-
       data   selfref(1:10,1:10)  /                                      &
      & .1042197E-04,.8992829E-05,.7807679E-05,.6819782E-05,.5991772E-05,&
      & .5293756E-05,.4701789E-05,.4196660E-05,.3762952E-05,.3388235E-05,&
@@ -16240,11 +16427,68 @@
 !
       private
 !
-      integer,  public :: MSA24, MSB24, MSF24, MFR24, MFX24
+!> msa24=585
+      integer,  public :: MSA24
+!> msb24=235
+      integer,  public :: MSB24
+!> msf24=10
+      integer,  public :: MSF24
+!> mfr24=3
+      integer,  public :: MFR24
+!> mfx24=9
+      integer,  public :: MFX24
+       
       parameter (MSA24=585, MSB24=235, MSF24=10, MFR24=3, MFX24=9)
 
-      real (kind=kind_phys), public ::           forref(MFR24,NG24),    &
-     &       absa(MSA24,NG24), absb(MSB24,NG24), selfref(MSF24,NG24),   &
+      real (kind=kind_phys), public :: forref(MFR24,NG24)
+
+!>    the array absa(585,NG24) (ka(9,5,13,NG24)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 8, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA24,NG24)
+
+!>    the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 8,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB24,NG24)
+
+!>    the array selfref contains the coefficient of the water vapor
+!!    self-continuum (including the energy term).  the first index
+!!    refers to temperature in 7.2 degree increments.  for instance,
+!!    jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!    etc.  the second index runs over the g-channel (1 to 8).
+      real (kind=kind_phys), public :: selfref(MSF24,NG24)
+
+!> o3
+      real (kind=kind_phys), public :: abso3a(NG24)
+!> o3
+      real (kind=kind_phys), public :: abso3b(NG24)
+
+!> rayleigh extinction coefficient at all v
+      real (kind=kind_phys), public :: rayla(NG24,MFX24)
+      real (kind=kind_phys), public :: raylb(NG24)
+
+     &       absa(MSA24,NG24), absb(MSB24,NG24), selfref(MSF24,NG24),  &
      &       abso3a(NG24), abso3b(NG24), rayla(NG24,MFX24), raylb(NG24)
 
 !  ---  rayleigh extinction coefficient at all v
@@ -16273,22 +16517,6 @@
 
       data   abso3b(1: 8)      / .3634220E-01,.8528316E-01,.1832493E+00,&
      & .2884644E+00,.3568897E+00,.3534033E+00,.1043294E+00,.2575196E-01/
-
-!     the array absa(585,NG24) (ka(9,5,13,NG24)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 8, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .9478488E-09,.2006042E-07,.2228363E-07,.2263495E-07,.2547446E-07,&
@@ -17718,12 +17946,6 @@
      & .5624835E-05,.1676442E-05,.3856211E-07,.3141158E-05,.1459015E-07,&
      & .2568816E-07,.8749816E-12,.8199214E-12,.8132942E-12/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 8).
-
       data   selfref(1:10,1: 8)  /                                      &
      & .1216369E-04,.7423490E-05,.4532882E-05,.2769295E-05,.1692770E-05,&
      & .1035295E-05,.6335399E-06,.3879104E-06,.2376510E-06,.1456812E-06,&
@@ -17772,11 +17994,35 @@
 !
       private
 !
+!> msa25=65
       integer,  public :: MSA25
       parameter (MSA25=65)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(MSA25,NG25), rayl(NG25), abso3a(NG25), abso3b(NG25)
+!>    the array absa(65,NG25) (ka(5,13,NG25)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 6, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA25,NG25)
+
+!> rayleigh extinction coefficient
+      real (kind=kind_phys), public :: rayl(NG25)
+
+!> o3
+      real (kind=kind_phys), public :: abso3a(NG25)
+
+!> o3
+      real (kind=kind_phys), public :: abso3b(NG25)
 
 !  ---  rayleigh extinction coefficient at v =      cm-1.
       data   rayl  (1: 6)        /                         .9811320E-06,&
@@ -17788,22 +18034,6 @@
 
       data   abso3b(1: 6)        /                         .1769170E-01,&
      & .4641850E-01,.1449232E+00,.3484920E+00,.4676420E+00,.5178092E+00/
-
-!     the array absa(65,NG25) (ka(5,13,NG25)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 6, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1: 65, 1)   /                                       &
      & .1646100E-08,.1678200E-08,.1933900E-08,.1710000E-08,.1704500E-08,&
@@ -17925,6 +18155,7 @@
 !
       private
 !
+!> rayleigh extinction coefficient at all v
       real (kind=kind_phys), public ::  rayl(NG26)
 
 !  ---  rayleigh extinction coefficient at all v
@@ -17961,31 +18192,51 @@
 !
       private
 !
-      integer,  public :: MSA27, MSB27
+!> msa27=65
+      integer,  public :: MSA27
+!> msb27=235
+      integer,  public :: MSB27
       parameter (MSA27=65, MSB27=235)
 
-      real (kind=kind_phys), public ::                                  &
+      real (kind=kind_phys), public ::                                 &
      &       absa(MSA27,NG27), absb(MSB27,NG27), rayl(NG27)
 
-!  ---  rayleigh extinction coefficient at v =      cm-1.
-      data   rayl (1: 8)       / .3445340E-05,.4144800E-05,.4950690E-05,&
-     & .5812040E-05,.6697480E-05,.7564880E-05,.8886761E-05,.9744758E-05/
+!>    the array absa(65,NG27) (ka(5,13,NG27)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!    temperatures, and binary species parameters (see taumol.f for definition).
+!!    the first index in the array, js, runs from 1 to 9, and corresponds to
+!!    different values of the binary species parameter.  for instance,
+!!    js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!    js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!    in the array, jt, which runs from 1 to 5, corresponds to different
+!!    temperatures.  more specifically, jt = 3 means that the data are for
+!!    the reference temperature tref for this  pressure level, jt = 2 refers
+!!    to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!    is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!    to the jpth reference pressure level (see taumol.f for these levels
+!!    in mb).  the fourth index, ig, goes from 1 to 8, and indicates
+!!    which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA27,NG27)
 
-!     the array absa(65,NG27) (ka(5,13,NG27)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 8, and indicates
-!     which g-interval the absorption coefficients are for.
+!>    the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
+!!    the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!    temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!    corresponds to different temperatures.  more specifically, jt = 3 means
+!!    that the data are for the reference temperature tref for this pressure
+!!    level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!    tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!    the second index, jp, runs from 13 to 59 and refers to the jpth
+!!    reference pressure level (see taumol.f for the value of these
+!!    pressure levels in mb).  the third index, ig, goes from 1 to 8,
+!!    and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB27,NG27)
+
+!> rayleigh extinction coefficient
+      real (kind=kind_phys), public :: rayl(NG27)
+
+!  ---  rayleigh extinction coefficient at v =      cm-1.
+      data   rayl (1: 8)      / .3445340E-05,.4144800E-05,.4950690E-05,&
+     & .5812040E-05,.6697480E-05,.7564880E-05,.8886761E-05,.9744758E-05/
 
       data   absa(  1: 65, 1)   /                                       &
      & .2290700E+00,.2562500E+00,.2877900E+00,.3237600E+00,.3642600E+00,&
@@ -18106,18 +18357,6 @@
      & .9937640E+03,.9978135E+03,.1000658E+04,.1002444E+04,.1003004E+04,&
      & .9936612E+03,.9978143E+03,.1000698E+04,.1002407E+04,.1003004E+04,&
      & .9937589E+03,.9978125E+03,.1000708E+04,.1002433E+04,.1003006E+04/
-
-!     the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 8,
-!     and tells us which g-interval the absorption coefficients are for.
 
       data   absb(  1:120, 1)   /                                       &
      & .1603600E+00,.1639900E+00,.1719800E+00,.1845500E+00,.2017300E+00,&
@@ -18557,31 +18796,45 @@
 !
       private
 !
-      integer,  public :: MSA28, MSB28
+!> msa28=585
+      integer,  public :: MSA28
+!> msb28=1175
+      integer,  public :: MSB28
       parameter (MSA28=585, MSB28=1175)
 
+!>     the array absa(585,NG28) (ka((9,5,13,NG28)) contains absorption coefs at
+!!     the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!     temperatures, and binary species parameters (see taumol.f for definition).
+!!     the first index in the array, js, runs from 1 to 9, and corresponds to
+!!     different values of the binary species parameter.  for instance,
+!!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!     in the array, jt, which runs from 1 to 5, corresponds to different
+!!     temperatures.  more specifically, jt = 3 means that the data are for
+!!     the reference temperature tref for this  pressure level, jt = 2 refers
+!!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!     to the jpth reference pressure level (see taumol.f for these levels
+!!     in mb).  the fourth index, ig, goes from 1 to 6, and indicates
+!!     which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA28,NG28)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(MSA28,NG28), absb(MSB28,NG28)
+!>     the array absb(1175,6) (kb(5,5,13:59,6)) contains absorption coefs at
+!!     the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!     temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!     corresponds to different temperatures.  more specifically, jt = 3 means
+!!     that the data are for the reference temperature tref for this pressure
+!!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!     the second index, jp, runs from 13 to 59 and refers to the jpth
+!!     reference pressure level (see taumol.f for the value of these
+!!     pressure levels in mb).  the third index, ig, goes from 1 to 6,
+!!     and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB28,NG28)
 
 !  ---  rayleigh extinction coefficient at v =      cm-1.
+!> rayleigh extinction coefficient
       real (kind=kind_phys), parameter, public :: rayl = 2.02e-05
-
-!     the array absa(585,NG28) (ka((9,5,13,NG28)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 6, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .4644700E+02,.1800100E+03,.3133800E+03,.4465200E+03,.5463600E+03,&
@@ -19332,18 +19585,6 @@
      & .7197199E+03,.6023129E+03,.7432633E+03,.8844627E+03,.1025923E+04,&
      & .1167566E+04,.1125720E+04,.9892480E+03,.8524798E+03,.7159207E+03,&
      & .6012892E+03,.7420375E+03,.8831033E+03,.1024380E+04,.1165837E+04/
-
-!     the array absb(1175,6) (kb(5,5,13:59,6)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels < ~100mb and
-!     temperatures. the first index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures.  more specifically, jt = 3 means
-!     that the data are for the reference temperature tref for this pressure
-!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
-!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
-!     the second index, jp, runs from 13 to 59 and refers to the jpth
-!     reference pressure level (see taumol.f for the value of these
-!     pressure levels in mb).  the third index, ig, goes from 1 to 6,
-!     and tells us which g-interval the absorption coefficients are for.
 
       data   absb(  1:175, 1)   /                                       &
      & .2736900E+02,.2990300E+03,.4292400E+03,.3103900E+03,.3500000E+02,&
@@ -20869,14 +21110,63 @@
 !
       private
 !
-      integer,  public :: MSA29, MSB29, MSF29, MFR29
+!> msa29=65
+      integer,  public :: MSA29
+!> msb29=235
+      integer,  public :: MSB29
+!> msf29=10
+      integer,  public :: MSF29
+!> mfr29=4
+      integer,  public :: MFR29
       parameter (MSA29=65, MSB29=235, MSF29=10, MFR29=4)
 
-      real (kind=kind_phys), public ::           forref(MFR29,NG29),    &
-     &       absa(MSA29,NG29), absb(MSB29,NG29), selfref(MSF29,NG29),   &
-     &       absh2o(NG29), absco2(NG29)
+      real (kind=kind_phys), public :: forref(MFR29,NG29)
+
+!>     the array absa(65,NG29) (ka(5,13,NG29)) contains absorption coefs at
+!!     the 16 chosen g-values for a range of pressure levels> ~100mb,
+!!     temperatures, and binary species parameters (see taumol.f for definition).
+!!     the first index in the array, js, runs from 1 to 9, and corresponds to
+!!     different values of the binary species parameter.  for instance,
+!!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
+!!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
+!!     in the array, jt, which runs from 1 to 5, corresponds to different
+!!     temperatures.  more specifically, jt = 3 means that the data are for
+!!     the reference temperature tref for this  pressure level, jt = 2 refers
+!!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
+!!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
+!!     to the jpth reference pressure level (see taumol.f for these levels
+!!     in mb).  the fourth index, ig, goes from 1 to 12, and indicates
+!!     which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(MSA29,NG29)
+
+!>     the array absb(235,12) (kb(5,13:59,12)) contains absorption coefs at
+!!     the 16 chosen g-values for a range of pressure levels < ~100mb and
+!!     temperatures. the first index in the array, jt, which runs from 1 to 5,
+!!     corresponds to different temperatures.  more specifically, jt = 3 means
+!!     that the data are for the reference temperature tref for this pressure
+!!     level, jt = 2 refers to the temperature tref-15, jt = 1 is for
+!!     tref-30, jt = 4 is for tref+15, and jt = 5 is for tref+30.
+!!     the second index, jp, runs from 13 to 59 and refers to the jpth
+!!     reference pressure level (see taumol.f for the value of these
+!!     pressure levels in mb).  the third index, ig, goes from 1 to 12,
+!!     and tells us which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(MSB29,NG29)
+
+!>     the array selfref contains the coefficient of the water vapor
+!!     self-continuum (including the energy term).  the first index
+!!     refers to temperature in 7.2 degree increments.  For instance,
+!!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!     etc.  the second index runs over the g-channel (1 to 12).
+      real (kind=kind_phys), public :: selfref(MSF29,NG29)
+
+!> h2o
+      real (kind=kind_phys), public :: absh2o(NG29)
+
+!> co2
+      real (kind=kind_phys), public :: absco2(NG29)
 
 !  ---  rayleigh extinction coefficient at v = 2200 cm-1.
+!> rayleigh extinction coefficient at \f$v=2200cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 9.30e-11
 
 !  --- h2o
@@ -20888,22 +21178,6 @@
       data   absco2 (1:12)       /            .2900730E-05,.2123820E-04,&
      & .1030320E-03,.1864810E-03,.5136065E-03,.2118687E-01,.4146680E+01,&
      & .4301567E+02,.1641290E+03,.8322820E+03,.4995020E+04,.1267810E+05/
-
-!     the array absa(65,NG29) (ka(5,13,NG29)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 12, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1: 65, 1)   /                                       &
      & .1156500E-03,.1012300E-03,.9080400E-04,.8228200E-04,.7108300E-04,&
@@ -21721,11 +21995,6 @@
      & .4883670E-06,.1222450E-02,.4869250E-01,.4643710E-06,.4642410E-06,&
      & .7538460E-06,.5305110E-01,.3762340E-06,.4098240E-06,.4706500E-06/
 
-!     the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  For instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to 12).
 
       data   selfref(1:10,1:12)  /                                      &
      & .1180690E+00,.7135230E-01,.4311990E-01,.2605840E-01,.1574770E-01,&
