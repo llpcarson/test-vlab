@@ -78,6 +78,7 @@
 !
       private
 
+!> plank flux data
       real (kind=kind_phys), public :: totplnk(NPLNK,NBANDS)
 
       data totplnk(  1: 50, 1)  /                                       &
@@ -754,7 +755,12 @@
       public
 
 !  ---  reference pressure and temperature
-      real (kind=kind_phys), dimension(59) :: pref, preflog, tref
+!> reference pressure and the ln of the pressure
+      real (kind=kind_phys), dimension(59) :: pref, preflog
+
+!> reference temperature. these are the temperatures associated with the respective
+!! pressures for the MLS standard atmosphere.
+      real (kind=kind_phys), dimension(59) :: tref
 
 !  ...  these pressures are chosen such that the ln of the first one
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -946,7 +952,7 @@
 !> abssnow0 is the snow flake absorption coefficient (micron), fu coeff
       real (kind=kind_phys), parameter :: abssnow0 = 1.5          ! fu   coeff
 ! --- abssnow is the snow flake absorption coefficient (m2/g)
-!> abssnow1 is the snow flake absorption coefficient (m2/g), ncar coeff
+!> abssnow1 is the snow flake absorption coefficient \f$(m^{2}/g)\f$, ncar coeff
       real (kind=kind_phys), parameter :: abssnow1 = 2.34e-3      ! ncar coeff
 
 ! === absliq# is the liquid water absorption coefficient (m2/g).
@@ -1223,7 +1229,8 @@
 !> for iflagice =2, absice2 are the ice water absorption coefficients used for
 !! streamer method. the absorption coefficients are listed for a range of effective
 !! radii from 5.0 to 131.0 microns in increments of 3.0 microns. spherical ice
-!! particle parameterization absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]
+!! particle parameterization absorption units (abs coef/iwc):
+!! \f$\frac{m^{-1}}{gm^{-3}}\f$
       real (kind=kind_phys), dimension(43,NBANDS) :: absice2
 
 ! band 1
@@ -1411,7 +1418,7 @@
 !> for iflagice = 3, absice3 are the ice water absorption coefficients used for
 !! fu parameterization. particle size 5 - 140 micron in increments of 3 microns.
 !! units = m2/g. hexagonal ice particle parameterization absorption units (abs coef/iwc):
-!! [(m^-1)/(g m^-3)]
+!!  \f$\frac{m^{-1}}{gm^{-3}}\f$
       real (kind=kind_phys), dimension(46,NBANDS) :: absice3
 
 ! band 1
@@ -1630,24 +1637,73 @@
 !
       private
 !
-      integer, public :: MSA01, MSB01, MSF01, MFR01, MMN01
+!> msa01=65
+      integer, public :: MSA01
+!> msb01=235
+      integer, public :: MSB01
+!> msf01=10
+      integer, public :: MSF01
+!> mfr01=4
+      integer, public :: MFR01
+!> mmn01=19
+      integer, public :: MMN01
       parameter (MSA01=65, MSB01=235, MSF01=10, MFR01=4, MMN01=19)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG01,MSA01), absb(NG01,MSB01), selfref(NG01,MSF01),   &
-     &       forref(NG01,MFR01), fracrefa(NG01), fracrefb(NG01),        &
+      real (kind=kind_phys), public ::                                 &
+     &       absa(NG01,MSA01), absb(NG01,MSB01), selfref(NG01,MSF01),  &
+     &       forref(NG01,MFR01), fracrefa(NG01), fracrefb(NG01),       &
      &       ka_mn2(NG01,MMN01), kb_mn2(NG01,MMN01)
 
-! --- the array absa(NG01,65) = ka(NG01,5,13) contains absorption coefs
-!     at the NG01=10 chosen g-values for a range of pressure levels>~100mb
-!     and temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG01=10, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG01,65) = ka(NG01,5,13) contains absorption coefs
+!!  at the NG01=10 chosen g-values for a range of pressure levels>~100mb
+!!  and temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG01=10, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG01,MSA01)
+
+!>  the array absb(NG01,235) = kb(NG01,5,13:59) contains absorption coefs
+!!  at the NG01=10 chosen g-values for a range of pressure levels < ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG01=10, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG01,MSB01)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG01=10).
+      real (kind=kind_phys), public :: selfref(NG01,MSF01)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  The second index
+!!  runs over the g-channel (1 to NG01=10).
+      real (kind=kind_phys), public :: forref(NG01,MFR01)
+
+!>  planck fraction mapping level: p = 212.7250 mbar, t = 223.06 k
+      real (kind=kind_phys), public :: fracrefa(NG01)
+
+!>  planck fraction mapping level: p = 212.7250 mbar, t = 223.06 k
+!!  these planck fractions were calculated using lower atmosphere
+!!  parameters.
+      real (kind=kind_phys), public :: fracrefb(NG01)
+
+      real (kind=kind_phys), public :: ka_mn2(NG01,MMN01)
+
+      real (kind=kind_phys), public :: kb_mn2(NG01,MMN01)
+
 
       data   absa(:, 1:33) /                                            &
      & 1.193600e-01,3.513800e-01,1.330212e+00,4.853272e+00,2.284154e+01,&
@@ -1781,17 +1837,6 @@
      & 5.449538e+01,4.046072e+02,1.570843e+03,5.139500e+03,1.049300e+04,&
      & 1.522400e-02,4.699900e-02,1.662093e-01,5.726528e-01,4.071345e+00,&
      & 5.401111e+01,4.026425e+02,1.564332e+03,5.139700e+03,1.047300e+04/
-
-! --- the array absb(NG01,235) = kb(NG01,5,13:59) contains absorption coefs
-!     at the NG01=10 chosen g-values for a range of pressure levels < ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG01=10, and tells us
-!     which g-interval the absorption coefficients are for.
 
       data   absb(:, 1:30) /                                            &
      & 1.014400e-02,4.193800e-02,1.766623e-01,5.758703e-01,4.289268e+00,&
@@ -2272,12 +2317,6 @@
      & 1.431400e-06,5.388000e-06,2.240495e-05,7.783655e-05,7.936564e-04,&
      & 2.039213e-02,4.493887e-01,2.278674e+01,4.899000e+03,1.695600e+05/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG01=10).
-
       data  selfref(:, :) /                                             &
      & 2.168030e+00,3.701490e+00,6.362042e+00,6.498625e+00,6.557401e+00,&
      & 6.583180e+00,7.064571e+00,7.464597e+00,7.518950e+00,7.847740e+00,&
@@ -2299,12 +2338,6 @@
      & 3.238053e+00,3.273677e+00,3.420571e+00,2.947870e+00,2.513570e+00,&
      & 9.685760e-01,1.871880e+00,2.678235e+00,2.736639e+00,2.754912e+00,&
      & 2.963225e+00,2.974673e+00,3.102675e+00,2.622270e+00,2.180140e+00/
-
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  The second index
-!     runs over the g-channel (1 to NG01=10).
 
       data  forref(:, :) /                                              &
      & 3.674200E-02,1.066400E-01,2.698528E-01,2.783334E-01,2.878464E-01,&
@@ -2396,15 +2429,9 @@
      & 1.931590E-07,5.241120E-07,2.281302E-06,1.906758E-06,1.745393E-06,&
      & 1.765440E-06,1.786258E-06,1.668673E-06,1.226900E-06,1.421040E-06/
 
-! --- planck fraction mapping level: p = 212.7250 mbar, t = 223.06 k
-
       data  fracrefa(:) /                                               &
      & 2.122700e-01,1.889700e-01,2.549100e-01,1.786410e-01,1.173490e-01,&
      & 3.829770e-02,5.787100e-03,3.175300e-03,5.316900e-04,7.647600e-05/
-
-! --- planck fraction mapping level: p = 212.7250 mbar, t = 223.06 k
-!     these planck fractions were calculated using lower atmosphere
-!     parameters.
 
       data  fracrefb(:) /                                               &
      & 2.122700e-01,1.889700e-01,2.549100e-01,1.786410e-01,1.173490e-01,&
@@ -2427,23 +2454,59 @@
 !
       private
 !
-      integer, public :: MSA02, MSB02, MSF02, MFR02
+!> msa02=65
+      integer, public :: MSA02
+!> msb02=235
+      integer, public :: MSB02
+!> msf02=10
+      integer, public :: MSF02
+!> mfr02=4
+      integer, public :: MFR02
       parameter (MSA02=65, MSB02=235, MSF02=10, MFR02=4)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG02,MSA02), absb(NG02,MSB02), selfref(NG02,MSF02),   &
-     &       forref(NG02,MFR02), fracrefa(NG02), fracrefb(NG02)
+!>  the array absa(NG02,65) = ka(NG02,5,13) contains absorption coefs
+!!  at the NG02=12 chosen g-values for a range of pressure levels>~100mb
+!!  and temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG02=12, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG02,MSA02)
 
-! --- the array absa(NG02,65) = ka(NG02,5,13) contains absorption coefs
-!     at the NG02=12 chosen g-values for a range of pressure levels>~100mb
-!     and temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG02=12, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absb(NG02,235) = kb(NG02,5,13:59) contains absorption coefs
+!!  at the NG02=12 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG02=12, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG02,MSB02)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG02=12).
+      real (kind=kind_phys), public :: selfref(NG02,MSF02)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG02=12).
+      real (kind=kind_phys), public :: forref(NG02,MFR02)
+
+!> planck fraction mapping level: p = 1053.630 mbar, t = 294.2 k
+      real (kind=kind_phys), public :: fracrefa(NG02)
+
+!> planck fraction mapping level: p = 3.206e-2 mb, t = 197.92 k
+      real (kind=kind_phys), public :: fracrefb(NG02)
 
       data   absa(:,  1: 25) /                                          &
      & 4.944400E-03,1.002700E-02,2.047500E-02,3.415000E-02,7.412800E-02,&
@@ -2604,17 +2667,6 @@
      & 1.107301E+01,5.226123E+01,2.041494E+02,3.349700E-04,6.838700E-04,&
      & 1.499800E-03,2.545500E-03,6.041200E-03,1.843900E-02,5.983800E-02,&
      & 1.855900E-01,1.586675E+00,1.389204E+01,6.566659E+01,2.705407E+02/
-
-! --- the array absb(NG02,235) = kb(NG02,5,13:59) contains absorption coefs
-!     at the NG02=12 chosen g-values for a range of pressure levels< ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG02=12, and tells us
-!     which g-interval the absorption coefficients are for.
 
       data   absb(:,  1: 25) /                                          &
      & 1.300000E-04,3.678200E-04,4.832900E-04,1.237500E-03,2.076800E-03,&
@@ -3191,12 +3243,6 @@
      & 7.693300E-08,1.498700E-07,3.309600E-07,1.053300E-06,3.491900E-06,&
      & 1.353400E-05,2.315021E-04,5.286700E-03,1.221836E+00,4.507178E+02/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG02=12).
-
       data  selfref(:, :) /                                             &
      & 7.256950E-01,9.619960E-01,9.725840E-01,1.247900E+00,1.235740E+00,&
      & 1.209210E+00,1.381120E+00,1.303210E+00,1.289824E+00,1.419931E+00,&
@@ -3223,12 +3269,6 @@
      & 4.969270E-01,5.686080E-01,5.493050E-01,5.443840E-01,6.367390E-01,&
      & 6.260960E-01,6.644681E-01,7.764753E-01,8.567281E-01,8.905786E-01/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG02=12).
-
       data  forref(:, :) /                                              &
      & 2.854900E-03,4.828100E-03,6.257000E-03,8.273100E-03,7.905600E-03,&
      & 7.784000E-03,1.011500E-02,9.659900E-03,1.022842E-02,1.288835E-02,&
@@ -3241,13 +3281,9 @@
      & 8.615100E-03,8.676200E-03,1.147600E-02,1.024600E-02,1.080142E-02,&
      & 1.053970E-02,1.035826E-02,1.047106E-02 /
 
-! --- planck fraction mapping level: p = 1053.630 mbar, t = 294.2 k
-
       data  fracrefa(:) /                     1.638800e-01,1.524100e-01,&
      & 1.429000e-01,1.286400e-01,1.161500e-01,1.004700e-01,8.001300e-02,&
      & 6.044500e-02,4.491790e-02,6.339500e-03,3.294200e-03,5.454090e-04/
-
-! --- planck fraction mapping level: p = 3.206e-2 mb, t = 197.92 k
 
       data  fracrefb(:) /                     1.469700e-01,1.482600e-01,&
      & 1.427800e-01,1.332000e-01,1.196500e-01,1.029700e-01,8.417000e-02,&
@@ -3271,30 +3307,96 @@
 !
       private
 !
-      integer, public :: MSA03, MSB03, MSF03, MFR03, MAF03, MBF03, MMN03
+!> msa03=585
+      integer, public :: MSA03 
+!> msb03=1175
+      integer, public :: MSB03
+!> msf03=10
+      integer, public :: MSF03
+!> mfr03=4
+      integer, public :: MFR03
+!> maf03=9
+      integer, public :: MAF03
+!> mbf03=5
+      integer, public :: MBF03
+!> mmn03=19
+      integer, public :: MMN03
+
       parameter (MSA03=585, MSB03=1175, MSF03=10, MFR03=4)
       parameter (MAF03=9, MBF03=5, MMN03=19)
 
-      real (kind=kind_phys), public ::           forref(NG03,MFR03),    &
-     &       absa(NG03,MSA03), absb(NG03,MSB03), selfref(NG03,MSF03),   &
-     &       fracrefa(NG03,MAF03), fracrefb(NG03,MBF03),                &
-     &       ka_mn2o(NG03,MAF03,MMN03), kb_mn2o(NG03,MBF03,MMN03)
+      real (kind=kind_phys), public :: forref(NG03,MFR03)
 
-! --- the array absa(NG03,585) = ka(NG03,9,5,13) contains absorption coefs
-!     at the NG03=16 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different water
-!     vapor to co2 ratios, as expressed through the binary species
-!     parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
-!     the ratio of the reference mls column amount value of gas1 to that
-!     of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures. more specifically, jt = 1-5
-!     means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
-!     third index, jp, runs from 1 to 13 and refers to the reference
-!     pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
-!     fourth index, ig, goes from 1 to NG03=16, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG03,585) = ka(NG03,9,5,13) contains absorption coefs
+!!  at the NG03=16 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different water
+!!  vapor to co2 ratios, as expressed through the binary species
+!!  parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
+!!  the ratio of the reference mls column amount value of gas1 to that
+!!  of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
+!!  corresponds to different temperatures. more specifically, jt = 1-5
+!!  means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
+!!  third index, jp, runs from 1 to 13 and refers to the reference
+!!  pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
+!!  fourth index, ig, goes from 1 to NG03=16, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG03,MSA03)
+
+!>  the array absb(NG03,1175) = kb(NG03,5,5,13:59) contains absorption
+!!  coefs at the NG03=16 g-intervals for a range of pressure levels <
+!!  ~100mb, temperatures, and ratios of h2o to co2. the first index in
+!!  the array, js, runs from 1 to 5, and corresponds to different gas
+!!  amount ratios, as expressed through the binary species parameter
+!!  eta, defined as eta = gas1/(gas1+rat*gas2), where rat is the ratio
+!!  of the reference mls column amount value of gas1 to that of gas2.
+!!  the second index, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures.  more specifically, jt = 1-5 means that
+!!  the data are for the corresponding temperature of tref-30, tref-15,
+!!  tref, tref+15, and tref+30, respectively.  the third index, jp,
+!!  runs from 13 to 59 and refers to the reference pressure level (e.g.
+!!  jp = 13 is for a pressure of 95.5835 mb). the fourth index, ig,
+!!  goes from 1 to NG03=16, and tells us which g-interval the absorption
+!!  coefficients are for.
+      real (kind=kind_phys), public :: absb(NG03,MSB03)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG03=16).
+      real (kind=kind_phys), public :: selfref(NG03,MSF03)
+
+!> planck fraction mapping level: p=212.7250 mbar, t = 223.06 k
+      real (kind=kind_phys), public :: fracrefa(NG03,MAF03)
+
+!> planck fraction mapping level: p = 95.8 mbar, t = 215.7 k
+      real (kind=kind_phys), public :: fracrefb(NG03,MBF03)
+
+!> the array ka_mxxx(NG03,9,19) contains the absorption coefficient for
+!! a minor species at the NG03=16 chosen g-values for a reference pressure
+!! level below 100~ mb.   the first index in the array, js, runs from 1
+!! to 9, and corresponds to different gas column amount ratios, as
+!! expressed through the binary species parameter eta, defined as
+!! eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
+!! reference mls column amount value of gas1 to that of gas2.  the
+!! second index refers to temperature in 7.2 degree increments.  for
+!! instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers to
+!! 195.2, etc. the third index runs over the g-channel (1 to NG03=16).
+      real (kind=kind_phys), public :: ka_mn2o(NG03,MAF03,MMN03)
+
+!> the array kb_mxxx contains the absorption coefficient for a minor
+!! species at the NG03=16 chosen g-values for a reference pressure
+!! level above 100~ mb.   the first index in the array, js, runs from
+!! 1 to 10, and corresponds to different gas column amounts ratios,
+!! as expressed through the binary species parameter eta, defined as
+!! eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
+!! reference mls column amount value of gas1 to that of gas2.  the
+!! second index refers to temperature in 7.2 degree increments.  for
+!! instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
+!! to 195.2, etc. the third index runs over the g-channel (1 to NG03=16).
+      real (kind=kind_phys), public :: kb_mn2o(NG03,MBF03,MMN03)
 
       data   absa(:,  1: 20) /                                          &
      & 3.188600E-07,1.307300E-06,5.254600E-06,2.019700E-05,1.503300E-04,&
@@ -10074,29 +10176,74 @@
 !
       private
 !
-      integer, public :: MSA04, MSB04, MSF04, MFR04, MAF04, MBF04
+!> msa04=585
+      integer, public :: MSA04
+!> msb04=1175
+      integer, public :: MSB04
+!> msf04=10
+      integer, public :: MSF04
+!> mfr04=4
+      integer, public :: MFR04
+!> maf04=9
+      integer, public :: MAF04
+!> mbf04=5
+      integer, public :: MBF04
       parameter (MSA04=585, MSB04=1175, MSF04=10, MFR04=4)
       parameter (MAF04=9, MBF04=5)
 
-      real (kind=kind_phys), public ::           forref(NG04,MFR04),    &
-     &       absa(NG04,MSA04), absb(NG04,MSB04), selfref(NG04,MSF04),   &
-     &       fracrefa(NG04,MAF04), fracrefb(NG04,MBF04)
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG04=14).
+      real (kind=kind_phys), public :: forref(NG04,MFR04)
 
-! --- the array absa(NG04,585) = ka(NG04,9,5,13) contains absorption coefs
-!     at the NG04=14 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different gas
-!     column amount ratios, as expressed through the binary species
-!     parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
-!     the ratio of the reference mls column amount value of gas1 to that
-!     of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures. more specifically, jt = 1-5
-!     means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
-!     third index, jp, runs from 1 to 13 and refers to the reference
-!     pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
-!     fourth index, ig, goes from 1 to NG04=14, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG04,585) = ka(NG04,9,5,13) contains absorption coefs
+!!  at the NG04=14 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different gas
+!!  column amount ratios, as expressed through the binary species
+!!  parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
+!!  the ratio of the reference mls column amount value of gas1 to that
+!!  of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
+!!  corresponds to different temperatures. more specifically, jt = 1-5
+!!  means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
+!!  third index, jp, runs from 1 to 13 and refers to the reference
+!!  pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
+!!  fourth index, ig, goes from 1 to NG04=14, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG04,MSA04)
+
+!>  the array absb(NG04,1175) = kb(NG04,5,5,13:59) contains absorption
+!!  coefs at the NG04=14 g-intervals for a range of pressure levels <
+!!  ~100mb, temperatures, and ratios of h2o to co2. the first index in
+!!  the array, js, runs from 1 to 5, and corresponds to different gas
+!!  amount ratios, as expressed through the binary species parameter
+!!  eta, defined as eta = gas1/(gas1+rat*gas2), where rat is the ratio
+!!  of the reference mls column amount value of gas1 to that of gas2.
+!!  the second index, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures.  more specifically, jt = 1-5 means that
+!!  the data are for the corresponding temperature of tref-30, tref-15,
+!!  tref, tref+15, and tref+30, respectively.  the third index, jp,
+!!  runs from 13 to 59 and refers to the reference pressure level (e.g.
+!!  jp = 13 is for a pressure of 95.5835 mb). the fourth index, ig,
+!!  goes from 1 to NG04=14, and tells us which g-interval the absorption
+!!  coefficients are for.
+      real (kind=kind_phys), public :: absb(NG04,MSB04)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG04=14).
+      real (kind=kind_phys), public :: selfref(NG04,MSF04)
+
+!>  planck fraction mapping level: p=212.7250 mbar, t = 223.06 k
+      real (kind=kind_phys), public :: fracrefa(NG04,MAF04)
+
+!>  planck fraction mapping level : p = 95.58350 mb, t = 215.70 k
+      real (kind=kind_phys), public :: fracrefb(NG04,MBF04)
 
       data   absa(:,  1: 20) /                                          &
      & 1.069700E-02,2.450100E-02,3.756400E-02,5.205700E-02,8.290100E-02,&
@@ -11767,21 +11914,6 @@
      & 1.928300E-03,2.943000E-03,5.661700E-03,1.028300E-02,2.384100E-02,&
      & 5.072500E-02,6.831800E-02,1.151000E-01,2.232200E-01,6.194796E-01/
 
-! --- the array absb(NG04,1175) = kb(NG04,5,5,13:59) contains absorption
-!     coefs at the NG04=14 g-intervals for a range of pressure levels <
-!     ~100mb, temperatures, and ratios of h2o to co2. the first index in
-!     the array, js, runs from 1 to 5, and corresponds to different gas
-!     amount ratios, as expressed through the binary species parameter
-!     eta, defined as eta = gas1/(gas1+rat*gas2), where rat is the ratio
-!     of the reference mls column amount value of gas1 to that of gas2.
-!     the second index, jt, which runs from 1 to 5, corresponds to
-!     different temperatures.  more specifically, jt = 1-5 means that
-!     the data are for the corresponding temperature of tref-30, tref-15,
-!     tref, tref+15, and tref+30, respectively.  the third index, jp,
-!     runs from 13 to 59 and refers to the reference pressure level (e.g.
-!     jp = 13 is for a pressure of 95.5835 mb). the fourth index, ig,
-!     goes from 1 to NG04=14, and tells us which g-interval the absorption
-!     coefficients are for.
 
       data   absb(:,  1: 20) /                                          &
      & 1.928300E+01,6.652900E+01,1.388600E+02,2.158600E+02,3.954900E+02,&
@@ -15133,12 +15265,6 @@
      & 5.519800E-05,1.567800E-04,8.122600E-04,2.236300E-02,8.029200E-01,&
      & 5.917900E+00,1.115000E+01,2.051600E+01,3.485800E+01,6.974457E+01/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG04=14).
-
       data  selfref(:, :) /                                             &
      & 2.629220E-01,2.454480E-01,2.415950E-01,2.448180E-01,2.434580E-01,&
      & 2.401860E-01,2.427520E-01,2.396200E-01,2.388560E-01,2.298210E-01,&
@@ -15189,8 +15315,6 @@
      & 2.360400E-04,2.377300E-04,2.424300E-04,2.259700E-04,2.287900E-04,&
      & 2.205148E-04 /
 
-! --- planck fraction mapping level : p = 142.5940 mbar, t = 215.70 k
-
       data  fracrefa(:,:) /                                             &
      & 1.557200e-01,1.492500e-01,1.410700e-01,1.312600e-01,1.179100e-01,&
      & 1.017300e-01,8.294900e-02,6.239300e-02,4.214600e-02,4.590700e-03,&
@@ -15218,8 +15342,6 @@
      & 1.307700e-01,1.166700e-01,1.004800e-01,8.151100e-02,6.107600e-02,&
      & 4.111100e-02,4.443200e-03,3.691000e-03,2.907600e-03,2.132900e-03,&
      & 1.958885e-03 /
-
-! --- planck fraction mapping level : p = 95.58350 mb, t = 215.70 k
 
       data  fracrefb(:,:) /                                             &
      & 1.555800e-01,1.493100e-01,1.410400e-01,1.312400e-01,1.179300e-01,&
@@ -15254,30 +15376,77 @@
 !
       private
 !
-      integer, public :: MSA05, MSB05, MSF05, MFR05, MAF05, MBF05, MMO05
+!> msa05=585
+      integer, public :: MSA05
+!> msb05=1175
+      integer, public :: MSB05
+!> msf05=10
+      integer, public :: MSF05
+!> mfr05=4
+      integer, public :: MFR05
+!> maf05=9
+      integer, public :: MAF05
+!> mbf05=5
+      integer, public :: MBF05
+!> mmo05=19
+      integer, public :: MMO05
       parameter (MSA05=585, MSB05=1175, MSF05=10, MFR05=4)
       parameter (MAF05=9, MBF05=5, MMO05=19)
 
-      real (kind=kind_phys), public ::           forref(NG05,MFR05),    &
-     &       absa(NG05,MSA05), absb(NG05,MSB05), selfref(NG05,MSF05),   &
-     &       fracrefa(NG05,MAF05), fracrefb(NG05,MBF05),                &
-     &       ka_mo3(NG05,MAF05,MMO05), ccl4(NG05)
+      real (kind=kind_phys), public :: forref(NG05,MFR05)
 
-! --- the array absa(NG05,585) = ka(NG05,9,5,13) contains absorption coefs
-!     at the NG05=16 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different water
-!     vapor to co2 ratios, as expressed through the binary species
-!     parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
-!     the ratio of the reference mls column amount value of gas1 to that
-!     of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
-!     corresponds to different temperatures. more specifically, jt = 1-5
-!     means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
-!     third index, jp, runs from 1 to 13 and refers to the reference
-!     pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
-!     fourth index, ig, goes from 1 to NG05=16, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG05,585) = ka(NG05,9,5,13) contains absorption coefs
+!!  at the NG05=16 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different water
+!!  vapor to co2 ratios, as expressed through the binary species
+!!  parameter eta, defined as eta = gas1/(gas1+(rat)*gas2), where rat is
+!!  the ratio of the reference mls column amount value of gas1 to that
+!!  of gas2. the 2nd index in the array, jt, which runs from 1 to 5,
+!!  corresponds to different temperatures. more specifically, jt = 1-5
+!!  means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
+!!  third index, jp, runs from 1 to 13 and refers to the reference
+!!  pressure level (e.g. jp = 1 is for a pressure of 1053.63 mb).  the
+!!  fourth index, ig, goes from 1 to NG05=16, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG05,MSA05)
+
+!>  the array absb(NG05,1175) = kb(NG05,5,5,13:59) contains absorption
+!!  coefs at the NG05=16 g-intervals for a range of pressure levels <
+!!  ~100mb, temperatures, and ratios of h2o to co2. the first index in
+!!  the array, js, runs from 1 to 5, and corresponds to different gas
+!!  amount ratios, as expressed through the binary species parameter
+!!  eta, defined as eta = gas1/(gas1+rat*gas2), where rat is the ratio
+!!  of the reference mls column amount value of gas1 to that of gas2.
+!!  the second index, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures.  more specifically, jt = 1-5 means that
+!!  the data are for the corresponding temperature of tref-30, tref-15,
+!!  tref, tref+15, and tref+30, respectively.  the third index, jp,
+!!  runs from 13 to 59 and refers to the reference pressure level (e.g.
+!!  jp = 13 is for a pressure of 95.5835 mb). the fourth index, ig,
+!!  goes from 1 to NG05=16, and tells us which g-interval the absorption
+!!  coefficients are for.
+      real (kind=kind_phys), public :: absb(NG05,MSB05)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG05=16).
+      real (kind=kind_phys), public :: selfref(NG05,MSF05)
+
+!>  planck fraction mapping level : p = 473.42 mb, t = 259.83 k
+      real (kind=kind_phys), public :: fracrefa(NG05,MAF05)
+
+!> planck fraction mapping level : p = 0.2369280 mbar, t = 253.60 k
+      real (kind=kind_phys), public :: fracrefb(NG05,MBF05)
+
+      real (kind=kind_phys), public :: ka_mo3(NG05,MAF05,MMO05)
+
+!> minor gas (o3, ccl4) mapping level : p = 317.34 mbar, t = 240.77 k
+      real (kind=kind_phys), public :: ccl4(NG05)
+
 
       data   absa(:,  1: 20) /                                          &
      & 2.062700E-06,6.230000E-06,2.196700E-05,1.276700E-04,5.289700E-04,&
@@ -17181,22 +17350,6 @@
      & 1.070300E-04,2.186600E-04,4.301400E-04,7.683500E-04,1.181600E-03,&
      & 1.957800E-03,3.960600E-03,4.360200E-03,6.045900E-03,3.990300E-03,&
      & 1.382600E-02,8.681400E-03,3.361500E-05,1.891900E-05,2.128300E-05/
-
-! --- the array absb(NG05,1175) = kb(NG05,5,5,13:59) contains absorption
-!     coefs at the NG05=16 g-intervals for a range of pressure levels <
-!     ~100mb, temperatures, and ratios of h2o to co2. the first index in
-!     the array, js, runs from 1 to 5, and corresponds to different gas
-!     amount ratios, as expressed through the binary species parameter
-!     eta, defined as eta = gas1/(gas1+rat*gas2), where rat is the ratio
-!     of the reference mls column amount value of gas1 to that of gas2.
-!     the second index, jt, which runs from 1 to 5, corresponds to
-!     different temperatures.  more specifically, jt = 1-5 means that
-!     the data are for the corresponding temperature of tref-30, tref-15,
-!     tref, tref+15, and tref+30, respectively.  the third index, jp,
-!     runs from 13 to 59 and refers to the reference pressure level (e.g.
-!     jp = 13 is for a pressure of 95.5835 mb). the fourth index, ig,
-!     goes from 1 to NG05=16, and tells us which g-interval the absorption
-!     coefficients are for.
 
       data   absb(:,   1:  20) /                                        &
      & 1.573100E-03,3.627900E-03,9.154000E-03,6.704900E-02,4.323600E-01,&
@@ -21589,12 +21742,6 @@
      & 1.987770E-01,1.239810E-01,1.039040E-01,1.126260E-01,1.291010E-01,&
      & 2.177870E-01 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG05=16).
-
       data  selfref(:,:) /                                              &
      & 1.276860E-01,1.400510E-01,1.423220E-01,1.532440E-01,1.710110E-01,&
      & 1.760120E-01,1.856000E-01,1.889310E-01,1.911220E-01,1.913340E-01,&
@@ -21650,8 +21797,6 @@
      & 5.878000E-05,6.035800E-05,6.158600E-05,6.428100E-05,6.933300E-05,&
      & 7.276300E-05,7.267500E-05,7.375400E-05,1.013100E-04 /
 
-! --- planck fraction mapping level : p = 473.42 mb, t = 259.83 k
-
       data  fracrefa(:,:) /                                             &
      & 1.411100e-01,1.422200e-01,1.380200e-01,1.310100e-01,1.224400e-01,&
      & 1.069100e-01,8.870300e-02,6.713000e-02,4.550900e-02,4.986600e-03,&
@@ -21683,8 +21828,6 @@
      & 6.362500e-02,4.295100e-02,4.731300e-03,3.915700e-03,3.087900e-03,&
      & 2.266600e-03,1.519300e-03,5.746900e-04,8.167400e-05 /
 
-! --- planck fraction mapping level : p = 0.2369280 mbar, t = 253.60 k
-
       data  fracrefb(:,:) /                                             &
      & 1.407500e-01,1.419600e-01,1.383300e-01,1.334500e-01,1.223400e-01,&
      & 1.071800e-01,8.800400e-02,6.630800e-02,4.502800e-02,4.902900e-03,&
@@ -21702,8 +21845,6 @@
      & 1.441700e-01,1.419400e-01,1.345700e-01,1.216700e-01,1.055100e-01,&
      & 8.645000e-02,6.488900e-02,4.358400e-02,4.755100e-03,3.950900e-03,&
      & 3.137400e-03,2.322600e-03,1.494200e-03,5.754500e-04,8.088700e-05/
-
-! --- minor gas (o3, ccl4) mapping level : p = 317.34 mbar, t = 240.77 k
 
       data  ccl4(:) /                         2.614070e+01,5.397760e+01,&
      & 6.380850e+01,3.617010e+01,1.540990e+01,1.023116e+01,4.829480e+00,&
@@ -21727,24 +21868,63 @@
 !
       private
 !
-      integer, public :: MSA06, MSF06, MFR06, MMC06
+!> msa06=65
+      integer, public :: MSA06
+!> msf06=10
+      integer, public :: MSF06
+!> mfr06=4
+      integer, public :: MFR06
+!> mmc06=19
+      integer, public :: MMC06
       parameter (MSA06=65, MSF06=10, MFR06=4, MMC06=19)
 
-      real (kind=kind_phys), public ::           forref(NG06,MFR06),    &
-     &       absa(NG06,MSA06), fracrefa(NG06),   selfref(NG06,MSF06),   &
-     &       ka_mco2(NG06,MMC06), cfc11adj(NG06), cfc12(NG06)
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG06=8).
+      real (kind=kind_phys), public :: forref(NG06,MFR06)
 
-! --- the array absa(NG06,65) = ka(NG06,5,13) contains absorption coefs
-!     at the NG06=8 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures. more specifically, jt = 1-5 means that the data are
-!     for the corresponding temperature of tref-30, tref-15, tref, tref+15,
-!     and tref+30, respectively. the second index, jp, runs from 1 to 13
-!     and refers to the corresponding pressure level in pref (e.g. jp = 1
-!     is for a pressure of 1053.63 mb).  the third index, ig, goes from 1
-!     to NG06=8, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array absa(NG06,65) = ka(NG06,5,13) contains absorption coefs
+!!  at the NG06=8 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, jt, which runs from 1 to 5, corresponds to different
+!!  temperatures. more specifically, jt = 1-5 means that the data are
+!!  for the corresponding temperature of tref-30, tref-15, tref, tref+15,
+!!  and tref+30, respectively. the second index, jp, runs from 1 to 13
+!!  and refers to the corresponding pressure level in pref (e.g. jp = 1
+!!  is for a pressure of 1053.63 mb).  the third index, ig, goes from 1
+!!  to NG06=8, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG06,MSA06)
+
+!> planck fraction mapping level : p = 473.4280 mb, t = 259.83 k
+      real (kind=kind_phys), public :: fracrefa(NG06)
+      
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG06=8).
+      real (kind=kind_phys), public :: selfref(NG06,MSF06)
+
+!>  the array kao_mxx contains the absorption coefficient for
+!!  a minor species at the NG06=8 chosen g-values for a reference pressure
+!!  level below 100~ mb.   the first index refers to temperature
+!!  in 7.2 degree increments.  for instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
+!!  runs over the g-channel (1 to NG06=8).
+      real (kind=kind_phys), public :: ka_mco2(NG06,MMC06)
+
+!>  \name  minor gas mapping level:
+!!  lower - co2, p = 706.2720 mb, t = 294.2 k
+!!  upper - cfc11, cfc12
+!!  original cfc11 is multiplied by 1.385 to account for the 1060-1107 \f$cm^{-1}\f$ band.
+
+!!@{
+      real (kind=kind_phys), public :: cfc11adj(NG06)
+      real (kind=kind_phys), public :: cfc12(NG06)
+!!@}
 
       data   absa(:,  1:30) /                                           &
      & 1.816778E-05,3.331369E-05,4.862866E-05,7.508101E-05,9.079919E-04,&
@@ -21853,13 +22033,6 @@
      & 6.558903E-05,6.274919E-05,4.720687E-06,1.782078E-05,6.727193E-05,&
      & 2.288666E-04,4.469429E-04,1.511657E-04,1.056325E-04,1.110326E-04/
 
-! --- the array kao_mxx contains the absorption coefficient for
-!     a minor species at the NG06=8 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  for instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG06=8).
-
       data  ka_mco2(:, :) /                                             &
      & 1.229200E-05,1.088199E-05,1.350453E-05,8.226484E-05,3.148824E-05,&
      & 3.760573E-06,2.175457E-06,1.607842E-06,1.475920E-05,1.318776E-05,&
@@ -21893,12 +22066,6 @@
      & 3.470270E-04,3.972484E-04,2.636725E-03,1.005814E-03,2.987825E-04,&
      & 1.200051E-04,1.880790E-04 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG06=8).
-
       data  selfref(:, :) /                                             &
      & 8.104007E-02,9.051144E-02,8.488708E-02,7.523175E-02,7.285671E-02,&
      & 9.040726E-02,9.108606E-02,9.448533E-02,6.775328E-02,7.666656E-02,&
@@ -21917,12 +22084,6 @@
      & 2.845217E-02,2.945506E-02,1.617660E-02,2.033082E-02,2.559575E-02,&
      & 2.534039E-02,2.426361E-02,2.357239E-02,2.460231E-02,2.546275E-02/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG06=8).
-
       data  forref(:, :) /                                              &
      & 4.229942E-07,1.253070E-06,3.301641E-06,3.223462E-06,2.413032E-06,&
      & 2.555740E-06,2.737261E-06,2.968633E-06,9.286954E-07,2.199977E-06,&
@@ -21931,8 +22092,6 @@
      & 1.111783E-06,5.010556E-07,3.236474E-07,3.077813E-07,1.723301E-06,&
      & 2.098087E-06,2.267954E-06,1.321898E-06,8.660148E-07,7.939696E-07,&
      & 7.133265E-07,3.134393E-07 /
-
-! --- planck fraction mapping level : p = 473.4280 mb, t = 259.83 k
 
       data  fracrefa(:) /        2.912700e-01,2.825200e-01,2.259000e-01,&
      & 1.431360e-01,4.549370e-02,7.179200e-03,3.848300e-03,6.571200e-04/
@@ -21966,31 +22125,84 @@
 !
       private
 !
-      integer, public :: MSA07, MSB07, MSF07, MFR07, MAF07, MMC07
+!> msa07=585
+      integer, public :: MSA07
+!> msb07=235
+      integer, public :: MSB07
+!> msf07=10
+      integer, public :: MSF07
+!> mfr07=4
+      integer, public :: MFR07
+!> maf07=9
+      integer, public :: MAF07
+!> mmc07=19
+      integer, public :: MMC07
       parameter (MSA07=585, MSB07=235, MSF07=10, MFR07=4)
       parameter (MAF07=9, MMC07=19)
 
-      real (kind=kind_phys), public ::           forref(NG07,MFR07),    &
-     &       absa(NG07,MSA07), absb(NG07,MSB07), selfref(NG07,MSF07),   &
-     &       fracrefa(NG07,MAF07), fracrefb(NG07),                      &
-     &       ka_mco2(NG07,MAF07,MMC07), kb_mco2(NG07,MMC07)
+      real (kind=kind_phys), public :: forref(NG07,MFR07)
 
-! --- the array absa(NG07,585) = ka(NG07,9,5,13) contains absorption coefs
-!     at the NG07=12 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG07=12, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array absa(NG07,585) = ka(NG07,9,5,13) contains absorption coefs
+!!  at the NG07=12 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG07=12, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG07,MSA07)
 
+!>  the array absb(NG07,235) = kb(NG07,5,13:59) contains absorption coefs
+!!  at the NG07=12 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG07=12, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG07,MSB07)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG07=12).
+      real (kind=kind_phys), public :: selfref(NG07,MSF07)
+
+!>  planck fraction mapping level : p = 706.27 mb, t = 278.94 k
+      real (kind=kind_phys), public :: fracrefa(NG07,MAF07)
+
+!>  planck data fraction mapping level : p=95.58 mbar, t= 215.70 k
+      real (kind=kind_phys), public :: fracrefb(NG07)
+
+!>  the array ka_mxxx contains the absorption coefficient for a minor
+!!  species at the NG07=12 chosen g-values for a reference pressure
+!!  level below 100~ mb.   the first index in the array, js, runs from
+!!  1 to 9, and corresponds to different gas column amount ratios, as
+!!  expressed through the binary species parameter eta, defined as
+!!  eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
+!!  reference mls column amount value of gas1 to that of gas2.  the
+!!  second index refers to temperature in 7.2 degree increments.  for
+!!  instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
+!!  to 195.2, etc. the third index runs over the g-channel (1 to NG07=12).
+      real (kind=kind_phys), public :: ka_mco2(NG07,MAF07,MMC07)
+
+!>  the array kb_mxxx contains absorption coefficient for a minor
+!!  species at the NG07=12 chosen g-values for a reference pressure
+!!  level above 100~ mb.   the first index refers to temperature
+!!  in 7.2 degree increments.  for instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
+!!  runs over the g-channel (1 to NG07=12).
+      real (kind=kind_phys), public :: kb_mco2(NG07,MMC07)
 
       data   absa( : ,  1: 25) /                                        &
      & 3.094127E-06,1.554128E-05,3.189000E-05,4.060800E-05,4.935100E-05,&
@@ -23421,17 +23633,6 @@
      & 3.148200E-05,4.204300E-05,1.015300E-04,2.826900E-04,2.984000E-04,&
      & 1.236700E-05,1.442000E-05,1.412400E-05,5.905551E-06,4.372274E-06/
 
-! --- the array absb(NG07,235) = kb(NG07,5,13:59) contains absorption coefs
-!     at the NG07=12 chosen g-values for a range of pressure levels< ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG07=12, and tells us
-!     which g-interval the absorption coefficients are for.
-
       data   absb( : ,  1: 25) /                                        &
      & 1.747345E-01,2.201218E+00,6.955900E+00,1.387400E+01,2.638300E+01,&
      & 5.103600E+01,9.940600E+01,1.485400E+02,1.657200E+02,1.843700E+02,&
@@ -24007,17 +24208,6 @@
      & 2.001400E-02,1.059600E-01,5.828300E-01,2.954600E+00,3.609200E+01,&
      & 2.452500E+02,4.609900E+02,8.280000E+02,1.717511E+03,3.225982E+03/
 
-! --- the array ka_mxxx contains the absorption coefficient for a minor
-!     species at the NG07=12 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index in the array, js, runs from
-!     1 to 9, and corresponds to different gas column amount ratios, as
-!     expressed through the binary species parameter eta, defined as
-!     eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
-!     reference mls column amount value of gas1 to that of gas2.  the
-!     second index refers to temperature in 7.2 degree increments.  for
-!     instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
-!     to 195.2, etc. the third index runs over the g-channel (1 to NG07=12).
-
       data  ka_mco2(:,:, 1) /    1.370502E-05,2.621626E-05,3.432130E-05,&
      & 4.146590E-05,6.845440E-05,1.181540E-04,3.306140E-04,9.104180E-04,&
      & 1.012750E-03,1.184690E-03,1.237325E-03,1.381582E-03,1.386827E-05,&
@@ -24439,13 +24629,6 @@
      & 6.422530E-03,1.138470E-02,2.130290E-03,1.583420E-03,1.644540E-03,&
      & 2.453564E-03,2.194686E-03 /
 
-! --- the array kb_mxxx contains absorption coefficient for a minor
-!     species at the NG07=12 chosen g-values for a reference pressure
-!     level above 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  for instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG07=12).
-
       data  kb_mco2(:, :) /                                             &
      & 5.905905E-06,1.415094E-05,3.721420E-05,7.741310E-05,1.322940E-04,&
      & 3.598680E-05,5.095430E-05,2.082530E-05,2.089530E-05,2.652950E-05,&
@@ -24494,12 +24677,6 @@
      & 1.338860E-02,3.438180E-03,5.441960E-03,1.582730E-03,1.561710E-03,&
      & 1.897240E-03,2.799757E-03,5.630248E-03 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG07=12).
-
       data  selfref(:, :) /                                             &
      & 4.779220E-02,4.154768E-02,3.945120E-02,3.905670E-02,3.853970E-02,&
      & 3.796920E-02,3.688190E-02,3.651570E-02,3.599170E-02,3.669630E-02,&
@@ -24544,8 +24721,6 @@
      & 1.998700E-07,1.997800E-07,1.990200E-07,1.974200E-07,1.967200E-07,&
      & 1.961500E-07,1.956199E-07,1.958825E-07 /
 
-! --- planck fraction mapping level : p = 706.27 mb, t = 278.94 k
-
       data  fracrefa(:,:) /                                             &
      & 3.126100e-01,2.746600e-01,1.168400e-01,9.990000e-02,8.091200e-02,&
      & 6.020300e-02,4.014900e-02,4.336500e-03,3.584400e-03,2.801900e-03,&
@@ -24570,7 +24745,6 @@
      & 8.192700e-02,6.098900e-02,4.066500e-02,4.448100e-03,3.736900e-03,&
      & 2.948200e-03,3.425700e-03,5.585500e-04 /
 
-! --- planck data fraction mapping level : p=95.58 mbar, t= 215.70 k
 
       data  fracrefb(:) /        3.131500e-01,2.756000e-01,1.163400e-01,&
      & 9.891400e-02,8.023600e-02,6.019700e-02,4.062400e-02,4.422500e-03,&
@@ -24593,25 +24767,83 @@
 !
       private
 !
-      integer, public :: MSA08, MSB08, MSF08, MFR08, MMC08
+!> msa08=65
+      integer, public :: MSA08
+!> msb08=235
+      integer, public :: MSB08
+!> msf08=10
+      integer, public :: MSF08
+!> mfr08=4
+      integer, public :: MFR08
+!> mmc08=19
+      integer, public :: MMC08
       parameter (MSA08=65, MSB08=235, MSF08=10, MFR08=4, MMC08=19)
 
-      real (kind=kind_phys), public ::           forref(NG08,MFR08),    &
-     &       absa(NG08,MSA08), absb(NG08,MSB08), selfref(NG08,MSF08),   &
-     &       fracrefa(NG08), fracrefb(NG08), ka_mo3(NG08,MMC08),        &
-     &        ka_mco2(NG08,MMC08), kb_mco2(NG08,MMC08), cfc12(NG08),    &
-     &        ka_mn2o(NG08,MMC08), kb_mn2o(NG08,MMC08), cfc22adj(NG08)
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG08=8).
+      real (kind=kind_phys), public :: forref(NG08,MFR08)
 
-! --- the array absa(NG08,65) = ka(NG08,5,13) contains absorption coefs
-!     at the NG08=8 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures. more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature
-!     of tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG08=8, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG08,65) = ka(NG08,5,13) contains absorption coefs
+!!  at the NG08=8 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures. more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature
+!!  of tref-30, tref-15, tref, tref+15, and tref+30, respectively. the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG08=8, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG08,MSA08)
+
+!>  the array absb(NG08,235) = kb(NG08,5,13:59) contains absorption coefs
+!!  at the NG08=8 chosen g-values for a range of pressure levels < ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG08=8, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG08,MSB08)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG08=8).
+      real (kind=kind_phys), public :: selfref(NG08,MSF08)
+
+!> planck fraction mapping level : p=473.4280 mb, t = 259.83 k
+      real (kind=kind_phys), public :: fracrefa(NG08)
+
+!> planck fraction mapping level : p=95.5835 mb, t= 215.7 k
+      real (kind=kind_phys), public :: fracrefb(NG08)
+
+!> minor gas mapping level:lower - o3,  p = 317.348 mb, t = 240.77 k
+      real (kind=kind_phys), public :: ka_mo3(NG08,MMC08)
+
+!> minor gas mapping level:lower - co2, p = 1053.63 mb, t = 294.2 k
+      real (kind=kind_phys), public :: ka_mco2(NG08,MMC08)
+
+!> minor gas mapping level:upper - co2, p = 35.1632 mb, t = 223.28 k
+      real (kind=kind_phys), public :: kb_mco2(NG08,MMC08)
+
+!> minor gas mapping level:lower - cfc12
+      real (kind=kind_phys), public :: cfc12(NG08)
+
+!> minor gas mapping level:lower - n2o, p = 706.2720 mb, t= 278.94 k
+      real (kind=kind_phys), public :: ka_mn2o(NG08,MMC08)
+
+!> minor gas mapping level:upper - n2o, p = 8.716e-2 mb, t = 226.03 k
+      real (kind=kind_phys), public :: kb_mn2o(NG08,MMC08)
+
+!> original cfc22 is multiplied by 1.485 to account for the 780-850 cm-1
+!! and 1290-1335 cm-1 bands.
+      real (kind=kind_phys), public :: cfc22adj(NG08)
 
       data   absa(:, 1:30) /                                            &
      & 1.958396E-05,3.183247E-05,1.147706E-04,7.165406E-04,4.596619E-03,&
@@ -24719,17 +24951,6 @@
      & 1.434427E-04,3.683164E-04,7.949632E-04,2.146065E-03,2.833108E-05,&
      & 2.760798E-05,3.023029E-05,7.487870E-05,1.748729E-04,4.853462E-04,&
      & 9.349150E-04,3.193713E-03,4.781391E-03,3.768639E-05,1.408527E-05/
-
-! --- the array absb(NG08,235) = kb(NG08,5,13:59) contains absorption coefs
-!     at the NG08=8 chosen g-values for a range of pressure levels < ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG08=8, and tells us
-!     which g-interval the absorption coefficients are for.
 
       data   absb(:,  1: 30) /                                          &
      & 2.970462E-02,8.096607E-02,2.128310E-01,6.115949E-01,1.399250E+00,&
@@ -25116,12 +25337,6 @@
      & 2.360267E+01,7.858685E+01,3.351616E-06,1.595156E-05,1.414304E-04,&
      & 2.624448E-02,1.344139E+00,1.032495E+01,2.347676E+01,7.300692E+01/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG08=8).
-
       data  selfref(:, :) /                                             &
      & 3.132587E-02,3.057763E-02,2.970334E-02,2.970046E-02,2.980793E-02,&
      & 2.954107E-02,2.937950E-02,2.808840E-02,2.729922E-02,2.671487E-02,&
@@ -25140,20 +25355,6 @@
      & 1.008919E-02,1.003920E-02,9.083609E-03,9.068971E-03,9.077405E-03,&
      & 8.991937E-03,8.961042E-03,8.968509E-03,8.827454E-03,8.827650E-03/
 
-! --- minor gas mapping level:
-!     lower - co2, p = 1053.63 mb, t = 294.2 k
-!     lower - o3,  p = 317.348 mb, t = 240.77 k
-!     lower - n2o, p = 706.2720 mb, t= 278.94 k
-!     lower - cfc12,cfc11
-!     upper - co2, p = 35.1632 mb, t = 223.28 k
-!     upper - n2o, p = 8.716e-2 mb, t = 226.03 k
-
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG08=8).
-
       data  forref(:, :) /                                              &
      & 4.289624E-07,5.409865E-07,6.921023E-07,7.383056E-07,7.577604E-07,&
      & 7.666801E-07,1.064651E-06,1.497600E-06,3.598600E-07,5.348426E-07,&
@@ -25163,12 +25364,6 @@
      & 5.461910E-07,5.019355E-07,5.212515E-07,4.848762E-07,4.756050E-07,&
      & 3.778721E-07,3.481208E-07 /
 
-! --- the array ka_mxxx contains the absorption coefficient for
-!     a minor species at the NG08=8 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  for instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG08=8).
 
       data  ka_mco2(:, :) /                                             &
      & 5.908838E-06,1.539459E-05,2.580637E-05,1.596999E-06,1.110965E-06,&
@@ -25202,13 +25397,6 @@
      & 6.759026E-05,3.767398E-07,6.886968E-08,5.369960E-08,2.353193E-04,&
      & 4.307728E-04,7.421494E-04,8.708927E-05,8.607747E-05,4.401012E-07,&
      & 6.710143E-08,5.232460E-08 /
-
-! --- the array kb_mxxx contains the absorption coefficient for
-!     a minor species at the NG08=8 chosen g-values for a reference pressure
-!     level above 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  For instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG08=8).
 
       data  kb_mco2(:, :) /                                             &
      & 8.075010E-08,4.884254E-07,1.783317E-06,7.812465E-06,3.159000E-05,&
@@ -25342,18 +25530,13 @@
      & 1.068399E-02,8.292357E-02,1.202038E+00,1.633060E+00,1.413713E-01,&
      & 1.819794E-01,8.241945E-01 /
 
-! --- planck fraction mapping level : p=473.4280 mb, t = 259.83 k
 
       data  fracrefa(:) /        3.144100e-01,2.758600e-01,2.129730e-01,&
      & 1.406370e-01,4.558820e-02,6.566500e-03,3.423200e-03,5.319940e-04/
 
-! --- planck fraction mapping level : p=95.5835 mb, t= 215.7 k
-
       data  fracrefb(:) /        2.965200e-01,2.735400e-01,2.225400e-01,&
      & 1.490440e-01,4.770290e-02,6.638900e-03,3.414800e-03,5.957930e-04/
 
-! --- original cfc22 is multiplied by 1.485 to account for the 780-850 cm-1
-!     and 1290-1335 cm-1 bands.
 
       data  cfc12(:) /           8.741204e+01,7.104260e+01,6.062525e+01,&
      & 6.180445e+01,6.004920e+01,5.801711e+01,3.676788e+01,3.272258e+01/
@@ -25378,30 +25561,91 @@
 !
       private
 !
-      integer, public :: MSA09, MSB09, MSF09, MFR09, MAF09, MMN09
+!> msa09=585
+      integer, public :: MSA09
+!> msb09=235
+      integer, public :: MSB09
+!> msf09=10
+      integer, public :: MSF09
+!> mfr09=4
+      integer, public :: MFR09
+!> maf09=9
+      integer, public :: MAF09
+!> mmn09=19
+      integer, public :: MMN09
       parameter (MSA09=585, MSB09=235, MSF09=10, MFR09=4)
       parameter (MAF09=9, MMN09=19)
 
-      real (kind=kind_phys), public ::           forref(NG09,MFR09),    &
-     &       absa(NG09,MSA09), absb(NG09,MSB09), selfref(NG09,MSF09),   &
-     &       fracrefa(NG09,MAF09), fracrefb(NG09),                      &
-     &       ka_mn2o(NG09,MAF09,MMN09), kb_mn2o(NG09,MMN09)
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG09=12).
+      real (kind=kind_phys), public :: forref(NG09,MFR09)
 
-! --- the array absa(NG09,585) = ka(NG09,9,5,13) contains absorption coefs
-!     at the NG09=12 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG09=12, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array absa(NG09,585) = ka(NG09,9,5,13) contains absorption coefs
+!!  at the NG09=12 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG09=12, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG09,MSA09)
+
+!>  the array absb(NG09,235) = kb(NG09,5,13:59) contains absorption coefs
+!!  at the NG09=12 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG09=12, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG09,MSB09)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG09=12).
+      real (kind=kind_phys), public :: selfref(NG09,MSF09)
+
+!>  planck fractions mapping level : p=212.7250 mb, t = 223.06 k
+      real (kind=kind_phys), public :: fracrefa(NG09,MAF09)
+
+!>  planck fraction mapping level : p 3.20e-2 mb, t = 197.92 k
+      real (kind=kind_phys), public :: fracrefb(NG09)
+
+!>  the array ka_mxxx contains the absorption coefficient for
+!!  a minor species at the 16 chosen g-values for a reference pressure
+!!  level below 100~ mb.   the first index in the array, js, runs
+!!  from 1 to 9, and corresponds to different gas column amount ratios,
+!!  as expressed through the binary species parameter eta, defined as
+!!  eta = gas1/(gas1 + (rat) * gas2), where rat is the
+!!  ratio of the reference mls column amount value of gas 1
+!!  to that of gas2.  the second index refers to temperature
+!!  in 7.2 degree increments.  for instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the third index
+!!  runs over the g-channel (1 to NG09=12).
+      real (kind=kind_phys), public :: ka_mn2o(NG09,MAF09,MMN09)
+
+!>  the array kb_mxxx contains the absorption coefficient for
+!!  a minor species at the NG09=12 chosen g-values for a reference pressure
+!!  level above 100~ mb.   the first index refers to temperature
+!!  in 7.2 degree increments.  For instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
+!!  runs over the g-channel (1 to NG09=12).
+      real (kind=kind_phys), public :: kb_mn2o(NG09,MMN09)
+
 
       data   absa(  :,  1: 25) /                                        &
      & 2.174600E-06,8.134600E-06,2.479300E-05,4.543200E-05,7.720800E-05,&
@@ -27418,18 +27662,6 @@
      & 6.726100E-06,1.983100E-05,7.991300E-05,4.482400E-04,3.306500E-03,&
      & 2.946300E-02,9.704137E-01,2.222555E+01,3.722163E+02,1.592918E+03/
 
-! --- the array ka_mxxx contains the absorption coefficient for
-!     a minor species at the 16 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index in the array, js, runs
-!     from 1 to 9, and corresponds to different gas column amount ratios,
-!     as expressed through the binary species parameter eta, defined as
-!     eta = gas1/(gas1 + (rat) * gas2), where rat is the
-!     ratio of the reference mls column amount value of gas 1
-!     to that of gas2.  the second index refers to temperature
-!     in 7.2 degree increments.  for instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the third index
-!     runs over the g-channel (1 to NG09=12).
-
       data  ka_mn2o(:,:, 1) /                                           &
      & 5.410780E-02,9.466690E-02,1.500820E-01,6.112480E-01,2.534600E+00,&
      & 5.786950E+00,1.234170E+01,2.283840E+01,2.014079E+01,6.318874E+00,&
@@ -27865,12 +28097,6 @@
      & 2.795360E+00,3.335130E+00,3.505240E+00,2.496381E+00,6.817038E-01,&
      & 7.583629E-03,7.806258E-08 /
 
-! --- the array kb_mxxx contains the absorption coefficient for
-!     a minor species at the NG09=12 chosen g-values for a reference pressure
-!     level above 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  For instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG09=12).
 
       data  kb_mn2o(:, :) /                                             &
      & 8.426880E-03,2.249760E-02,5.935420E-02,1.980220E-01,6.414130E-01,&
@@ -27952,11 +28178,6 @@
      & 1.451230E-02,2.041710E-02,3.116870E-02,4.963580E-02,4.936380E-02,&
      & 4.699700E-02,5.159255E-02,6.139999E-02,6.616145E-02,9.148991E-02/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG09=12).
 
       data  forref(:, :) /                                              &
      & 7.535200E-06,2.981200E-05,1.449700E-04,4.400600E-04,1.049200E-03,&
@@ -27970,7 +28191,6 @@
      & 8.933200E-04,8.337200E-04,7.853900E-04,8.282800E-04,8.350467E-04,&
      & 7.656108E-04,7.036482E-04,2.534352E-03 /
 
-! --- planck fractions mapping level : p=212.7250 mb, t = 223.06 k
 
       data  fracrefa(:,:) /                                             &
      & 1.812900e-01,1.611900e-01,1.330800e-01,1.234200e-01,1.125900e-01,&
@@ -27996,7 +28216,6 @@
      & 1.071900e-01,9.415600e-02,7.674500e-02,5.698700e-02,4.229760e-02,&
      & 6.135900e-03,2.682210e-03,4.004000e-04 /
 
-! --- planck fraction mapping level : p 3.20e-2 mb, t = 197.92 k
 
       data  fracrefb(:) /        2.091400e-01,1.507700e-01,1.287800e-01,&
      & 1.185600e-01,1.069500e-01,9.304800e-02,7.764500e-02,6.078500e-02,&
@@ -28019,23 +28238,60 @@
 !
       private
 !
-      integer, public :: MSA10, MSB10, MSF10, MFR10
+!> msa10=65
+      integer, public :: MSA10
+!> msb10=235
+      integer, public :: MSB10
+!> msf10=10
+      integer, public :: MSF10
+!> mfr10=4
+      integer, public :: MFR10
       parameter (MSA10=65, MSB10=235, MSF10=10, MFR10=4)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG10,MSA10), absb(NG10,MSB10), selfref(NG10,MSF10),   &
-     &       forref(NG10,MFR10), fracrefa(NG10), fracrefb(NG10)
+      
+!>  the array absa(NG10,65) = ka(NG10,5,13) contains absorption coefs
+!!  at the NG10=6 chosen g-values for a range of pressure levels>~100mb
+!!  and temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG10=6, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG10,MSA10)
 
-! --- the array absa(NG10,65) = ka(NG10,5,13) contains absorption coefs
-!     at the NG10=6 chosen g-values for a range of pressure levels>~100mb
-!     and temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG10=6, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absb(NG10,235) = kb(NG10,5,13:59) contains absorption coefs
+!!  at the NG10=6 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG10=6, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG10,MSB10)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG10=6).
+      real (kind=kind_phys), public :: selfref(NG10,MSF10)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG10=6).
+      real (kind=kind_phys), public :: forref(NG10,MFR10)
+
+!> planck fraction mapping level : p = 212.7250, t = 223.06 k
+      real (kind=kind_phys), public :: fracrefa(NG10)
+
+!> planck fraction mapping level : p = 95.58350 mb, t = 215.70 k
+      real (kind=kind_phys), public :: fracrefb(NG10)
 
       data   absa(:, 1:40) /                                            &
      & 3.989876E-02,1.160308E-01,4.029029E-01,2.348630E+00,1.325367E+01,&
@@ -28117,17 +28373,6 @@
      & 2.819569E-01,7.926714E+00,1.427182E+02,4.928029E-03,1.402133E-02,&
      & 4.180069E-02,3.036336E-01,8.670511E+00,1.542483E+02,5.244065E-03,&
      & 1.384472E-02,4.654410E-02,3.231360E-01,9.367290E+00,1.648232E+02/
-
-! --- the array absb(NG10,235) = kb(NG10,5,13:59) contains absorption coefs
-!     at the NG10=6 chosen g-values for a range of pressure levels< ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG10=6, and tells us
-!     which g-interval the absorption coefficients are for.
 
       data   absb(:,  1: 40) /                                          &
      & 3.937814E-03,1.196182E-02,2.955780E-02,2.311908E-01,6.298200E+00,&
@@ -28418,12 +28663,6 @@
      & 1.010838E-05,2.734323E-04,6.387627E-02,2.095823E+02,5.559251E-07,&
      & 1.893362E-06,1.309992E-05,3.521941E-04,8.423455E-02,2.342460E+02/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG10=6).
-
       data  selfref(:, :) /                                             &
      & 2.757227E-01,3.467635E-01,3.521956E-01,3.675792E-01,3.631232E-01,&
      & 4.295592E-01,2.592735E-01,3.249800E-01,3.277287E-01,3.430616E-01,&
@@ -28438,12 +28677,6 @@
      & 1.979849E-01,2.116188E-01,2.180181E-01,2.225270E-01,1.585125E-01,&
      & 1.936220E-01,1.842316E-01,1.975081E-01,2.045581E-01,2.050303E-01/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG10=6).
-
       data  forref(:, :) /                                              &
      & 1.266174E-02,1.692174E-02,1.618326E-02,1.764254E-02,1.822239E-02,&
      & 1.908096E-02,1.248327E-02,1.668590E-02,1.675931E-02,1.782114E-02,&
@@ -28451,12 +28684,10 @@
      & 1.816495E-02,1.779524E-02,2.105855E-02,1.087544E-02,1.801061E-02,&
      & 1.797151E-02,1.720104E-02,1.711947E-02,1.648700E-02 /
 
-! --- planck fraction mapping level : p = 212.7250, t = 223.06 k
 
       data  fracrefa(:) /                     3.232800e-01,2.663600e-01,&
      & 2.139660e-01,1.403760e-01,5.214150e-02,3.885218e-03 /
 
-! --- planck fraction mapping level : p = 95.58350 mb, t = 215.70 k
 
       data  fracrefb(:) /                     3.307100e-01,2.709100e-01,&
      & 2.041140e-01,1.383290e-01,5.196820e-02,3.976258e-03 /
@@ -28478,24 +28709,77 @@
 !
       private
 !
-      integer, public :: MSA11, MSB11, MSF11, MFR11, MMO11
+!> msa11=65
+      integer, public :: MSA11
+!> msb11=235
+      integer, public :: MSB11
+!> msf11=10
+      integer, public :: MSF11
+!> mfr11=4
+      integer, public :: MFR11
+!> mmo11=19
+      integer, public :: MMO11
       parameter (MSA11=65, MSB11=235, MSF11=10, MFR11=4, MMO11=19)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG11,MSA11), absb(NG11,MSB11), selfref(NG11,MSF11),   &
-     &       forref(NG11,MFR11), fracrefa(NG11), fracrefb(NG11),        &
-     &       ka_mo2(NG11,MMO11), kb_mo2(NG11,MMO11)
+!>  the array absa(NG11,65) = ka(NG11,5,13) contains absorption coefs
+!!  at the NG11=8 chosen g-values for a range of pressure levels>~100mb
+!!  and temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG11=8, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG11,MSA11)
 
-! --- the array absa(NG11,65) = ka(NG11,5,13) contains absorption coefs
-!     at the NG11=8 chosen g-values for a range of pressure levels>~100mb
-!     and temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG11=8, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absb(NG11,235) = kb(NG11,5,13:59) contains absorption coefs
+!!  at the NG11=8 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG11=8, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG11,MSB11)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG11=8).
+      real (kind=kind_phys), public :: selfref(NG11,MSF11)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG11=8).
+      real (kind=kind_phys), public :: forref(NG11,MFR11)
+
+!>  planck fraction mapping level : p=1053.63 mb, t= 294.2 k
+      real (kind=kind_phys), public :: fracrefa(NG11)
+
+!>  planck fraction mapping level : p=0.353 mb, t = 262.11 k
+      real (kind=kind_phys), public :: fracrefb(NG11)
+
+!>  the array ka_mxx contains the absorption coefficient for
+!!  a minor species at the NG11=8 chosen g-values for a reference pressure
+!!  level below 100~ mb.   the first index refers to temperature
+!!  in 7.2 degree increments.  For instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
+!!  runs over the g-channel (1 to NG11=8).
+      real (kind=kind_phys), public :: ka_mo2(NG11,MMO11)
+
+!>  the array kb_mxx contains the absorption coefficient for
+!!  a minor species at the NG11=8 chosen g-values for a reference pressure
+!!  level above 100~ mb.   the first index refers to temperature
+!!  in 7.2 degree increments.  for instance, jt = 1 refers to a
+!!  temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
+!!  runs over the g-channel (1 to NG11=8).
+      real (kind=kind_phys), public :: kb_mo2(NG11,MMO11)
 
       data   absa(:, 1:30) /                                            &
      & 4.942300E-02,1.387400E-01,3.299931E-01,1.143120E+00,5.377672E+00,&
@@ -29001,13 +29285,6 @@
      & 1.314934E+01,1.402649E+03,1.638400E-06,4.506200E-06,5.628641E-06,&
      & 3.524717E-05,9.685135E-04,4.184342E-02,1.638576E+01,1.368006E+03/
 
-! --- the array ka_mxx contains the absorption coefficient for
-!     a minor species at the NG11=8 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  For instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG11=8).
-
       data  ka_mo2(:, :) /                                              &
      & 2.317230E-06,1.819800E-06,2.214545E-06,2.124552E-06,2.287900E-06,&
      & 2.282507E-06,2.557973E-06,2.441890E-06,2.286970E-06,1.813520E-06,&
@@ -29041,12 +29318,6 @@
      & 1.709940E-06,1.996666E-06,1.948384E-06,2.070957E-06,2.093000E-06,&
      & 2.287951E-06,2.260172E-06 /
 
-! --- the array kb_mxx contains the absorption coefficient for
-!     a minor species at the NG11=8 chosen g-values for a reference pressure
-!     level above 100~ mb.   the first index refers to temperature
-!     in 7.2 degree increments.  for instance, jt = 1 refers to a
-!     temperature of 188.0, jt = 2 refers to 195.2, etc. the second index
-!     runs over the g-channel (1 to NG11=8).
 
       data  kb_mo2(:, :) /                                              &
      & 4.976260E-07,3.102320E-06,3.031543E-06,2.452309E-06,2.555656E-06,&
@@ -29081,12 +29352,6 @@
      & 2.471620E-06,2.491594E-06,2.198933E-06,2.629590E-06,1.806729E-06,&
      & 2.200495E-06,2.602284E-06 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG11=8).
-
       data  selfref(:, :) /                                             &
      & 5.964960E-01,7.464550E-01,7.987986E-01,8.126631E-01,8.187091E-01,&
      & 8.341900E-01,8.427325E-01,8.889891E-01,5.491710E-01,6.824590E-01,&
@@ -29105,12 +29370,6 @@
      & 4.258935E-01,4.479911E-01,2.834680E-01,3.331670E-01,3.654880E-01,&
      & 3.733298E-01,3.846201E-01,3.904518E-01,3.910801E-01,4.112244E-01/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG11=8).
-
       data  forref(:, :) /                                              &
      & 2.885800E-02,3.687900E-02,4.161900E-02,4.272472E-02,4.429408E-02,&
      & 4.515425E-02,4.557366E-02,4.798958E-02,2.788700E-02,3.737600E-02,&
@@ -29120,12 +29379,8 @@
      & 3.760800E-02,4.339831E-02,4.282106E-02,4.195525E-02,4.021513E-02,&
      & 4.233051E-02,4.448902E-02 /
 
-! --- planck fraction mapping level : p=1053.63 mb, t= 294.2 k
-
       data  fracrefa(:) /        1.460100e-01,1.382400e-01,2.770300e-01,&
      & 2.238800e-01,1.544590e-01,4.868710e-02,9.805400e-03,1.886952e-03/
-
-! --- planck fraction mapping level : p=0.353 mb, t = 262.11 k
 
       data  fracrefb(:) /        7.292800e-02,1.490000e-01,3.175900e-01,&
      & 2.532800e-01,1.511940e-01,4.464970e-02,9.269700e-03,2.086153e-03/
@@ -29147,28 +29402,50 @@
 !
       private
 !
-      integer, public :: MSA12, MSF12, MFR12, MAF12
+!> msa12=585
+      integer, public :: MSA12
+!> msf12=10
+      integer, public :: MSF12
+!> mfr12=4
+      integer, public :: MFR12
+!> maf12=9
+      integer, public :: MAF12
       parameter (MSA12=585, MSF12=10, MFR12=4, MAF12=9)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG12,MSA12), forref(NG12,MFR12), selfref(NG12,MSF12), &
-     &       fracrefa(NG12,MAF12)
 
-! --- the array absa(NG12,585) = ka(NG12,9,5,13) contains absorption coefs
-!     at the NG12=8 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG12=8, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array absa(NG12,585) = ka(NG12,9,5,13) contains absorption coefs
+!!  at the NG12=8 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG12=8, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG12,MSA12)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG12=8).
+      real (kind=kind_phys), public :: forref(NG12,MFR12)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG12=8).
+      real (kind=kind_phys), public :: selfref(NG12,MSF12)
+
+!> planck fraction mapping level : p = 174.1640 mbar, t= 215.78 k
+      real (kind=kind_phys), public :: fracrefa(NG12,MAF12)
 
       data   absa( :,  1: 30) /                                         &
      & 1.751100E-07,3.768300E-07,5.379700E-07,7.934900E-07,5.447496E-06,&
@@ -30151,12 +30428,6 @@
      & 7.562235E-02,8.909458E-02,7.988880E-03,1.329060E-02,2.565530E-02,&
      & 4.272620E-02,6.402972E-02,6.857349E-02,7.059593E-02,8.310508E-02/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG12=8).
-
       data  forref(:, :) /                                              &
      & 1.473900E-04,3.168600E-04,8.597300E-04,1.903900E-03,3.403156E-03,&
      & 3.789137E-03,3.811255E-03,4.611905E-03,1.939700E-04,3.632200E-04,&
@@ -30165,8 +30436,6 @@
      & 2.809680E-03,2.826561E-03,2.732563E-03,4.293922E-03,8.819600E-04,&
      & 2.112500E-03,2.804200E-03,2.889100E-03,2.175546E-03,1.318010E-03,&
      & 1.195556E-03,1.420311E-03 /
-
-! --- planck fraction mapping level : p = 174.1640 mbar, t= 215.78 k
 
       data  fracrefa(:,:) /                                             &
      & 1.398400e-01,1.680900e-01,1.807200e-01,1.540000e-01,2.230890e-01,&
@@ -30202,30 +30471,70 @@
 !
       private
 !
-      integer, public :: MSA13, MSF13, MFR13, MAF13, MMO13
+!> msa13=585
+      integer, public :: MSA13
+!> msf13=10
+      integer, public :: MSF13
+!> mfr13=4
+      integer, public :: MFR13
+!> maf13=9
+      integer, public :: MAF13
+!> mmo13=19
+      integer, public :: MMO13
       parameter (MSA13=585, MSF13=10, MFR13=4, MAF13=9, MMO13=19)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG13,MSA13), forref(NG13,MFR13), selfref(NG13,MSF13), &
-     &       fracrefa(NG13,MAF13), fracrefb(NG13),                      &
-     &       ka_mco2(NG13,MAF13,MMO13), ka_mco(NG13,MAF13,MMO13),       &
-     &       kb_mo3(NG13,MMO13)
 
-! --- the array absa(NG13,585) = ka(NG13,9,5,13) contains absorption coefs
-!     at the NG13=4 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG13=4, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array absa(NG13,585) = ka(NG13,9,5,13) contains absorption coefs
+!!  at the NG13=4 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG13=4, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG13,MSA13)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG13=4).
+      real (kind=kind_phys), public :: forref(NG13,MFR13)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG13=4).
+      real (kind=kind_phys), public :: selfref(NG13,MSF13)
+
+!> planck fraction mapping level : p=473.4280 mb, t = 259.83 k
+      real (kind=kind_phys), public :: fracrefa(NG13,MAF13)
+
+!> planck fraction mapping level : p=4.758820 mb, t = 250.85 k
+      real (kind=kind_phys), public :: fracrefb(NG13)
+
+!> the array ka_mxxx contains the absorption coefficient for a minor
+!! species at the NG13=4 chosen g-values for a reference pressure
+!! level below 100~ mb.   the first index in the array, js, runs from
+!! 1 to 9, and corresponds to different gas column amount ratios, as
+!! expressed through the binary species parameter eta, defined as
+!! eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
+!! reference mls column amount value of gas1 to that of gas2.  the
+!! second index refers to temperature in 7.2 degree increments.  for
+!! instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
+!! to 195.2, etc. the third index runs over the g-channel (1 to NG13=4).
+      real (kind=kind_phys), public :: ka_mco2(NG13,MAF13,MMO13)
+
+      real (kind=kind_phys), public :: ka_mco(NG13,MAF13,MMO13)
+      real (kind=kind_phys), public :: kb_mo3(NG13,MMO13)
 
       data   absa(:,  1: 60) /                                          &
      & 4.181661E-06,3.211034E-04,2.195423E-03,1.543183E-03,3.214366E-05,&
@@ -31019,12 +31328,6 @@
      & 1.788565E+00,1.127544E-02,1.725257E-01,8.683426E-01,1.777424E+00,&
      & 1.141338E-02 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG13=4).
-
       data  selfref(:, :) /                                             &
      & 9.644149E-03,7.250704E-03,5.669677E-03,4.386020E-03,8.339429E-03,&
      & 6.340405E-03,5.034289E-03,4.269775E-03,7.211276E-03,5.545479E-03,&
@@ -31035,19 +31338,12 @@
      & 2.492587E-03,3.689710E-03,3.015363E-03,2.492534E-03,2.221122E-03,&
      & 3.611348E-03,2.607591E-03,2.182978E-03,1.980355E-03,3.537928E-03/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG13=4).
-
       data  forref(:, :) /                                              &
      & 1.837004E-05,1.303163E-05,1.029351E-05,2.410602E-05,2.183948E-05,&
      & 1.149890E-05,6.173082E-06,5.566388E-06,2.050014E-05,1.363103E-05,&
      & 5.472967E-06,3.740946E-06,9.438414E-06,1.799757E-05,2.185755E-05,&
      & 2.286482E-05 /
 
-! --- planck fraction mapping level : p=473.4280 mb, t = 259.83 k
 
       data  fracrefa(:,:) /                   5.101700e-01,3.306330e-01,&
      & 1.511470e-01,8.063762e-03,5.077900e-01,3.321570e-01,1.519880e-01,&
@@ -31058,7 +31354,6 @@
      & 9.186950e-03,4.917600e-01,3.336060e-01,1.642744e-01,1.035594e-02,&
      & 4.637300e-01,3.524020e-01,1.752389e-01,8.635202e-03 /
 
-! --- planck fraction mapping level : p=4.758820 mb, t = 250.85 k
 
       data  fracrefb(:) /                                               &
      & 4.151100e-01,3.596800e-01,2.129404e-01,1.227349e-02 /
@@ -31080,23 +31375,63 @@
 !
       private
 !
-      integer, public :: MSA14, MSB14, MSF14, MFR14
+!> MSA14=65
+      integer, public :: MSA14
+!> MSB14=235
+      integer, public :: MSB14
+!> MSF14=10
+      integer, public :: MSF14
+!> MFR14=4
+      integer, public :: MFR14
       parameter (MSA14=65, MSB14=235, MSF14=10, MFR14=4)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG14,MSA14), absb(NG14,MSB14), selfref(NG14,MSF14),   &
+      real (kind=kind_phys), public ::                                 &
+     &       absa(NG14,MSA14), absb(NG14,MSB14), selfref(NG14,MSF14),  &
      &       forref(NG14,MFR14), fracrefa(NG14), fracrefb(NG14)
 
-! --- the array absa(NG14,65) = ka(NG14,5,13) contains absorption coefs
-!     at the NG14=2 chosen g-values for a range of pressure levels>~100mb
-!     and temperatures.  the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 1 to 13 and refers to the corresponding
-!     pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
-!     the third index, ig, goes from 1 to NG14=2, and tells us which
-!     g-interval the absorption coefficients are for.
+!>  the array absa(NG14,65) = ka(NG14,5,13) contains absorption coefs
+!!  at the NG14=2 chosen g-values for a range of pressure levels>~100mb
+!!  and temperatures.  the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 1 to 13 and refers to the corresponding
+!!  pressure level in pref (e.g. jp = 1 is for a pressure of 1053.63 mb).
+!!  the third index, ig, goes from 1 to NG14=2, and tells us which
+!!  g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absa(NG14,MSA14)
+
+!>  the array absb(NG14,235) = kb(NG14,5,13:59) contains absorption coefs
+!!  at the NG14=2 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG14=2, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG14,MSB14)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG14=2).
+      real (kind=kind_phys), public :: selfref(NG14,MSF14)
+
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG14=2).
+      real (kind=kind_phys), public :: forref(NG14,MFR14)
+
+!> planck fraction mapping level : p = 142.5940 mb, t = 215.70 k
+      real (kind=kind_phys), public :: fracrefa(NG14)
+
+!> planck fraction mapping level : p = 4.758820mb, t = 250.85 k
+      real (kind=kind_phys), public :: fracrefb(NG14)
 
       data   absa(:, :) /                                               &
      & 3.672142E+01,7.151287E+02,3.682345E+01,7.128533E+02,3.697441E+01,&
@@ -31234,33 +31569,17 @@
      & 2.375139E-03,1.332864E+03,3.109563E-03,1.332268E+03,4.166618E-03,&
      & 1.331343E+03,5.708828E-03,1.330438E+03,7.961458E-03,1.329279E+03/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG14=2).
-
       data  selfref(:, :) /                                             &
      & 3.930090E-03,3.388899E-03,3.293934E-03,2.818632E-03,2.760914E-03,&
      & 2.344326E-03,2.314284E-03,1.949837E-03,1.940018E-03,1.621728E-03,&
      & 1.626375E-03,1.348838E-03,1.363522E-03,1.121869E-03,1.143214E-03,&
      & 9.330872E-04,9.585599E-04,7.760755E-04,8.037774E-04,6.454850E-04/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG14=2).
-
       data  forref(:, :) /                                              &
      & 1.350198E-06,4.360136E-07,1.349980E-06,4.394677E-07,1.349963E-06,&
      & 4.399740E-07,1.331931E-06,7.314919E-07 /
 
-! --- planck fraction mapping level : p = 142.5940 mb, t = 215.70 k
-
       data  fracrefa(:) / 9.520200e-01,4.797805e-02 /
-
-! --- planck fraction mapping level : p = 4.758820mb, t = 250.85 k
 
       data  fracrefb(:) / 9.474890e-01,5.252305e-02 /
 
@@ -31281,28 +31600,63 @@
 !
       private
 !
-      integer, public :: MSA15, MSF15, MFR15, MAF15, MMN15
+!> MSA15=585
+      integer, public :: MSA15
+!> MSF15=10
+      integer, public :: MSF15
+!> MFR15=4
+      integer, public :: MFR15
+!> MAF15=9
+      integer, public :: MAF15
+!> MMN15=19
+      integer, public :: MMN15
       parameter (MSA15=585, MSF15=10, MFR15=4, MAF15=9, MMN15=19)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG15,MSA15), forref(NG15,MFR15), selfref(NG15,MSF15), &
-     &       fracrefa(NG15,MAF15), ka_mn2(NG15,MAF15,MMN15)
+!>  the array absa(NG15,585) = ka(NG15,9,5,13) contains absorption coefs
+!!  at the NG15=2 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG15=2, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG15,MSA15)
 
-! --- the array absa(NG15,585) = ka(NG15,9,5,13) contains absorption coefs
-!     at the NG15=2 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG15=2, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG15=2).
+      real (kind=kind_phys), public :: forref(NG15,MFR15)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG15=2).
+      real (kind=kind_phys), public :: selfref(NG15,MSF15)
+
+!>  planck fraction mapping level : p = 1053. mb, t = 294.2 k
+      real (kind=kind_phys), public :: fracrefa(NG15,MAF15)
+
+!>  the array ka_mxx contains the absorption coefficient for a minor
+!!  species at the NG15=2 chosen g-values for a reference pressure
+!!  level below 100~ mb.   the first index in the array, js, runs from
+!!  1 to 9, and corresponds to different gas column amount ratios, as
+!!  expressed through the binary species parameter eta, defined as
+!!  eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
+!!  reference mls column amount value of gas1 to that of gas2.  the
+!!  second index refers to temperature in 7.2 degree increments.  for
+!!  instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
+!!  to 195.2, etc. the third index runs over the g-channel (1 to NG15=2).
+      real (kind=kind_phys), public :: ka_mn2(NG15,MAF15,MMN15)
 
       data   absa( :,  1:120) /                                         &
      & 1.335233E+00,2.404464E+03,1.268224E+00,2.103907E+03,1.201221E+00,&
@@ -31544,17 +31898,6 @@
      & 2.912614E-01,1.023710E+03,2.898782E-01,7.698743E+02,2.810157E-01,&
      & 5.161611E+02,2.595202E-01,2.626492E+02,1.489091E-01,1.057919E+01/
 
-! --- the array ka_mxx contains the absorption coefficient for a minor
-!     species at the NG15=2 chosen g-values for a reference pressure
-!     level below 100~ mb.   the first index in the array, js, runs from
-!     1 to 9, and corresponds to different gas column amount ratios, as
-!     expressed through the binary species parameter eta, defined as
-!     eta = gas1/(gas1 + (rat) * gas2), where rat is the ratio of the
-!     reference mls column amount value of gas1 to that of gas2.  the
-!     second index refers to temperature in 7.2 degree increments.  for
-!     instance, jt = 1 refers to a temperature of 188.0, jt = 2 refers
-!     to 195.2, etc. the third index runs over the g-channel (1 to NG15=2).
-
       data  ka_mn2 (:,:, 1:10) /                                           &
      & 5.594486E-07,1.738457E-06,5.593694E-07,1.738457E-06,5.597305E-07,&
      & 1.738457E-06,5.600172E-07,1.738457E-06,5.620929E-07,1.738457E-06,&
@@ -31627,29 +31970,17 @@
      & 1.222506E-06,5.315800E-07,1.222506E-06,5.362903E-07,1.171908E-06,&
      & 5.310523E-07,1.221984E-06 /
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG15=2).
-
       data  selfref(:, :) /                                             &
      & 2.113244E-03,2.866145E-03,1.732586E-03,2.379109E-03,1.420592E-03,&
      & 1.974833E-03,1.164859E-03,1.639260E-03,9.552300E-04,1.360716E-03,&
      & 7.833818E-04,1.129511E-03,6.424952E-04,9.375903E-04,5.269840E-04,&
      & 7.782827E-04,4.322720E-04,6.460456E-04,3.546087E-04,5.362797E-04/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG15=2).
 
       data  forref(:, :) /                                              &
      & 4.599959E-07,1.470318E-07,4.573767E-07,1.893844E-07,4.480988E-07,&
      & 3.394793E-07,4.508676E-07,2.948068E-07 /
 
-! --- planck fraction mapping level : p = 1053. mb, t = 294.2 k
 
       data  fracrefa(:,:) /      9.171470e-01,8.285743e-02,9.171570e-01,&
      & 8.285743e-02,9.171270e-01,8.285743e-02,9.171470e-01,8.285743e-02,&
@@ -31673,28 +32004,70 @@
 !
       private
 !
-      integer, public :: MSA16, MSB16, MSF16, MFR16, MAF16
+!> MSA16=585
+      integer, public :: MSA16
+!> MSB16=235
+      integer, public :: MSB16
+!> MSF16=10
+      integer, public :: MSF16
+!> MFR16=4
+      integer, public :: MFR16
+!> MAF16=9
+      integer, public :: MAF16
       parameter (MSA16=585, MSB16=235, MSF16=10, MFR16=4, MAF16=9)
 
-      real (kind=kind_phys), public ::           forref(NG16,MFR16),    &
-     &       absa(NG16,MSA16), absb(NG16,MSB16), selfref(NG16,MSF16),   &
-     &       fracrefa(NG16,MAF16), fracrefb(NG16)
+      real (kind=kind_phys), public ::          forref(NG16,MFR16),    &
+     &      absa(NG16,MSA16), absb(NG16,MSB16), selfref(NG16,MSF16),   &
+     &      fracrefa(NG16,MAF16), fracrefb(NG16)
 
-! --- the array absa(NG16,585) = ka(NG16,9,5,13) contains absorption coefs
-!     at the NG16=2 g-intervals for a range of pressure levels > ~100mb,
-!     temperatures, and ratios of water vapor to co2.  the first index in
-!     the array, js, runs from 1 to 9, and corresponds to different column
-!     amount ratios, as expressed through the binary species parameter eta,
-!     defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
-!     the reference mls column amount value of gas1 to that of gas2. the
-!     2nd index in the array, jt, which runs from 1 to 5, corresponds to
-!     different temperatures. more specifically, jt = 1-5 means that the
-!     data are for the corresponding temperature of tref-30, tref-15, tref,
-!     tref+15, and tref+30, respectively. the third index, jp, runs from
-!     1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
-!     for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
-!     NG16=2, and tells us which g-interval the absorption coefficients
-!     are for.
+!>  the array forref contains the coefficient of the water vapor
+!!  foreign-continuum (including the energy term).  the first
+!!  index refers to reference temperature (296,260,224,260) and
+!!  pressure (970,475,219,3 mbar) levels.  the second index
+!!  runs over the g-channel (1 to NG16=2).
+      real (kind=kind_phys), public :: forref(NG16,MFR16)
+
+!>  the array absa(NG16,585) = ka(NG16,9,5,13) contains absorption coefs
+!!  at the NG16=2 g-intervals for a range of pressure levels > ~100mb,
+!!  temperatures, and ratios of water vapor to co2.  the first index in
+!!  the array, js, runs from 1 to 9, and corresponds to different column
+!!  amount ratios, as expressed through the binary species parameter eta,
+!!  defined as eta = gas1/(gas1+(rat)*gas2), where rat is the ratio of
+!!  the reference mls column amount value of gas1 to that of gas2. the
+!!  2nd index in the array, jt, which runs from 1 to 5, corresponds to
+!!  different temperatures. more specifically, jt = 1-5 means that the
+!!  data are for the corresponding temperature of tref-30, tref-15, tref,
+!!  tref+15, and tref+30, respectively. the third index, jp, runs from
+!!  1 to 13 and refers to the reference pressure level (e.g. jp = 1 is
+!!  for a pressure of 1053.63 mb).  the fourth index, ig, goes from 1 to
+!!  NG16=2, and tells us which g-interval the absorption coefficients
+!!  are for.
+      real (kind=kind_phys), public :: absa(NG16,MSA16)
+
+!>  the array absb(NG16,235) = kb(NG16,5,13:59) contains absorption coefs
+!!  at the NG16=2 chosen g-values for a range of pressure levels< ~100mb
+!!  and temperatures. the first index in the array, jt, which runs from
+!!  1 to 5, corresponds to different temperatures.  more specifically,
+!!  jt = 1-5 means that the data are for the corresponding temperature of
+!!  tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
+!!  second index, jp, runs from 13 to 59 and refers to the jpth reference
+!!  pressure level (see taumol.f for the value of these pressure levels
+!!  in mb).  the third index, ig, goes from 1 to NG16=2, and tells us
+!!  which g-interval the absorption coefficients are for.
+      real (kind=kind_phys), public :: absb(NG16,MSB16)
+
+!>  the array selfref contains the coefficient of the water vapor
+!!  self-continuum (including the energy term).  the first index
+!!  refers to temperature in 7.2 degree increments.  for instance,
+!!  jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
+!!  etc.  the second index runs over the g-channel (1 to NG16=2).
+      real (kind=kind_phys), public :: selfref(NG16,MSF16)
+
+!> planck fraction mapping level: p = 387.6100 mbar, t = 250.17 k
+      real (kind=kind_phys), public :: fracrefa(NG16,MAF16)
+
+!> planck fraction mapping level : p=95.58350 mb, t = 215.70 k
+      real (kind=kind_phys), public :: fracrefb(NG16)
 
       data   absa( :,  1:120) /                                         &
      & 3.081950E-06,3.707347E-04,3.144653E-05,2.379110E-03,5.103357E-05,&
@@ -31936,16 +32309,6 @@
      & 2.000698E-03,8.865844E-01,1.592790E-03,6.690432E-01,1.154669E-03,&
      & 4.515378E-01,6.775183E-04,2.340734E-01,1.112603E-04,1.674009E-02/
 
-! --- the array absb(NG16,235) = kb(NG16,5,13:59) contains absorption coefs
-!     at the NG16=2 chosen g-values for a range of pressure levels< ~100mb
-!     and temperatures. the first index in the array, jt, which runs from
-!     1 to 5, corresponds to different temperatures.  more specifically,
-!     jt = 1-5 means that the data are for the corresponding temperature of
-!     tref-30, tref-15, tref, tref+15, and tref+30, respectively.  the
-!     second index, jp, runs from 13 to 59 and refers to the jpth reference
-!     pressure level (see taumol.f for the value of these pressure levels
-!     in mb).  the third index, ig, goes from 1 to NG16=2, and tells us
-!     which g-interval the absorption coefficients are for.
 
       data   absb(:,  1:120) /                                          &
      & 7.138436E-03,4.154584E+00,7.449146E-03,4.156656E+00,7.746384E-03,&
@@ -32044,36 +32407,22 @@
      & 1.660522E-06,4.144838E+00,1.824662E-06,4.154784E+00,1.986789E-06,&
      & 4.162636E+00,2.153293E-06,4.167493E+00,2.349694E-06,4.169450E+00/
 
-! --- the array selfref contains the coefficient of the water vapor
-!     self-continuum (including the energy term).  the first index
-!     refers to temperature in 7.2 degree increments.  for instance,
-!     jt = 1 refers to a temperature of 245.6, jt = 2 refers to 252.8,
-!     etc.  the second index runs over the g-channel (1 to NG16=2).
-
       data  selfref(:, :) /                                             &
      & 2.338209E-03,5.039018E-03,1.942789E-03,4.660123E-03,1.619094E-03,&
      & 4.309895E-03,1.353323E-03,3.986148E-03,1.134457E-03,3.686872E-03,&
      & 9.536756E-04,3.410199E-03,8.039022E-04,3.154424E-03,6.794502E-04,&
      & 2.917946E-03,5.757334E-04,2.699306E-03,4.890464E-04,2.497155E-03/
 
-! --- the array forref contains the coefficient of the water vapor
-!     foreign-continuum (including the energy term).  the first
-!     index refers to reference temperature (296,260,224,260) and
-!     pressure (970,475,219,3 mbar) levels.  the second index
-!     runs over the g-channel (1 to NG16=2).
-
       data  forref(:, :) /                                              &
      & 4.193838E-05,2.979746E-04,6.150636E-05,2.714236E-04,1.086590E-04,&
      & 2.074412E-04,1.244444E-04,1.860204E-04 /
 
-! --- planck fraction mapping level: p = 387.6100 mbar, t = 250.17 k
 
       data  fracrefa(:,:) /      6.722400e-01,3.277719e-01,7.402200e-01,&
      & 2.597805e-01,7.553300e-01,2.446753e-01,7.643700e-01,2.356218e-01,&
      & 7.710900e-01,2.289038e-01,7.758100e-01,2.241963e-01,7.805700e-01,&
      & 2.194258e-01,7.852900e-01,2.147208e-01,7.796600e-01,2.203414e-01/
 
-! --- planck fraction mapping level : p=95.58350 mb, t = 215.70 k
 
       data  fracrefb(:) / 6.882100e-01,3.117782e-01 /
 
