@@ -257,29 +257,29 @@
 !........................................!
 !
       use physparam
-      use physcons,                 only : eps   => con_eps,            &
-     &                                     epsm1 => con_epsm1,          &
-     &                                     fvirt => con_fvirt           &
+      use physcons,                 only : eps   => con_eps,           &
+     &                                     epsm1 => con_epsm1,         &
+     &                                     fvirt => con_fvirt          &
      &,                                    rocp  => con_rocp
       use funcphys,                 only : fpvs
 
       use module_radiation_astronomy,only: sol_init, sol_update, coszmn
-      use module_radiation_gases,   only : NF_VGAS, getgases, getozn,   &
+      use module_radiation_gases,   only : NF_VGAS, getgases, getozn,  &
      &                                     gas_init, gas_update
-      use module_radiation_aerosols,only : NF_AESW, NF_AELW, setaer,    &
-     &                                     aer_init, aer_update,        &
+      use module_radiation_aerosols,only : NF_AESW, NF_AELW, setaer,   &
+     &                                     aer_init, aer_update,       &
      &                                     NSPC1
-      use module_radiation_surface, only : NF_ALBD, sfc_init, setalb,   &
+      use module_radiation_surface, only : NF_ALBD, sfc_init, setalb,  &
      &                                     setemis
-      use module_radiation_clouds,  only : NF_CLDS, cld_init,           &
-     &                                     progcld1, progcld2, progcld3,&
+      use module_radiation_clouds,  only : NF_CLDS, cld_init,          &
+     &                                    progcld1, progcld2, progcld3,&
      &                                     diagcld1
 
-      use module_radsw_parameters,  only : topfsw_type, sfcfsw_type,    &
+      use module_radsw_parameters,  only : topfsw_type, sfcfsw_type,   &
      &                                     profsw_type,cmpfsw_type,NBDSW
       use module_radsw_main,        only : rswinit,  swrad
 
-      use module_radlw_parameters,  only : topflw_type, sfcflw_type,    &
+      use module_radlw_parameters,  only : topflw_type, sfcflw_type,   &
      &                                     proflw_type, NBDLW
       use module_radlw_main,        only : rlwinit,  lwrad
 !
@@ -288,7 +288,7 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                       &
+      character(40), parameter ::                                      &
      &   VTAGRAD='NCEP-Radiation_driver    v5.2  Jan 2013 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.1  Nov 2012 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.0  Aug 2012 '
@@ -298,16 +298,20 @@
 !     parameter (QMIN=1.0e-10, QME5=1.0e-5,  QME6=1.0e-6,  EPSQ=1.0e-12)
       parameter (QMIN=1.0e-10, QME5=1.0e-7,  QME6=1.0e-7,  EPSQ=1.0e-12)
 !     parameter (QMIN=1.0e-10, QME5=1.0e-20, QME6=1.0e-20, EPSQ=1.0e-12)
+!> toa pressure minimum value in mb (hPa)
       real, parameter :: prsmin = 1.0e-6 ! toa pressure minimum value in mb (hpa)
 
 !  ---  control flags set in subr radinit:
+!> control flag for lw sfc air/ground interface temp setting
       integer :: itsfc  =0            ! flag for lw sfc air/ground interface temp setting
 
 !  ---  data input control variables set in subr radupdate:
       integer :: month0=0,   iyear0=0,   monthd=0
+!> first-time clim ozone data read flag
       logical :: loz1st =.true.       ! first-time clim ozone data read flag
 
 !  ---  optional extra top layer on top of low ceiling models
+!> optional extra top layer on top of low ceiling models
       integer, parameter :: LTP = 0   ! no extra top layer
 !     integer, parameter :: LTP = 1   ! add an extra top layer
       logical, parameter :: lextop = (LTP > 0)
@@ -461,18 +465,18 @@
 
       if (me == 0) then
 !       print *,' NEW RADIATION PROGRAM STRUCTURES -- SEP 01 2004'
-        print *,' NEW RADIATION PROGRAM STRUCTURES BECAME OPER. ',      &
+        print *,' NEW RADIATION PROGRAM STRUCTURES BECAME OPER. ',     &
      &          '  May 01 2007'
         print *, VTAGRAD                !print out version tag
-        print *,' - Selected Control Flag settings: ICTMflg=',ictmflg,  &
-     &    ' ISOLar =',isolar, ' ICO2flg=',ico2flg,' IAERflg=',iaerflg,  &
-     &    ' IALBflg=',ialbflg,' IEMSflg=',iemsflg,' ICLDflg=',icldflg,  &
+        print *,' - Selected Control Flag settings: ICTMflg=',ictmflg, &
+     &    ' ISOLar =',isolar, ' ICO2flg=',ico2flg,' IAERflg=',iaerflg, &
+     &    ' IALBflg=',ialbflg,' IEMSflg=',iemsflg,' ICLDflg=',icldflg, &
      &    ' ICMPHYS=',icmphys,' IOZNflg=',ioznflg
-        print *,' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw,  &
+        print *,' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw, &
      &    ' ISUBCSW=',isubcsw,' ISUBCLW=',isubclw
 !       write(0,*)' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw,&
 !    &    ' ISUBCSW=',isubcsw,' ISUBCLW=',isubclw
-        print *,' LSASHAL=',lsashal,' LCRICK=',lcrick,' LCNORM=',lcnorm,&
+       print *,' LSASHAL=',lsashal,' LCRICK=',lcrick,' LCNORM=',lcnorm,&
      &    ' LNOPREC=',lnoprec
         print *,' LTP =',LTP,', add extra top layer =',lextop
 
