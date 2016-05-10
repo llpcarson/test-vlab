@@ -149,6 +149,9 @@
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.0  Aug 2012 '
 
 !  ---  general use parameter constants:
+!> \name general use parameter constants:
+!!@{
+
 !> num of output fields for sw rad
       integer, parameter, public :: NF_AESW = 3     ! num of output fields for sw rad
 !> num of output fields for lw rad
@@ -162,13 +165,21 @@
 
       real (kind=kind_phys), parameter :: f_zero = 0.0
       real (kind=kind_phys), parameter :: f_one  = 1.0
+!!@}
 
 !  ---  module control parameters set in subroutine "aer_init"
+!> \name module control parameters set in subroutine "aer_init"
+!!@{
+
+!> number of actual bands for SW aerosols. calculated according to laswflg setting
       integer, save :: NSWBND  = NBDSW       ! number of actual bands for sw aerosols
                                              ! calculated according to laswflg setting
+!> number of actual bands for LW aerosols. calculated according to lalwflg and lalw1bd settings
       integer, save :: NLWBND  = NBDLW       ! number of actual bands for lw aerosols
                                              ! calculated according to lalwflg and lalw1bd settings
+!> total number of bands for SW+LW aerosols
       integer, save :: NSWLWBD = NBDSW+NBDLW ! total number of bands for sw+lw aerosols
+!!@}
 
 ! --------------------------------------------------------------------- !
 !   section-1 : module variables for spectral band interpolation        !
@@ -713,13 +724,13 @@
 !!\param[in] NLAY    integer, number of model vertical layers (not used)
 !!\param[in] me      integer, print message control flag
 !!\param[in] NONE
-!> \section external External Module Variables
+!> \section external_aer_init External Module Variables
 !!\n physparam::iaermdl: tropospheric aerosol model scheme flag. =0 opac-clim; =1 gocart-clim; =2 gocart-prognostic
 !!\n physparam::lalwflg: logical lw aerosol effect control flag. =t compute lw aerosol optical property
 !!\n physparam::laswflg: logical sw aerosols effect control flag. =t compute sw aerosol optical property
 !!\n physparam::lavoflg: logical stratosphere volcanic aerosol control flag. =t include volcanic aerosol effect
 !!\n physparam::lalw1bd: logical lw aerosol property 1 band vs multi-band control flag. =t use 1 broad band optical property; =f use multi bands optical property
-!> \section subprograms Subprograms Called
+!> \section sub_aer_init Subprograms Called
 !!\n - clim_aerinit: This subprogram is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
 !!\n - wrt_aerlog: This subprogram writes aerosol parameter configuration to run log file.
 !!\n - set_volcaer: This is the initialization program for stratospheric volcanic aerosols.
@@ -1798,11 +1809,11 @@
 !!\param[in] imon     integer, 1, month of the year
 !!\param[in] me       integer, 1, print message control flag
 !!\param[out] NONE
-!>\section external External Module Variables:
+!>\section external_aer_update External Module Variables:
 !!\n physparam::lalwflg - control flag for tropospheric lw aerosol
 !!\n physparam::laswflg - control flag for tropospheric sw aerosol
 !!\n physparam::lavoflg - control flag for stratospheric volcanic aerosol
-!>\section subprograms Subprograms Called:
+!>\section sub_aer_update Subprograms Called:
 !!\n - trop_update: This subprogram updates the monthly global distribution of aerosol profiles in
 !! five degree horizontal resolution.
 !!\n - volc_update: This subprogram searches historical volcanic data sets to find and read in monthly
@@ -2172,9 +2183,8 @@
 !!\n                    (:,:,:,1): optical depth
 !!\n                    (:,:,:,2): single scattering albedo
 !!\n                    (:,:,:,3): asymmetry parameter
-!!\param[out] tau_gocart    (IMAX,NLAY,MAX_NUM_GRIDCOMP), 550nm aeros opt depth
 !!\param[out] aerodp    (IMAX,NSPC1), vertically integrated optical depth
-!>\section general General Algorithm
+!>\section general_setaer General Algorithm
 !> @{
 !-----------------------------------
       subroutine setaer

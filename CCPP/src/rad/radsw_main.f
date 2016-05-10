@@ -440,7 +440,7 @@
 !!\n                          nirdf - downward surface nir diffused flux
 !!\n                          visbm - downward surface uv+vis direct beam flux
 !!\n                          visdf - downward surface uv+vis diffused flux
-!> \section general General Algorithm
+!> \section General_swrad General Algorithm
 !> @{
 !-----------------------------------
       subroutine swrad
@@ -1241,7 +1241,7 @@
 !> This subroutine initializes non-varying module variables, conversion factors, and look-up tables
 !!\param[in] me             integer, print control for parallel process
 !!\param[out] NONE
-!!\section external External Module Variables
+!!\section External_rswinit External Module Variables
 !!\n physparam::iswrate - heating rate unit selections
 !!\n                      =1: output in k/day
 !!\n                      =2: output in k/second
@@ -1447,7 +1447,7 @@
 !!\param[out] asycw         real,(nlay,nbdsw), weighted cloud asymmetry factor (asy = asycw / ssacw)
 !!\param[out] cldfrc        real,(nlay), cloud fraction of grid mean value
 !!\param[out] cldfmc        real,(nlay,ngptsw), cloud fraction for each sub-column
-!!\section general General Algorithm
+!!\section General_cldprop General Algorithm
 !> @{
 !-----------------------------------
       subroutine cldprop
@@ -1809,7 +1809,7 @@
 !!\param[in] nlay       integer, 1, number of model vertical layers
 !!\param[in] ipseed     integer, 1, permute seed for random num generator
 !!\param[out] lcloudy   logical, (nlay,ngptsw), sub-colum cloud profile flag array
-!!\section external External Module Variables
+!!\section External_mcica_subcol External Module Variables
 !!\n physparam::iovrsw    - control flag for cloud overlapping method
 !!\n                        =0:random; =1:maximum/random; =2:maximum
 ! ----------------------------------
@@ -2173,12 +2173,12 @@
 !!\param[out] sfdf0           real, 2, clr sky sfc dnwd diff flux (nir/uv+vis)
 !!\param[out] suvbfc          real, 1, tot sky sfc dnwd uv-b flux
 !!\param[out] suvbf0          real, 1, clr sky sfc dnwd uv-b flux
-!!\section external external module variables
+!!\section External_spcvrtc External Module Variables
 !!\n   physparam::iswmode - control flag for 2-stream transfer schemes
 !!\n                         = 1 delta-eddington    (joseph et al., 1976)
 !!\n                         = 2 pifm               (zdunkowski et al., 1980)
 !!\n                         = 3 discrete ordinates (liou, 1973)
-!!\section general General Algorithm
+!!\section General_spcvrtc General Algorithm
 !> @{
 !-----------------------------------
       subroutine spcvrtc
@@ -3635,7 +3635,7 @@
 !!\param[in] NLAY, NLP1     integer, number of layers/levels
 !!\param[out] zfu           real, (NLP1), upward flux at layer interface
 !!\param[out] zfd           real, (NLP1), downward flux at layer interface
-!!\section general General Algorithm
+!!\section General_swflux General Algorithm
 !> @{
 !-----------------------------------
       subroutine swflux

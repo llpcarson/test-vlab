@@ -61,7 +61,7 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> \defgroup module_radsw_parameters
+!> \defgroup module_radsw_parameters module_radsw_parameters
 !> This module contains SW band parameters set up.
 !========================================!
       module module_radsw_parameters     !
