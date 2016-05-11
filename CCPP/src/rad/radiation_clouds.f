@@ -160,19 +160,20 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                       &
+      character(40), parameter ::                                      &
      &   VTAGCLD='NCEP-Radiation_clouds    v5.1  Nov 2012 '
 !    &   VTAGCLD='NCEP-Radiation_clouds    v5.0  Aug 2012 '
 
-!  ---  set constant parameters
-      real (kind=kind_phys), parameter :: gfac=1.0e5/con_g              &
+!> \name set constant parameters
+!!@{
+      real (kind=kind_phys), parameter :: gfac=1.0e5/con_g        
      &,                                   gord=con_g/con_rd
 !> number of fields in cloud array
-     integer, parameter, public :: NF_CLDS = 9   ! number of fields in cloud array
+      integer, parameter, public :: NF_CLDS = 9   
 !> number of cloud vertical domains
-      integer, parameter, public :: NK_CLDS = 3   ! number of cloud vertical domains
+      integer, parameter, public :: NK_CLDS = 3  
 
-!  ---  pressure limits of cloud domain interfaces (low,mid,high) in mb (0.1kPa)
+!> pressure limits of cloud domain interfaces (low,mid,high) in mb (0.1kPa)
       real (kind=kind_phys), save :: ptopc(NK_CLDS+1,2)
 
 !org  data ptopc / 1050., 642., 350., 0.0,  1050., 750., 500., 0.0 /
@@ -181,22 +182,40 @@
 !     real (kind=kind_phys), parameter :: climit = 0.01
       real (kind=kind_phys), parameter :: climit = 0.001, climit2=0.05
       real (kind=kind_phys), parameter :: ovcst  = 1.0 - 1.0e-8
+!!@}
 
-!  ---  set default quantities as parameters (for prognostic cloud)
-      real (kind=kind_phys), parameter :: reliq_def = 10.0    ! default liq radius to 10 micron
-      real (kind=kind_phys), parameter :: reice_def = 50.0    ! default ice radius to 50 micron
-      real (kind=kind_phys), parameter :: rrain_def = 1000.0  ! default rain radius to 1000 micron
-      real (kind=kind_phys), parameter :: rsnow_def = 250.0   ! default snow radius to 250 micron
+!> \name set default quantities as parameters (for prognostic cloud)
+!!@{
 
-!  ---  set look-up table dimensions and other parameters (for diagnostic cloud)
-      integer, parameter :: NBIN=100     ! rh in one percent interval
-      integer, parameter :: NLON=2       ! =1,2 for eastern and western hemispheres
-      integer, parameter :: NLAT=4       ! =1,4 for 60n-30n,30n-equ,equ-30s,30s-60s
-      integer, parameter :: MCLD=4       ! =1,4 for bl,low,mid,hi cld type
-      integer, parameter :: NSEAL=2      ! =1,2 for land,sea
+!> default liq radius to 10 micron
+      real (kind=kind_phys), parameter :: reliq_def = 10.0    
+!> default ice radius to 50 micron
+      real (kind=kind_phys), parameter :: reice_def = 50.0   
+!> default rain radius to 1000 micron
+      real (kind=kind_phys), parameter :: rrain_def = 1000.0 
+!> default snow radius to 250 micron
+      real (kind=kind_phys), parameter :: rsnow_def = 250.0 
+!!@}
 
-      real (kind=kind_phys), parameter :: cldssa_def = 0.99   ! default cld single scat albedo
-      real (kind=kind_phys), parameter :: cldasy_def = 0.84   ! default cld asymmetry factor
+!> \name set look-up table dimensions and other parameters (for diagnostic cloud)
+!!@{
+
+!> rh in one percent interval
+      integer, parameter :: NBIN=100     
+!> =1,2 for eastern and western hemispheres
+      integer, parameter :: NLON=2       
+!> =1,4 for 60n-30n,30n-equ,equ-30s,30s-60s
+      integer, parameter :: NLAT=4      
+!> =1,4 for bl,low,mid,hi cld type
+      integer, parameter :: MCLD=4     
+!> =1,2 for land,sea
+      integer, parameter :: NSEAL=2   
+
+!> default cld single scat albedo
+      real (kind=kind_phys), parameter :: cldssa_def = 0.99  
+!> default cld asymmetry factor
+      real (kind=kind_phys), parameter :: cldasy_def = 0.84 
+!!@}
 
 !  ---  xlabdy: lat bndry between tuning regions, +/- xlim for transition
 !       xlobdy: lon bndry between tuning regions
@@ -206,15 +225,21 @@
       data xlabdy / 30.0,  0.0, -30.0 /,  xlobdy / 0.0, 180., 360. /
 
 !  ---  low cloud vertical velocity adjustment boundaries in mb/sec
+!>\name low cloud vertical velocity adjustment boundaries in \f$mb/sec\f$
+!!@{
       real (kind=kind_phys), parameter :: vvcld1= 0.0003e0
       real (kind=kind_phys), parameter :: vvcld2=-0.0005e0
+!!@}
 
 !  ---  those data will be set up by "cld_init"
 !     rhcl : tuned rh relation table for diagnostic cloud scheme
 
       real (kind=kind_phys) :: rhcl(NBIN,NLON,NLAT,MCLD,NSEAL)
 
+!> upper limit of boundary layer clouds
       integer  :: llyr   = 2           ! upper limit of boundary layer clouds
+!> cloud over lapping method for diagnostic 3-domain
+!!\n output calc (see iovrsw/iovrlw description)
       integer  :: iovr   = 1           ! cloud over lapping method for diagnostic 3-domain
                                        ! output calc (see iovrsw/iovrlw description)
 
