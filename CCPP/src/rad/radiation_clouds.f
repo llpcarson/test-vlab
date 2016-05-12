@@ -142,6 +142,7 @@
 !! \defgroup module_radiation_clouds module_radiation_clouds
 !! @{
 !> This module computes cloud related quantities for radiation computations
+
 !========================================!
       module module_radiation_clouds     !
 !........................................!
@@ -160,7 +161,8 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                      &
+!> version tag and last revision date
+      character(40), parameter ::                        &             
      &   VTAGCLD='NCEP-Radiation_clouds    v5.1  Nov 2012 '
 !    &   VTAGCLD='NCEP-Radiation_clouds    v5.0  Aug 2012 '
 
@@ -219,13 +221,18 @@
 
 !  ---  xlabdy: lat bndry between tuning regions, +/- xlim for transition
 !       xlobdy: lon bndry between tuning regions
+!>
+!> lat bndry between tuning regions
+      real (kind=kind_phys)            :: xlabdy(3)
+!> lon bndry between tuning regions
+      real (kind=kind_phys)            :: xlobdy(3)
+!> +/- xlim for transition
       real (kind=kind_phys), parameter :: xlim=5.0
-      real (kind=kind_phys)            :: xlabdy(3), xlobdy(3)
 
       data xlabdy / 30.0,  0.0, -30.0 /,  xlobdy / 0.0, 180., 360. /
 
 !  ---  low cloud vertical velocity adjustment boundaries in mb/sec
-!>\name low cloud vertical velocity adjustment boundaries in \f$mb/sec\f$
+!>\name low cloud vertical velocity adjustment boundaries in  mb/sec 
 !!@{
       real (kind=kind_phys), parameter :: vvcld1= 0.0003e0
       real (kind=kind_phys), parameter :: vvcld2=-0.0005e0
@@ -233,7 +240,7 @@
 
 !  ---  those data will be set up by "cld_init"
 !     rhcl : tuned rh relation table for diagnostic cloud scheme
-
+!> tuned rh relation table for diagnostic cloud scheme
       real (kind=kind_phys) :: rhcl(NBIN,NLON,NLAT,MCLD,NSEAL)
 
 !> upper limit of boundary layer clouds
@@ -251,11 +258,10 @@
 ! =================
 
 !> This subroutine is an initialization program for cloud-radiation calculations. It sets up boundary layer cloud top
-!!\param[in] si             real, model vertical sigma layer interface
-!!\param[in] NLAY           integer, vertical layer number
-!!\param[in] me             integer, print control flag
-!!\param[out] NONE
-!!\section general General Algorithm
+!!\param[in] si              model vertical sigma layer interface
+!!\param[in] NLAY            vertical layer number
+!!\param[in] me              print control flag
+!!\section gen_cld_init General Algorithm
 !> @{
 !-----------------------------------
       subroutine cld_init
@@ -321,8 +327,7 @@
       if ( icldflg == 0 ) then
         if (me == 0) print *,' - Using Diagnostic Cloud Method'
 
-!> -# Calling rhtable, set up tuned rh table
-!!\n  - subroutine rhtable: cld-rh relations obtained from mitchell-hahn procedure
+!> -# Call rhtable(), set up tuned rh table
 !  ---  set up tuned rh table
 
         call rhtable( me, ier )
@@ -405,7 +410,7 @@
 !!\param[out] clds       real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param[out] mtop       integer, (IX,3), vertical indices for low, mid, hi cloud tops
 !!\param[out] mbot       integer, (IX,3), vertical indices for low, mid, hi cloud bases
-!>\section general General Algorithm
+!>\section gen_progcld1 General Algorithm
 !> @{
 !-----------------------------------
       subroutine progcld1
@@ -763,7 +768,7 @@
 !!\n \f$ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC \f$
 !!\n \f$ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC \f$
 !!\n \f$ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC \f$
-!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T
+!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T \f$
 !  ---  effective ice cloud droplet radius
 
       do k = 1, NLAY
@@ -805,7 +810,7 @@
         enddo
       enddo
 
-!> -# Call gethml to compute low,mid,high,total, and boundary layer cloud fractions
+!> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       The three cloud domain boundaries are defined by ptopc.  The cloud
@@ -861,7 +866,7 @@
 !!\param[out] mtop  integer, (IX,3), vertical indices for low, mid, hi cloud tops
 !!\param[out] mbot  integer, (IX,3), vertical indices for low, mid, hi cloud bases
 
-!>\section general General Algorithm
+!>\section gen_progcld2 General Algorithm
 !> @{
 !-----------------------------------
       subroutine progcld2
@@ -1061,7 +1066,7 @@
         enddo
       enddo
 
-!> -# Call module_microphysics::rsipath2, in ferrier's scheme,to compute layer's cloud liquid, ice,
+!> -# Call module_microphysics::rsipath2(), in Ferrier's scheme,to compute layer's cloud liquid, ice,
 !! rain, and snow water condensate path and the partical effective radius for liquid droplet, rain
 !! drop, and snow flake.
       call  rsipath2                                                    &
@@ -1315,7 +1320,7 @@
         enddo
       enddo
 
-!> -# Call gethml, to compute low, mid, high, total, and boundary layer cloud fractions and
+!> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions and
 !! clouds top/bottom layer indices for low, mid, and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
@@ -1370,7 +1375,7 @@
 !!\param[out] clds      real, (ix,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param[out] mtop      integer, (ix,3), vertical indices for low, mid, hi cloud tops
 !!\param[out] mbot      integer, (ix,3), vertical indices for low, mid, hi cloud bases
-!!\section general General Algorithm
+!!\section gen_progcld3 General Algorithm
 !> @{
 !-----------------------------------
       subroutine progcld3
@@ -1710,7 +1715,7 @@
 !!\n \f$ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC \f$
 !!\n \f$ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC \f$
 !!\n \f$ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC \f$
-!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T
+!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T \f$
 !  ---  effective ice cloud droplet radius
 
       do k = 1, nlay
@@ -1753,7 +1758,7 @@
         enddo
       enddo
 
-!> -# Call gethml to compute low,mid,high,total, and boundary layer cloud fractions
+!> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       the three cloud domain boundaries are defined by ptopc.  the cloud
@@ -1798,7 +1803,7 @@
 !!\param[out] clds           real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param[out] mtop           integer, (IX,3), vertical indices for low, mid, hi cloud tops
 !!\param[out] mbot           real, (IX,3), vertical indices for low, mid, hi cloud bases
-!!\section general General Algorithm
+!!\section gen_diagcld1 General Algorithm
 !> @{
 !-----------------------------------
       subroutine diagcld1
@@ -2390,7 +2395,7 @@
         enddo
       enddo
 
-!> -# Calling gethml, to compute low, mid, high, total, and boundary layer cloud fractions
+!> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions
 !! and cloud top/bottom layer indices for low, mid, and high clouds.
 !
 !===> ... compute low, mid, high, total, and boundary layer cloud fractions
