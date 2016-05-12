@@ -1,5 +1,5 @@
 !>  \file radlw_main.f
-!!  This file contains ncep's ncep's modifications of the rrtm-lw radiation
+!!  This file contains NCEP's modifications of the rrtm-lw radiation
 !!  code from aer inc.
 
 !!!!!  ==============================================================  !!!!!

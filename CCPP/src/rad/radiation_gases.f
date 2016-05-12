@@ -189,18 +189,22 @@
 
 !  ---  module variables to be set in subroutin gas_init and/or gas_update
 
-!   - variables for climatology ozone (ioznflg = 0)
+!> \name variables for climatology ozone (ioznflg = 0)
+!!@{
       real (kind=kind_phys), allocatable :: pkstr(:), o3r(:,:,:)
       integer :: k1oz = 0,  k2oz = 0
       real (kind=kind_phys) :: facoz = 0.0
+!!@}
 
-!   - arrays for co2 2-d monthly data and global mean values from observed data
+!>\name  arrays for co2 2-d monthly data and global mean values from observed data
+!!@{
       real (kind=kind_phys), allocatable :: co2vmr_sav(:,:,:)
       real (kind=kind_phys), allocatable :: co2cyc_sav(:,:,:)
 
       real (kind=kind_phys) :: co2_glb = co2vmr_def
       real (kind=kind_phys) :: gco2cyc(12)
       data gco2cyc(:) / 12*0.0 /
+!!@}
 
       integer :: kyrsav  = 0
       integer :: kmonsav = 1
@@ -217,8 +221,7 @@
 !> This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then
 !! read in monthly ozone data.
 !!\param[in] me         integer, 1, print message control flag
-!!\param[out] NONE
-!!\section external External Module Variables:
+!!\section ex_gas_init External Module Variables:
 !!\n physparam::ico2flg    - co2 data source control flag
 !!\n                         =0: use prescribed co2 global mean value
 !!\n                         =1: use input global mean co2 value (co2_glb)
@@ -947,14 +950,10 @@
 !!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav)
 !!\n physparam::ivflip     - vertical profile indexing flag
 !-----------------------------------
-      subroutine getgases                                               &
-!...................................
-
-!  ---  inputs:
-     &     ( plvl, xlon, xlat,                                          &
-     &       IMAX, LMAX,                                                &
-!  ---  outputs:
-     &       gasdat                                                     &
+      subroutine getgases         
+     &     ( plvl, xlon, xlat,   ! ---  inputs               
+     &       IMAX, LMAX,           
+     &       gasdat              ! ---  outputs    
      &      )
 
 !  ===================================================================  !
@@ -1100,7 +1099,7 @@
 !!\param[in] IMAX, LM    integer, horizontal and vertical dimensions
 !!\param[out] o3mmr      real, (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
 !-----------------------------------
-      subroutine getozn
+      subroutine getozn 
      &     ( prslk,xlat,                                                !  ---  inputs
      &       IMAX, LM,
      &       o3mmr                                                      !  ---  outputs
