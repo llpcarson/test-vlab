@@ -198,25 +198,34 @@
 !> \name 2.4 for module radiation_clouds
 
 !> cloud optical property scheme control flag
-      integer, save :: icldflg = 1      ! cloud optical property scheme control flag
-!>
-      integer, save :: icmphys = 1      ! cloud microphysics scheme control flag
-      integer, save :: iovrsw  = 1      ! cloud overlapping control flag for sw
-      integer, save :: iovrlw  = 1      ! cloud overlapping control flag for lw
-
-      logical, save :: lcrick  =.false. ! eliminating CRICK control flag
-      logical, save :: lcnorm  =.false. ! in-cld condensate control flag
-      logical, save :: lnoprec =.false. ! precip effect on radiation flag (ferrier microphysics)
-      logical, save :: lsashal =.false. ! shallow convection flag
+      integer, save :: icldflg = 1      
+!> cloud micorphysics scheme control flag
+      integer, save :: icmphys = 1    
+!> cloud overlapping control flag for SW
+      integer, save :: iovrsw  = 1   
+!> cloud overlapping control flag for LW
+      integer, save :: iovrlw  = 1  
+!> eliminating CRICK control flag
+      logical, save :: lcrick  =.false. 
+!> in-cld condensate control flag
+      logical, save :: lcnorm  =.false.
+!> precip effect on radiation flag (Ferrier microphysics)
+      logical, save :: lnoprec =.false. 
+!> shallow convetion flag
+      logical, save :: lsashal =.false. 
 
 ! ............................................. !
 !  -2.5- for module radiation_surface           !
 ! ............................................. !
 !> \name 2.5 for module radiation_surface
-      integer, save :: ialbflg = 0      ! surface albedo scheme control flag
-      integer, save :: iemsflg = 0      ! surface emissivity scheme control flag
 
-      character, save :: semis_file*26  ! external sfc emissivity data table
+!> surface albedo scheme control flag
+      integer, save :: ialbflg = 0      
+!> surface emissivity scheme control flag
+      integer, save :: iemsflg = 0     
+
+!> external sfc emissivity data table: sfc_emissivity_idx.txt
+      character, save :: semis_file*26  
       data semis_file   / 'sfc_emissivity_idx.txt    ' /
 
 ! ............................................. !
@@ -224,10 +233,14 @@
 ! ............................................. !
 !> \name 2.6 general purpose 
 
-      integer, save :: ivflip  = 1      ! vertical profile indexing flag
-      integer, save :: isubcsw = 0      ! sub-column cloud approx flag in sw radiation
-      integer, save :: isubclw = 0      ! sub-column cloud approx flag in lw radiation
-      integer, save :: ipsd0   = 0      ! initial permutation seed for mcica radiation
+!> vertical profile indexing flag
+      integer, save :: ivflip  = 1      
+!> sub-column cloud approx flag in SW radiation
+      integer, save :: isubcsw = 0      
+!> sub-column cloud approx flag in LW radiation
+      integer, save :: isubclw = 0      
+!> initial permutaion seed for mcica radiation
+      integer, save :: ipsd0   = 0    
 
 !
 !...................................!
