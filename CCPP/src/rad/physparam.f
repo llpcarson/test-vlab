@@ -23,7 +23,6 @@
 !> \ingroup rad
 !! \defgroup physparam physparam
 !! @{
-
 !> This module defines commonly used control variables/parameters in physics related programs.
 !! -# contains control variables defined in the form of parameter. They are pre-determined 
 !!    choices and not adjustable during model's run-time.
