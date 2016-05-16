@@ -43,7 +43,7 @@
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
 !!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993; Ebert and Curry 1992).
 !!
-!!  \section intraphysics Intraphysics Communication
+!!  \section intra_grrad Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information 
 !!  calculated in this scheme is used in other scheme types.
 !!
@@ -288,30 +288,40 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                      &
+      character(40), parameter ::   
      &   VTAGRAD='NCEP-Radiation_driver    v5.2  Jan 2013 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.1  Nov 2012 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.0  Aug 2012 '
 
 !  ---  constant values
-      real (kind=kind_phys) :: QMIN, QME5, QME6, EPSQ
+!>\name constant values
+
+!> QMIN=1.0e-10
+      real (kind=kind_phys) :: QMIN
+!> QME5=1.0e-7
+      real (kind=kind_phys) :: QME5
+!> QME6=1.0e-7
+      real (kind=kind_phys) :: QME6
+!> EPSQ=1.0e-12
+      real (kind=kind_phys) :: EPSQ
 !     parameter (QMIN=1.0e-10, QME5=1.0e-5,  QME6=1.0e-6,  EPSQ=1.0e-12)
       parameter (QMIN=1.0e-10, QME5=1.0e-7,  QME6=1.0e-7,  EPSQ=1.0e-12)
 !     parameter (QMIN=1.0e-10, QME5=1.0e-20, QME6=1.0e-20, EPSQ=1.0e-12)
-!> toa pressure minimum value in mb (hPa)
-      real, parameter :: prsmin = 1.0e-6 ! toa pressure minimum value in mb (hpa)
 
-!  ---  control flags set in subr radinit:
+!> toa pressure minimum value in mb (hPa)
+      real, parameter :: prsmin = 1.0e-6
+
 !> control flag for lw sfc air/ground interface temp setting
-      integer :: itsfc  =0            ! flag for lw sfc air/ground interface temp setting
+      integer :: itsfc  =0           
 
 !  ---  data input control variables set in subr radupdate:
       integer :: month0=0,   iyear0=0,   monthd=0
 !> first-time clim ozone data read flag
-      logical :: loz1st =.true.       ! first-time clim ozone data read flag
+      logical :: loz1st =.true.       
 
 !  ---  optional extra top layer on top of low ceiling models
 !> optional extra top layer on top of low ceiling models
+!!\n LTP=0: no extra top layer
       integer, parameter :: LTP = 0   ! no extra top layer
 !     integer, parameter :: LTP = 1   ! add an extra top layer
       logical, parameter :: lextop = (LTP > 0)
@@ -329,7 +339,7 @@
 !> \param[in] si       real, L+1, model vertical sigma interface
 !> \param[in] nlay     integer, 1, number of model vertical layers
 !> \param[in] me       integer, 1, print control flag
-!> \section general General Algorithm
+!> \section gen_radinit General Algorithm
 !> @{
 !-----------------------------------
       subroutine radinit( si, NLAY, me )
@@ -523,13 +533,13 @@
 
 !> -# Initialization
 !!\n subroutine called:
-!!    - astronomy initialization routine: call module_radiation_astronomy::sol_init
-!!    - aerosols initialization routine: call module_radiation_aerosols::aer_init
-!!    - co2 and other gases intialization routine: call module_radiation_gases::gas_init
-!!    - surface intialization routine: call module_radiation_surface::sfc_init
-!!    - cloud initialization routine: call module_radiation_clouds::cld_init
-!!    - lw radiation initialization routine: call module_radlw_main::rlwinit
-!!    - sw radiation initialization routine: call module_radsw_main::rswinit
+!!    - astronomy initialization routine: call module_radiation_astronomy::sol_init()
+!!    - aerosols initialization routine: call module_radiation_aerosols::aer_init()
+!!    - co2 and other gases intialization routine: call module_radiation_gases::gas_init()
+!!    - surface intialization routine: call module_radiation_surface::sfc_init()
+!!    - cloud initialization routine: call module_radiation_clouds::cld_init()
+!!    - lw radiation initialization routine: call module_radlw_main::rlwinit()
+!!    - sw radiation initialization routine: call module_radsw_main::rswinit()
 !     Initialization
 
       call sol_init ( me )          !  --- ...  astronomy initialization routine
@@ -554,8 +564,8 @@
 
 !> This subroutine calls many update subroutines to check and update radiation required
 !! but time varying data sets and module variables.
-!! \param[in] idate(8)       integer, ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)
-!! \param[in] jdate(8)       integer, ncep absolute date and time at fcst time (yr,mon,day,t-zone,hr,min,sec,mil-sec)
+!! \param[in] idate          integer, ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)
+!! \param[in] jdate          integer, ncep absolute date and time at fcst time (yr,mon,day,t-zone,hr,min,sec,mil-sec)
 !! \param[in] deltsw         real, 1, sw radiation calling frequency in seconds
 !! \param[in] deltim         real, 1, model timestep in seconds
 !! \param[in] lsswr          logical, logical flags for sw radiation calculations
@@ -563,7 +573,7 @@
 !! \param[out] slag          real, equation of time in radians
 !! \param[out] sdec,cdec     real, sin and cos of the solar declination angle
 !! \param[out] solcon        real, sun-earth distance adjusted solar constant (w/m2)
-!> \section general General Algorithm
+!> \section gen_radupdate General Algorithm
 !> @{
 !-----------------------------------
       subroutine radupdate( idate,jdate,deltsw,deltim,lsswr, me,
@@ -684,7 +694,7 @@
         lmon_chg = .false.
       endif
 !> -# Call astronomy updata routine, yearly update, no time interpolation
-!!\n  - subroutine called: module_radiation_astronomy::sol_update
+!!\n  - subroutine called: module_radiation_astronomy::sol_update()
 !  --- ...  call astronomy update routine, yearly update, no time interpolation
 
       if (lsswr) then
@@ -707,7 +717,7 @@
 
       endif  ! end_if_lsswr_block
 !> -# Call aerosols update routine, monthly update, no time interpolation
-!!\n  - subroutine called: module_radiation_aerosols::aer_update
+!!\n  - subroutine called: module_radiation_aerosols::aer_update()
 !  --- ...  call aerosols update routine, monthly update, no time interpolation
 
       if ( lmon_chg ) then
@@ -715,7 +725,7 @@
       endif
 
 !> -# Call co2 and other gases update routine
-!!\n  - subroutine called: module_radiation_gases::gas_update
+!!\n  - subroutine called: module_radiation_gases::gas_update()
 !  --- ...  call co2 and other gases update routine
 
       if ( monthd /= kmon ) then
@@ -802,14 +812,14 @@
 !! \param[in] cnvc       real, (IX,LM),layer convective cloud cover
 !! \param[out] htrsw     real, (IX,LM),total sky sw heating rate in k/sec
 !! \param[out] topfsw    type(topfsw_type), (IM),sw radiation fluxes at toa, components: (check module_radsw_parameters for definition)
-!! \n          %upfxc       - total sky upward sw flux at toa (w/m**2)
-!! \n          %dnflx       - total sky downward sw flux at toa (w/m**2)
-!! \n          %upfx0       - clear sky upward sw flux at toa (w/m**2)
+!! \n          %upfxc       - total sky upward sw flux at toa (\f$W/m^2\f$)
+!! \n          %dnflx       - total sky downward sw flux at toa (\f$W/m^2\f$)
+!! \n          %upfx0       - clear sky upward sw flux at toa (\f$W/m^2\f$)
 !! \param[out] sfcfsw    type(sfcfsw_type), (IM),sw radiation fluxes at sfc, components: (check module_radsw_parameters for definition)
-!! \n          %upfxc       - total sky upward sw flux at sfc (w/m**2)
-!! \n          %dnfxc       - total sky downward sw flux at sfc (w/m**2)
-!! \n          %upfx0       - clear sky upward sw flux at sfc (w/m**2)
-!! \n          %dnfx0       - clear sky downward sw flux at sfc (w/m**2)
+!! \n          %upfxc       - total sky upward sw flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfxc       - total sky downward sw flux at sfc (\f$W/m^2\f$)
+!! \n          %upfx0       - clear sky upward sw flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfx0       - clear sky downward sw flux at sfc (\f$W/m^2\f$)
 !! \param[out] dswcmp    real, (IX,4),dn sfc sw spectral components:
 !! \n          (:, 1)       -  total sky sfc downward nir direct flux
 !! \n          (:, 2)       -  total sky sfc downward nir diffused flux
@@ -825,13 +835,13 @@
 !! \param[out] coszdg    real, (IM),daytime mean cosz over rad call period
 !! \param[out] htrlw       (IX,LM),total sky lw heating rate in k/sec
 !! \param[out] topflw    type(topflw_type), (IM),lw radiation fluxes at top, component:(check module_radlw_paramters for definition)
-!! \n          %upfxc       - total sky upward lw flux at toa (w/m**2)
-!! \n          %upfx0       - clear sky upward lw flux at toa (w/m**2)
+!! \n          %upfxc       - total sky upward lw flux at toa (\f$W/m^2\f$)
+!! \n          %upfx0       - clear sky upward lw flux at toa (\f$W/m^2\f$)
 !! \param[out] sfcflw    type(sfcflw_type), (IM),lw radiation fluxes at sfc, component:(check module_radlw_paramters for definition)
-!! \n          %upfxc       - total sky upward lw flux at sfc (w/m**2)
-!! \n          %upfx0       - clear sky upward lw flux at sfc (w/m**2)
-!! \n          %dnfxc       - total sky downward lw flux at sfc (w/m**2)
-!! \n          %dnfx0       - clear sky downward lw flux at sfc (w/m**2)
+!! \n          %upfxc       - total sky upward lw flux at sfc (\f$W/m^2\f$)
+!! \n          %upfx0       - clear sky upward lw flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfxc       - total sky downward lw flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfx0       - clear sky downward lw flux at sfc (\f$W/m^2\f$)
 !! \param[out] semis     real, (IM),surface lw emissivity in fraction
 !! \param[out] cldcov    real, (IX,LM),3-d cloud fraction
 !! \param[out] tsflw     real, (IM),surface air temp during lw calculation in K
@@ -875,11 +885,11 @@
 !! \n                          36      - aeros opt depth at 550nm for bc component
 !! \n                          37      - aeros opt depth at 550nm for oc component
 !! \n                          38      - aeros opt depth at 550nm for su component
-!! \n                          39      - aeros opt depth at 550nm for ss component                                        !
+!! \n                          39      - aeros opt depth at 550nm for ss component       
 !! \param[out] htrswb     real, (IX,LM,NBDSW),spectral band total sky sw heating rate
 !! \param[out] htrlwb     real, (IX,LM,NBDLW),spectral band total sky lw heating rate
 !!
-!> \section general General Algorithm
+!> \section gen_grrad General Algorithm
 !> @{
 !-----------------------------------
       subroutine grrad
@@ -1589,8 +1599,8 @@
 !      write(0,*)' tlvl=',tlvl(ipt,1:65)
 !      write(0,*)' qlyr=',qlyr(ipt,1:10)*1000
 
-!> -# Setup aerosols property profile for radiation (faersw,faerlw,aerodp)
-!!\n  Call module_radiation_aerosols::setaer
+!> -# Calling module_radiation_aerosols::setaer(), setup aerosols property 
+!! profile for radiation (faersw,faerlw,aerodp)
 !  --- ...  setup aerosols property profile for radiation
 
 !check  print *,' in grrad : calling setaer '
@@ -1604,12 +1614,12 @@
      &     )
 
 !> -# Obtain cloud information for radiation calculations (clouds,cldsa,mtopa,mbota)
-!!\n ---  for  prognostic cloud  ---
-!!    - For zhao/moorthi's prognostic cloud scheme, call module_radiation_clouds::progcld1
-!!    - For ferrier's microphysics, call module_radiation_clouds::progcld2
-!!    - For zhao/moorthi's prognostic cloud+pdfcld, call module_radiation_clouds::progcld3
-!!\n ---  for  diagnostic cloud  ---
-!!    - call module_radiation_clouds::diagcld1
+!! +  for  prognostic cloud  ---
+!!    - For zhao/moorthi's prognostic cloud scheme, call module_radiation_clouds::progcld1()
+!!    - For ferrier's microphysics, call module_radiation_clouds::progcld2()
+!!    - For zhao/moorthi's prognostic cloud+pdfcld, call module_radiation_clouds::progcld3()
+!! +  for  diagnostic cloud  ---
+!!    - call module_radiation_clouds::diagcld1()
 !!
 !  --- ...  obtain cloud information for radiation calculations
 
@@ -1714,8 +1724,8 @@
 
       if (lsswr) then
 
-!> -# Setup surface albedo for sw radiation, incl xw (nov04) sea-ice
-!!\n subroutine called: module_radiation_surface::setalb
+!> -# calling module_radiation_surface::setalb(),setup surface albedo 
+!!  for sw radiation, incl xw (nov04) sea-ice
 
 !  ---  setup surface albedo for sw radiation, incl xw (nov04) sea-ice
 
@@ -1738,22 +1748,19 @@
 
         if (nday > 0) then
 
-!> -# Calling module_radsw_main::swrad
+!> -# Calling module_radsw_main::swrad()
 !     print *,' in grrad : calling swrad'
 
           if ( present(htrswb) .and. present(htrsw0)) then
 
-            call swrad                                                  &
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                      &
-     &       clouds,icsdsw,faersw,sfcalb,                               &
-     &       coszen,solcon, nday,idxday,                                &
-     &       IM, LMK, LMP, lprnt,                                       &
-!  ---  outputs:
-     &       htswc,topfsw,sfcfsw                                        &
-!! ---  optional:
+            call swrad                                             
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,            
+     &       clouds,icsdsw,faersw,sfcalb,                    
+     &       coszen,solcon, nday,idxday,                
+     &       IM, LMK, LMP, lprnt,                    
+     &       htswc,topfsw,sfcfsw                                 
 !!   &,      HSW0=htsw0,FLXPRF=fswprf                                   &
-     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw                        &
+     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw          
      &     )
 
             do k = 1, LM
@@ -1898,9 +1905,7 @@
 !      write(0,*)' htrsw=',htrsw(ipt,1:64)*86400
       if (lslwr) then
 
-!> -# Setup surface emissivity (sfcemis) for lw radiation
-!!\n  Call module_radiation_surface::setemis
-!  ---  setup surface emissivity for lw radiation
+!> -# Calling module_radiation_surface::setemis(),setup surface emissivity (sfcemis) for lw radiation
 
         call setemis                                                    &
 !  ---  inputs:
@@ -1909,7 +1914,7 @@
 !  ---  outputs:
      &       sfcemis                                                    &
      &     )
-!> -# calling module_radlw_main::lwrad
+!> -# calling module_radlw_main::lwrad()
 !     print *,' in grrad : calling lwrad'
 
         if ( present(htrlwb) .and. present(htrlw0) ) then

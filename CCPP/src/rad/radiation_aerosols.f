@@ -1,7 +1,6 @@
 !>  \file radiation_aerosols.f
 !!  contains climatological atmospheric aerosol schemes for
-!!   radiation computations
-!! \todo comment allocatable variables
+!!  radiation computations
 
 !  ==========================================================  !!!!!
 !            'module_radiation_aerosols' description           !!!!!
@@ -119,7 +118,18 @@
 !! \defgroup module_radiation_aerosols module_radiation_aerosols
 !! @{
 !>  This module contains climatological atmospheric aerosol schemes for
-!!   radiation computations.
+!!  radiation computations.
+!!
+!!  - references for opac climatological aerosols:
+!!\n Hou et al. 2002 (NCEP office note 441) \cite hou_et_al_2002
+!!\n Hess et al. 1998 - BAMS, v79, 831-844  \cite hess_et_al_1998
+!!
+!!  - reference for gocart interactive aerosols:
+!!\n Chin et al., 2000 - JGR, v105, 24671-24687   \cite chin_et_al_2000
+!!
+!!  - reference for stratospheric volcanical aerosols:
+!!\n Sato et al. 1993 - JGR, v98, d12, 22987-22994   \cite sato_et_al_1993
+
 !========================================!
       module module_radiation_aerosols   !
 !........................................!
@@ -148,56 +158,44 @@
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.1  Nov 2012 '
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.0  Aug 2012 '
 
-!  ---  general use parameter constants:
 !> \name general use parameter constants:
-!!@{
 
 !> num of output fields for sw rad
-      integer, parameter, public :: NF_AESW = 3     ! num of output fields for sw rad
+      integer, parameter, public :: NF_AESW = 3     
 !> num of output fields for lw rad
-      integer, parameter, public :: NF_AELW = 3     ! num of output fields for lw rad
+      integer, parameter, public :: NF_AELW = 3   
 !> starting band number in ir region
-      integer, parameter, public :: NLWSTR  = 1     ! starting band number in ir region
+      integer, parameter, public :: NLWSTR  = 1  
 !> num of species for output aod (opnl)
-      integer, parameter, public :: NSPC    = 5     ! num of species for output aod (opnl)
+      integer, parameter, public :: NSPC    = 5 
 !> total+species
-      integer, parameter, public :: NSPC1   = NSPC + 1   ! total + species
+      integer, parameter, public :: NSPC1   = NSPC + 1 
 
       real (kind=kind_phys), parameter :: f_zero = 0.0
       real (kind=kind_phys), parameter :: f_one  = 1.0
-!!@}
 
-!  ---  module control parameters set in subroutine "aer_init"
 !> \name module control parameters set in subroutine "aer_init"
-!!@{
 
 !> number of actual bands for SW aerosols. calculated according to laswflg setting
-      integer, save :: NSWBND  = NBDSW       ! number of actual bands for sw aerosols
-                                             ! calculated according to laswflg setting
+      integer, save :: NSWBND  = NBDSW      
+                                           
 !> number of actual bands for LW aerosols. calculated according to lalwflg and lalw1bd settings
-      integer, save :: NLWBND  = NBDLW       ! number of actual bands for lw aerosols
-                                             ! calculated according to lalwflg and lalw1bd settings
+      integer, save :: NLWBND  = NBDLW   
+                                       
 !> total number of bands for SW+LW aerosols
-      integer, save :: NSWLWBD = NBDSW+NBDLW ! total number of bands for sw+lw aerosols
-!!@}
+      integer, save :: NSWLWBD = NBDSW+NBDLW 
 
-! --------------------------------------------------------------------- !
-!   section-1 : module variables for spectral band interpolation        !
-!               similar to gfdl-sw treatment (2000 version)             !
-! --------------------------------------------------------------------- !
 !> \name section-1 : module variables for spectral band interpolation similar to gfdl-sw treatment (2000 version)
-!!@{
 
 !  ---  parameter constants:
 !> num of wvnum regions where solar flux is constant
-      integer, parameter, public :: NWVSOL  = 151   ! num of wvnum regions where solar
-                                                    ! flux is constant
+      integer, parameter, public :: NWVSOL  = 151   
+                                                   
 !> total num of wvnum included
-      integer, parameter, public :: NWVTOT  = 57600 ! total num of wvnum included
+      integer, parameter, public :: NWVTOT  = 57600 
 !> total num of wvnum in ir range
-      integer, parameter, public :: NWVTIR  = 4000  ! total num of wvnum in ir range
+      integer, parameter, public :: NWVTIR  = 4000  
 
-!  ---  number of wavenumbers in each region where the solar flux is constant
 !> number of wavenumbers in each region where the solar flux is constant
       integer, dimension(NWVSOL), save :: nwvns0
 
@@ -214,7 +212,6 @@
      & 483, 505, 529, 554, 580, 610, 641, 675, 711, 751, 793, 841, 891, &
      & 947,1008,1075,1150,1231,1323,1425,1538,1667,1633,14300 /
 
-!  ---  solar flux (w/m**2) in each wvnumb region where it is constant
 !> solar flux \f$w/m^2\f$ in each wvnumb region where it is constant
       real (kind=kind_phys), dimension(NWVSOL), save :: s0intv
 
@@ -252,15 +249,12 @@
      &     6.52736E-3, 4.99410E-3, 4.39350E-3, 2.21676E-3, 1.33812E-3,  &
      &     1.12320E-3, 5.59000E-4, 3.60000E-4, 2.98080E-4, 7.46294E-5  /
 
-!!@}
 
 ! --------------------------------------------------------------------- !
 !   section-2 : module variables for stratospheric volcanic aerosols    !
 !               from historical data (sato et al. 1993)                 !
 ! --------------------------------------------------------------------- !
 !> \name section-2 : module variables for stratospheric volcanic aerosols from historical data (sato et al.1993)
-!! \todo cite sato et al.1993
-!!@{
 
 !  ---  parameter constants:
 !> lower limit (year) data available
@@ -268,7 +262,6 @@
 !> upper limit (year) data available
       integer, parameter :: MAXVYR = 1999   
 
-!  ---  monthly, 45-deg lat-zone aerosols data set in subroutine 'aer_init'
 !> monthly, 45-deg lat-zone aerosols data set in subroutine 'aer_init'
       integer, allocatable, save :: ivolae(:,:,:)
 
@@ -281,15 +274,12 @@
       integer :: kyrsav
 !> the month of data in use in the input file
       integer :: kmonsav
-!!@}
 
 ! --------------------------------------------------------------------- !
 !   section-3 : module variables for opac climatological aerosols       !
 !               optical properties (hess et al. 1989)                   !
 ! --------------------------------------------------------------------- !
 !> \name section-3 : module variables for opac climatological aerosols optical properties (hess et al. 1989) 
-!! \todo cite hess et al.1989
-!!@{
 
 !  ---  parameters and constants:
 !> num of max componets in a profile
@@ -387,13 +377,8 @@
 !> aeros profile index
       integer,               dimension(    IMXAE,JMXAE), save :: kprfg
 
-!!@}
 
-! --------------------------------------------------------------------- !
-!   section-4 : module variables for gocart aerosol optical properties  !
-! --------------------------------------------------------------------- !
 !> \name section-4: module variables for gocart aerosol optical properties
-!!@{
 
 !  ---  parameters and constants:
 !   - KCM, KCM1, KCM2 are determined from subroutine 'set_aerspc'
@@ -452,7 +437,6 @@
       integer,               allocatable, dimension(:) :: iendwv_grt
 !> \name relative humidity independent aerosol optical properties:
 !! species : dust (8 bins)
-!!@{
 
 !> extinction coefficient 
       real (kind=kind_phys),allocatable, dimension(:,:)  :: rhidext0_grt
@@ -460,11 +444,9 @@
       real (kind=kind_phys),allocatable, dimension(:,:)  :: rhidssa0_grt
 !> asymmetry parameter 
       real (kind=kind_phys), allocatable, dimension(:,:) :: rhidasy0_grt
-!!@}
 !!
 !> \name relative humidity dependent aerosol optical properties: 
 !! species : soot, suso, waso, ssam, sscm
-!!@{
 
 !> extinction coefficient
      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpext0_grt
@@ -472,8 +454,6 @@
      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpssa0_grt
 !> asymmetry parameter
      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpasy0_grt
-!!@}
-
 
 !   - relative humidity independent aerosol optical properties:
 !      extrhi_grt(KCM1,NSWLWBD) - extinction coefficient for sw+lw spectral band
@@ -498,13 +478,8 @@
 !> asymmetry parameter for sw+lw band
      real (kind=kind_phys),allocatable,save,dimension(:,:,:)::asyrhd_grt
 
-!!@}
-! --------------------------------------------------------------------- !
-!   section-5 : module variables for gocart aerosol climo data set      !
-! --------------------------------------------------------------------- !
 !> \name section-5 : module variables for gocart aerosol clim data set
 !! This verson only supports 
-!!@{
 
 !     This version only supports geos3-gocart data set (Jan 2010)
 !     Modified to support geos4-gocart data set        (May 2010)
@@ -559,7 +534,6 @@
 !> molecular wght of gocart aerosol species
       real (kind=kind_io4), allocatable :: molwgt(:)
 
-!!@}
 
 ! ---------------------------------------------------------------------
 ! !
@@ -567,9 +541,6 @@
 !   !
 ! ---------------------------------------------------------------------
 !> \name section-6 : module variables for gocart aerosol scheme options
-!!@{
-
-! !
 
 !  ---  logical parameter for gocart initialization control
 !> logical parameter for gocart initialization control
@@ -613,9 +584,7 @@
 !   - index for rh dependent aerosol optical properties (2nd
 !     dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
 !> \name index for rh dependent aerosol optical properties (2nd dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
-!!@{
       integer, save :: isoot, iwaso, isuso, issam, isscm
-!!@}
 
 !   - index for rh independent aerosol optical properties (1st
 !     dimension for extrhi_grt, ssarhi_grt, and asyrhi_grt) is
@@ -627,49 +596,30 @@
 !!  calculations of aerosol optical properties (ext, ssa, asy)
       type  gocart_index_type
 !> \name dust 
-!!@{
          integer :: dust1, dust2, dust3, dust4, dust5
-!!@}
 !> \name sea salt
-!!@{
          integer :: ssam,  sscm
-!!@}
 !> \name sulfate
-!!@{
          integer :: suso
-!!@}
 !> \name oc
-!!@{
          integer :: waso_phobic, waso_philic
-!!@}
 !> \name bc
-!!@{
          integer :: soot_phobic, soot_philic 
-!!@}
       endtype
       type (gocart_index_type), save :: dm_indx
 
-!   - index for gocart aerosols from prognostic tracer fields
 !>  index for gocart aerosols from prognostic tracer fields
       type  tracer_index_type
 !> \name dust
-!!@{
          integer :: du001, du002, du003, du004, du005             
-!!@}
 !> \name sea salt
-!!@{
          integer :: ss001, ss002, ss003, ss004, ss005      
-!!@}
 !> \name sulfate
-!!@{
          integer :: so4    
-!!@}
 !> \name oc
          integer :: ocphobic, ocphilic    
 !> \name bc
-!!@{
          integer :: bcphobic, bcphilic                     
-!!@}
       endtype
       type (tracer_index_type), save :: dmfcs_indx
 
@@ -686,7 +636,6 @@
       character*2                 :: max_gridcomp(max_num_gridcomp)
       data max_gridcomp  /'DU', 'BC', 'OC', 'SU', 'SS'/
 
-!!@}
 ! GOCART code modification end here (Sarah Lu)
 ! ------------------------!
 ! =======================================================================
@@ -725,20 +674,20 @@
 !!\param[in] me      integer, print message control flag
 !!\param[in] NONE
 !> \section external_aer_init External Module Variables
-!!\n physparam::iaermdl: tropospheric aerosol model scheme flag. =0 opac-clim; =1 gocart-clim; =2 gocart-prognostic
-!!\n physparam::lalwflg: logical lw aerosol effect control flag. =t compute lw aerosol optical property
-!!\n physparam::laswflg: logical sw aerosols effect control flag. =t compute sw aerosol optical property
-!!\n physparam::lavoflg: logical stratosphere volcanic aerosol control flag. =t include volcanic aerosol effect
-!!\n physparam::lalw1bd: logical lw aerosol property 1 band vs multi-band control flag. =t use 1 broad band optical property; =f use multi bands optical property
+!!\n physparam::iaermdl : tropospheric aerosol model scheme flag. =0 opac-clim; =1 gocart-clim; =2 gocart-prognostic
+!!\n physparam::lalwflg : logical lw aerosol effect control flag. =t compute lw aerosol optical property
+!!\n physparam::laswflg : logical sw aerosols effect control flag. =t compute sw aerosol optical property
+!!\n physparam::lavoflg : logical stratosphere volcanic aerosol control flag. =t include volcanic aerosol effect
+!!\n physparam::lalw1bd : logical lw aerosol property 1 band vs multi-band control flag. =t use 1 broad band optical property; =f use multi bands optical property
 !> \section sub_aer_init Subprograms Called
-!!\n - clim_aerinit: This subprogram is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
-!!\n - wrt_aerlog: This subprogram writes aerosol parameter configuration to run log file.
-!!\n - set_volcaer: This is the initialization program for stratospheric volcanic aerosols.
-!!\n - set_spectrum: This subprogram defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the one
+!!\n - clim_aerinit(): This subprogram is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
+!!\n - wrt_aerlog(): This subprogram writes aerosol parameter configuration to run log file.
+!!\n - set_volcaer(): This is the initialization program for stratospheric volcanic aerosols.
+!!\n - set_spectrum(): This subprogram defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the one
 !! wavenumber ir fluxes based on black-body emission distribution at a predefined temperature.
-!!\n - set_aercoef: This is the initialization program for climatological aerosols. The program reads and maps the pre-tabulated aerosol optical
+!!\n - set_aercoef(): This is the initialization program for climatological aerosols. The program reads and maps the pre-tabulated aerosol optical
 !! spectral data onto corresponding sw radiation spectral bands.
-!!\n - optavg: This subprogram computes mean aerosols optical properties over each sw radiation spectral band for each of the species components.
+!!\n - optavg(): This subprogram computes mean aerosols optical properties over each sw radiation spectral band for each of the species components.
 !! This program follows gfdl's approach for thick cloud optical property in sw radiation scheme.
 !-----------------------------------
       subroutine aer_init
@@ -1814,9 +1763,9 @@
 !!\n physparam::laswflg - control flag for tropospheric sw aerosol
 !!\n physparam::lavoflg - control flag for stratospheric volcanic aerosol
 !>\section sub_aer_update Subprograms Called:
-!!\n - trop_update: This subprogram updates the monthly global distribution of aerosol profiles in
+!!\n - trop_update(): This subprogram updates the monthly global distribution of aerosol profiles in
 !! five degree horizontal resolution.
-!!\n - volc_update: This subprogram searches historical volcanic data sets to find and read in monthly
+!!\n - volc_update(): This subprogram searches historical volcanic data sets to find and read in monthly
 !! 45-degree lat-zone band data of optical depth
 !-----------------------------------
       subroutine aer_update
@@ -3516,7 +3465,7 @@
 !! gocart_init : set_aerspc, rd_gocart_clim, rd_gocart_luts, optavg_grt
 !! setgocartaer: aeropt_grt, map_aermr
 
-!> the initialization program for gocart aerosols
+!> The initialization program for gocart aerosols
 !! - determine weight and index for aerosol composition/luts
 !! - read in monthly global distribution of gocart aerosols
 !! - read and map the tabulated aerosol optical spectral data onto corresponding SW/LW radiation spectral bands.
