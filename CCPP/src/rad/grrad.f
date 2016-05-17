@@ -72,10 +72,11 @@
 
 !> \defgroup module_radiation_driver module_radiation_driver
 !! @{
-!! \brief  module_radiation_driver prepares atmospheric profile, invokes main radiation
+!!  module_radiation_driver prepares atmospheric profile, invokes main radiation
 !! calculations, and computes radiative fluxes and heating rates
 !! for some arbitrary number of vertical colums.There are three
 !! externally accessible subroutines: radinit, radupdate, and grrad.
+!! \version NCEP-Radiation_driver    v5.2  Jan 2013 
 ! ==========================================================  !!!!!
 !             'module_radiation_driver' descriptions           !!!!!
 !  ==========================================================  !!!!!
@@ -293,8 +294,7 @@
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.1  Nov 2012 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.0  Aug 2012 '
 
-!  ---  constant values
-!>\name constant values
+!>\name Constant values
 
 !> QMIN=1.0e-10
       real (kind=kind_phys) :: QMIN
@@ -319,7 +319,6 @@
 !> first-time clim ozone data read flag
       logical :: loz1st =.true.       
 
-!  ---  optional extra top layer on top of low ceiling models
 !> optional extra top layer on top of low ceiling models
 !!\n LTP=0: no extra top layer
       integer, parameter :: LTP = 0   ! no extra top layer
