@@ -142,6 +142,7 @@
 !! \defgroup module_radiation_clouds module_radiation_clouds
 !! @{
 !> This module computes cloud related quantities for radiation computations
+!!\version NCEP-Radiation_clouds    v5.1  Nov 2012 
 
 !========================================!
       module module_radiation_clouds     !

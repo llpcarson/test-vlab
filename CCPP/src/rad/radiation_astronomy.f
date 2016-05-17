@@ -1,5 +1,5 @@
 !>  \file radiation_astronomy.f
-!!  set up astronomy quantities for solar radiation calculations
+!!  This file sets up astronomy quantities for solar radiation calculations
 
 !  ==========================================================  !!!!!
 !          'module_radiation_astronomy'  description           !!!!!
@@ -76,6 +76,7 @@
 !! \defgroup module_radiation_astronomy module_radiation_astronomy
 !! @{
 !> This module sets up astronomy quantities for solar radiation calculations.
+!! \version NCEP-Radiation_astronomy v5.2  Jan 2013
 !========================================!
       module module_radiation_astronomy  !
 !........................................!
@@ -94,6 +95,7 @@
 !    &   VTAGAST='NCEP-Radiation_astronomy v5.1  Nov 2012 '
 
 !  ---  parameter constants
+!>\name Parameter constants
       real (kind=kind_phys), parameter :: degrad = 180.0/con_pi
       real (kind=kind_phys), parameter :: tpi    = 2.0 * con_pi
       real (kind=kind_phys), parameter :: hpi    = 0.5 * con_pi
@@ -103,20 +105,27 @@
 !     real (kind=kind_phys), parameter :: pid12  = con_pi/f12  ! angle per hour
       real (kind=kind_phys), parameter :: pid12  = (2.0*asin(1.0))/f12
 
-!  ---  module variables (to be set in subr sol_init):
+!> \name Module variable (to be set in module_radiation_astronomy::sol_init):
       real (kind=kind_phys), public    :: solc0 = con_solr
       integer   :: isolflg = 10
       character(26) :: solar_fname = ' '
 
-!  ---  module variables (to be set in subr sol_update):
+!> \name Module variables (to be set in module_radiation_astronomy::sol_update)
+
+!> equation of time
       real (kind=kind_phys) :: sollag=0.0   ! equation of time
+!> sine of the solar declination angle
       real (kind=kind_phys) :: sindec=0.0   ! sineof the solar declination angle
+!> cosine of the solar declination angle
       real (kind=kind_phys) :: cosdec=0.0   ! cosine of the solar declination angle
+!> solar angle increment per interation of cosz calc
       real (kind=kind_phys) :: anginc=0.0   ! solar angle incrmt per iteration for cosz calc
+!> saved monthly solar constants (isolflg=4 only)
       real (kind=kind_phys) :: smon_sav(12) ! saved monthly solar constants (isolflg=4 only)
       data smon_sav(1:12) / 12*con_solr /
-
+!> saved year  of data used
       integer               :: iyr_sav =0   ! saved year  of data used
+!> total number of zenith angle iterations
       integer               :: nstp    =6   ! total number of zenith angle iterations
 
       public  sol_init, sol_update, coszmn
@@ -130,7 +139,7 @@
 !!\param[in] me         print message control flag
 !!\param[out] NONE
 !> @{
-!> \section external External Module Variable:
+!> \section ext_sol_init External Module Variable:
 !!\n \ref physparam::isolar
 !!\n     - = 0: use the old fixed solar constant in "physcon"
 !!\n     - =10: use the new fixed solar constant in "physcon"
@@ -138,7 +147,6 @@
 !!\n     - = 2: use noaa ann-mean tsi tbl tim-scale with cyc apprx
 !!\n     - = 3: use cmip5 ann-mean tsi tbl tim-scale with cyc apprx
 !!\n     - = 4: use cmip5 mon-mean tsi tbl tim-scale with cyc apprx
-!-----------------------------------
       subroutine sol_init
      &     ( me ) !  ---  inputs
 !  ---  outputs: ( none )

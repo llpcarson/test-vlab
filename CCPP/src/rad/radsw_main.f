@@ -315,22 +315,29 @@
 !    &   VTAGSW='RRTM-SW 112v2.0 Jul 2004'
 
 !  ---  constant values
+!> \name constant values
       real (kind=kind_phys), parameter :: eps     = 1.0e-6
       real (kind=kind_phys), parameter :: oneminus= 1.0 - eps
-      real (kind=kind_phys), parameter :: bpade   = 1.0/0.278  ! pade approx constant
+!> pade approx constant
+      real (kind=kind_phys), parameter :: bpade   = 1.0/0.278  
       real (kind=kind_phys), parameter :: stpfac  = 296.0/1013.0
       real (kind=kind_phys), parameter :: ftiny   = 1.0e-12
-      real (kind=kind_phys), parameter :: s0      = 1368.22    ! internal solar const
-                                                               ! adj through input
+!> internal solar constant
+      real (kind=kind_phys), parameter :: s0      = 1368.22   
+                                                             
       real (kind=kind_phys), parameter :: f_zero  = 0.0
       real (kind=kind_phys), parameter :: f_one   = 1.0
 
-!  ---  atomic weights for conversion from mass to volume mixing ratios
+!> \name atomic weights for conversion from mass to volume mixing ratios
       real (kind=kind_phys), parameter :: amdw    = con_amd/con_amw
       real (kind=kind_phys), parameter :: amdo3   = con_amd/con_amo3
 
-!  ---  band indices
-      integer, dimension(nblow:nbhgh) :: nspa, nspb, idxebc, idxsfc
+!> \name band indices
+      integer, dimension(nblow:nbhgh) :: nspa, nspb
+!> band index for sfc flux
+      integer, dimension(nblow:nbhgh) :: idxsfc
+!> band index for cld prop
+      integer, dimension(nblow:nbhgh) :: idxebc
 
       data nspa(:) /  9, 9, 9, 9, 1, 9, 9, 1, 9, 1, 0, 1, 9, 1 /
       data nspb(:) /  1, 5, 1, 1, 1, 5, 1, 0, 1, 0, 0, 1, 5, 1 /
@@ -352,26 +359,28 @@
 !    &          650.0,  750.0,  650.0,  500.0, 1000.0, 1550.0,  350.0,  &
 !    &         4800.0, 3150.0, 6650.0, 6350.0, 9000.0,12000.0, 1780.0 /
 
+!> uv-b band index
       integer, parameter :: nuvb = 27            !uv-b band index
 
 !! ---  logical flags for optional output fields
 
+!>\name logical flags for optional output fields
       logical :: lhswb  = .false.
       logical :: lhsw0  = .false.
       logical :: lflxprf= .false.
       logical :: lfdncmp= .false.
 
 !  ---  those data will be set up only once by "rswinit"
-
+!> those data will be set up only once by "rswinit"
       real (kind=kind_phys) :: exp_tbl(0:NTBMX)
 
 !  ...  heatfac is the factor for heating rates
 !       (in k/day, or k/sec set by subroutine 'rswinit')
-
+!> the factor for heating rates (in k/day, or k/sec set by subroutine 'rswinit')
       real (kind=kind_phys) :: heatfac
 
 !  ---  the following variables are used for sub-column cloud scheme
-
+!> initial permutation seed used for sub-column cloud scheme
       integer, parameter :: ipsdsw0 = 1          ! initial permutation seed
 
 !  ---  public accessable subprograms
@@ -3643,7 +3652,8 @@
       end subroutine spcvrtm
 !-----------------------------------
 
-!> This subroutine computes the upward and downward radiation fluxes.
+!> This subroutine is called by spcvrtc() and spcvrtm(), and computes 
+!! the upward and downward radiation fluxes.
 !!\param[in] zrefb          real, (NLP1), layer direct beam reflectivity
 !!\param[in] zrefd          real, (NLP1), layer diffuse reflectivity
 !!\param[in] ztrab          real, (NLP1), layer direct beam transmissivity
@@ -3758,7 +3768,7 @@
 !> @}
 
 !> This subroutine calculates optical depths for gaseous absorption and rayleigh scattering
-!!\n subroutine called taugb## (## = 16-29)
+!!\n subroutine called taumol## (## = 16-29)
 !!\param[in] colamt          real, (nlay,maxgas), column amounts of absorbing gases the index are for h2o, co2, o3, n2o, ch4, and o2,respectively \f$(mol/cm^2)\f$
 !!\param[in] colmol          real, (nlay), total column amount (dry air+water vapor)
 !!\param[in] facij           real, (nlay), for each layer, these are factors that are needed to compute the interpolation factors

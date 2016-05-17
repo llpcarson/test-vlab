@@ -119,6 +119,7 @@
 !! @{
 !>  This module contains climatological atmospheric aerosol schemes for
 !!  radiation computations.
+!!\version NCEP-Radiation_aerosols  v5.2  Jan 2013 
 !!
 !!  - references for opac climatological aerosols:
 !!\n Hou et al. 2002 (NCEP office note 441) \cite hou_et_al_2002

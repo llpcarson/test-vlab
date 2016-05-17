@@ -111,6 +111,7 @@
 !! profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All
 !! data are entered as mixing ratio by volume, except ozone which is
 !! mass mixing ratio (g/g).
+!!\version NCEP-Radiation_gases     v5.1  Nov 2012
 !========================================!
       module module_radiation_gases      !
 !........................................!

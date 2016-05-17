@@ -73,65 +73,61 @@
 !
       public
 !
-!  ---  define type construct for radiation fluxes at toa
 !
 !> define type construct for radiation fluxes at toa
       type :: topflw_type
 !> total sky upward flux at toa
-        real (kind=kind_phys) :: upfxc         ! total sky upward flux at toa
+        real (kind=kind_phys) :: upfxc     
 !> clear sky upward flux at toa
-        real (kind=kind_phys) :: upfx0         ! clear sky upward flux at toa
+        real (kind=kind_phys) :: upfx0    
       end type
 !
-!  ---  define type construct for radiation fluxes at surface
 !
 !> define type construct for radiation fluxes at surface
       type :: sfcflw_type
 !> total sky upward flux at sfc
-        real (kind=kind_phys) :: upfxc         ! total sky upward flux at sfc
+        real (kind=kind_phys) :: upfxc      
 !> clear sky upward flux at sfc
-        real (kind=kind_phys) :: upfx0         ! clear sky upward flux at sfc
+        real (kind=kind_phys) :: upfx0     
 !> total sky downward flux at sfc
-        real (kind=kind_phys) :: dnfxc         ! total sky downward flux at sfc
+        real (kind=kind_phys) :: dnfxc   
 !> clear sky downward flux at sfc
-        real (kind=kind_phys) :: dnfx0         ! clear sky downward flux at sfc
+        real (kind=kind_phys) :: dnfx0  
       end type
 !
-!  ---  define type construct for optional radiation flux profiles
 !
 !> define type construct for optional radiation flux profiles
       type :: proflw_type
 !> level up flux for total sky
-        real (kind=kind_phys) :: upfxc         ! level up flux for total sky
+        real (kind=kind_phys) :: upfxc    
 !> level dn flux for total sky
-        real (kind=kind_phys) :: dnfxc         ! level dn flux for total sky
+        real (kind=kind_phys) :: dnfxc   
 !> level up flux fro clear sky
-        real (kind=kind_phys) :: upfx0         ! level up flux for clear sky
+        real (kind=kind_phys) :: upfx0  
 !> level dn flux for clear sky
-        real (kind=kind_phys) :: dnfx0         ! level dn flux for clear sky
+        real (kind=kind_phys) :: dnfx0 
       end type
 !
-!  ---  parameter constants for lw band structures
-!
+!>\name Parameter constants for LW band structures
+
 !> num of total spectral bands
-      integer, parameter :: NBANDS = 16         ! num of total spectral bands
+      integer, parameter :: NBANDS = 16         
 !> num of total g-points
-      integer, parameter :: NGPTLW = 140        ! num of total g-points
+      integer, parameter :: NGPTLW = 140       
 !> lookup table dimension
-      integer, parameter :: NTBL   = 10000      ! lookup table dimension
+      integer, parameter :: NTBL   = 10000   
 !> max num of absorbing gases
-      integer, parameter :: MAXGAS = 7          ! max num of absorbing gases
+      integer, parameter :: MAXGAS = 7      
 !> num of halocarbon gasees
-      integer, parameter :: MAXXSEC= 4          ! num of halocarbon gases
+      integer, parameter :: MAXXSEC= 4     
 !> num of ref rates of binary species
-      integer, parameter :: NRATES = 6          ! num of ref rates of binary species
+      integer, parameter :: NRATES = 6    
 !> dim for plank function table
-      integer, parameter :: NPLNK  = 181        ! dim for plank function table
+      integer, parameter :: NPLNK  = 181 
 
       integer, parameter :: NBDLW  = NBANDS
 
-!  ---  number of g-point in each band
-!> \name number of g-point in each band
+!> \name Number of g-point in each band
 !! @{
 !      integer  :: NG01, NG02, NG03, NG04, NG05, NG06, NG07, NG08,       &
 !     &            NG09, NG10, NG11, NG12, NG13, NG14, NG15, NG16
@@ -158,7 +154,7 @@
 !! @}
 
 !  ---  begining index of each band
-!> \name begining index of each band
+!> \name Begining index of each band
 !! @{
 !      integer  :: NS01, NS02, NS03, NS04, NS05, NS06, NS07, NS08,       &
 !     &            NS09, NS10, NS11, NS12, NS13, NS14, NS15, NS16

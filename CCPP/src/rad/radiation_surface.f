@@ -78,6 +78,7 @@
 !! @{
 !> This module sets up surface albedo for sw radiation and surface
 !! emissivity for lw radiation.
+!!\version NCEP-Radiation_surface   v5.1  Nov 2012
 !========================================!
       module module_radiation_surface    !
 !........................................!
