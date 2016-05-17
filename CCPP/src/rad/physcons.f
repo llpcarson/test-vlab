@@ -27,8 +27,8 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-!> \defgroup physcons physcons
-!! \ingroup rad
+!> \ingroup rad
+!! \defgroup physcons physcons
 !! This module contains some the most frequently used math and physics constants for gcm models.
 !! @{
 !========================================!

@@ -1078,7 +1078,7 @@
 !      print *,'indfor',indfor
 !     endif
 
-!> -# Call taumol to calculte the gaseous optical depths and Plank fractions for each longwave spectral band.
+!> -# Call taumol() to calculte the gaseous optical depths and Plank fractions for each longwave spectral band.
 !  --- ...  calculate the gaseous optical depths and Planck fractions for
 !           each longwave spectral band.
 
@@ -3953,10 +3953,7 @@
       end subroutine taugb01
 ! ----------------------------------
 
-!> This subroutine computes the optical depth by interpolating in ln(pressure)
-!! and temperature. Below laytrop, the water vapor self-continuum and foreign
-!! continuum is interpolated (in temperature) seperately.
-!! \brief band 2:  350-500 cm-1 (low key - h2o; high key - h2o)
+!> Band 2:  350-500 cm-1 (low key - h2o; high key - h2o)
 ! ----------------------------------
       subroutine taugb02
 ! ..................................
@@ -4033,8 +4030,8 @@
       end subroutine taugb02
 ! ----------------------------------
 
-!> band 3:  500-630 cm-1 (low key - h2o,co2; low minor - n2o);
-!! (high key - h2o,co2; high minor - n2o)
+!> Band 3:  500-630 cm-1 (low key - h2o,co2; low minor - n2o);
+!!                        (high key - h2o,co2; high minor - n2o)
 ! ----------------------------------
       subroutine taugb03
 ! ..................................
@@ -4585,6 +4582,8 @@
       end subroutine taugb04
 ! ----------------------------------
 
+!> Band 5:  700-820 cm-1 (low key - h2o,co2; low minor - o3, ccl4) 
+!!                       (high key - o3,co2)                 
 ! ----------------------------------
       subroutine taugb05
 ! ..................................
@@ -4846,6 +4845,8 @@
       end subroutine taugb05
 ! ----------------------------------
 
+!> Band 6:  820-980 cm-1 (low key - h2o; low minor - co2) 
+!!                       (high key - none; high minor - cfc11, cfc12)
 ! ----------------------------------
       subroutine taugb06
 ! ..................................
@@ -4931,6 +4932,8 @@
       end subroutine taugb06
 ! ----------------------------------
 
+!> Band 7:  980-1080 cm-1 (low key - h2o,o3; low minor - co2)
+!!                        (high key - o3; high minor - co2)
 ! ----------------------------------
       subroutine taugb07
 ! ..................................
@@ -5190,6 +5193,8 @@
       end subroutine taugb07
 ! ----------------------------------
 
+!> Band 8:  1080-1180 cm-1 (low key - h2o; low minor - co2,o3,n2o) 
+!!                         (high key - o3; high minor - co2, n2o) 
 ! ----------------------------------
       subroutine taugb08
 ! ..................................
@@ -5313,6 +5318,8 @@
       end subroutine taugb08
 ! ----------------------------------
 
+!> Band 9:  1180-1390 cm-1 (low key - h2o,ch4; low minor - n2o)
+!!                         (high key - ch4; high minor - n2o)  
 ! ----------------------------------
       subroutine taugb09
 ! ..................................
@@ -5561,6 +5568,7 @@
       end subroutine taugb09
 ! ----------------------------------
 
+!> Band 10:  1390-1480 cm-1 (low key - h2o; high key - h2o)
 ! ----------------------------------
       subroutine taugb10
 ! ..................................
@@ -5635,6 +5643,8 @@
       end subroutine taugb10
 ! ----------------------------------
 
+!> Band 11:  1480-1800 cm-1 (low - h2o; low minor - o2) 
+!!                          (high key - h2o; high minor - o2)   
 ! ----------------------------------
       subroutine taugb11
 ! ..................................
@@ -5726,6 +5736,7 @@
       end subroutine taugb11
 ! ----------------------------------
 
+!> Band 12:  1800-2080 cm-1 (low - h2o,co2; high - nothing)
 ! ----------------------------------
       subroutine taugb12
 ! ..................................
@@ -5910,6 +5921,7 @@
       end subroutine taugb12
 ! ----------------------------------
 
+!> Band 13:  2080-2250 cm-1 (low key-h2o,n2o; high minor-o3 minor)
 ! ----------------------------------
       subroutine taugb13
 ! ..................................
@@ -6156,6 +6168,7 @@
       end subroutine taugb13
 ! ----------------------------------
 
+!> Band 14:  2250-2380 cm-1 (low - co2; high - co2) 
 ! ----------------------------------
       subroutine taugb14
 ! ..................................
@@ -6224,6 +6237,8 @@
       end subroutine taugb14
 ! ----------------------------------
 
+!> Band 15:  2380-2600 cm-1 (low - n2o,co2; low minor - n2) 
+!!                          (high - nothing)     
 ! ----------------------------------
       subroutine taugb15
 ! ..................................
@@ -6432,6 +6447,7 @@
       end subroutine taugb15
 ! ----------------------------------
 
+!> Band 16:  2600-3250 cm-1 (low key- h2o,ch4; high key - ch4)
 ! ----------------------------------
       subroutine taugb16
 ! ..................................

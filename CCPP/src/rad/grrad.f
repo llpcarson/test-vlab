@@ -1614,13 +1614,12 @@
      &     )
 
 !> -# Obtain cloud information for radiation calculations (clouds,cldsa,mtopa,mbota)
-!! +  for  prognostic cloud  ---
+!!\n   for  prognostic cloud  ---
 !!    - For zhao/moorthi's prognostic cloud scheme, call module_radiation_clouds::progcld1()
 !!    - For ferrier's microphysics, call module_radiation_clouds::progcld2()
 !!    - For zhao/moorthi's prognostic cloud+pdfcld, call module_radiation_clouds::progcld3()
-!! +  for  diagnostic cloud  ---
+!!\n   for  diagnostic cloud  ---
 !!    - call module_radiation_clouds::diagcld1()
-!!
 !  --- ...  obtain cloud information for radiation calculations
 
       if (ntcw > 0) then                   ! prognostic cloud scheme
@@ -1725,7 +1724,7 @@
       if (lsswr) then
 
 !> -# calling module_radiation_surface::setalb(),setup surface albedo 
-!!  for sw radiation, incl xw (nov04) sea-ice
+!!  for SW radiation, incl xw (nov04) sea-ice
 
 !  ---  setup surface albedo for sw radiation, incl xw (nov04) sea-ice
 
@@ -1738,7 +1737,7 @@
      &       sfcalb                                                     &
      &     )
 
-!> -# Approximate mean surface albedo from vis (sfcalb(:,4)) and nir (sfcalb(:,2)) diffuse values
+!> -# Approximate mean surface albedo from vis- and nir-  diffuse values
 
 !  ---  approximate mean surface albedo from vis- and nir- diffuse values
 

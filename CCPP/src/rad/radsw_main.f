@@ -1,6 +1,6 @@
 !>  \file radsw_main.f
-!!  This file contains ncep's modifications of the rrtm-sw radiation
-!!  code from aer inc.
+!!  This file contains NCEP's modifications of the rrtm-sw radiation
+!!  code from AER inc.
 
 !  ==============================================================  !!!!!
 !             sw-rrtm3 radiation package description              !!!!!
@@ -261,9 +261,27 @@
 
 !> \ingroup rad
 !! \defgroup module_radsw_main module_radsw_main
+!! \brief This module includes NCEP's modifications of the rrtm-sw radiation
+!! code from AER inc.
+!!    + rrtm_sw/rrtmg_sw:  Clough et al., 2005 \cite clough_et_al_2005
+!!    + mcica:  Pincus et al., 2003 \cite pincus_et_al_2003
+!!
+!!\author   Eli J. Mlawer, emlawer@aer.com
+!!\author   Jennifer S. Delamere, jdelamer@aer.com
+!!\author   Michael J. Iacono, miacono@aer.com
+!!\author   Shepard A. Clough
+!!\version NCEP SW v5.1  Nov 2012 -RRTMG-SW v3.8   
+!!
+!! The authors wish to acknowledge the contributions of the
+!! following people:  Steven J. Taubman, Karen Cady-Pereira,
+!! Patrick D. Brown, Ronald E. Farren, Luke Chen, Robert Bergstrom.
+!!
+!!\copyright  2002-2007, Atmospheric & Environmental Research, Inc. (AER).
+!!  This software may be used, copied, or redistributed as long as it is
+!!  not sold and this copyright notice is reproduced on each copy made.
+!!  This model is provided as is without any express or implied warranties.
+!!  (http://www.rtweb.aer.com/)
 !! @{
-!! This module includes ncep's modifications of the rrtm-sw radiation
-!! code from aer inc.
 !========================================!
       module module_radsw_main           !
 !........................................!

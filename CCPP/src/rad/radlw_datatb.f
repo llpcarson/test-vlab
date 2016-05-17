@@ -21923,14 +21923,13 @@
       real (kind=kind_phys), public :: ka_mco2(NG06,MMC06)
 
 !>  \name  minor gas mapping level:
-!!  lower - co2, p = 706.2720 mb, t = 294.2 k
+
+!>  lower - co2, p = 706.2720 mb, t = 294.2 k
 !!  upper - cfc11, cfc12
 !!  original cfc11 is multiplied by 1.385 to account for the 1060-1107 \f$cm^{-1}\f$ band.
 
-!!@{
       real (kind=kind_phys), public :: cfc11adj(NG06)
       real (kind=kind_phys), public :: cfc12(NG06)
-!!@}
 
       data   absa(:,  1:30) /                                           &
      & 1.816778E-05,3.331369E-05,4.862866E-05,7.508101E-05,9.079919E-04,&

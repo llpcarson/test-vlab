@@ -1132,8 +1132,8 @@
 !###############################################################################
 !###############################################################################
 !
-      SUBROUTINE GSMCOLUMN ( ARAING, ASNOWG, DTPG, I_index, J_index,    &
-     & LSFC, P_col, QI_col, QR_col, QV_col, QW_col, RimeF_col, T_col,   &
+      SUBROUTINE GSMCOLUMN ( ARAING, ASNOWG, DTPG, I_index, J_index,   
+     & LSFC, P_col, QI_col, QR_col, QV_col, QW_col, RimeF_col, T_col, 
      & THICK_col, WC_col, LM, RHC_col, XNCW, FLGmin, PRINT_diag, psfc)
 !
       implicit none
@@ -2634,9 +2634,9 @@
       END  SUBROUTINE GSMCOLUMN
 
 
-      SUBROUTINE rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw       &
-     &,                  f_ice, f_rain, f_rime, flgmin                  &
-     &,                  cwatp, cicep, rainp, snowp                     &
+      SUBROUTINE rsipath(im, ix, ix2, levs, prsl, prsi, t, q, clw 
+     &,                  f_ice, f_rain, f_rime, flgmin           
+     &,                  cwatp, cicep, rainp, snowp             
      &,                  recwat, rerain, resnow, lprnt, ipr)
 !
       implicit none
