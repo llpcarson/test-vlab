@@ -12,57 +12,41 @@
      &,             EPS1 => con_FVirt, pi => con_pi, grav => con_g
       implicit none
 !
-!--- Common block of constants used in column microphysics
 !
-      real,private ::  ABFR, CBFR, CIACW, CIACR, C_N0r0,                &
-     &CN0r0, CN0r_DMRmin, CN0r_DMRmax, CRACW, CRAUT, ESW0,              &
-     &QAUTx, RFmax, RQR_DR1, RQR_DR2, RQR_DR3, RQR_DRmin,               &
+!>\name Common block of constants used in column microphysics
+      real,private ::  ABFR, CBFR, CIACW, CIACR, C_N0r0,             &
+     &CN0r0, CN0r_DMRmin, CN0r_DMRmax, CRACW, CRAUT, ESW0,           &
+     &QAUTx, RFmax, RQR_DR1, RQR_DR2, RQR_DR3, RQR_DRmin,            &
      &RQR_DRmax, RR_DRmin, RR_DR1, RR_DR2, RR_DR3, RR_DRmax
 !
       integer, private :: mic_step
 !
-!--- Common block for lookup table used in calculating growth rates of
-!    nucleated ice crystals growing in water saturated conditions
-!--- Discretized growth rates of small ice crystals after their nucleation
-!     at 1 C intervals from -1 C to -35 C, based on calculations by Miller
-!     and Young (1979, JAS) after 600 s of growth.  Resultant growth rates
-!     are multiplied by physics time step in GSMCONST.
-!
+!>\name Common block for lookup table used in calculating growth rates of nucleated ice crystals growing in water saturated conditions.  Discretized growth rates of small ice crystals after their nucleation at 1 C intervals from -1 C to -35 C, based on calculations by Miller and Young (1979, JAS) \cite miller_and_young_1979 after 600 s of growth.  Resultant growth rates are multiplied by physics time step in GSMCONST.
       INTEGER, PRIVATE,PARAMETER :: MY_T1=1, MY_T2=35
       REAL,PRIVATE,DIMENSION(MY_T1:MY_T2) :: MY_GROWTH
 !
-!--- Parameters for ice lookup tables, which establish the range of mean ice
-!    particle diameters; from a minimum mean diameter of 0.05 mm (DMImin) to a
-!    maximum mean diameter of 1.00 mm (DMImax).  The tables store solutions
-!    at 1 micron intervals (DelDMI) of mean ice particle diameter.
-!
-      REAL, PRIVATE,PARAMETER :: DMImin=.05e-3,      DMImax=1.e-3,      &
-     &                           XMImin=1.e6*DMImin, XMImax=1.e6*DMImax,&
-     &                           DelDMI=1.e-6
+!>\name Parameters for ice lookup tables, which establish the range of mean ice particle diameters; from a minimum mean diameter of 0.05 mm (DMImin) to a maximum mean diameter of 1.00 mm (DMImax).  The tables store solutions at 1 micron intervals (DelDMI) of mean ice particle diameter.
+      REAL, PRIVATE,PARAMETER :: DMImin=.05e-3,     DMImax=1.e-3,      &
+     &                        XMImin=1.e6*DMImin, XMImax=1.e6*DMImax,&
+     &                        DelDMI=1.e-6
       INTEGER, PRIVATE,PARAMETER :: MDImin=XMImin, MDImax=XMImax
 !
-!--- Various ice lookup tables
-!
-      REAL, PRIVATE,DIMENSION(MDImin:MDImax) ::                         &
+!>\name Various ice lookup tables
+      REAL, PRIVATE,DIMENSION(MDImin:MDImax) ::                        &
      &      ACCRI,MASSI,SDENS,VSNOWI,VENTI1,VENTI2
 !
-!--- Mean rain drop diameters varying from 50 microns (0.05 mm) to 450 microns
-!      (0.45 mm), assuming an exponential size distribution.
-!
-      REAL, PRIVATE,PARAMETER :: DMRmin=.05e-3,      DMRmax=.45e-3,     &
-     &                           XMRmin=1.e6*DMRmin, XMRmax=1.e6*DMRmax,&
-     &                           DelDMR=1.e-6,       NLImin=100.
-!    &,                          NLImin=100., NLImax=20.E3
+!>\name Mean rain drop diameters varying from 50 microns (0.05 mm) to 450 microns (0.45 mm), assuming an exponential size distribution.
+      REAL, PRIVATE,PARAMETER :: DMRmin=.05e-3,     DMRmax=.45e-3,     &
+     &                         XMRmin=1.e6*DMRmin, XMRmax=1.e6*DMRmax,&
+     &                         DelDMR=1.e-6,       NLImin=100.
+!    &,                        NLImin=100., NLImax=20.E3
       INTEGER, PRIVATE,PARAMETER :: MDRmin=XMRmin, MDRmax=XMRmax
 !
-!--- Factor of 1.5 for RECImin, RESNOWmin, & RERAINmin accounts for
-!    integrating exponential distributions for effective radius
-!    (i.e., the r**3/r**2 moments).
-!
+!>\name Factor of 1.5 for RECImin, RESNOWmin, & RERAINmin accounts for integrating exponential distributions for effective radius (i.e., the r**3/r**2 moments).
 !     INTEGER, PRIVATE, PARAMETER :: INDEXSmin=300
 !!    INTEGER, PRIVATE, PARAMETER :: INDEXSmin=200
       INTEGER, PRIVATE, PARAMETER :: INDEXSmin=100
-      REAL, PRIVATE, PARAMETER :: RERAINmin=1.5*XMRmin                  &
+      REAL, PRIVATE, PARAMETER :: RERAINmin=1.5*XMRmin               &
 !    &, RECImin=1.5*XMImin, RESNOWmin=1.5*INDEXSmin, RECWmin=8.0
 !    &, RECImin=1.5*XMImin, RESNOWmin=1.5*INDEXSmin, RECWmin=7.5
      &, RECImin=1.5*XMImin, RESNOWmin=1.5*INDEXSmin, RECWmin=10.
@@ -70,46 +54,47 @@
 !    &, RECImin=1.5*XMImin, RESNOWmin=1.5*INDEXSmin, RECWmin=5.
 
 !
-!--- Various rain lookup tables
-!--- Rain lookup tables for mean rain drop diameters from DMRmin to DMRmax,
-!      assuming exponential size distributions for the rain drops
-!
-      REAL, PRIVATE,DIMENSION(MDRmin:MDRmax)::                          &
+!>\name Various rain lookup tables
+!! Rain lookup tables for mean rain drop diameters from DMRmin to DMRmax,
+!!      assuming exponential size distributions for the rain drops
+      REAL, PRIVATE,DIMENSION(MDRmin:MDRmax)::                       &
      &      ACCRR,MASSR,RRATE,VRAIN,VENTR1,VENTR2
 !
-!--- Common block for riming tables
-!--- VEL_RF - velocity increase of rimed particles as functions of crude
-!      particle size categories (at 0.1 mm intervals of mean ice particle
-!      sizes) and rime factor (different values of Rime Factor of 1.1**N,
-!      where N=0 to Nrime).
-!
+!>\name Common block for riming tables
+!! VEL_RF - velocity increase of rimed particles as functions of crude
+!!      particle size categories (at 0.1 mm intervals of mean ice particle
+!!      sizes) and rime factor (different values of Rime Factor of 1.1**N,
+!!      where N=0 to Nrime).
       INTEGER, PRIVATE,PARAMETER :: Nrime=40
       REAL, DIMENSION(2:9,0:Nrime),PRIVATE :: VEL_RF
 !
 !--- The following variables are for microphysical statistics
 !
+!> \name Variable for microphysical statistics
       INTEGER, PARAMETER :: ITLO=-60, ITHI=40
       INTEGER  NSTATS(ITLO:ITHI,4)
       REAL     QMAX(ITLO:ITHI,5),  QTOT(ITLO:ITHI,22)
 !
-      REAL, PRIVATE,  PARAMETER ::                                      &
+      REAL, PRIVATE,  PARAMETER ::                                   &
 !    &  T_ICE=-10., T_ICE_init=-5.      !- Ver1
 !!!  &, T_ICE=-20.                      !- Ver2
      &  T_ICE=-40., T_ICE_init=-15.     !- Ver2
 !    &  T_ICE=-30., T_ICE_init=-5.      !- Ver2
 !
 !     Some other miscellaneous parameters
+!>\name Some other miscellaneous parameters
 !
-      REAL, PRIVATE, PARAMETER :: Thom=T_ICE, TNW=50., TOLER=1.0E-20    &
+      REAL, PRIVATE, PARAMETER :: Thom=T_ICE, TNW=50., TOLER=1.0E-20   &
 !     REAL, PRIVATE, PARAMETER :: Thom=T_ICE, TNW=50., TOLER=5.E-7
 !     REAL, PRIVATE, PARAMETER :: Thom=-35., TNW=50., TOLER=5.E-7
 
 !    &, emisCU=.75/1.66       ! Used for convective cloud l/w emissivity
 
 ! Assume fixed cloud ice effective radius
-     &, RECICE=RECImin                                                  &
-     &, EPSQ=1.0E-20                                                    &
-!    &, EPSQ=1.E-12                                                     &
+!> \name  Assume fixed cloud ice effective radius
+     &, RECICE=RECImin                                                 &
+     &, EPSQ=1.0E-20                                                   &
+!    &, EPSQ=1.E-12                                                    &
      &, FLG0P1=0.1, FLG0P2=0.2, FLG1P0=1.0
 !
 !
@@ -119,6 +104,13 @@
 !------- Initialize constants & lookup tables for microphysics ---------
 !#######################################################################
 !
+!> This subroutine initializes constants & lookup tables for microphysics
+!! \n ABSTRACT
+!! - Reads various microphysical lookup tables used in COLUMN_MICRO
+!! - Lookup tables were created "offline" and are read in during execution
+!! - Creates lookup tables for saturation vapor pressure w/r/t water & ice
+!!\author Ferrier
+!!\date February 2001
       SUBROUTINE GSMCONST (DTPG,mype,first)
 !
       implicit none
@@ -392,6 +384,7 @@
 !--- Sets up lookup table for calculating initial ice crystal growth ---
 !#######################################################################
 !
+!> This subroutine sets up lookup table for calculating initial ice crystal growth
       SUBROUTINE MY_GROWTH_RATES (DTPH)
 !
       implicit none
@@ -434,6 +427,20 @@
 !--------------- Creates lookup tables for ice processes ---------------
 !#######################################################################
 !
+!> This subroutine creates lookup tables for ice processes
+!!\n ---- Key concepts:
+!!       - Actual physical diameter of particles (D)
+!!       - Ratio of actual particle diameters to mean diameter (x=D/MD)
+!!       - Mean diameter of exponentially distributed particles, which is the
+!!         same as 1./LAMDA of the distribution (MD)
+!!       - All quantitative relationships relating ice particle characteristics as
+!!         functions of their diameter (e.g., ventilation coefficients, normalized
+!!         accretion rates, ice content, and mass-weighted fall speeds) are a result
+!!         of using composite relationships for ice crystals smaller than 1.5 mm
+!!         diameter merged with analogous relationships for larger sized aggregates.
+!!         Relationships are derived as functions of mean ice particle sizes assuming
+!!         exponential size spectra and assuming the properties of ice crystals at
+!!         sizes smaller than 1.5 mm and aggregates at larger sizes.
       subroutine ice_lookup
 !
       implicit none
@@ -969,6 +976,7 @@
 !-------------- Creates lookup tables for rain processes ---------------
 !#######################################################################
 !
+!> This subroutine creates lookup tables for rain processes
       subroutine rain_lookup
       implicit none
 !
@@ -2520,7 +2528,7 @@
 !#######################################################################
 !--------- Produces accurate calculation of cloud condensation ---------
 !#######################################################################
-!
+!> Produces accurate calculation of cloud condensation
       REAL FUNCTION CONDENSE (PP, QW, RHgrd, TK, WV)
 !
       implicit none
@@ -2588,6 +2596,7 @@
 !---------------- Calculate ice deposition at T<T_ICE ------------------
 !#######################################################################
 !
+!> Calculate ice deposition at T<T_ICE
       REAL FUNCTION DEPOSIT (PP, RHgrd, Tdum, WVdum)
 !
       implicit none
