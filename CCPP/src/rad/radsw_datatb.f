@@ -18216,7 +18216,7 @@
 !!    to the jpth reference pressure level (see taumol.f for these levels
 !!    in mb).  the fourth index, ig, goes from 1 to 8, and indicates
 !!    which g-interval the absorption coefficients are for.
-      real (kind=kind_phys), public :: absa(MSA27,NG27)
+      real(kind=kind_phys), public :: absa(MSA27,NG27)
 
 !>    the array absb(235,8) (kb(5,13:59,8)) contains absorption coefs at
 !!    the 16 chosen g-values for a range of pressure levels < ~100mb and

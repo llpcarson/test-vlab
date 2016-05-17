@@ -1,6 +1,6 @@
 !>  \file radlw_main.f
 !!  This file contains NCEP's modifications of the rrtm-lw radiation
-!!  code from aer inc.
+!!  code from AER inc.
 
 !!!!!  ==============================================================  !!!!!
 !!!!!               lw-rrtm3 radiation package description             !!!!!
@@ -234,11 +234,29 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> \ingroup rad
-!! \defgroup module_radlw_main module_radlw_main
+!> \defgroup module_radlw_main module_radlw_main
+!! \ingroup rad
+!! \brief  This module includes NCEP's modifications of the rrtm-lw radiation
+!! code from AER inc.
+!!    + rrtm_lw/rrtmg_lw:  Clough et al., 2005 \cite clough_et_al_2005 
+!!    + mcica:  Pincus et al., 2003 \cite pincus_et_al_2003
+!!
+!!\author   Eli J. Mlawer, emlawer@aer.com 
+!!\author   Jennifer S. Delamere, jdelamer@aer.com                    
+!!\author   Michael J. Iacono, miacono@aer.com  
+!!\author   Shepard A. Clough
+!!\version NCEP LW v5.1  Nov 2012 -RRTMG-LW v4.82
+!!                                                               
+!! The authors wish to acknowledge the contributions of the       
+!! following people:  Steven J. Taubman, Karen Cady-Pereira,
+!! Patrick D. Brown, Ronald E. Farren, Luke Chen, Robert Bergstrom.
+!!
+!!\copyright  2002-2007, Atmospheric & Environmental Research, Inc. (AER).
+!!  This software may be used, copied, or redistributed as long as it is
+!!  not sold and this copyright notice is reproduced on each copy made.
+!!  This model is provided as is without any express or implied warranties.
+!!  (http://www.rtweb.aer.com/)
 !! @{
-!> This module includes ncep's modifications of the rrtm-lw radiation
-!! code from aer inc.
 !========================================!
       module module_radlw_main           !
 !........................................!
@@ -414,7 +432,7 @@
 !!\n                          upfxc - total sky upward flux
 !!\n                          dnfx0 - clear sky downward flux
 !!\n                          upfx0 - clear sky upward flux
-!> \section general General Algorithm
+!> \section gen_lwrad General Algorithm
 !> @{
 ! --------------------------------
       subroutine lwrad
@@ -1224,7 +1242,7 @@
 !! spectral band are reduced from 256 g-point intervals to 140.
 !!\param[in] me        integer, print control for parallel process
 !!\param[out] NONE
-!!\section external External Module Variables
+!!\section ext_rlwinit External Module Variables
 !!\n physparam::ilwrate - heating rate unit selections
 !!\n                      =1: output in k/day
 !!\n                      =2: output in k/second
@@ -1467,7 +1485,7 @@
 !!\param[in] ipseed          integer, 1, permutation seed for generating random numbers (isubclw>0)
 !!\param[out] cldfmc         real,(ngptlw,nlay), cloud fraction for each sub-column
 !!\param[out] taucld         real,(nbands,nlay), cloud optical depth for bands (non-mcica)
-!!\section general General Algorithm
+!!\section gen_cldprop General Algorithm
 !> @{
 ! ----------------------------
       subroutine cldprop
@@ -1774,7 +1792,7 @@
 !!\param[in] nlay      integer, 1, number of model vertical layers
 !!\param[in] ipseed    integer, 1, permute seed for random num generator
 !!\param[out] lcloudy     logical, (ngptlw,nlay),sub-colum cloud profile flag array
-!!\section external External Module Variables
+!!\section ext_mcica_subcol External Module Variables
 !!\n physparam::iovrlw    - control flag for cloud overlapping method
 !!\n                        =0:random; =1:maximum/random: =2:maximum
 ! ----------------------------------
@@ -2251,7 +2269,7 @@
 !!\param[out] totdclfl        real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
 !!\param[out] htrcl           real, (nlay), clear sky heating rate (k/sec or k/day)
 !!\param[out] htrb            real, (nlay,nbands), spectral band lw heating rate (k/day)
-!!\section general General Algorithm
+!!\section gen_rtrn General Algorithm
 ! ----------------------------------
       subroutine rtrn
      &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,              !  ---  inputs
@@ -2638,7 +2656,7 @@
 !!\param[out] totdclfl    real, (0:nlay), clear sky downward flux (\f$w/m^2\f$)
 !!\param[out] htrcl       real, (nlay), clear sky heating rate (k/sec or k/day)
 !!\param[out] htrb        real, (nlay*nbands), spectral band lw heating rate (k/day)
-!!\section general General Algorithm
+!!\section gen_rtrnmr General Algorithm
 !> @{
 ! ----------------------------------
       subroutine rtrnmr
@@ -3233,7 +3251,7 @@
 !!\param[out] totdclfl       real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
 !!\param[out] htrcl          real, (nlay), clear sky heating rate (k/sec or k/day)
 !!\param[out] htrb           real, (nlay,nbands), spectral band lw heating rate (k/day)
-!!\section general General Algorithm
+!!\section gen_rtrnmc General Algorithm
 !> @{
 ! ---------------------------------
       subroutine rtrnmc
@@ -3822,6 +3840,13 @@
       contains
 ! =================
 
+!> This subroutine computes the optical depth by interpolating in ln(pressure)
+!! and temperature. Below laytrop, the water vapor self-continuum and foreign 
+!! continuum is interpolated (in temperature) seperately.
+!! \brief band 1:  10-350 cm-1 (low key - h2o; low minor - n2)        
+!!                          (high key - h2o; high minor - n2)         
+!! \author Eli J. Mlawer, Atmospheric&Environmental Research
+!! \author Michael J. Iacono, Atmospheric&Environmental Research
 ! ----------------------------------
       subroutine taugb01
 ! ..................................
@@ -3928,6 +3953,10 @@
       end subroutine taugb01
 ! ----------------------------------
 
+!> This subroutine computes the optical depth by interpolating in ln(pressure)
+!! and temperature. Below laytrop, the water vapor self-continuum and foreign
+!! continuum is interpolated (in temperature) seperately.
+!! \brief band 2:  350-500 cm-1 (low key - h2o; high key - h2o)
 ! ----------------------------------
       subroutine taugb02
 ! ..................................
@@ -4004,6 +4033,8 @@
       end subroutine taugb02
 ! ----------------------------------
 
+!> band 3:  500-630 cm-1 (low key - h2o,co2; low minor - n2o);
+!! (high key - h2o,co2; high minor - n2o)
 ! ----------------------------------
       subroutine taugb03
 ! ..................................
@@ -4310,6 +4341,7 @@
       end subroutine taugb03
 ! ----------------------------------
 
+!> Band 4:  630-700 cm-1 (low key - h2o,co2; high key - o3,co2)
 ! ----------------------------------
       subroutine taugb04
 ! ..................................

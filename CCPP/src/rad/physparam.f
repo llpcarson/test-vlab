@@ -1,10 +1,9 @@
 !> \file physparam.f
 !! This file contains module physparam.
 
-
-!!!!!  ==========================================================  !!!!!
-!!!!!                    module physparam description              !!!!!
-!!!!!  ==========================================================  !!!!!
+!  ==========================================================  !!!!!
+!                    module physparam description              !!!!!
+!  ==========================================================  !!!!!
 !                                                                      !
 !     This module defines commonly used control variables/parameters   !
 !     in physics related programs.                                     !
@@ -20,8 +19,8 @@
 !                                                                      !
 !!!!!  ==========================================================  !!!!!
 
-!> \ingroup rad
-!! \defgroup physparam physparam
+!> \defgroup physparam physparam
+!! \ingroup rad
 !! @{
 !> This module defines commonly used control variables/parameters in physics related programs.
 !! -# contains control variables defined in the form of parameter. They are pre-determined 

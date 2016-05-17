@@ -1,9 +1,9 @@
 !> \file physcons.f
 !! This file contains module physcons
 
-!!!!!  ==========================================================  !!!!!
-!!!!!                 module  'physcons' description               !!!!!
-!!!!!  ==========================================================  !!!!!
+!  ==========================================================  !!!!!
+!                 module  'physcons' description               !!!!!
+!  ==========================================================  !!!!!
 !                                                                      !
 !   this module contains some the most frequently used math and        !
 !   physics constatns for gcm models.                                  !
@@ -27,10 +27,10 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-!> \ingroup rad
-!! \defgroup physcons physcons
+!> \defgroup physcons physcons
+!! \ingroup rad
+!! This module contains some the most frequently used math and physics constants for gcm models.
 !! @{
-!> This module contains some the most frequently used math and physics constants for gcm models.
 !========================================!
           module physcons                !
 !........................................!
@@ -75,9 +75,9 @@
   real(kind=kind_phys),parameter:: con_rd     =2.8705e+2    
 !> gas constant H2O (\f$J/kg/K\f$)
   real(kind=kind_phys),parameter:: con_rv     =4.6150e+2    
-!> spec heat air @p (\f$J/kg/K\f$)
+!> spec heat air at p (\f$J/kg/K\f$)
   real(kind=kind_phys),parameter:: con_cp     =1.0046e+3  
-!> spec heat air @v (\f$J/kg/K\f$)
+!> spec heat air at v (\f$J/kg/K\f$)
   real(kind=kind_phys),parameter:: con_cv     =7.1760e+2    
 !> spec heat H2O gas (\f$J/kg/K\f$)
   real(kind=kind_phys),parameter:: con_cvap   =1.8460e+3  
