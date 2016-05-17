@@ -412,13 +412,13 @@
 !!\param[in] clouds         (npts,nlay,:),cloud profile(check module_radiation_clouds for definition)
 !!\n                ---  for  iswcliq > 0  ---
 !!\n                        (:,:,1)  - layer total cloud fraction
-!!\n                        (:,:,2)  - layer in-cloud liq water path   (g/m**2)
+!!\n                        (:,:,2)  - layer in-cloud liq water path   (\f$g/m^2\f$)
 !!\n                        (:,:,3)  - mean eff radius for liq cloud   (micron)
-!!\n                        (:,:,4)  - layer in-cloud ice water path   (g/m**2)
+!!\n                        (:,:,4)  - layer in-cloud ice water path   (\f$g/m^2\f$)
 !!\n                        (:,:,5)  - mean eff radius for ice cloud   (micron)
-!!\n                        (:,:,6)  - layer rain drop water path      (g/m**2)
+!!\n                        (:,:,6)  - layer rain drop water path      (\f$g/m^2\f$)
 !!\n                        (:,:,7)  - mean eff radius for rain drop   (micron)
-!!\n                        (:,:,8)  - layer snow flake water path     (g/m**2)
+!!\n                        (:,:,8)  - layer snow flake water path     (\f$g/m^2\f$)
 !!\n                        (:,:,9)  - mean eff radius for snow flake  (micron)
 !!\n                ---  for  iswcliq = 0  ---
 !!\n                        (:,:,1)  - layer total cloud fraction
@@ -443,11 +443,11 @@
 !!\param[in] nlay,nlp1       vertical layer/lavel numbers
 !!\param[in] lprnt           logical check print flag
 !!\param[out] hswc           (npts,nlay),total sky heating rates (k/sec or k/day)
-!!\param[out] topflx         (npts),radiation fluxes at toa (w/m**2), components (check module_radsw_parameters for definition)
+!!\param[out] topflx         (npts),radiation fluxes at toa (\f$W/m^2\f$), components (check module_radsw_parameters for definition)
 !!\n                          upfxc - total sky upward flux at toa
 !!\n                          dnflx - total sky downward flux at toa
 !!\n                          upfx0 - clear sky upward flux at toa
-!!\param[out] sfcflx         (npts),radiation fluxes at sfc (w/m**2), components (check module_radsw_parameters for definition)
+!!\param[out] sfcflx         (npts),radiation fluxes at sfc (\f$W/m^2\f$), components (check module_radsw_parameters for definition)
 !!\n                          upfxc - total sky upward flux at sfc
 !!\n                          dnfxc - total sky downward flux at sfc
 !!\n                          upfx0 - clear sky upward flux at sfc
@@ -455,12 +455,12 @@
 !!\n Optional:
 !!\param[out] hswb           (npts,nlay,nbdsw),spectral band total sky heating rates
 !!\param[out] hsw0           (npts,nlay),clear sky heating rates (k/sec or k/day)
-!!\param[out] flxprf         (npts,nlp1),level radiation fluxes (w/m**2), components (check module_radsw_parameters for definition)
+!!\param[out] flxprf         (npts,nlp1),level radiation fluxes (\f$ W/m^2 \f$), components (check module_radsw_parameters for definition)
 !!\n                          dnfxc - total sky downward flux at interface
 !!\n                          upfxc - total sky upward flux at interface
 !!\n                          dnfx0 - clear sky downward flux at interface
 !!\n                          upfx0 - clear sky upward flux at interface
-!!\param[out] fdncmp         (npts),component surface downward fluxes (w/m**2)(check module_radsw_parameters for definition)   !
+!!\param[out] fdncmp         (npts),component surface downward fluxes (\f$W/m^2\f$)(check module_radsw_parameters for definition)  
 !!\n                          uvbfc - total sky downward uv-b flux at sfc
 !!\n                          uvbf0 - clear sky downward uv-b flux at sfc
 !!\n                          nirbm - downward surface nir direct beam flux
