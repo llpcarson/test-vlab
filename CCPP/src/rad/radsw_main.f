@@ -4008,8 +4008,9 @@
       enddo
 
 !  --- ...  call taumol## to calculate layer optical depth
-
+!> call taumol16
       call taumol16
+!> call taumol17
       call taumol17
       call taumol18
       call taumol19
