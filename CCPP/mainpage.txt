@@ -1,21 +1,34 @@
 /**
-	\mainpage GFS Operational Physics
+\mainpage GFS Operational Physics
 	
-	Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
-	- Radiation - RRTMG
-	- Turbulent Transport (PBL) - Hybrid EDMF
-	- Penetrative Convection - SAS
+Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
+	-  \ref rad
+	-  \ref PBL 
+	- Simplified Arakawa-Schubert Deep Convection 
 	- Shallow Convection - SAS
-	- Cloud Microphysics - Zhao-Carr
-	- Gravity Wave Drag - Orographic GWD, Stationary Convective GWD
+	-  \ref MPscheme
+	- Gravity Wave Drag and Mountain Blocking 
 	- Ozone Physics - NRL simplified scheme
 	- Land Surface Model - NOAH
 
-	Here, each scheme is documented in its own module.
 	
-	\section Structure
+\section stru Structure
 
-	This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
+This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
       
+\section plan Future Plans
+NCEP plans to improve the physics package based on the ongoing physics developments which include:
+- Modified deep and shallow convection parameterizations with scale and aerosol awareness.
+- TKE-based moist EDMF PBL parameterizations to further improve vertical turbulence mixing in the stratocumulus-topped PBL as well as in the dry PBL.
+- WSM6 & Thompson cloud microphysics parameterizations.
+- Simplified Higher Order Closure (SHOC) model with prognostic TKE that unifies the boundary layer and shallow convection.
+- Chikira-Sugiyama deep convection parameterization with prognostic closure and with Arakawa-Wu scale-aware extension.
+- Morrison-Gettelman double moment microphysics with interactive aerosols.
+- The next major Noah LSM upgrade is planned for the unification among different NCEP models. The Noah LSM in the current GFS will be upgraded from version 2.7.1 to version 3.3, which includes many physics upgrades and new land datasets.
+- Implementation of a unified GW physics for both orographic and non-orographic waves.
+- Changes to the convective gravity wave drag parameterization to include a gravity-wave spectrum with both stationary waves and waves of varying phase speeds.
+
+
+\n also see  http://www.emc.ncep.noaa.gov/GFS/doc.php
 
 */
