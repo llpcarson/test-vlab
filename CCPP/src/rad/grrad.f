@@ -17,7 +17,8 @@
 !!  the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
 !!  have strong dynamic effect on cloud evolution.
 !!
-!!  The shortwave radiation parameterization is based on Chou and Suarez (1999) and was modified by Hou et al.(2002) for 
+!!  The shortwave radiation parameterization is based on Chou and Suarez (1999) \cite chou_and_suarez_1999 and was modified by 
+!!  Hou et al.(2002) \cite hou_et_al_2002 for 
 !!  the GFS. It contains eight spectral bands in the ultraviolet and visible region and one spectral band in the near-infrared 
 !!  region. It includes absorption by ozone, water vapor,carbon dioxide, and oxygen. A random-maximum cloud overlapping is 
 !!  assumed for radiative transfer calculations in the operational GFS. Cloud optical depth is parameterized as a function 
@@ -25,38 +26,59 @@
 !!  albedo and asymmetry factors are functions of \f$r_e\f$. For water droplets. \f$r_e\f$ is fixed at \f$10\mu m\f$ over 
 !!  the ocean, and specified as \f$r_e=min[max(5-0.25T_c , 5),10]\mu m\f$ over land, where \f$T_c\f$ is temperature in degrees 
 !!  Celsius. For ice particles, \f$r_e\f$ is an empirical function of ice water content and temperature that follows Heymsfield 
-!!  and McFarquhar (1996). The radiative effects of rain and snow are not included in the operational GFS, but the direct radiative 
+!!  and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996. The radiative effects of rain and snow are not included in the 
+!!  operational GFS, but the direct radiative 
 !!  effect of atmospheric aerosols is included. The surface albedo over land varies with the surface type, solar spectral band, 
 !!  and season, and is further adjusted by a solar zenith-angle-dependent factor for the direct solar beam. When the ground has 
 !!  snow cover the grid-mean surface albedo is first computed separately for snow-free and snow-covered areas, and then combined 
 !!  using a snow-cover fraction that depends on the surface roughness and snow depth. Snow albedo depends on the solar zenith angle 
-!!  (Briegleb 1992).
+!!  (Briegleb 1992 \cite briegleb_1992).
 !!
 !!  A major change was made in longwave radiation on 28 August 2003. The Geophysical Fluid Dynamics Laboratory (GFDL) model 
-!!  (Schwarzkopf and Fels 1991) was replaced by the Rapid Radiative Transfer Model (RRTM; Mlawer et al. 1997). The RRTM computes 
+!!  (Schwarzkopf and Fels 1991 \cite schwarzkopf_and_fels_1991) was replaced by the Rapid Radiative Transfer Model (RRTM; 
+!!  Mlawer et al. 1997 \cite mlawer_et_al_1997). The RRTM computes 
 !!  longwave absorption and emission by water vapor,carbon dioxide,ozone,cloud particles, and various trace gases including 
 !!  \f$N_2O\f$,\f$CH_4\f$,\f$O_2\f$,and four types of halocarbons[chlorofluorocarbons(CFCs)].Aerosol effects are not included. 
 !!  For consistency with the earlier GFDL module, no trace gases are included in the RRTM for the GFS forecasts. 
 !!  The RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth 
 !!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands. 
-!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992) to compute absorption by water vapor 
+!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor 
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
-!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993; Ebert and Curry 1992).
+!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stames_1993; Ebert and Curry 1992 
+!!  \cite ebert_and_curry_1992).
 !!
 !!  \section intra_grrad Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information 
 !!  calculated in this scheme is used in other scheme types.
 !!
 !!  \section component Cloud Properties in Radiation
-!!  The cloud cover is calculated based on Xu and Randall (1996).
+!!  The cloud cover is calculated based on Xu and Randall (1996) \cite xu_and_randall_1996.
 !!  \f[
 !!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
 !!  \f]
 !!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
 !!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
 !!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
-!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996)). Maximum-randomly cloud
+!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfiels_and_mcfarquhar_1996). 
+!!  Maximum-randomly cloud
 !!  overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
+!!
+!! \section change Changes to Radiation Parameterization since 2007:
+!! The longwave (LW) and the shortwave (SW) radiation parameterizations in NCEP's operational GFS are both
+!! modified and optimized versions of the Rapid Radiative Transfer Models (RRTMG_LW v2.3 and RRTMG_SW v2.3
+!! , respectively) developed at AER Inc.(Mlawer et al. 1997 \cite mlawer_et_al_1997, Iacono et al., 2000 
+!! \cite iacono_et_al_2000, Clough et al., 2005 \cite clough_et_al_2005). The LW algorithm contains 140 
+!! unevenly distributed g-points in 16 broad spectral bands, while the SW algorithm includes 112 g-points
+!! in 14 bands. In addition to the major atmospheric absorbing gases of ozone, water vapor, and carbon 
+!! dioxide, the algorithm also includes various minor absorbing species such as methane, nitrous oxide, 
+!! oxygen, and up to four types of halocarbons (CFCs). To mitigate the unresolved subgrid cloud variability 
+!! when dealing multi layered clouds, a Monte-Carlo Independent Column Approximation (McICA) method is used 
+!! in the RRTMG radiation transfer computations. A maximum-random cloud overlapping method is used in both
+!! LW and SW radiation calculations. Cloud condensate path and effective radius for water and ice are used
+!! for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993 
+!! is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
+!!(1996,1998) \cite fu_1996 fu_1998 are used in the SW and LW, respectively.
+!!\n In the operational GFS, a climatological tropos
 !!
 !!  \n Features Under Development for GFS
 !!  + Updated and optimized RRTMG + Neural Net Emulator option
