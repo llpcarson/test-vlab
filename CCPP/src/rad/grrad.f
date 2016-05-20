@@ -59,7 +59,7 @@
 !!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
 !!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
 !!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
-!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfiels_and_mcfarquhar_1996). 
+!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996). 
 !!  Maximum-randomly cloud
 !!  overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
 !!
