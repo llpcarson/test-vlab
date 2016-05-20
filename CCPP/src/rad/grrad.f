@@ -44,7 +44,7 @@
 !!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands. 
 !!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor 
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
-!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stames_1993; Ebert and Curry 1992 
+!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992 
 !!  \cite ebert_and_curry_1992).
 !!
 !!  \section intra_grrad Intraphysics Communication
