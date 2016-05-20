@@ -2,7 +2,7 @@
 !! and invokes main radiation calculation.
 
 !> \defgroup rad RRTMG Shortwave/Longwave Radiation Scheme
-!! @{
+!> @{
 !!  \brief  Radiative process is one of the most complex and computational intensive part of all model physics.
 !!  As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
 !!  and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
@@ -93,7 +93,7 @@
 !!  + Spectrally varing emissivity
 
 !> \defgroup module_radiation_driver module_radiation_driver
-!! @{
+!> @{
 !!  module_radiation_driver prepares atmospheric profile, invokes main radiation
 !! calculations, and computes radiative fluxes and heating rates
 !! for some arbitrary number of vertical colums.There are three
@@ -2171,10 +2171,8 @@
       end subroutine grrad
 !-----------------------------------
 !> @}
-
-!> @}
-!
 !........................................!
       end module module_radiation_driver !
 !========================================!
 !> @}
+!>@}
