@@ -11,7 +11,7 @@
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
 !! The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale
 !! condensate. The grid-scale condensate is based on Zhao and Carr (1997) \cite zhao_and_carr_1997,which in turn is based on Sundqvist et al.
-!! (1989) \cite Sundqvist_et_al_1989. The sinks of cloud condensate are grid-scale precipitation which is parameterized 
+!! (1989) \cite sundqvist_et_al_1989. The sinks of cloud condensate are grid-scale precipitation which is parameterized 
 !! following Zhao and Carr (1997) \cite zhao_and_carr_1997 for ice, and Sundqvist et al.(1989) \cite sundqvist_et_al_1989
 !! for liquid water, and evaporation of the cloud condensate which also
 !! follows Zhao and Carr (1997) \cite zhao_and_carr_1997. Evaporation of rain in the unsaturated 
@@ -21,11 +21,18 @@
 !! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
 !! empirically based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 1996 
 !! \cite heymsfield_and_mcfarquhar_1996).
+!> \section tune Important Tunable Parameter are:
+!! - Auto conversion coefficients (for both ice and water)
+!! - Minimum value of cloud condensate benfore the conversion from condensate to precipitation occurs
+!! - Coefficient for evaporation of precipitation
+!! \n These parameters determine the amount of cloud condensate in the atmosphere and thus the cloud properties for 
+!! radiation , and can be set through namelist.
 !!
-!! \section intraphysics Intraphysics Communication
+!! \section intramps Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or
 !!  how information calculated in this scheme is used in other scheme types.
-!! \brief subroutine for grid-scale condensation & evaporation
+
+!> This subroutine is for grid-scale condensation & evaporation of cloud.
 !! \param[in] ix         horizontal dimension
 !! \param[in] im         number of used pts
 !! \param[in] km         vertical layer dimension
@@ -45,8 +52,8 @@
 !! \param[in] u          the critical value of relative humidity for large-scale condensation
 !! \param[in] lprnt      logical print flag
 !! \param[in] ipr        check print point for debugging
-!! \section gen_algorithm General Algorithm
-!! @{
+!> \section gen_algorithm General Algorithm
+!> @{
       subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t
      &,                  tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)
 !
@@ -238,7 +245,7 @@
           else
             rqik = qik/qc
           endif
-!>    - According to Sunqvist et al. (1989) \cite sunqvist_et_al_1989, cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
+!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
 !!\f[
 !!       b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2}
 !!\f]
@@ -267,7 +274,7 @@
 !! where \f$\triangle t\f$ is the time step for precipitation calculation in the model.It is
 !! a simplified version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
 !!    - If cloud over > cclimit, condense water vapor in to cloud condensate (\f$C_{g}\f$)
-!!\n Following Sundqvist et al.(1989), the grid-scale condensation rate is solving (\f$C_{g}\f$) from
+!!\n Following Sundqvist et al.(1989) \cite sundqvist_et_al_1989, the grid-scale condensation rate is solving (\f$C_{g}\f$) from
 !! Eqs (6) and (7) with equations \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
 !! equation \f$de_{s}/dT=\epsilon Le_{s}/RT^{2}\f$,where \f$q_{s}\f$ is the saturation specific humidity,\f$e_{s}\f$
 !! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,\f$P\f$ is the pressure,

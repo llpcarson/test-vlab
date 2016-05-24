@@ -2,6 +2,8 @@
 !! This file contains the subroutine that calculates precipitation processes from suspended cloud water/ice
 
 !> \ingroup MPscheme
+!> This subroutine is for conversion from condensation to precipitation (snow or rain) or
+!! evaporation of rain.
 !! \brief Precipitation is the last step of the atmospheric hydrological cycle.The parameterization
 !! of precipitation production is required in order to remove water substance from the atmosphere
 !! to the ground. In the scheme discussed here,simplifications in the precipitation parameterization
@@ -14,7 +16,6 @@
 !! cloud water, production of snow from cloud ice, melting of snow to form rain below the
 !! freezing level, and the evaporation of precipitation. Finally, the fourth simplification
 !! is that precipitation is diagnostically calculated directly from the cloud mixing ratio.
-!!
 !! \todo unit for param
 !! \param[in] im        inner dimension over which calculation is made
 !! \param[in] ix        maximum inner dimension
@@ -362,7 +363,7 @@
 !
 !> -# precipitation production: auto conversion and accretion
 !!    - The autoconversion of cloud ice to snow (\f$P_{saut}\f$) is simulated
-!! using the equation from Lin et al. (1983)
+!! using the equation from Lin et al. (1983) \cite lin_et_al_1983
 !!\f[
 !!   P_{saut}=a_{1}(m-m_{i0})
 !!\f]
