@@ -1,23 +1,26 @@
 !> \file gscond.f
 !! This file contains the subroutine that calculates grid-scale condensation and evaporation for use
-!! in the Zhao and Carr (1997) scheme.
+!! in the Zhao and Carr (1997) \cite zhao_and_carr_1997 scheme.
 
 !> \defgroup MPscheme Grid-scale Condensation, Evaporation and Precipitation
 !! @{
-!! \brief The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997).
+!! \brief The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997) \cite zhao_and_carr_1997.
 !! The prognostic cloud condensate was implemented into GFS in 2001 (Moorthi et al. 2001, T170L42).
 !!
 !! Figure 1 shows a  schematic illustration of the precipitation scheme.
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
 !! The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale
-!! condensate. The grid-scale condensate is based on Zhao and Carr (1997),which in turn is based on Sundqvist et al.
-!! (1989). The sinks of cloud condensate are grid-scale precipitation which is parameterized following Zhao and Carr
-!! (1997) for ice, and Sundqvist et al. (1989) for liquid water, and evaporation of the cloud condensate which also
-!! follows Zhao and Carr (1997). Evaporation of rain in the unsaturated layers below the level of condensation is also
+!! condensate. The grid-scale condensate is based on Zhao and Carr (1997) \cite zhao_and_carr_1997,which in turn is based on Sundqvist et al.
+!! (1989) \cite Sundqvist_et_al_1989. The sinks of cloud condensate are grid-scale precipitation which is parameterized 
+!! following Zhao and Carr (1997) \cite zhao_and_carr_1997 for ice, and Sundqvist et al.(1989) \cite sundqvist_et_al_1989
+!! for liquid water, and evaporation of the cloud condensate which also
+!! follows Zhao and Carr (1997) \cite zhao_and_carr_1997. Evaporation of rain in the unsaturated 
+!! layers below the level of condensation is also
 !! taken into account.All precipitation that penetrates the bottom atmospheric layers is allowed to fall to the surface.
 !! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
 !! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
-!! empirically based calculation of the effective radius for ice crystals (Hemysfield and McFarquhar 1996).
+!! empirically based calculation of the effective radius for ice crystals (Hemysfield and McFarquhar 1996 
+!! \cite hemysfield_and_mcfarquhar_1996).
 !!
 !! \section intraphysics Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or
@@ -42,7 +45,7 @@
 !! \param[in] u          the critical value of relative humidity for large-scale condensation
 !! \param[in] lprnt      logical print flag
 !! \param[in] ipr        check print point for debugging
-!! \section general General Algorithm
+!! \section gen_algorithm General Algorithm
 !! @{
       subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t
      &,                  tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)
@@ -171,7 +174,7 @@
           qint(i) = qw
 !         if (tmt0 .le. -40.) qint(i) = qi(i)
 !> -# Compute ice-water id number IW.
-!!    - see Table 2 in Zhao and Carr (1997): The distinction between cloud
+!!    - see Table 2 in Zhao and Carr (1997) \cite zhao_and_carr_1997 The distinction between cloud
 !! water and cloud ice is made by the cloud identification number IW, which
 !! is zero for cloud water and unity for cloud ice.
 !!    - All clouds are defined to consist of liquid water below
@@ -235,7 +238,7 @@
           else
             rqik = qik/qc
           endif
-!>    - According to Sunqvist et al. (1989), cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
+!>    - According to Sunqvist et al. (1989) \cite sunqvist_et_al_1989, cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
 !!\f[
 !!       b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2}
 !!\f]
@@ -262,7 +265,7 @@
 !!  E_{c}=\frac{q_{s}}{\triangle t}(f_{0}-f)
 !!\f]
 !! where \f$\triangle t\f$ is the time step for precipitation calculation in the model.It is
-!! a simplified version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983).
+!! a simplified version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
 !!    - If cloud over > cclimit, condense water vapor in to cloud condensate (\f$C_{g}\f$)
 !!\n Following Sundqvist et al.(1989), the grid-scale condensation rate is solving (\f$C_{g}\f$) from
 !! Eqs (6) and (7) with equations \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
@@ -277,7 +280,7 @@
 !!       M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}\partial p}{p\partial t}
 !!\f]
 !! To close the system, an equation for relative humidity tendency \f$f_{t}\f$ was derived by Sundqvist et al.
-!! (1989) using the hypothesis that the quantity \f$M+E_{c}\f$ is divided into one part,\f$bM\f$,which condenses
+!! (1989) \cite sundqvist_et_al_1989 using the hypothesis that the quantity \f$M+E_{c}\f$ is divided into one part,\f$bM\f$,which condenses
 !! in the already cloudy portion of a grid square, and another part,\f$(1-b)M+E_{c}\f$,which is used to increase
 !! the relative humidity of the cloud-free portion and to increase the cloudiness in the square. The equation is
 !! written as
@@ -285,7 +288,7 @@
 !!  f_{t}=\frac{2(1-b)(f_{s}-f_{0})[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-f_{0})+m/b}
 !!\f]
 !!    - Check & correct if over condensation occurs
-!!    - Update of t, q and cwm (see Eqs(6),(7) in Zhao and Carr (1997))
+!!    - Update of t, q and cwm (see Eqs(6),(7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
 !!\f[
 !!   cwm=cwm+(C_{g}-E_{c})\times dt
 !!\f]

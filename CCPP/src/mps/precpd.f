@@ -7,7 +7,7 @@
 !! to the ground. In the scheme discussed here,simplifications in the precipitation parameterization
 !! are needed due to the limitations in computational time and computer storage required by operational
 !! NWP models.First, consideration of particle size and shape can be avoided by using the bulk
-!! parameterization method introduced by Kessler (1969). Second, obly two types of precipitation
+!! parameterization method introduced by Kessler (1969) \cite kessler_1969. Second, obly two types of precipitation
 !! , rain and snow, are considered in this scheme. Third, only the principle microphysical
 !! processes associated with the formation of rain and snow are included. Basically,
 !! there are four types of microphysical processes considered here: production of rain from
@@ -370,7 +370,7 @@
 !! from cloud ice and is set to a value of \f$1.0\times 10^{-5} (kg/kg)\f$. Since snow
 !! prodcution in this process is caused by the size increases of cloud ice particles due
 !! to depositional growth and aggregation among small ice particles, \f$P_{saut}\f$ should
-!! be a function of temperature. According to Lin et al. (1983),\f$a_{1}\f$ is specified as
+!! be a function of temperature. According to Lin et al. (1983) \cite lin_et_al_1983,\f$a_{1}\f$ is specified as
 !! a function of temperature to account for the temperature effects on \f$P_{saut}\f$ and
 !! is given by
 !! \f[
@@ -385,7 +385,7 @@
 !! where \f$P_{s}\f$ is the precipitation rate of snow. The collection coefficients \f$C_{s}\f$
 !! is a function of temperature since the open structures of ice crystals at relative warm
 !! temperatures are more likely to stick, given a collision, than crystals of other shapes
-!! (Rogers 1979). Above the freezing level, \f$C_{s}\f$ is expressed by
+!! (Rogers 1979 \cite rogers_1979). Above the freezing level, \f$C_{s}\f$ is expressed by
 !!\f[
 !!   C_{s}=c_{1}exp[c_{2}(T-273.15)]
 !!\f]
@@ -461,12 +461,12 @@
 !!\n The evaporation of precipitation is important in moistening the layers below
 !! cloud base. Through this process, some of the precipitating water is evaporated
 !! back to the atmosphere and the precipitation efficiency is reduced.
-!!    - Evaporation of rain is calculated using the equation (Sundqvist 1988):
+!!    - Evaporation of rain is calculated using the equation (Sundqvist 1988 \cite sundqvist_1988):
 !!\f[
 !!   E_{rr}=k_{e}(f_{0}-f)(P_{r})^{\beta}
 !!\f]
 !! where \f$k_{e}\f$ and \f$\beta\f$ are parameters that need to be determined empirically.
-!! In Zhao and Carr (1997), \f$k_{e}=2\times 10^{-5}m^{1}kg^{-0.5}s^{-1}\f$ and \f$\beta=0.5\f$
+!! In Zhao and Carr (1997) \cite zhao_and_carr_1997, \f$k_{e}=2\times 10^{-5}m^{1}kg^{-0.5}s^{-1}\f$ and \f$\beta=0.5\f$
 !! gave reasonable values of rain evaporation.
 !!
 !!    - Evaporation of snow is calculated using the equation:
@@ -531,7 +531,7 @@
 !!\f[
 !! P_{sm1}=C_{sm}(T-273.15)^{\alpha}P_{s}
 !!\f]
-!! in Zhao and Carr (1997), parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
+!! in Zhao and Carr (1997) \cite zhao_and_carr_1997, parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
 !! and \f$\alpha=2\f$ cause the falling snow to melt almost completely before it reaches the
 !! \f$T=278.15 K\f$ level.
 !!    - Another is the immediate melting of melting snow by collection of the cloud water
