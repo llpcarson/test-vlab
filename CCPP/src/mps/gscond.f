@@ -19,8 +19,8 @@
 !! taken into account.All precipitation that penetrates the bottom atmospheric layers is allowed to fall to the surface.
 !! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
 !! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
-!! empirically based calculation of the effective radius for ice crystals (Hemysfield and McFarquhar 1996 
-!! \cite hemysfield_and_mcfarquhar_1996).
+!! empirically based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 1996 
+!! \cite heymsfield_and_mcfarquhar_1996).
 !!
 !! \section intraphysics Intraphysics Communication
 !!  This space is reserved for a description of how this scheme uses information from other scheme types and/or
