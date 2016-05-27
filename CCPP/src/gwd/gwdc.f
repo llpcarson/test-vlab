@@ -1,9 +1,45 @@
+!> \file gwdc.f This file is the original code for parameterization of 
+!! stationary convection forced gravity wave drag based on Chun and Baik(1998) \cite chun_and_baik_1998
+
+!> \ingroup gwd
+!> This subroutine is the parameterization of convective gravity wave drag 
+!! based on the theory given by Chun and Baik (1998)
+!! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005)
+!> \param[in] im
+!> \param[in] ix
+!> \param[in] iy
+!> \param[in] km
+!> \param[in] lat
+!> \param[in] u1
+!> \param[in] v1
+!> \param[in] t1
+!> \param[in] q1
+!> \param[in] pmid1
+!> \param[in] pint1
+!> \param[in] dpmid1
+!> \param[in] qmax
+!> \param[in] ktop
+!> \param[in] kbot
+!> \param[in] kcnv
+!> \param[in] cldf
+!> \param[in] grav
+!> \param[in] cp
+!> \param[in] rd
+!> \param[in] fv
+!> \param[in] dlength
+!> \param[in] lprnt
+!> \param[in] ipr
+!> \param[in] fhour
+!> \param[in] utgwc
+!> \param[in] vtgwc
+!> \param[in] tauctx
+!> \param[in] taucty
+!> \section gen_gwdc General Algorithm
+!> @{
       subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,
      &                pmid1,pint1,dpmid1,qmax,ktop,kbot,kcnv,cldf,
-!    &                pmid1,pint1,dpmid1,qmax,cumchr1,ktop,kbot,kcnv,
      &                grav,cp,rd,fv,dlength,lprnt,ipr,fhour,
      &                utgwc,vtgwc,tauctx,taucty)
-!    &                gwdcloc,critic,brunm1,rhom1)
 
 !***********************************************************************
 !        ORIGINAL CODE FOR PARAMETERIZATION OF CONVECTIVELY FORCED
@@ -1151,3 +1187,4 @@
 
       return
       end
+!> @}

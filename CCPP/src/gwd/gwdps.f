@@ -1,3 +1,118 @@
+!> \file gwdps.f 
+!! This file uses the  parameterizations of orographic gravity wave drag and mountain blocking.
+
+!> \defgroup gwd Orographic and Convective Gravity Wave Drag 
+!! @{
+!! Parameterization developed specifilly for orographic and convective source of gravity waves
+!! are described separately.
+!! 
+!! At present, global models must be run with horizontal resolutions 
+!! that cannot typically resolve atmospheric phenomena shorter than ~10-100 km or greater
+!! for weather prediction and ~100-1000 km or greater for climate predicition. Many
+!! atmospheric processes have shorter horizontal scales than these "subgrid-scale" processes
+!! interact with and affect the larger-scale atmosphere in important ways.
+!!\n Atmospheric gravity waves are one such unresolved processes. These waves are generated 
+!! by lower atmospheric sources. e.g., flow over irregularities at the Earth's surface such
+!! as mountains and valleys, uneven distribution of diabatic heat sources asscociated with 
+!! convective systems, and highly dynamic atmospheric processes such as jet streams and fronts.
+!! The dissipation of these waves produces synoptic-scale body forces on the atmospheric flow, 
+!! known as "gravity wave drag"(GWD), which affects both short-term evolution of weather systems and 
+!! long-term climate. However, the spatial scales of these waves (in the range of ~5-500 km 
+!! horizontally) are too short to be fully captured in models, and so GWD must be parameterized.
+!! In addition, the role of GWD in driving the global middle atmosphere circulation and thus global
+!! mean wind/temperature structures is well established. Thus, GWD parametrizations are now critical
+!! components of virtually all large-scale atmospheric models.  
+!!
+!> \section outlines GWD parameterization in GFS
+!! - Gravity-wave drag is simulated as described by Alpert et al. (1988) \cite alpert_et_al_1988.
+!! The parameterization includes determination of the momentum flux due to gravity waves at the
+!! surface, as well as at higher levels. The surface stress is a nonlinear function of the surface
+!! wind speed and the local Froude number, following Pierrehumbert (1987) \cite pierrehumbert_1987.
+!! Vertical variations in the momentum flux occur when the local Richardson number is less than 0.25
+!! (the stress vanishes), or when wave breaking occurs (local Froude number becomes critical); in 
+!! the latter case, the momentum flux is reduced according to the Lindzen(1981) \cite lindzen_1981 
+!! wave saturation hypothesis. Modifications are made to avoid instability when the critical layer 
+!! is near the surface, since the time scale for gravity-wave drag is shorter than the model time step. 
+!! The treatment of the gravity-wave drag parameterization in the lower troposphere is improved.
+!!
+!! - Mountain blocking is incorporated from the Lott and Miller (1997) \cite lott_and_miller_1997
+!! parameterization with minor changes, including their dividing streamline concept. The model sub-grid scale
+!! orography is represented by four parameters, after Baines and Palmer (1990) \cite baines_and_palmer_1990, 
+!! the standard deviation(hprime), the anisotropy (gamma), the slope (sigma)and the geographical orientation 
+!! of the orography(theta).
+!!
+!! - Since 2007, the gravity wave drag and mountain blocking parameterizations are modified to automatically scale
+!! with model resolution. For example, compared to to the T382L64 version of GFS, the T574L64 version uses four 
+!! times stronger mountain blocking and one half the strength of gravity wave drag. The orographic 
+!! gravity wave drag and mountain blocking parameterization is scale aware in the GFS and implemented
+!! across NCEP global and regional models alike following the work of Alpert et al.,(1988,1996)
+!! \cite alpert_et_al_1988 \cite alpert_et_al_1996 and modified to implement the enhanced low tropospheric gravity
+!! wave drag developed by Kim and Arakawa (1995) \cite kim_and_arakawa_1995. Orographic Std Dev (hprime), Convexity(OC),
+!! Asymmetry (OA4) and Lx (CLX4) are input topographic statistics needed.
+!!
+!! - A parameterization of stationay convectively forced gravity wave drag proposed by Chun and Baik (1998)
+!! \cite chun_and_baik_1998 and tested in GCMs by Chun et al. (2001,2004) \cite chun_et_al_2001 \cite chun_et_al_2004
+!! was implemented in the T1534 (13km) GFS in Jan 15, 2015, following Ake Johansson (2008) and the work of the
+!! GCWMB staff. Modest positive effects from using the parameterization are seen in the tropical upper troposphere 
+!! and lower stratosphere.
+!! 
+!!\section intra_gwdps Intraphysics Communication
+!! - Routine gwdps is called from GBPHYS after call to moninedmf
+!! - Routine gwdc is called from GBPHYS after call to sascnvn
+
+!> This subroutine includes orographic gravity wave drag and mountain blocking.
+!! \brief The time tendencies of u v are altered to include the effect of mountain induced gravity wave drag
+!! from sub-grid scale orography including convective breaking, shear breaking and the presence of critical levels.
+!> \section history_gwdps Important Program History:
+!! - This NMC GWD incorporated both GLAS and GFDL mountain induced gravity wave drag
+!! - Modified to implement the enhanced low tropospheric gravity wave drag developed by Kim and Arakawa (1995)
+!! \cite kim_and_arakawa_1995. Orographic Standard Deviation (hprime), Convexity (OC), Asymmetry (OA4) and Lx (CLX4)
+!! are input topographic statistics needed. 
+!! - Modified for USGS orography data (ncep office note 424) \cite hong_1999
+!! - 4/02: Changed to include the Lott and Miller (1997) \cite lott_and_miller_1997 mountain blocking with some modification.
+!> \param[in] IM       integer, number of used pts
+!> \param[in] IX       integer, horizontal dimention
+!> \param[in] IY       integer, number of used pts
+!> \param[in] KM       integer, vertical layer dimension
+!> \param[in,out] A    real, (IY,KM), non-linear tendency for v wind component
+!> \param[in,out] B    real, (IY,KM), non-linear tendency for u wind component
+!> \param[in,out] C    real, (IY,KM), non-linear tendency for temperature (not used)
+!> \param[in] U1       real, (IX,KM), zonal wind at t0-dt (m/s)
+!> \param[in] V1       real, (IX,KM), meridional wind at t0-dt (m/s)
+!> \param[in] T1       real, (IX,KM), temperature at t0-dt (K)
+!> \param[in] Q1       real, (IX,KM), specific humidity at t0-dt 
+!> \param[in] KPBL     integer, (IM), index for the PBL top layer
+!> \param[in] PRSI     real, (IX,KM+1),pressure at layer interfaces
+!> \param[in] DEL      real, (IX,KM), positive increment of p/psfc across layer 
+!> \param[in] PRSL     real, (IX,KM), mean layer pressure
+!> \param[in] PRSLK    real, (IX,KM), exner function at layer
+!> \param[in] PHII     real, (IX,KM+1), interface geopotential (\f$m^2/s^2\f$)
+!> \param[in] PHIL     real, (IX,KM), layer geopotential (\f$m^2/s^2\f$)
+!> \param[in] DELTIM   real, dtp, physics time step in seconds
+!> \param[in] KDT      integer, number of the current time step
+!> \param[in] HPRIME   real, (IM), hprime(:,1),orographic standard deviation (m)
+!> \param[in] OC       real, (IM), hprime(:,2),Orographic Convexity
+!> \param[in] OA4      real, (IY,4),hprime(:,3:6),Orographic Asymmetry
+!> \param[in] CLX4     real, (IY,4),hprime(im,7:10)
+!> \param[in] THETA    real, (IM), hprime(:,11),the angle of the mtn with that to the east (x) axis
+!> \param[in] SIGMA    real, (IM), hprime(:,13),orographic slope
+!> \param[in] GAMMA    real, (IM), hprime(:,12),orographic anisotropy
+!> \param[in] ELVMAX   real, (IM), hprime(:,14),orographic maximum(?)
+!> \param[out] DUSFC   real, (IM), u component of surface stress
+!> \param[out] DVSFC   real, (IM), v component of surface stress
+!> \param[in] G        real, see physcons::con_g
+!> \param[in] CP       real, see physcons::con_cp
+!> \param[in] RD       real, see physcons::con_tird
+!> \param[in] RV       real, see physcons::con_rv
+!> \param[in] IMX      integer, number of longitude points
+!> \param[in] nmtvr    integer, number of topographic variables such as variance etc
+!! used in the GWD parameterization,current operational, nmtvr=14
+!> \param[in] cdmbgwd  real,(2), multiplication factors for cdmb and gwd
+!> \param[in] me       integer, pe number - used for debug prints
+!> \param[in] lprnt    logical, printout for diagnostics
+!> \param[in] ipr      integer, for diagnostics
+!> \section gen_gwdps General Algorithm
+!> @{
       SUBROUTINE GWDPS(IM,IX,IY,KM,A,B,C,U1,V1,T1,Q1,KPBL,
      &               PRSI,DEL,PRSL,PRSLK,PHII, PHIL,DELTIM,KDT,
      &               HPRIME,OC,OA4,CLX4,THETA,SIGMA,GAMMA,ELVMAX, 
@@ -255,6 +370,7 @@
 !
 !
 ! start lm mtn blocking (mb) section
+!> --- Sub-Grid Mountain Blocking Section
 !
 !..............................
 !..............................
@@ -316,6 +432,7 @@
            j   = ipt(i)
             RDZ  = g   / ( phil(j,k+1) - phil(j,k) )
 ! ---                               Brunt-Vaisala Frequency
+!> - Compute Brunt-Vaisala Frequency \f$N\f$
             BNV2LM(I,K) = (G+G) * RDZ * ( VTK(I,K+1)-VTK(I,K) )
      &                     / ( VTK(I,K+1)+VTK(I,K) )
             bnv2lm(i,k) = max( bnv2lm(i,k), bnv2min )
@@ -338,6 +455,8 @@
 ! --- find the dividing stream line height 
 ! --- starting from the level above the max mtn downward
 ! --- iwklm(i) is the k-index of mtn elvmax elevation
+!> - Find the dividing stream line height starting from the level above the max
+!! mountain downward
         DO Ktrial = KMLL, 1, -1
           DO I = 1, npt
              IF ( Ktrial .LT. iwklm(I) .and. kreflm(I) .eq. 0 ) then
@@ -379,6 +498,11 @@
             if ( ANG(I,K) .lt. -90. ) ANG(I,K) = ANG(I,K) + 180.
             ANG(I,K) = ANG(I,K) * DEG_TO_RAD
 !
+!> - Compute UDS
+!!\f[
+!!    UDS=\max(\sqrt{U1^2+V1^2},minwnd)
+!!\f]
+!! where \f$ minwnd=0.1 \f$
             UDS(I,K) = 
      &          MAX(SQRT(U1(J,K)*U1(J,K) + V1(J,K)*V1(J,K)), minwnd)
 ! --- Test to see if we found Zb previously
@@ -397,6 +521,16 @@
               IF ( PE(I) .ge.  EK(I) ) IDXZB(I) = K
 ! --- Then mtn blocked flow is between Zb=k(IDXZB(I)) and surface
 !
+!> - The dividing streamline height (idxzb), of a sub-grid scale obstable, is found from
+!! comparing the potential (PE) and kinetic energies (EK) of upstream large scale wind and
+!! sub-grid scale air parcel movements. Dividing streamline is found when \f$PE\geq EK\f$. 
+!! Then mountain blocked flow is between \f$h_d\f$ and surface. The dividing streamline 
+!! height,can be found by solving  an integral equation for \f$h_d\f$: 
+!!\f[
+!! \frac{U^{2}(h_{d})}{2}=\int_{h_{d}}^{H} N^{2}(z)(H-z)dz
+!!\f]
+!! where \f$H\f$ is the maximum elevation within the sub-grid scale grid box of the actual 
+!! orography, \f$h\f$, form the GTOPO30 dataset from the U.S. Geological Survey.
             ENDIF
           ENDDO
         ENDDO
@@ -432,12 +566,30 @@
           IF ( IDXZB(I) .gt. 0 ) then 
             DO K = IDXZB(I), 1, -1
               IF ( PHIL(J,IDXZB(I)) .gt.  PHIL(J,K) ) then
+
+!> - ZLEN accounts for the width and summing up a number of contributions of elliptic obstables.
+!!\f[
+!!    ZLEN=\sqrt{[\frac{h_{d}-z}{z+h'}]} 
+!!\f]
                 ZLEN = SQRT( ( PHIL(J,IDXZB(I)) - PHIL(J,K) ) / 
      &                       ( PHIL(J,K ) + G * hprime(J) ) )
 ! --- lm eq 14:
+!> - Allowing the drag coefficient to vary with the aspect ratio of the obstable
+!! as seen by the incident flow,  we have the drag coefficient (see eq.14 in Lott and
+!! Miller (1997) \cite lott_and_miller_1997)
+!!\f[
+!! R=\frac{\cos^{2}\psi+\gamma\sin^{2}\psi}{\gamma\cos^{2}\psi+\sin^{2}\psi}
+!!\f]
                 R = (cos(ANG(I,K))**2 + GAMMA(J) * sin(ANG(I,K))**2) / 
      &              (gamma(J) * cos(ANG(I,K))**2 + sin(ANG(I,K))**2)
 ! --- (negitive of DB -- see sign at tendency)
+!> - In each model layer below the dividing streamlines a drag from the blocked flow is 
+!! exerted by the obstacle on the large scale flow and is also calculated as in eq.15 in
+!! Lott and Miller (1997) \cite lott_and_miller_1997
+!!\f[
+!! D_{b}(z)=-C_{d}\max(2-\frac{1}{R},0)\rho\frac{\sigma}{2\mu}ZLEN\max(\cos\psi,\gamma\sin\psi)\frac{UDS}{2}
+!!\f]
+
                 DBTMP = 0.25 *  CDmb * 
      &                  MAX( 2. - 1. / R, 0. ) * sigma(J) * 
      &                  MAX(cos(ANG(I,K)), gamma(J)*sin(ANG(I,K))) *
@@ -484,6 +636,7 @@
 !.............................
 !.............................
 !
+!> --- Orographic Gravity Wave Drag Section
       KMPBL  = km / 2 ! maximum pbl height : # of vertical levels / 2
 !
 !  Scale cleff between IM=384*2 and 192*2 for T126/T170 and T62
@@ -598,6 +751,8 @@
 !             NWD  1   2   3   4   5   6   7   8
 !              WD  W   S  SW  NW   E   N  NE  SE
 !
+!> - Compute low-level horizontal wind direction and find OA, the
+!! Orographic Asymmetry 
       DO I = 1,npt
         J      = ipt(i)
         wdir   = atan2(UBAR(I),VBAR(I)) + pi
@@ -683,6 +838,39 @@
 !     RATIO CONST. USE SIMPLIFIED RELATIONSHIP BETWEEN STANDARD
 !     DEVIATION & CRITICAL HGT
 !
+!> - Calculate enhancement factor (E),number of mountans (m') and aspect 
+!! ratio constant 
+!!\n As eq.(4.9),(4.10),(4.11) in KA95 \cite kim_and_arakawa_1995, we define m' and E in 
+!! such a way that they depend on the geometry and location of the subgrid-scale 
+!! orography through OA and the nonlinearity of flow above the orography through Fr. OC is included in the
+!! saturation flux G' in such a way that G' is proportional to OC. The forms of E,m' and G' we have chosen
+!! are : 
+!!\f[
+!!  E(OA,F_{r_{0}})=(OA+2)^{\delta}
+!!\f]
+!!\f[
+!!  \delta=C_{E}F_{r_{0}}/F_{r_{c}}
+!!\f]
+!!\f[
+!!  m'(OA,L_{h})=C_{m}\triangle x(1+\sum_x L_{h}/\triangle x)^{OA+1}
+!!\f]
+!!\f[
+!!  G'(OC,F_{r_{0}})=\frac{F_{r_{0}}^2}{F_{r_{0}}^2+a^{2}}
+!!\f]
+!!\f[
+!! a^{2}=C_{G}OC^{-1}
+!!\f]
+!! where \f$F_{r_{c}}(=1)\f$ is the critical Froude number, \f$L_{h}\f$ is the width 
+!! of a horizontal cross section of orography. contants \f$C_{E}\f$,\f$C_{m}\f$,
+!! \f$C_{G}\f$ are specified.
+
+!> - Calculate the reference-level drag \f$\tau_{0}\f$ (see eq.(4.8) in KA95 \cite kim_and_arakawa_1995):
+!!\f[
+!! \tau_0=E\frac{m'}{\triangle x}\frac{\rho_{0}U_0^3}{N_{0}}G'
+!!\f]
+!! where \f$E\f$,\f$m'\f$, and \f$G'\f$ are an enhancement factor,"the number of mountains",
+!! and a flux function defined above, respectively.
+
         EFACT    = (OA(I) + 2.) ** (CEOFRC*FR)
         EFACT    = MIN( MAX(EFACT,EFMIN), EFMAX )
 !
@@ -729,6 +917,16 @@
           ENDIF
         ENDDO
 !
+!> - Calculate the ratio of the Scorer parameter (RSCOR), KA4.12
+!! \n From a series of experiments, KA95 \cite kim_and_arakawa_1995 found that the magnitude 
+!! of drag divergence tends to be underestimated by the revised scheme in low-level downstream regions 
+!! with wave breaking. Therefore, at low levels when OA > 0 (i.e., in the "downstream" region) KA95 
+!! tentatively replace the saturation hypothesis by the following formula based on the ratio of the 
+!! the Scorer parameter:
+!!\f[
+!! \frac{\tau_i}{\tau_{i+1}}=\min \left[C_{l}\frac{l_i^2}{l_{i+1}^2},1\right]
+!!\f]
+!! where \f$C_l=1\f$ and \f$l^2\f$ is calculated from the input.
         DO I = 1,npt
           IF (K .GE. kref(I))   THEN
             IF (.NOT.ICRILV(I) .AND. TAUP(I,K) .GT. 0.0 ) THEN
@@ -742,6 +940,17 @@
                 RSCOR   = 1.
               ENDIF
 !
+!> - The drag above the reference level is expressed as:
+!!\f[
+!! \tau=\frac{m}{\triangle x}\rho NUh_d^2
+!!\f]
+!! where \f$h_{d}\f$ is the displacement wave amplitude. In the absence of wave breaking,
+!! the displacement amplitude for the \f$i^{th}\f$ layer can be expressed using the drag
+!! for the layer immediately below. Thus, assuming \f$\tau_i=\tau_{i+1}\f$, we can get:
+!!\f[
+!! h_{d_i}^2=\frac{\triangle x}{m}\frac{\tau_{i+1}}{\rho_{i}N_{i}U_{i}}    
+!!\f]
+
               BRVF = SQRT(BNV2(I,K))        ! Brunt-Vaisala Frequency
 !             TEM1 = XLINV(I)*(RO(I,KP1)+RO(I,K))*BRVF*VELCO(I,K)*0.5
               TEM1 = XLINV(I)*(RO(I,KP1)+RO(I,K))*BRVF*0.5
@@ -751,6 +960,14 @@
 !
 !    RIM is the  MINIMUM-RICHARDSON NUMBER BY SHUTTS (1985)
 !
+!> - The minimum Richardson number (RIM) or local wave-modified Richardson number, which 
+!! determines the onset of wave breaking, is expressed in terms of \f$R_{i}\f$ and
+!!\f$F_{r_{d}}=Nh_{d}/U\f$ based on zonal mean \f$N^2\f$ and U:
+!!\f[
+!! Ri_{m}=\frac{Ri(1-Fr_{d})}{(1+\sqrt{Ri}\cdot Fr_{d})^{2}}
+!!\f]
+!! see eq.(4.6) in KA95 \cite kim_and_arakawa_1995.
+
               TEM2   = SQRT(ri_n(I,K))
               TEM    = 1. + TEM2 * FRO
               RIM    = ri_n(I,K) * (1.-FRO) / (TEM * TEM)
@@ -758,6 +975,19 @@
 !    CHECK STABILITY TO EMPLOY THE 'SATURATION HYPOTHESIS'
 !    OF LINDZEN (1981) EXCEPT AT TROPOSPHERIC DOWNSTREAM REGIONS
 !
+!> - Check stability to employ the 'saturation hypothesis' of Lindzen (1981)
+!!\cite lindzen_1981 except at tropospheric downstream regions.Wave breaking
+!! occurs when the minimum Richardson number \f$Ri_{m}<Ri_{c}=0.25\f$. Then
+!! Lindzen's wave saturation hypothesis resets the  displacement amplitude 
+!!\f$h_{d}\f$ to that corresponding to \f$Ri_{m}=0.25\f$, we obtain the critical 
+!!\f$h_{d}\f$(or \f$h_{c}\f$) expressed in terms of the mean values of \f$U\f$,
+!!\f$N\f$, and \f$Ri\f$ (eq.(4.7) in KA95 \cite kim_and_arakawa_1995):
+!!\f[
+!! h_{c}=\frac{U}{N}\left\{2(2+\frac{1}{\sqrt{Ri}})^{1/2}-(2+\frac{1}{\sqrt{Ri}})\right\}
+!!\f]
+!! if \f$Ri_{m}\leq Ri_{c}\f$, obtain \f$\tau\f$ from the drag above the reference level
+!! by using \f$h_{c}\f$ computed above; otherwise \f$\tau\f$ is unchanged(note scaled by the ratio of 
+!! the Scorer paramter).
 !                                       ----------------------
               IF (RIM .LE. RIC .AND.
 !    &           (OA(I) .LE. 0. .OR.  PRSI(ipt(I),KP1).LE.RLOLEV )) THEN
@@ -789,6 +1019,8 @@
 !
 !     Calculate - (g/p*)*d(tau)/d(sigma) and Decel terms DTAUX, DTAUY
 !
+!> - Calculte \f$\frac{g}{p}\frac{\text{d}(tau)}{\text{d}(sigma)}\f$
+!! and de-acceleration (momentum deposition) at top to 1/2 value.
       DO K = 1,KM
         DO I = 1,npt
           TAUD(I,K) = G * (TAUP(I,K+1) - TAUP(I,K)) / DEL(ipt(I),K)
@@ -808,6 +1040,9 @@
 !------LAYERS BELOW SIGMA=RLOLEV DURING THE NEXT DELTIM TIMESTEP,
 !------THEN ONLY APPLY DRAG UNTIL THAT CRITICAL LINE IS REACHED.
 !
+!> - If the gravity wave drag would force a critical line in the
+!! layers below sigma=rlolev during the next deltim timestep, then 
+!! only apply drag until that critical line is reached.
       DO K = 1,KMM1
         DO I = 1,npt
            IF (K .GT. kref(I) .and. PRSI(ipt(i),K) .GE. RLOLEV) THEN
@@ -824,6 +1059,7 @@
 !       print *,' before  B=',B(npr,:)
 !     endif
 
+!> - Calculate DTAUX,DTAUY,A,B,DUSFC,DVSFC
       DO K = 1,KM
         DO I = 1,npt
           J          = ipt(i)
@@ -911,3 +1147,5 @@
 !    &,                          B(ipt(1),idxzb(1)),me
       RETURN
       END
+!> @}
+!! @}
