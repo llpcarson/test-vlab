@@ -3,15 +3,16 @@
 
 !> \defgroup gwd Orographic and Convective Gravity Wave Drag 
 !! @{
-!! Parameterization developed specifilly for orographic and convective source of gravity waves
-!! are described separately.
+!! Parameterization developed specifically for orographic and convective source of gravity waves
+!! are documented separately.
 !! 
 !! At present, global models must be run with horizontal resolutions 
 !! that cannot typically resolve atmospheric phenomena shorter than ~10-100 km or greater
 !! for weather prediction and ~100-1000 km or greater for climate predicition. Many
 !! atmospheric processes have shorter horizontal scales than these "subgrid-scale" processes
 !! interact with and affect the larger-scale atmosphere in important ways.
-!!\n Atmospheric gravity waves are one such unresolved processes. These waves are generated 
+!!
+!! Atmospheric gravity waves are one such unresolved processes. These waves are generated 
 !! by lower atmospheric sources. e.g., flow over irregularities at the Earth's surface such
 !! as mountains and valleys, uneven distribution of diabatic heat sources asscociated with 
 !! convective systems, and highly dynamic atmospheric processes such as jet streams and fronts.
@@ -21,7 +22,31 @@
 !! horizontally) are too short to be fully captured in models, and so GWD must be parameterized.
 !! In addition, the role of GWD in driving the global middle atmosphere circulation and thus global
 !! mean wind/temperature structures is well established. Thus, GWD parametrizations are now critical
-!! components of virtually all large-scale atmospheric models.  
+!! components of virtually all large-scale atmospheric models. GFS physics includes parameterizations
+!! of gravity waves from two important sources: mountains and convection.  
+!!
+!! Atmospheric flow is significantly influenced by orography creating lift and frictional forces. The representation 
+!! of orography and its influence in numerical weather prediction models are necessarily divided into the resolvable 
+!! scales of motion and treated by primitive equations, the remaining sub-grid scales to be treated by parameterization.
+!! In terms of large scale NWP models, mountain blocking of wind flow around sub-grid scale orograph is a process that
+!! retards motion at various model vertical levels near or in the boundary layer. Flow around the mountain encounters
+!! larger frictional forces by being in contact with the mountain surfaces for longer time as well as the interaction of the 
+!! atmospheric environment with vortex shedding which occurs in numerous observations. Lott and Miller (1997) \cite
+!! lott_and_miller_1997, incorporated the dividing streamline and mountain blocking in conjunction with sub-grid scale
+!! vertically propagating gravity wave parameterization in the context of NWP. The dividing streamline is seen as a source 
+!! of gravity waves to the atmosphere above and nonlinear subgrid low-level mountain drag effect below. 
+!!
+!! Besides, in a review paper on gravity waves in the middle atmosphere. Fritts (1984) \cite fritts_1984 showed that a large
+!! portion of observed gravity wave momentum flux has higher frequencies than those of stationary mountain waves. One of
+!! the alternative sources of gravity waves in troposphere comes from cumulus convection. In summertime when the surface
+!! wind and stability are weak, the magnitude of surface drag and the resultant influence of orographically induced
+!! gravity wave drag on the large-scale flow are relatively small compared with those in wintertime (Palmer et al. 1986
+!! \cite palmer_et_al_1986). In this situation, the relative importance of cumulus convection as a source of gravity 
+!! waves can be increased. In addition, in the tropical region where persistent convection exists, deep cumulus clouds 
+!! impinging on the stable stratosphere can generate gravity waves that influence the large-scale flow through gravity
+!! wave drag. Existence of a vertical convergence/divergence of the momentum flux wherever thermal forcing is located 
+!! can be one of main differences between thermally induced waves and mechanically induced mountain waves(Chun and Baik,
+!! 1998 \cite chun_and_baik_1998).
 !!
 !> \section outlines GWD parameterization in GFS
 !! - Gravity-wave drag is simulated as described by Alpert et al. (1988) \cite alpert_et_al_1988.
@@ -57,9 +82,12 @@
 !! and lower stratosphere.
 !! 
 !!\section intra_gwdps Intraphysics Communication
-!! - Routine gwdps is called from GBPHYS after call to moninedmf
-!! - Routine gwdc is called from GBPHYS after call to sascnvn
+!! - Routine GWDPS (\ref orographic) is called from GBPHYS after call to MONINEDMF
+!! - Routine GWDC (\ref convective) is called from GBPHYS after call to SASCNVN
 
+!> \ingroup gwd
+!> \defgroup orographic Orographic Gravity Wave Drag and Mountain Blocking
+!! @{
 !> This subroutine includes orographic gravity wave drag and mountain blocking.
 !! \brief The time tendencies of u v are altered to include the effect of mountain induced gravity wave drag
 !! from sub-grid scale orography including convective breaking, shear breaking and the presence of critical levels.
@@ -1148,4 +1176,5 @@
       RETURN
       END
 !> @}
+!! @}
 !! @}

@@ -29,9 +29,11 @@
 !! radiation , and can be set through namelist.
 !!
 !! \section intramps Intraphysics Communication
-!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or
-!!  how information calculated in this scheme is used in other scheme types.
+!! - Routine GSCOND is called from GBPHYS after call to SHALCNV
+!! - Routine PRECPD is called from GBPHYS after call to GSCOND
 
+!> \defgroup condense Grid-Scale Condensation and Evaporation of Cloud
+!! @{
 !> This subroutine is for grid-scale condensation & evaporation of cloud.
 !! \param[in] ix         horizontal dimension
 !! \param[in] im         number of used pts
@@ -454,4 +456,5 @@
       return
       end
 !> @}
+!! @}
 !! @}

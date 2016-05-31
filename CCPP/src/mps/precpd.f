@@ -2,6 +2,8 @@
 !! This file contains the subroutine that calculates precipitation processes from suspended cloud water/ice
 
 !> \ingroup MPscheme
+!> \defgroup precip Precipitation (snow or rain) Production
+!! @{
 !> This subroutine is for conversion from condensation to precipitation (snow or rain) or
 !! evaporation of rain.
 !! \brief Precipitation is the last step of the atmospheric hydrological cycle.The parameterization
@@ -642,4 +644,5 @@
 !
       return
       end
+!! @}
 !> @}

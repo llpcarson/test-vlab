@@ -2,38 +2,40 @@
 !! stationary convection forced gravity wave drag based on Chun and Baik(1998) \cite chun_and_baik_1998
 
 !> \ingroup gwd
+!> \defgroup convective Convective Gravity Wave Drag
+!! @{
 !> This subroutine is the parameterization of convective gravity wave drag 
 !! based on the theory given by Chun and Baik (1998)
 !! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005)
-!> \param[in] im
-!> \param[in] ix
-!> \param[in] iy
-!> \param[in] km
-!> \param[in] lat
-!> \param[in] u1
-!> \param[in] v1
-!> \param[in] t1
-!> \param[in] q1
-!> \param[in] pmid1
-!> \param[in] pint1
-!> \param[in] dpmid1
-!> \param[in] qmax
-!> \param[in] ktop
-!> \param[in] kbot
-!> \param[in] kcnv
-!> \param[in] cldf
-!> \param[in] grav
-!> \param[in] cp
-!> \param[in] rd
-!> \param[in] fv
-!> \param[in] dlength
-!> \param[in] lprnt
-!> \param[in] ipr
-!> \param[in] fhour
-!> \param[in] utgwc
-!> \param[in] vtgwc
-!> \param[in] tauctx
-!> \param[in] taucty
+!> \param[in] im     im,integer, horizontal number of used pts
+!> \param[in] ix     ix,integer, horizontal dimention 
+!> \param[in] iy     im,integer, horizontal number of used pts
+!> \param[in] km     levs,integer, vertical layer dimension
+!> \param[in] lat    lat, integer, latitude index - used for debug prints
+!> \param[in] u1     ugrs,real, (IX,KM), u component of layer wind
+!> \param[in] v1     vgrs,real, (IX,KM), v component of layer wind
+!> \param[in] t1     tgrs,real, (IX,KM), layer mean temperature (K)
+!> \param[in] q1     qgrs,real, (IX,LEVS,NTRAC), layer mean tracer concentration
+!> \param[in] pmid1    prsl,real, (IX,KM), mean layer pressure
+!> \param[in] pint1    prsi,real, (IX,KM+1), pressure at layer interfaces
+!> \param[in] dpmid1   del
+!> \param[in] qmax     cumabs, real, maximum convective heating rate (k/s)
+!> \param[in] ktop     ktop
+!> \param[in] kbot     kbot
+!> \param[in] kcnv     kcnv
+!> \param[in] cldf     cldf
+!> \param[in] grav     con_g, real, gravity defined in physcon
+!> \param[in] cp       con_cp, real, specific heat air at p defined in physcon
+!> \param[in] rd       con_rd, real, gas constant air defined in physcon
+!> \param[in] fv       con_fvirt, real, con_fvirt = con_rv/con_rd-1
+!> \param[in] dlength      dlength
+!> \param[in] lprnt        lprnt
+!> \param[in] ipr          ipr
+!> \param[in] fhour        fhour, real, forecast hour
+!> \param[in] utgwc        gwdcu
+!> \param[in] vtgwc        gwdcv
+!> \param[in] tauctx       dusfcg
+!> \param[in] taucty       dvsfcg
 !> \section gen_gwdc General Algorithm
 !> @{
       subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,
@@ -1188,3 +1190,4 @@
       return
       end
 !> @}
+!! @}
