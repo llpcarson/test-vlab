@@ -7,7 +7,7 @@ Documentation for the operational physics suite can be found here. As of January
 	- Simplified Arakawa-Schubert Deep Convection 
 	- Shallow Convection - SAS
 	-  \ref MPscheme
-	- Gravity Wave Drag and Mountain Blocking 
+	-  \ref gwd
 	- Ozone Physics - NRL simplified scheme
 	- Land Surface Model - NOAH
 

@@ -6,37 +6,58 @@
 !! @{
 !> This subroutine is the parameterization of convective gravity wave drag 
 !! based on the theory given by Chun and Baik (1998)
-!! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005)
-!> \param[in] im     im,integer, horizontal number of used pts
-!> \param[in] ix     ix,integer, horizontal dimention 
-!> \param[in] iy     im,integer, horizontal number of used pts
-!> \param[in] km     levs,integer, vertical layer dimension
-!> \param[in] lat    lat, integer, latitude index - used for debug prints
-!> \param[in] u1     ugrs,real, (IX,KM), u component of layer wind
-!> \param[in] v1     vgrs,real, (IX,KM), v component of layer wind
-!> \param[in] t1     tgrs,real, (IX,KM), layer mean temperature (K)
-!> \param[in] q1     qgrs,real, (IX,LEVS,NTRAC), layer mean tracer concentration
-!> \param[in] pmid1    prsl,real, (IX,KM), mean layer pressure
-!> \param[in] pint1    prsi,real, (IX,KM+1), pressure at layer interfaces
-!> \param[in] dpmid1   del
-!> \param[in] qmax     cumabs, real, maximum convective heating rate (k/s)
-!> \param[in] ktop     ktop
-!> \param[in] kbot     kbot
-!> \param[in] kcnv     kcnv
-!> \param[in] cldf     cldf
-!> \param[in] grav     con_g, real, gravity defined in physcon
-!> \param[in] cp       con_cp, real, specific heat air at p defined in physcon
-!> \param[in] rd       con_rd, real, gas constant air defined in physcon
-!> \param[in] fv       con_fvirt, real, con_fvirt = con_rv/con_rd-1
-!> \param[in] dlength      dlength
-!> \param[in] lprnt        lprnt
-!> \param[in] ipr          ipr
-!> \param[in] fhour        fhour, real, forecast hour
-!> \param[in] utgwc        gwdcu
-!> \param[in] vtgwc        gwdcv
-!> \param[in] tauctx       dusfcg
-!> \param[in] taucty       dvsfcg
-!> \section gen_gwdc General Algorithm
+!! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005).
+!!
+!! Parameterizing subgrid-scale convection-induced gravity wave momentum flux for use in large-scale
+!! models inherently requires some information from subgrid-scale cumulus parameterization. 
+!! The methodology for parameterizing the zonal momentum flux induced by thermal forcing can be
+!! summarized as follows. From the cloud-base to cloud-top height, the effect of the momentum flux 
+!! induced by subgrid-scale diabatic forcing is not considered because subgrid-scale cumulus convection 
+!! in large-scale models is only activated in a conditionally unstable atmosphere. Below the cloud 
+!! base, the momentum flux is also not considered because of the wave momentum cancellation. At the 
+!! cloud top, the momentum flux is obtained by eq.(18) and (19) in Chun and Baik (1998) \cite 
+!! chun_and_baik_1998.  Above the cloud top, there are two ways to construct the momentum flux profile.
+!! One way is to specify a vertical structure of the momentum flux normalized by the cloud-top value,
+!! similar to what has been done for mountain drag parameterization. The other way is to apply the wave
+!! saturation hypothesis in order to find wave breaking levels in terms of the Richardon number 
+!! criterion using the nonlinearity factor of thermally induced waves. That is, if \f$Ri_{min}\geq1/4\f$,
+!! the momentum flux at a certain level above the cloud top is equal to that below that level, while
+!! if \f$Ri_{min}<1/4\f$, the saturation momentum flux given by (25) is used. This procedure is repeated
+!! until the model top is reached. At the model top, the momentum flux can be specified as  
+!! a value just below it. The method employing the wave saturation hypothesis in GFS physics is 
+!! essentially the same as that which has been used in mountian wave drag parameterization (Kim 1996 \cite kim_1996).
+!!
+!> \param[in] im       integer, horizontal number of used pts
+!> \param[in] ix       integer, horizontal dimention 
+!> \param[in] iy       integer, horizontal number of used pts
+!> \param[in] km       integer, vertical layer dimension
+!> \param[in] lat      integer, latitude index - used for debug prints
+!> \param[in] u1       real, (IX,KM), u component of layer wind
+!> \param[in] v1       real, (IX,KM), v component of layer wind
+!> \param[in] t1       real, (IX,KM), layer mean temperature (K)
+!> \param[in] q1       real, (IX,LEVS,NTRAC), layer mean tracer concentration
+!> \param[in] pmid1    real, (IX,KM), mean layer pressure
+!> \param[in] pint1    real, (IX,KM+1), pressure at layer interfaces
+!> \param[in] dpmid1   real, (IX,KM), mean layer delta p   
+!> \param[in] qmax     real, (IX), maximum convective heating rate (k/s) in a horizontal 
+!!                     grid point calculated from cumulus parameterization
+!> \param[in] ktop     integer, (IX), vertical level index for cloud top
+!> \param[in] kbot     integer, (IX), vertical level index for cloud bottom
+!> \param[in] kcnv     integer, (IX), (0,1) dependent on whether convection occur or not
+!> \param[in] cldf     real, (IX), deep convective cloud fraction at the cloud top
+!> \param[in] grav     real, gravity defined in physcon
+!> \param[in] cp       real, specific heat air at p defined in physcon
+!> \param[in] rd       real, gas constant air defined in physcon
+!> \param[in] fv       real, con_fvirt = con_rv/con_rd-1
+!> \param[in] dlength  real, (IX), grid spacing in the direction of basic wind at the cloud top 
+!> \param[in] lprnt    logical,printout for diagnostics
+!> \param[in] ipr      integer, for diagnostics  
+!> \param[in] fhour    real, forecast hour
+!> \param[out] utgwc   real, (IY,KM), zonal wind tendency 
+!> \param[out] vtgwc   real, (IY,KM), meridional wind tendency
+!> \param[out] tauctx   dusfcg,real, (IX), wave stress at the cloud top projected in the east
+!> \param[out] taucty   dvsfcg,real, (IX), wave stress at the cloud top projected in the north
+!> \section al_gwdc General Algorithm
 !> @{
       subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,
      &                pmid1,pint1,dpmid1,qmax,ktop,kbot,kcnv,cldf,
@@ -93,30 +114,28 @@
       logical lprnt
 
 !------------------------- Local workspace -----------------------------
-!
-!  i, k     : Loop index
-!  kk       : Loop index
-!  cldf     : Deep convective cloud fraction at the cloud top.
-!  ugwdc    : Zonal wind after GWDC paramterization
-!  vgwdc    : Meridional wind after GWDC parameterization
-!  plnmid   : Log(pmid) ( mid level )
-!  plnint   : Log(pint) ( interface level )
-!  dpint    : Delta pmid ( interface level )
-!  tauct    : Wave stress at the cloud top calculated using basic-wind
-!             parallel to the wind vector at the cloud top ( mid level )
-!  tauctx   : Wave stress at the cloud top projected in the east
-!  taucty   : Wave stress at the cloud top projected in the north
-!  qmax     : Maximum deep convective heating rate ( K s-1 ) in a  
-!             horizontal grid point calculated from cumulus para-
-!             meterization. ( mid level )
-!  wtgwc    : Wind tendency in direction to the wind vector at the cloud top level
-!             due to convectively generated gravity waves ( mid level )
-!  utgwcl   : Zonal wind tendency due to convectively generated 
-!             gravity waves ( mid level )
-!  vtgwcl   : Meridional wind tendency due to convectively generated
-!             gravity waves ( mid level )
-!  taugwci  : Profile of wave stress calculated using basic-wind
-!             parallel to the wind vector at the cloud top 
+! i, k, kk     : Loop index
+!  cldf        : Deep convective cloud fraction at the cloud top.
+!  ugwdc       : Zonal wind after GWDC paramterization
+!  vgwdc       : Meridional wind after GWDC parameterization
+!  plnmid      : Log(pmid) ( mid level )
+!  plnint      : Log(pint) ( interface level )
+!  dpint       : Delta pmid ( interface level )
+!  tauct       : Wave stress at the cloud top calculated using basic-wind
+!                       parallel to the wind vector at the cloud top ( mid level )
+!  tauctx      : Wave stress at the cloud top projected in the east
+!  taucty      : Wave stress at the cloud top projected in the north
+!  qmax        : Maximum deep convective heating rate ( K s-1 ) in a  
+!                       horizontal grid point calculated from cumulus para-
+!                       meterization. ( mid level )
+!  wtgwc       : Wind tendency in direction to the wind vector at the cloud top level
+!                       due to convectively generated gravity waves ( mid level )
+!  utgwcl      : Zonal wind tendency due to convectively generated 
+!                       gravity waves ( mid level )
+!  vtgwcl      : Meridional wind tendency due to convectively generated
+!                       gravity waves ( mid level )
+!  taugwci     : Profile of wave stress calculated using basic-wind
+!                       parallel to the wind vector at the cloud top 
 !  taugwcxi : Profile of zonal component of gravity wave stress
 !  taugwcyi : Profile of meridional component of gravity wave stress 
 !
@@ -144,18 +163,20 @@
 !  dogwdc is used in order to lessen CPU time for GWDC calculation.
 !
 !-----------------------------------------------------------------------
-
       integer i,ii,k,k1,kk,kb,ilev,npt,kcb,kcldm,npr
       integer, dimension(im) :: ipt
 
-      real(kind=kind_phys) tem, tem1,  tem2, qtem, wtgwc, tauct,
+      real(kind=kind_phys) tem,   
+     &    tem1,  tem2, qtem, wtgwc, tauct,
      &                     windcltop,  shear, nonlinct, nonlin, nonlins,
      &                     n2,   dtdp,  crit1, crit2, pi, p1, p2,
      &                     gsqr,  onebg
 !    &                     taus, n2,   dtdp,  crit1, crit2, pi, p1, p2
 
       integer,              allocatable :: kcldtop(:),kcldbot(:)
+
       logical,              allocatable :: do_gwc(:)
+
       real(kind=kind_phys), allocatable :: tauctxl(:), tauctyl(:),
      &                                     gwdcloc(:), break(:),
      &                                     critic(:),
@@ -208,17 +229,17 @@
 !  crit2     : Variable 2 for checking critical level
 !
 !-----------------------------------------------------------------------
-
+! Define constants used in gwdc
       real(kind=kind_phys), parameter ::
      &                      c1=1.41,          c2=-0.38,     ricrit=0.25
      &,                     n2min=1.e-32,     zero=0.0,     one=1.0
-!    &,                     taumin=1.0e-20,   tauctmax=-20.
      &,                     taumin=1.0e-20,   tauctmax=-5.
      &,                     qmin=1.0e-10,     shmin=1.0e-20
      &,                     rimax=1.0e+20,    rimaxm=0.99e+20
      &,                     rimaxp=1.01e+20,  rilarge=0.9e+20
      &,                     riminx=-1.0e+20,  riminm=-1.01e+20
      &,                     riminp=-0.99e+20, rismall=-0.9e+20
+
 
 !
       npt = 0
@@ -248,6 +269,7 @@
 !  Begin GWDC
 !
 !***********************************************************************
+
 
 !-----------------------------------------------------------------------
 !        Write out incoming variables
@@ -321,8 +343,8 @@
      &          brunm(npt,km),   rhom(npt,km))
 
 !-----------------------------------------------------------------------
-!        Create local arrays with reversed vertical indices
-!        and Initialize local variables
+!> -# Create local arrays with reversed vertical indices
+!!   and Initialize local variables
 !-----------------------------------------------------------------------
       gsqr  = grav * grav
       onebg = one / grav
@@ -451,15 +473,15 @@
 !
 
 !
-!  Top interface temperature is calculated assuming an isothermal 
-!  atmosphere above the top mid level.
+!>  - Top interface temperature/density/Brunt-Vaisala(\f$N\f$) is calculated assuming an isothermal 
+!!  atmosphere above the top mid level.
 
         ti(i,1)    = t(i,1)
         rhoi(i,1)  = pint(i,1)/(rd*ti(i,1))
         bruni(i,1) = sqrt ( gsqr / (cp*ti(i,1)) )
 !
-!  Bottom interface temperature is calculated assuming an isothermal
-!  atmosphere below the bottom mid level
+!>  - Bottom interface temperature/density/Brunt-Vaisala(\f$N\f$) is calculated assuming an isothermal
+!!  atmosphere below the bottom mid level
 
         ti(i,km+1)    = t(i,km)
         rhoi(i,km+1)  = pint(i,km+1)/(rd*ti(i,km+1)*(1.0+fv*spfh(i,km)))
@@ -468,8 +490,8 @@
 
 !-----------------------------------------------------------------------
 !
-!  Calculate interface level temperature, density, and Brunt-Vaisala
-!  frequencies based on linear interpolation of Temp in ln(Pressure)
+!>  - Calculate interface level temperature/density/Brunt-Vaisala
+!!  frequencies (\f$N\f$) based on linear interpolation of Temp in ln(Pressure)
 !
 !-----------------------------------------------------------------------
 
@@ -489,9 +511,8 @@
       deallocate (spfh)
 !-----------------------------------------------------------------------
 !
-!  Determine the mid-level Brunt-Vaisala frequencies.
-!             based on interpolated interface Temperatures [ ti ]
-!
+!>  - Calculate the mid-level Brunt-Vaisala frequencies (brum).
+!!    based on interpolated interface Temperatures 
 !-----------------------------------------------------------------------
 
       do k = 1, km
@@ -559,9 +580,8 @@
 
 !-----------------------------------------------------------------------
 !
-!  Determine cloud top wind component, direction, and speed.
-!  Here, ucltop, vcltop, and windcltop are wind components and 
-!  wind speed at mid-level cloud top index
+!> -# Calculate cloud top wind component, direction, and speed (ucltop/vcltop/windcltop). 
+
 !
 !-----------------------------------------------------------------------
 
@@ -577,8 +597,8 @@
 
 !-----------------------------------------------------------------------
 !
-!  Calculate basic state wind projected in the direction of the cloud 
-!  top wind.
+!> -# Calculate basic state wind projected in the direction of the cloud 
+!!  top wind at mid level and interface level  (basicum, basicui).
 !  Input u(i,k) and v(i,k) is defined at mid level
 !
 !-----------------------------------------------------------------------
@@ -593,7 +613,6 @@
 !
 !  Basic state wind at interface level is also calculated
 !  based on linear interpolation in ln(Pressure)
-!
 !  In the top and bottom boundaries, basic-state wind at interface level
 !  is assumed to be vertically uniform.
 !
@@ -613,8 +632,12 @@
 
 !-----------------------------------------------------------------------
 !
-!  Calculate local richardson number 
-!
+!> -# Calculate local Richardson number 
+!! \f[
+!!    Ri=N^2/\eta^2
+!! \f]
+!! where \f$\eta\f$ is the vertical shear (\f$dU/dz\f$).
+
 !  basicum   : U at mid level
 !  basicui   : UI at interface level
 !
@@ -677,13 +700,13 @@
 
 !-----------------------------------------------------------------------
 !
-!  Calculate gravity wave stress at the interface level cloud top
+!> -# Calculate gravity wave stress at the interface level cloud top
 !      
 !  kcldtopi  : The interface level cloud top index
 !  kcldtop   : The midlevel cloud top index
 !  kcldbot   : The midlevel cloud bottom index
 !
-!  A : Find deep convective heating rate maximum
+!  - A : Find deep convective heating rate maximum
 !
 !      If kcldtop(i) is less than kcldbot(i) in a horizontal grid point,
 !      it can be thought that there is deep convective cloud. However,
@@ -691,9 +714,9 @@
 !      zero in spite of kcldtop less than kcldbot. In this case,
 !      maximum deep convective heating is assumed to be 1.e-30. 
 !
-!  B : kk is the vertical index for interface level cloud top
+!  - B : kk is the vertical index for interface level cloud top
 !
-!  C : Total convective fractional cover (cldf) is used as the
+!  - C : Total convective fractional cover (cldf) is used as the
 !      convective cloud cover for GWDC calculation instead of   
 !      convective cloud cover in each layer (concld).
 !                       a1 = cldf*dlength
@@ -705,24 +728,38 @@
 !      cloud cover is randomly overlapped in each layer in the 
 !      cumulus convection.
 !
-!  D : Wave stress at cloud top is calculated when the atmosphere
-!      is dynamically stable at the cloud top
+!>  - Wave stress at cloud top is calculated when the atmosphere
+!!    is dynamically stable at the cloud top
+!!
+!>  - Cloud top wave stress and nonlinear parameter are calculated 
+!!      using density, temperature, and wind that are defined at mid
+!!      level just below the interface level in which cloud top wave
+!!      stress is defined.
+!! The parameter \f$\mu\f$ is the nonlinearity factor of thermally induced internal
+!! gravity waves defined by equ.(17) in Chun and Baik,1998 \cite chun_and_baik_1998
+!! \f[
+!!  \mu=\frac{gQ_{0}a_{1}}{c_{p}T_{0}NU^{2}}
+!! \f]
+!! As equ.(18) and (19) \cite chun_and_baik_1998, the zonal momentum flux is given by
+!! \f[
+!! \tau_{x}=-[\rho U^{3}/N\triangle x]G(\mu)
+!! \f]
+!! where
+!! \f[
+!! G(\mu)=c_{1}c_2^2 \mu^{2}
+!! \f]
+!! The tunable parameter \f$c_1\f$ is related to the horizontal structure of thermal forcing.
+!! The tunable parameter \f$c_2\f$ is related to the basic-state wind and stability and the
+!! bottom and top heights of thermal forcing.
+!! If the atmosphere is dynamically unstable at the cloud top,
+!! GWDC calculation in current horizontal grid is skipped.  
+!!
+!>  - If mean wind at the cloud top is less than zero, GWDC
+!!      calculation in current horizontal grid is skipped.
 !
-!  E : Cloud top wave stress and nonlinear parameter are calculated 
-!      using density, temperature, and wind that are defined at mid
-!      level just below the interface level in which cloud top wave
-!      stress is defined.
-!      Nonlinct is defined at the interface level.
-!  
-!  F : If the atmosphere is dynamically unstable at the cloud top,
-!      GWDC calculation in current horizontal grid is skipped.  
-!
-!  G : If mean wind at the cloud top is less than zero, GWDC
-!      calculation in current horizontal grid is skipped.
-!
-!  H : Maximum cloud top stress, tauctmax =  -20 N m^(-2),
-!  h : max stress -5 (*j*)5/2015 tauctmax =  - 5 n m^(-2),
-!      in order to prevent numerical instability.
+! H : Maximum cloud top stress, tauctmax =  -20 N m^(-2),
+!>  -  Max stress (5/2015): tauctmax =  - 5\f$n/m^2\f$
+!!      in order to prevent numerical instability.
 !
 !-----------------------------------------------------------------------
 !D
@@ -783,6 +820,12 @@
 !  1 - nonlin*|c2|.
 !
 !-----------------------------------------------------------------------
+!> -# Calculate minimum of Richardson number including both basic-state
+!! condition and wave effects.
+!!\f[
+!! Ri_{min}\approx\frac{Ri(1-\mu|c_{2}|)}{(1+\mu Ri^{1/2}|c_{2}|)^{2}}
+!!\f]
+
 
       do k=kcldm,1,-1
 
@@ -819,15 +862,15 @@
 
 !-----------------------------------------------------------------------
 !
-!  If minimum RI at interface cloud top is less than or equal to 1/4,
-!  GWDC calculation for current horizontal grid is skipped 
+!>  - If minimum RI at interface cloud top is less than or equal to 1/4,
+!!  GWDC calculation for current horizontal grid is skipped 
 !
 !-----------------------------------------------------------------------
 
 !-----------------------------------------------------------------------
 !
-!  Calculate gravity wave stress profile using the wave saturation
-!  hypothesis of Lindzen (1981).   
+!> -# Calculate gravity wave stress profile using the wave saturation
+!!  hypothesis of Lindzen (1981) \cite lindzen_1981.   
 !
 !  Assuming kcldtop(i)=10 and kcldbot=16,
 !
@@ -880,6 +923,16 @@
 !
 !-----------------------------------------------------------------------
  
+!>  - When \f$Ri_{min}\f$ is set to 1/4 based on Lindzen's (1981) \cite lindzen_1981
+!! saturation hypothesis, the nonlinearity factor for wave saturation can be derived by
+!! \f[
+!! \mu_{s}=\frac{1}{|c_{2}|}[2\sqrt{2+\frac{1}{\sqrt{Ri}}}-(2+\frac{1}{\sqrt{Ri}})]
+!! \f]
+!! Then the saturation zonal momentum flux is given by
+!! \f[
+!! \tau_{s}=-[\rho U^{3}/(N\triangle x)]c_{1}c_2^2\mu_s^2
+!! \f]
+
             if (k < kk .and. k > 1) then
               if ( abs(taugwci(i,k+1)) > taumin ) then                  ! TAUGWCI
                 if ( riloc(i,k) > ricrit ) then                         ! RIloc
@@ -897,7 +950,7 @@
                   end if                                              ! RImin
                 else
 
-!!!!!!!!!! In the dynamically unstable environment, there is no gravity wave stress
+!>  - In the dynamically unstable environment, there is no gravity wave stress
 
                   taugwci(i,k) = zero    
                 end if                                                ! RIloc
@@ -916,7 +969,7 @@
 
             elseif (k == 1) then
 
-!!!!!! Upper boundary condition - permit upward propagation of gravity wave energy
+!>  - Upper boundary condition - permit upward propagation of gravity wave energy
 
               taugwci(i,1) = taugwci(i,2)
             endif
@@ -924,8 +977,7 @@
         enddo                     ! end of i=1,npt loop
       enddo                       ! end of k=kcldm,1,-1 loop
 
-!!!!!! Vertical differentiation
-!!!!!!
+!>  - Vertical differentiation
 
       do k=1,km
         do i=1,npt
@@ -945,7 +997,7 @@
 
 !-----------------------------------------------------------------------
 !
-!  Calculate momentum flux = stress deposited above cloup top
+!> -# Calculate momentum flux = stress deposited above cloup top
 !  Apply equal amount with opposite sign within cloud
 !
 !-----------------------------------------------------------------------
@@ -1134,8 +1186,8 @@
 !     enddo
 
 !-----------------------------------------------------------------------
-!        Convert back local GWDC Tendency arrays to GFS model vertical indices
-!        Outgoing (FU1,FV1)=(utgwc,vtgwc)
+!> -# Convert back local GWDC Tendency arrays to GFS model vertical indices
+!  Outgoing (FU1,FV1)=(utgwc,vtgwc)
 !-----------------------------------------------------------------------
 
       do k=1,km

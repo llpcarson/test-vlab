@@ -240,6 +240,7 @@
 !   ********************************************************************
       USE MACHINE , ONLY : kind_phys
       implicit none
+!
       integer im, iy, ix, km, imx, kdt, ipr, me
       integer KPBL(IM)                 ! Index for the PBL top layer!
       real(kind=kind_phys) deltim, G, CP, RD, RV,      cdmbgwd(2)
@@ -294,6 +295,7 @@
       parameter (dpmin=5000.0)   ! Minimum thickness of the reference layer
                                  ! in Pa
 !
+
       real(kind=kind_phys) FDIR
       integer mdir
       parameter(mdir=8, FDIR=mdir/(PI+PI))
@@ -332,12 +334,14 @@
      &, kmll
 !    &, kmll,kmds,ihit,jhit
       logical lprnt
-!
+
+
 !     parameter (cdmb = 1.0)     ! non-dim sub grid mtn drag Amp (*j*)
 ! non-dim sub grid mtn drag Amp (*j*)
 !     cdmb = 1.0/float(IMX/192)
 !     cdmb = 192.0/float(IMX)
       cdmb = 4.0 * 192.0/float(IMX)
+
       if (cdmbgwd(1) >= 0.0) cdmb = cdmb * cdmbgwd(1)
 !
       npr = 0
