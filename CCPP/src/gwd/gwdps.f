@@ -1,5 +1,5 @@
 !> \file gwdps.f 
-!! This file uses the  parameterizations of orographic gravity wave drag and mountain blocking.
+!! This file is the  parameterization of orographic gravity wave drag and mountain blocking.
 
 !> \defgroup gwd Orographic and Convective Gravity Wave Drag 
 !! @{

@@ -8,7 +8,7 @@ Documentation for the operational physics suite can be found here. As of January
 	- Shallow Convection - SAS
 	-  \ref MPscheme
 	-  \ref gwd
-	- Ozone Physics - NRL simplified scheme
+	- Ozone Sources and Sinks 
 	- Land Surface Model - NOAH
 
 	
