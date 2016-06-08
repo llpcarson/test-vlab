@@ -1,6 +1,10 @@
 /**
 \mainpage GFS Operational Physics
+brief GFS operational physics
+*/
 	
+/**
+\page intro Introduction
 Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
 	-  \ref rad
 	-  \ref PBL 
@@ -9,11 +13,10 @@ Documentation for the operational physics suite can be found here. As of January
 	-  \ref MPscheme
 	-  \ref gwd
 	- Ozone Sources and Sinks 
+	- Earth System Surface Fluxes and State
 	- Land Surface Model - NOAH
 
-	
 \section stru Structure
-
 This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
       
 \section plan Future Plans
@@ -28,7 +31,264 @@ NCEP plans to improve the physics package based on the ongoing physics developme
 - Implementation of a unified GW physics for both orographic and non-orographic waves.
 - Changes to the convective gravity wave drag parameterization to include a gravity-wave spectrum with both stationary waves and waves of varying phase speeds.
 
+\n see also http://www.emc.ncep.noaa.gov/GFS/doc.php
+*/
 
-\n also see  http://www.emc.ncep.noaa.gov/GFS/doc.php
+/**
+\page rrtmg RRTMG Shortwave/Longwave Radiation Scheme 
+Radiative process is one of the most complex and computational intensive part of all model physics.
+As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
+and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
+has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html
+schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 
+Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative
+flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
+needed for the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the
+radiative heating and cooling rates of a given atmospheric volume. The magnitude of the terms in the surface energy
+budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition,
+the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
+have strong dynamic effect on cloud evolution.
+
+The shortwave radiation parameterization is based on Chou and Suarez (1999) \cite chou_and_suarez_1999 and was modified by
+Hou et al.(2002) \cite hou_et_al_2002 for the GFS. It contains eight spectral bands in the ultraviolet and visible region and one spectral band in the near-infrared
+region. It includes absorption by ozone, water vapor,carbon dioxide, and oxygen. A random-maximum cloud overlapping is
+assumed for radiative transfer calculations in the operational GFS. Cloud optical depth is parameterized as a function
+of the predicted cloud condensate path and the effective radius of cloud particles (\f$r_e\f$). Cloud particle single-scattering albedo and asymmetry factors are functions of \f$r_e\f$. For water droplets. \f$r_e\f$ is fixed at \f$10\mu m\f$ over
+the ocean, and specified as \f$r_e=min[max(5-0.25T_c , 5),10]\mu m\f$ over land, where \f$T_c\f$ is temperature in degrees
+Celsius. For ice particles, \f$r_e\f$ is an empirical function of ice water content and temperature that follows Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996. The radiative effects of rain and snow are not included in the
+  operational GFS, but the direct radiative
+effect of atmospheric aerosols is included. The surface albedo over land varies with the surface type, solar spectral band,
+and season, and is further adjusted by a solar zenith-angle-dependent factor for the direct solar beam. When the ground has
+ snow cover the grid-mean surface albedo is first computed separately for snow-free and snow-covered areas, and then combined
+ using a snow-cover fraction that depends on the surface roughness and snow depth. Snow albedo depends on the solar zenith angle
+(Briegleb 1992 \cite briegleb_1992).
+
+A major change was made in longwave radiation on 28 August 2003. The Geophysical Fluid Dynamics Laboratory (GFDL) model
+ (Schwarzkopf and Fels 1991 \cite schwarzkopf_and_fels_1991) was replaced by the Rapid Radiative Transfer Model (RRTM;
+Mlawer et al. 1997 \cite mlawer_et_al_1997). The RRTM computes
+ longwave absorption and emission by water vapor,carbon dioxide,ozone,cloud particles, and various trace gases including
+ \f$N_2O\f$,\f$CH_4\f$,\f$O_2\f$,and four types of halocarbons[chlorofluorocarbons(CFCs)].Aerosol effects are not included.
+ For consistency with the earlier GFDL module, no trace gases are included in the RRTM for the GFS forecasts.
+ The RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth
+ to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands.
+ It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor
+ at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and
+ the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992
+ \cite ebert_and_curry_1992).
+
+\section change Changes to Radiation Parameterization since 2007:
+The longwave (LW) and the shortwave (SW) radiation parameterizations in NCEP's operational GFS are both
+modified and optimized versions of the Rapid Radiative Transfer Models (RRTMG_LW v2.3 and RRTMG_SW v2.3
+, respectively) developed at AER Inc.(Mlawer et al. 1997 \cite mlawer_et_al_1997, Iacono et al., 2000
+\cite iacono_et_al_2000, Clough et al., 2005 \cite clough_et_al_2005). The LW algorithm contains 140
+unevenly distributed g-points in 16 broad spectral bands, while the SW algorithm includes 112 g-points
+ in 14 bands. In addition to the major atmospheric absorbing gases of ozone, water vapor, and carbon
+dioxide, the algorithm also includes various minor absorbing species such as methane, nitrous oxide,
+ oxygen, and up to four types of halocarbons (CFCs). To mitigate the unresolved subgrid cloud variability
+ when dealing multi layered clouds, a Monte-Carlo Independent Column Approximation (McICA) method is used
+ in the RRTMG radiation transfer computations. A maximum-random cloud overlapping method is used in both
+ LW and SW radiation calculations. Cloud condensate path and effective radius for water and ice are used
+ for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993
+ is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
+(1996) \cite fu_1996 are used in the SW and LW, respectively.
+\n In the operational GFS, a climatological tropospheric aerosol with a 5-degree horizontal resolution is used in
+both LW and SW radiations. A generalized spectral mapping formulation was developed to compute radiative properties
+of various aerosol components for each of the radiation spectral bands. A separate stratospheric volcanic aerosol
+parameterization was added that is capable of handling volcanic events. In SW, a new table of incoming solar constants
+is derived covering time period of 1850-2019 (Vandendool, personal communivation). An eleven-year solar cycle
+approximation will be used for time out of the window period in long term climate simulations. The SW albedo 
+parameterization uses surface vegetation type based seasonal climatology similar to that described in the NCEP
+OFFICE Note 441 (Hou et al. 2002 \cite hou_et_al_2002) but with a modification in the treatment of solar zenith 
+angle dependency over snow-free land surface (Yang et al. 2008 \cite yang_et_al_2008). Similarly, vegetation type based
+non-black-body surface emissivity is used for the LW radiation. Concentrations of atmospheric greenhouse gases are either
+obtained from global network measurements, such as carbon dioxide (CO2), or taking the climatological constants, the
+actual CO2 value for the forecast time is an estimation based on the most recent five-year observations. In the lower
+atmosphere (<3km) a monthly mean CO2 distribution in 15 degree horizontal resolution is used, while a global mean monthly value is used in the upper atmosphere.
+
+\section intra_grrad Intraphysics Communication
+  In \ref module_radiation_driver there are three externally callable subroutines:
+- Routine RADINIT is called at the start of model run to set up radiation related fixed parameters
+  (see "call rad_initialize" in gfs_physics_initialize_mod.f)
+- Routine RADUPDATE is called in GLOOPR to update time-varying data sets and module variables
+- Routine GRRAD is called in GLOOPR after call to RADUPDATE
+
+\section module Modules
+- \ref module_radiation_driver 
+\n   prepares atmospheric profiles, invokes main radiations, and computes radiative fluxes and heating rates for some arbitrary number of vertical columns
+- \ref module_radlw_main 
+\n   NCEP's modifications of the RRTM-LW radiation code from AER inc.
+- \ref module_radsw_main 
+\n   NCEP's modifications of the RRTM-SW radiation code from AER inc.
+- \ref module_radiation_clouds 
+\n   describes cloud-radiation interaction
+- \ref module_radiation_aerosols 
+\n   describes aerosols-radiation interaction
+- \ref module_radiation_astronomy 
+\n   sets up astronomy quantities for solar radiation calculations
+- \ref module_radiation_gases 
+\n   sets up ozone climatological profiles and other constant gas profiles, such as co2,ch4, n2o,o2, and those of cfc gases 
+- \ref module_radiation_surface 
+\n   sets up surface albedo for SW radiation and surface emissivity for LW radiation
+- \ref physcons 
+\n   contains some the most frequently used math and physics constants for GCM models
+- \ref physparam 
+\n   defines commonly used control variables/parameters in physics related programs
+*/
+
+
+/**
+\page hybrid Hybrid Eddy-diffisivity Mass Flux Scheme
+\ref PBL
+*/
+
+/**
+\page sas Simplified Arakawa-Schubert Deep Convection
+*/
+
+/**
+\page sha Shallow Convection - SAS
+*/
+
+/**
+\page zhao Grid-scale Condensation, Evaporation and Precipitation
+The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997) \cite zhao_and_carr_1997.
+The prognostic cloud condensate was implemented into GFS in 2001 (Moorthi et al. 2001, T170L42).
+
+Figure 1 shows a  schematic illustration of the precipitation scheme.
+ \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
+The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale
+condensate. The grid-scale condensate is based on Zhao and Carr (1997) \cite zhao_and_carr_1997,which in turn is based on Sundqvist et al. (1989) \cite sundqvist_et_al_1989. The sinks of cloud condensate are grid-scale precipitation which is parameterized
+following Zhao and Carr (1997) \cite zhao_and_carr_1997 for ice, and Sundqvist et al.(1989) \cite sundqvist_et_al_1989
+for liquid water, and evaporation of the cloud condensate which also
+follows Zhao and Carr (1997) \cite zhao_and_carr_1997. Evaporation of rain in the unsaturated
+layers below the level of condensation is also
+taken into account.All precipitation that penetrates the bottom atmospheric layers is allowed to fall to the surface.
+Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
+through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
+empirically based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 1996 \cite heymsfield_and_mcfarquhar_1996).
+\section tune Important Tunable Parameter are:
+- Auto conversion coefficients (for both ice and water)
+- Minimum value of cloud condensate benfore the conversion from condensate to precipitation occurs
+- Coefficient for evaporation of precipitation
+\n These parameters determine the amount of cloud condensate in the atmosphere and thus the cloud properties for
+radiation , and can be set through namelist.
+
+\section intramps Intraphysics Communication
+- Routine GSCOND (\ref condense) is called from GBPHYS after call to SHALCNV
+- Routine PRECPD (\ref precip)is called from GBPHYS after call to GSCOND
+
+\section modules Modules
+- \ref condense 
+- \ref precip
+*/
+
+/**
+\page oro Orographic and Convective Gravity Wave Drag
+At present, global models must be run with horizontal resolutions
+that cannot typically resolve atmospheric phenomena shorter than ~10-100 km or greater
+for weather prediction and ~100-1000 km or greater for climate predicition. Many
+atmospheric processes have shorter horizontal scales than these "subgrid-scale" processes
+interact with and affect the larger-scale atmosphere in important ways.
+
+Atmospheric gravity waves are one such unresolved processes. These waves are generated
+by lower atmospheric sources. e.g., flow over irregularities at the Earth's surface such
+as mountains and valleys, uneven distribution of diabatic heat sources asscociated with
+convective systems, and highly dynamic atmospheric processes such as jet streams and fronts.
+The dissipation of these waves produces synoptic-scale body forces on the atmospheric flow,
+known as "gravity wave drag"(GWD), which affects both short-term evolution of weather systems and
+long-term climate. However, the spatial scales of these waves (in the range of ~5-500 km
+horizontally) are too short to be fully captured in models, and so GWD must be parameterized.
+In addition, the role of GWD in driving the global middle atmosphere circulation and thus global
+mean wind/temperature structures is well established. Thus, GWD parametrizations are now critical
+components of virtually all large-scale atmospheric models. GFS physics includes parameterizations
+of gravity waves from two important sources: mountains and convection.
+
+Atmospheric flow is significantly influenced by orography creating lift and frictional forces. The representation
+of orography and its influence in numerical weather prediction models are necessarily divided into the resolvable
+scales of motion and treated by primitive equations, the remaining sub-grid scales to be treated by parameterization.
+In terms of large scale NWP models, mountain blocking of wind flow around sub-grid scale orograph is a process that
+retards motion at various model vertical levels near or in the boundary layer. Flow around the mountain encounters
+larger frictional forces by being in contact with the mountain surfaces for longer time as well as the interaction of the
+atmospheric environment with vortex shedding which occurs in numerous observations. Lott and Miller (1997) \cite
+lott_and_miller_1997, incorporated the dividing streamline and mountain blocking in conjunction with sub-grid scale
+vertically propagating gravity wave parameterization in the context of NWP. The dividing streamline is seen as a source
+of gravity waves to the atmosphere above and nonlinear subgrid low-level mountain drag effect below.
+
+Besides, in a review paper on gravity waves in the middle atmosphere. Fritts (1984) \cite fritts_1984 showed that a large
+portion of observed gravity wave momentum flux has higher frequencies than those of stationary mountain waves. One of
+the alternative sources of gravity waves in troposphere comes from cumulus convection. In summertime when the surface
+wind and stability are weak, the magnitude of surface drag and the resultant influence of orographically induced
+gravity wave drag on the large-scale flow are relatively small compared with those in wintertime (Palmer et al. 1986
+\cite palmer_et_al_1986). In this situation, the relative importance of cumulus convection as a source of gravity
+waves can be increased. In addition, in the tropical region where persistent convection exists, deep cumulus clouds
+impinging on the stable stratosphere can generate gravity waves that influence the large-scale flow through gravity
+wave drag. Existence of a vertical convergence/divergence of the momentum flux wherever thermal forcing is located
+can be one of main differences between thermally induced waves and mechanically induced mountain waves(Chun and Baik,
+1998 \cite chun_and_baik_1998).
+
+\section outlines GWD parameterization in GFS
+- Gravity-wave drag is simulated as described by Alpert et al. (1988) \cite alpert_et_al_1988.
+  The parameterization includes determination of the momentum flux due to gravity waves at the
+  surface, as well as at higher levels. The surface stress is a nonlinear function of the surface
+  wind speed and the local Froude number, following Pierrehumbert (1987) \cite pierrehumbert_1987.
+  Vertical variations in the momentum flux occur when the local Richardson number is less than 0.25
+  (the stress vanishes), or when wave breaking occurs (local Froude number becomes critical); in
+  the latter case, the momentum flux is reduced according to the Lindzen(1981) \cite lindzen_1981
+  wave saturation hypothesis. Modifications are made to avoid instability when the critical layer
+  is near the surface, since the time scale for gravity-wave drag is shorter than the model time step.
+  The treatment of the gravity-wave drag parameterization in the lower troposphere is improved.
+
+- Mountain blocking is incorporated from the Lott and Miller (1997) \cite lott_and_miller_1997
+  parameterization with minor changes, including their dividing streamline concept. The model sub-grid scale
+  orography is represented by four parameters, after Baines and Palmer (1990) \cite baines_and_palmer_1990,
+  the standard deviation(hprime), the anisotropy (gamma), the slope (sigma)and the geographical orientation
+  of the orography(theta).
+
+- Since 2007, the gravity wave drag and mountain blocking parameterizations are modified to automatically scale
+  with model resolution. For example, compared to to the T382L64 version of GFS, the T574L64 version uses four
+  times stronger mountain blocking and one half the strength of gravity wave drag. The orographic
+  gravity wave drag and mountain blocking parameterization is scale aware in the GFS and implemented
+  across NCEP global and regional models alike following the work of Alpert et al.,(1988,1996)
+  \cite alpert_et_al_1988 \cite alpert_et_al_1996 and modified to implement the enhanced low tropospheric gravity
+  wave drag developed by Kim and Arakawa (1995) \cite kim_and_arakawa_1995. Orographic Std Dev (hprime), Convexity(OC),
+  Asymmetry (OA4) and Lx (CLX4) are input topographic statistics needed.
+
+- A parameterization of stationay convectively forced gravity wave drag proposed by Chun and Baik (1998)
+  \cite chun_and_baik_1998 and tested in GCMs by Chun et al. (2001,2004) \cite chun_et_al_2001 \cite chun_et_al_2004
+  was implemented in the T1534 (13km) GFS in Jan 15, 2015, following Ake Johansson (2008) and the work of the
+  GCWMB staff. Modest positive effects from using the parameterization are seen in the tropical upper troposphere
+  and lower stratosphere.
+
+\section intra_gwdps Intraphysics Communication
+- Routine GWDPS (\ref orographic) is called from GBPHYS after call to MONINEDMF
+- Routine GWDC (\ref convective) is called from GBPHYS after call to SASCNVN
+
+\section module Modules
+Parameterizations developed specifically for orographic and convective source of gravity waves are documented separately:
+- \ref orographic
+\n The parameterization of orographic gravity wave drag and mountain blocking
+- \ref convective
+\n The paramterization of convective gravity wave drag
+*/
+
+/**
+\page ozo Ozone Sources and Sinks
+- Current operational version based on Naval Research Laboratory's CHEM2D model (McCormack et al. 2006
+  \cite mccormack_et_al_2006)
+- Monthly and zonal mean ozone production rate and ozone dustruction rate per unit ozone
+  mixing ratio were provided by NRL based on CHEM2D model
+- Original version of these terms were provided by NASA/DAO based on NASA 2D Chemistry model
+- GSM is capable of running both versions
+
+\section module Modules
+- \ref ozn
+*/
+
+/**
+\page sfc Earth System Surface Fluxes and State
+*/
+
+/**
+\page noah Land Surface Model - NOAH
 */

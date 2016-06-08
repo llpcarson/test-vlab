@@ -47,22 +47,6 @@
 !!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992 
 !!  \cite ebert_and_curry_1992).
 !!
-!!  \section intra_grrad Intraphysics Communication
-!!  This space is reserved for a description of how this scheme uses information from other scheme types and/or how information 
-!!  calculated in this scheme is used in other scheme types.
-!!
-!!  \section component Cloud Properties in Radiation
-!!  The cloud cover is calculated based on Xu and Randall (1996) \cite xu_and_randall_1996.
-!!  \f[
-!!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
-!!  \f]
-!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
-!!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
-!!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
-!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996). 
-!!  Maximum-randomly cloud
-!!  overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
-!!
 !! \section change Changes to Radiation Parameterization since 2007:
 !! The longwave (LW) and the shortwave (SW) radiation parameterizations in NCEP's operational GFS are both
 !! modified and optimized versions of the Rapid Radiative Transfer Models (RRTMG_LW v2.3 and RRTMG_SW v2.3
@@ -78,9 +62,9 @@
 !! for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993 
 !! is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
 !!(1996,1998) \cite fu_1996 fu_1998 are used in the SW and LW, respectively.
-!!\n In the operational GFS, a climatological tropos
+!!\n In the operational GFS, a climatological tropos@@@@@@@@@
 !!
-!!  \n Features Under Development for GFS
+!!  \section feature Features Under Development for GFS
 !!  + Updated and optimized RRTMG + Neural Net Emulator option
 !!  + Higher frequency of radiation calls (possibly every time step with NN)
 !!  + Uncorrelated cloud overlap & inhomogeneous water/ice clouds with rain/snow
@@ -91,7 +75,16 @@
 !!  + Land albedo using MODIS retrieval based monthly data
 !!  + Ocean albedo based on salinity, surface wind and Cosz
 !!  + Spectrally varing emissivity
-
+!!
+!!  \section intra_grrad Intraphysics Communication
+!!  In module 'module_radiation_driver' there are three externally callable subroutines:
+!! - RADINIT is called at the start of model run to set up radiation related fixed parameters
+!! (see "call rad_initialize" in gfs_physics_initialize_mod.f)
+!! - RADUPDATE is called in GLOOPR to update time-varying data sets and module variables
+!! - GRRAD is called in GLOOPR after call to RADUPDATE
+!!  - Cloud-Radiation Interaction (\ref module_radiation_clouds)
+!!  - Aerosol-Radiation Interaction (\ref module_radiation_aerosols)
+!!
 !> \defgroup module_radiation_driver module_radiation_driver
 !> @{
 !!  module_radiation_driver prepares atmospheric profile, invokes main radiation

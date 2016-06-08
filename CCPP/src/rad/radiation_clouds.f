@@ -1,9 +1,8 @@
 !>  \file radiation_clouds.f
 !!  This file contains routines to compute cloud related quantities
 !!                for radiation computations
-
-!!!!!              module_radiation_clouds description             !!!!!
-!!!!!  ==========================================================  !!!!!
+!              module_radiation_clouds description             !!!!!
+!  ==========================================================  !!!!!
 !                                                                      !
 !    the 'radiation_clouds.f' contains:                                !
 !                                                                      !
@@ -141,9 +140,47 @@
 !> \ingroup rad
 !! \defgroup module_radiation_clouds module_radiation_clouds
 !! @{
-!> This module computes cloud related quantities for radiation computations
-!!\version NCEP-Radiation_clouds    v5.1  Nov 2012 
-
+!> This module computes cloud related quantities for radiation computations.
+!!\version NCEP-Radiation_clouds    v5.1  Nov 2012
+!!
+!! This module has three externally accessible subroutines:
+!!  - cld_init()           --- initialization routine
+!!  - progcld1()           --- zhao/moorthi prognostic cloud scheme 
+!!  - progcld2()           --- ferrier prognostic cloud microphysics
+!!  - progcld3()           --- zhao/moorthi prognostic cloud + pdfcld
+!!  - diagcld1()           --- diagnostic cloud calculation routine
+!!
+!!  and two internally accessable only subroutines:                             
+!!  - gethml()             --- get diagnostic hi, mid, low,total,BL clouds    
+!!  - rhtable()            --- rh lookup table for diag cloud scheme 
+!!
+!> \section gen_al  General Algorithm
+!! @{
+!! Knowledge of cloud properties and their vertical structure is important for
+!! meteorological studies due to their impact on both the Earth's radiation
+!! budget and adiabatic heating within the atmosphere. Cloud properties in the
+!! US National Oceanic and Atmospheric Administration National Centers for Environmental
+!! Prediction Global Forecast System (GFS) include (i) the occurrence and fraction of clouds;
+!! (ii) cloud optical depth; (iii) liquid water path; and (iv) ice water path.
+!! -# GFS Cloud Fraction
+!> \n The cloud fraction in a given grid box of the GFS model is computed using the parameterization
+!! scheme of Xu and Randall(1996) \cite xu_and_randall_1996 :
+!!  \f[
+!!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
+!!  \f]
+!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
+!!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
+!!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
+!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996).
+!!  Maximum-randomly cloud overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
+!!\n
+!! -# GFS Cloud Optical Properties
+!>\n Two methods has been used to parameterize cloud properties in the GFS model. The first method
+!! makes use of a diagnostic cloud scheme, in which cloud properties are determined based on 
+!! model-predicted temperature, pressure, and boundary layer circulation from Harshvardhan et al.
+!! (1989) \cite harshvardhan_et_al_1989 . The diagnostic scheme is now replaced with a prognostic 
+!! scheme that uses cloud condensate information instead (NCEP Office Note 441).
+!! @}
 !========================================!
       module module_radiation_clouds     !
 !........................................!
@@ -167,8 +204,6 @@
      &   VTAGCLD='NCEP-Radiation_clouds    v5.1  Nov 2012 '
 !    &   VTAGCLD='NCEP-Radiation_clouds    v5.0  Aug 2012 '
 
-!> \name set constant parameters
-!!@{
       real (kind=kind_phys), parameter :: gfac=1.0e5/con_g        
      &,                                   gord=con_g/con_rd
 !> number of fields in cloud array
@@ -185,10 +220,6 @@
 !     real (kind=kind_phys), parameter :: climit = 0.01
       real (kind=kind_phys), parameter :: climit = 0.001, climit2=0.05
       real (kind=kind_phys), parameter :: ovcst  = 1.0 - 1.0e-8
-!!@}
-
-!> \name set default quantities as parameters (for prognostic cloud)
-!!@{
 
 !> default liq radius to 10 micron
       real (kind=kind_phys), parameter :: reliq_def = 10.0    
@@ -198,10 +229,6 @@
       real (kind=kind_phys), parameter :: rrain_def = 1000.0 
 !> default snow radius to 250 micron
       real (kind=kind_phys), parameter :: rsnow_def = 250.0 
-!!@}
-
-!> \name set look-up table dimensions and other parameters (for diagnostic cloud)
-!!@{
 
 !> rh in one percent interval
       integer, parameter :: NBIN=100     
@@ -218,7 +245,6 @@
       real (kind=kind_phys), parameter :: cldssa_def = 0.99  
 !> default cld asymmetry factor
       real (kind=kind_phys), parameter :: cldasy_def = 0.84 
-!!@}
 
 !  ---  xlabdy: lat bndry between tuning regions, +/- xlim for transition
 !       xlobdy: lon bndry between tuning regions
@@ -233,11 +259,10 @@
       data xlabdy / 30.0,  0.0, -30.0 /,  xlobdy / 0.0, 180., 360. /
 
 !  ---  low cloud vertical velocity adjustment boundaries in mb/sec
-!>\name low cloud vertical velocity adjustment boundaries in  mb/sec 
-!!@{
+!> low cloud vertical velocity adjustment boundaries in mb/sec
       real (kind=kind_phys), parameter :: vvcld1= 0.0003e0
+!> low cloud vertical velocity adjustment boundaries in mb/sec
       real (kind=kind_phys), parameter :: vvcld2=-0.0005e0
-!!@}
 
 !  ---  those data will be set up by "cld_init"
 !     rhcl : tuned rh relation table for diagnostic cloud scheme
@@ -2422,6 +2447,19 @@
 
 !> This subroutine computes high, mid, low, total, and boundary cloud fractions
 !! and cloud top/bottom layer indices for model diagnostic output.
+!> \param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)
+!> \param[in] ptop1   real, (IX,4), pressure limits of cloud domain interfaces
+!!                    (sfc,low,mid,high) in mb (100Pa)
+!> \param[in] cldtot  real, (IX,NLAY), total or stratiform cloud profile in fraction
+!> \param[in] cldcnv  real, (IX,NLAY), convective cloud (for diagnostic scheme only)
+!> \param[in] IX      integer, horizontal dimension
+!> \param[in] NLAY    integer,vertical layer dimensions
+!> \param[out] clds   real, (IX,5), fraction of clouds for low, mid, hi, tot, bl 
+!> \param[out] mtop   integer, (IX,3),vertical indices for low, mid, hi cloud tops 
+!> \param[out] mbot   integer, (IX,3),vertical indices for low, mid, hi cloud bases
+!!
+!>\section detail Detailed Algorithm
+!! @{
 !-----------------------------------                                    !
       subroutine gethml
      &     ( plyr, ptop1, cldtot, cldcnv,                             !  ---  inputs:
@@ -2480,7 +2518,7 @@
 !  ---  inputs:
       integer, intent(in) :: IX, NLAY
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, 
      &       cldtot, cldcnv
 
 !  ---  outputs
@@ -2507,6 +2545,7 @@
 
 !  ---  total and bl clouds, where cl1, cl2 are fractions of clear-sky view
 !       layer processed from surface and up
+!> -# Calculate total and BL cloud fractions
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
         kstr = NLAY
@@ -2567,6 +2606,7 @@
 !       layer processed from one layer below llyr and up
 !  ---  change! layer processed from surface to top, so low clouds will
 !       contains both bl and low clouds.
+!> -# Calculte high, mid, low cloud fractions and vertical indices of cloud tops/bases
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
 
@@ -2739,6 +2779,7 @@
 !...................................
       end subroutine gethml
 !-----------------------------------
+!! @}
 
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !

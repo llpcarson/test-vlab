@@ -82,8 +82,6 @@
 !    &  T_ICE=-30., T_ICE_init=-5.      !- Ver2
 !
 !     Some other miscellaneous parameters
-!>\name Some other miscellaneous parameters
-!
       REAL, PRIVATE, PARAMETER :: Thom=T_ICE, TNW=50., TOLER=1.0E-20   &
 !     REAL, PRIVATE, PARAMETER :: Thom=T_ICE, TNW=50., TOLER=5.E-7
 !     REAL, PRIVATE, PARAMETER :: Thom=-35., TNW=50., TOLER=5.E-7
@@ -2908,7 +2906,6 @@
 
 
 !> \ingroup rad
-!! \ingroup module_radiation_clouds
 !! This subroutine is a modified version of ferrier's original "rsipath" subprogram.
 !! It computes layer's cloud liquid, ice, rain, and snow water condensate path and
 !! the partical effective radius for liquid droplet, rain drop, and snow flake.
