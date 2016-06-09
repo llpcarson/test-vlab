@@ -141,6 +141,13 @@
 !! \defgroup module_radiation_clouds module_radiation_clouds
 !! @{
 !> This module computes cloud related quantities for radiation computations.
+!!
+!! Knowledge of cloud properties and their vertical structure is important for
+!! meteorological studies due to their impact on both the Earth's radiation
+!! budget and adiabatic heating within the atmosphere. Cloud properties in the
+!! US National Oceanic and Atmospheric Administration National Centers for Environmental
+!! Prediction Global Forecast System (GFS) include (i) cloud liquid/ice water path; (ii)
+!! the fraction of clouds; (iii) effective radius of water/ice droplet:
 !!\version NCEP-Radiation_clouds    v5.1  Nov 2012
 !!
 !! This module has three externally accessible subroutines:
@@ -156,14 +163,14 @@
 !!
 !> \section gen_al  General Algorithm
 !! @{
-!! Knowledge of cloud properties and their vertical structure is important for
-!! meteorological studies due to their impact on both the Earth's radiation
-!! budget and adiabatic heating within the atmosphere. Cloud properties in the
-!! US National Oceanic and Atmospheric Administration National Centers for Environmental
-!! Prediction Global Forecast System (GFS) include (i) the occurrence and fraction of clouds;
-!! (ii) cloud optical depth; (iii) liquid water path; and (iv) ice water path.
+!! -# Cloud Liquid/Ice Water Path (LWP,IWP)
+!!\n We define the fraction of liquid and ice cloud as:
+!!\n Fraction of ice cloud (F): \f$F=(273.16K-T)/20\f$
+!!\n LWP = total cloud condensate path X (1-F)
+!!\n IWP = total clod condensate path X F 
+!!
 !! -# GFS Cloud Fraction
-!> \n The cloud fraction in a given grid box of the GFS model is computed using the parameterization
+!! \n The cloud fraction in a given grid box of the GFS model is computed using the parameterization
 !! scheme of Xu and Randall(1996) \cite xu_and_randall_1996 :
 !!  \f[
 !!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
@@ -174,12 +181,29 @@
 !!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996).
 !!  Maximum-randomly cloud overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
 !!\n
-!! -# GFS Cloud Optical Properties
+!! -# The parameterization of effective radius of water/ice droplet (\f$r_{e}\f$)
 !>\n Two methods has been used to parameterize cloud properties in the GFS model. The first method
 !! makes use of a diagnostic cloud scheme, in which cloud properties are determined based on 
 !! model-predicted temperature, pressure, and boundary layer circulation from Harshvardhan et al.
 !! (1989) \cite harshvardhan_et_al_1989 . The diagnostic scheme is now replaced with a prognostic 
 !! scheme that uses cloud condensate information instead (NCEP Office Note 441).
+!! \n For the parameterization of effective radius,\f$r_{ew}\f$, of water droplet, we fix \f$r_{ew}\f$ to 
+!! a value of \f$10\mu m\f$ over the oceans. Over the land, \f$\f$ is defined as:
+!!\f[
+!! r_{ew} = 5+5\times F
+!!\f]
+!! Thus, the effective radius of cloud water droplets will reach to a minimum values of \f$5\mu m\f$ when
+!! F=0, and to a maximum value of \f$10\mu m\f$ when the ice fraction is increasing.
+!! \n For ice clouds, following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996,
+!! we have made the effective ice droplet radius to be an empirical function of ice water concentration
+!! (IWC) and environmental temperature as:
+!! \f[
+!! r_{ei}=\begin{cases}(1250/9.917)IWC^{0.109} & T <-50^0C \\(1250/9.337)IWC^{0.080} & -50^0C \leq T<-40^0C\\(1250/9.208)IWC^{0.055} & -40^0C\leq T <-30^0C\\(1250/9.387)IWC^{0.031} & -30^0C \leq T\end{cases}
+!! \f]
+!! where IWC and IWP satisfy:
+!! \f[
+!! IWP_{\triangle Z}=\int_{\triangle Z} IWCdZ
+!! \f]
 !! @}
 !========================================!
       module module_radiation_clouds     !
@@ -271,8 +295,7 @@
 
 !> upper limit of boundary layer clouds
       integer  :: llyr   = 2           ! upper limit of boundary layer clouds
-!> cloud over lapping method for diagnostic 3-domain
-!!\n output calc (see iovrsw/iovrlw description)
+!> maximum-random cloud overlapping method
       integer  :: iovr   = 1           ! cloud over lapping method for diagnostic 3-domain
                                        ! output calc (see iovrsw/iovrlw description)
 
@@ -608,7 +631,7 @@
         enddo
       enddo
 
-!> -# Compute liquid/ice condensate path in \f$ g/m^2 \f$
+!> -# Compute cloud liquid/ice condensate path in \f$ g/m^2 \f$
 !  ---  compute liquid/ice condensate path in g/m**2
 
       if ( ivflip == 0 ) then          ! input data from toa to sfc
@@ -650,6 +673,7 @@
 
       else
 !  ---  layer cloud fraction
+!> -# Calculate layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
 
@@ -788,13 +812,7 @@
         enddo
       endif
 
-!> -# Compute effective ice cloud droplet radius
-!!\n For ice clouds, following Heymsfield and McFarquhar (1996),the effective ice droplet
-!! radius is made to be an empirical function of ice water concentration (IWC) and environmental temperature as:
-!!\n \f$ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC \f$
-!!\n \f$ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC \f$
-!!\n \f$ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC \f$
-!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T \f$
+!> -# Compute effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
 !  ---  effective ice cloud droplet radius
 
       do k = 1, NLAY
@@ -837,6 +855,7 @@
       enddo
 
 !> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
+!! and clouds top/bottom layer indices for low, mid, and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       The three cloud domain boundaries are defined by ptopc.  The cloud
@@ -1627,6 +1646,7 @@
       enddo
 
 !  ---  layer cloud fraction
+!> -# Calculate layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
           do k = nlay, 1, -1
@@ -1735,13 +1755,7 @@
         enddo
       endif
 
-!> -# Compute effective ice cloud droplet radius
-!!\n For ice clouds, following Heymsfield and McFarquhar (1996),the effective ice droplet
-!! radius is made to be an empirical function of ice water concentration (IWC) and environmental temperature as:
-!!\n \f$ r_{ei} = (1250/9.917)IWC^{0.109},T<-50^oC \f$
-!!\n \f$ r_{ei} = (1250/9.337)IWC^{0.080},-50^oC<=T<-40^oC \f$
-!!\n \f$ r_{ei} = (1250/9.208)IWC^{0.055},-40^oC<=T<-30^oC \f$
-!!\n \f$ r_{ei} = (1250/9.387)IWC^{0.031},-30^oC<=T \f$
+!> -# Compute effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
 !  ---  effective ice cloud droplet radius
 
       do k = 1, nlay
@@ -1785,6 +1799,7 @@
       enddo
 
 !> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
+!! and clouds top/bottom layer indices for low, mid, and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       the three cloud domain boundaries are defined by ptopc.  the cloud
@@ -2447,6 +2462,9 @@
 
 !> This subroutine computes high, mid, low, total, and boundary cloud fractions
 !! and cloud top/bottom layer indices for model diagnostic output.
+!! The three cloud domain boundaries are defined by ptopc. The cloud 
+!! overlapping method is defined by control flag 'iovr', which is also 
+!!   used by L/W and S/W radiation programs.                          
 !> \param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)
 !> \param[in] ptop1   real, (IX,4), pressure limits of cloud domain interfaces
 !!                    (sfc,low,mid,high) in mb (100Pa)
@@ -2545,7 +2563,7 @@
 
 !  ---  total and bl clouds, where cl1, cl2 are fractions of clear-sky view
 !       layer processed from surface and up
-!> -# Calculate total and BL cloud fractions
+!> -# Calculate total and BL cloud fractions (maximum-random cloud overlapping is operational)
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
         kstr = NLAY
