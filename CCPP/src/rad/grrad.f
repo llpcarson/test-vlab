@@ -62,28 +62,27 @@
 !! for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993 
 !! is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
 !!(1996,1998) \cite fu_1996 fu_1998 are used in the SW and LW, respectively.
-!!\n In the operational GFS, a climatological tropos@@@@@@@@@
 !!
-!!  \section feature Features Under Development for GFS
-!!  + Updated and optimized RRTMG + Neural Net Emulator option
-!!  + Higher frequency of radiation calls (possibly every time step with NN)
-!!  + Uncorrelated cloud overlap & inhomogeneous water/ice clouds with rain/snow
-!!  + Updated CO2 with vertically varying profile
-!!  + Observed estimate of trace gases - prescribed global mean climatology
-!!  + Mean solar constant of 1361 \f$W/m^2\f$ (with 11 year solar cycle - Van Den Dool)
-!!  + GOCART interactive aerosol model, updated with vertical profile
-!!  + Land albedo using MODIS retrieval based monthly data
-!!  + Ocean albedo based on salinity, surface wind and Cosz
-!!  + Spectrally varing emissivity
+!! In the operational GFS, a climatological tropospheric aerosol with a 5-degree horizontal resolution is used in
+!! both LW and SW radiations. A generalized spectral mapping formulation was developed to compute radiative properties
+!! of various aerosol components for each of the radiation spectral bands. A separate stratospheric volcanic aerosol
+!! parameterization was added that is capable of handling volcanic events. In SW, a new table of incoming solar constants
+!! is derived covering time period of 1850-2019 (Vandendool, personal communivation). An eleven-year solar cycle
+!! approximation will be used for time out of the window period in long term climate simulations. The SW albedo
+!! parameterization uses surface vegetation type based seasonal climatology similar to that described in the NCEP
+!! OFFICE Note 441 (Hou et al. 2002 \cite hou_et_al_2002) but with a modification in the treatment of solar zenith
+!! angle dependency over snow-free land surface (Yang et al. 2008 \cite yang_et_al_2008). Similarly, vegetation type based
+!! non-black-body surface emissivity is used for the LW radiation. Concentrations of atmospheric greenhouse gases are either
+!! obtained from global network measurements, such as carbon dioxide (CO2), or taking the climatological constants, the
+!! actual CO2 value for the forecast time is an estimation based on the most recent five-year observations. In the lower
+!! atmosphere (<3km) a monthly mean CO2 distribution in 15 degree horizontal resolution is used, while a global mean monthly value is used in the upper atmosphere.
 !!
 !!  \section intra_grrad Intraphysics Communication
-!!  In module 'module_radiation_driver' there are three externally callable subroutines:
-!! - RADINIT is called at the start of model run to set up radiation related fixed parameters
+!! In \ref module_radiation_driver there are three externally callable subroutines:
+!! - Routine RADINIT is called at the start of model run to set up radiation related fixed parameters
 !! (see "call rad_initialize" in gfs_physics_initialize_mod.f)
-!! - RADUPDATE is called in GLOOPR to update time-varying data sets and module variables
-!! - GRRAD is called in GLOOPR after call to RADUPDATE
-!!  - Cloud-Radiation Interaction (\ref module_radiation_clouds)
-!!  - Aerosol-Radiation Interaction (\ref module_radiation_aerosols)
+!! - Routine RADUPDATE is called in GLOOPR to update time-varying data sets and module variables
+!! - Routine GRRAD is called in GLOOPR after call to RADUPDATE
 !!
 !> \defgroup module_radiation_driver module_radiation_driver
 !> @{
