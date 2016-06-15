@@ -4,29 +4,24 @@
 
 !> \defgroup MPscheme Grid-scale Condensation, Evaporation and Precipitation
 !! @{
-!! \brief The GFS scheme for large-scale condensation and precipitation is based on Zhao and Carr (1997) \cite zhao_and_carr_1997.
-!! The prognostic cloud condensate was implemented into GFS in 2001 (Moorthi et al. 2001, T170L42).
-!!
-!! Figure 1 shows a  schematic illustration of the precipitation scheme.
+!! \brief The GFS scheme for large-scale condensation and precipitation, based on Zhao and Carr (1997) \cite zhao_and_carr_1997
+!! and Sundqvist et al. (1989) \cite sundqvist_et_al_1989, was implemented in the GFS in 2001 (Moorthi et al. 2001, T170L42).
+!! Figure 1 shows a  schematic illustration of this scheme.
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
-!! The prognostic cloud condensate has two sources, namely convective detrainment (see convection) and grid-sale
-!! condensate. The grid-scale condensate is based on Zhao and Carr (1997) \cite zhao_and_carr_1997,which in turn is based on Sundqvist et al.
-!! (1989) \cite sundqvist_et_al_1989. The sinks of cloud condensate are grid-scale precipitation which is parameterized 
-!! following Zhao and Carr (1997) \cite zhao_and_carr_1997 for ice, and Sundqvist et al.(1989) \cite sundqvist_et_al_1989
-!! for liquid water, and evaporation of the cloud condensate which also
-!! follows Zhao and Carr (1997) \cite zhao_and_carr_1997. Evaporation of rain in the unsaturated 
-!! layers below the level of condensation is also
-!! taken into account.All precipitation that penetrates the bottom atmospheric layers is allowed to fall to the surface.
+!! There are two sources of prognostic cloud condensate, convective detrainment (see convection) and grid-sale
+!! condensate. The sinks of cloud condensate are grid-scale precipitation and evaporation of the cloud condensate.
+!! Evaporation of rain in the unsaturated layers below the level of condensation is also taken into account.All 
+!! precipitation that penetrates the lowest atmospheric layer is allowed to fall to the surface.
 !! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
-!! through a minor implementation in August 2001. The autoconversion rate of ice was slightly modified along with an
-!! empirically based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 1996 
-!! \cite heymsfield_and_mcfarquhar_1996).
-!> \section tune Important Tunable Parameter are:
+!! through a minor implementation in August 2001, which involved a slight modification of the autoconversion rate of 
+!! ice. At the same time, an empirically-based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 
+!! 1996 \cite heymsfield_and_mcfarquhar_1996) was introduced.
+!> \section tune Important Tunable Parameters
+!! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in the atmosphere and
+!! thus the cloud radiative properties:
 !! - Auto conversion coefficients (for both ice and water)
-!! - Minimum value of cloud condensate benfore the conversion from condensate to precipitation occurs
+!! - Minimum value of cloud condensate to conversion from condensate to precipitation
 !! - Coefficient for evaporation of precipitation
-!! \n These parameters determine the amount of cloud condensate in the atmosphere and thus the cloud properties for 
-!! radiation , and can be set through namelist.
 !!
 !! \section intramps Intraphysics Communication
 !! - Routine GSCOND is called from GBPHYS after call to SHALCNV
@@ -34,13 +29,13 @@
 
 !> \defgroup condense Grid-Scale Condensation and Evaporation of Cloud
 !! @{
-!> This subroutine is for grid-scale condensation & evaporation of cloud.
+!> This subroutine computes grid-scale condensation and evaporation of cloud condensate.
 !! \param[in] ix         horizontal dimension
-!! \param[in] im         number of used pts
+!! \param[in] im         horizontal number of used pts
 !! \param[in] km         vertical layer dimension
 !! \param[in] dt         physics time step in seconds
 !! \param[in] dtf        dynamics time step in seconds
-!! \param[in] prsl       mean layer pressure
+!! \param[in] prsl       pressure values for model layers
 !! \param[in] ps         surface pressure (Pa)
 !! \param[in,out] q      updated tracers (gq0(:,:,1))
 !! \param[in,out] cwm    updated tracers (gq0(:,:,ntcw))
@@ -182,20 +177,19 @@
           qi(i)   = qw
           qint(i) = qw
 !         if (tmt0 .le. -40.) qint(i) = qi(i)
-!> -# Compute ice-water id number IW.
-!!    - see Table 2 in Zhao and Carr (1997) \cite zhao_and_carr_1997 The distinction between cloud
+!> -# Compute ice-water identification number IW.
+!!\n    See Table 2 in Zhao and Carr (1997) \cite zhao_and_carr_1997 , the distinction between cloud
 !! water and cloud ice is made by the cloud identification number IW, which
 !! is zero for cloud water and unity for cloud ice.
 !!    - All clouds are defined to consist of liquid water below
 !! the freezing level (\f$T>0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
 !! level.
-!!    - In the temperature region between these two, clouds may be either cloud
-!! water or cloud ice. If there are cloud ice particles above this point at the
+!!    - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of 
+!! liquid water or ice. If there are cloud ice particles above this point at the
 !! previous or current time step, or if the cloud at this point at the previous
 !! time step consists of ice particles, then the cloud substance at this point
-!! should also be ice particles because of the cloud seeding effect and the cloud
-!! memory of its content.
-!!    - Otherwise, all clouds in this region are considered to contain supercooled
+!! is considered to be ice particles because of the cloud seeding effect and the 
+!! memory of its content. Otherwise, all clouds in this region are considered to contain supercooled
 !! cloud water.
 !-------------------ice-water id number iw------------------------------
           if(tmt0.lt.-15.0) then
@@ -222,7 +216,7 @@
 !> -# Condensation and evaporation of cloud
 !--------------condensation and evaporation of cloud--------------------
         do i = 1, im
-!>    - Compute at,aq and ap, which are the changes in t,q and p caused by
+!>    - Compute the changes in t, q and p (at,aq and ap) caused by
 !! all the processes except grid-scale condensation and evaporation.
 !------------------------at, aq and dp/dt-------------------------------
           qik   = max(q(i,k),epsq)
@@ -235,7 +229,7 @@
           at    = (tik-tp(i,k)) * rdt
           aq    = (qik-qp(i,k)) * rdt
           ap    = (pres-pp0)    * rdt
-!>    - Compute the satuation specific humidity and the relative humidity
+!>    - Compute the saturation specific humidity and the relative humidity.
 !----------------the satuation specific humidity------------------------
           fiw   = float(iwik)
           elv   = (h1-fiw)*elwv    + fiw*eliv

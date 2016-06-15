@@ -4,24 +4,22 @@
 !> \ingroup MPscheme
 !> \defgroup precip Precipitation (snow or rain) Production
 !! @{
-!> This subroutine is for conversion from condensation to precipitation (snow or rain) or
+!> This subroutine computes the conversion from condensation to precipitation (snow or rain) or
 !! evaporation of rain.
-!! \brief Precipitation is the last step of the atmospheric hydrological cycle.The parameterization
-!! of precipitation production is required in order to remove water substance from the atmosphere
-!! to the ground. In the scheme discussed here,simplifications in the precipitation parameterization
-!! are needed due to the limitations in computational time and computer storage required by operational
-!! NWP models.First, consideration of particle size and shape can be avoided by using the bulk
-!! parameterization method introduced by Kessler (1969) \cite kessler_1969. Second, obly two types of precipitation
-!! , rain and snow, are considered in this scheme. Third, only the principle microphysical
-!! processes associated with the formation of rain and snow are included. Basically,
-!! there are four types of microphysical processes considered here: production of rain from
+!! \brief The parameterization of precipitation is required in order to remove water from the atmosphere
+!! and transport it to the ground. In the scheme discussed here, simplifications in the precipitation parameterization
+!! are used due to computational limitations required by operational NWP models. First, consideration of particle 
+!! size and shape can be avoided by using the bulk
+!! parameterization method introduced by Kessler (1969) \cite kessler_1969. Second, only two types of precipitation
+!! , rain and snow, are considered in this scheme. Third, only the most important microphysical
+!! processes associated with the formation of rain and snow are included (production of rain from
 !! cloud water, production of snow from cloud ice, melting of snow to form rain below the
-!! freezing level, and the evaporation of precipitation. Finally, the fourth simplification
+!! freezing level, and the evaporation of precipitation). Finally, the fourth simplification
 !! is that precipitation is diagnostically calculated directly from the cloud mixing ratio.
 !! \todo unit for param
-!! \param[in] im        inner dimension over which calculation is made
-!! \param[in] ix        maximum inner dimension
-!! \param[in] km        number of vertical levels
+!! \param[in] im        horizontal number of used pts
+!! \param[in] ix        horizontal dimension
+!! \param[in] km        vertical layer dimension
 !! \param[in] dt        time step in seconds
 !! \param[in] del       pressure layer thickness (bottom to top)
 !! \param[in] prsl      pressure values for model layers (bottom to top)
@@ -30,14 +28,14 @@
 !! \param[in,out] t         temperature (updated in the code)
 !! \param[out] rn        precipitation over one time-step dt (m/dt)
 !! \param[out] sr        "snow ratio", ratio of snow to total precipitation
-!! \param[out] rainp    precip in vertical
-!! \param[in] u00k      rhc
+!! \param[out] rainp    precip in vertical \todo what is rainp
+!! \param[in] u00k      rhc  \todo what is u00k
 !! \param[in] psautco   auto convertion coeff from ice to snow
 !! \param[in] prautco   auto conversion coeff from cloud to rain
 !! \param[in] evpco     coeff for evaporation of largescale rain
-!! \param[in] wminco    water and ice minimum threshold for Zhao
+!! \param[in] wminco    water and ice minimum threshold for Zhao  \todo Ligia: ?
 !! \param[in] lprnt     logical print flag
-!! \param[in] jpr       ipr
+!! \param[in] jpr       check print point for debugging
 !> \section general General Algorithm
 !> @{
        subroutine precpd (im,ix,km,dt,del,prsl,q,cwm,t,rn,sr
@@ -228,7 +226,7 @@
 !
         rnp(i)     = d00
       enddo
-!> -# Select columns where rain can be produced
+!> -# Select columns where rain can be produced.
 !------------select columns where rain can be produced--------------
       do k=1, km-1
         do i=1,im
@@ -363,7 +361,7 @@
 !         endif
 !       enddo
 !
-!> -# precipitation production: auto conversion and accretion
+!> -# Precipitation production by auto conversion and accretion
 !!    - The autoconversion of cloud ice to snow (\f$P_{saut}\f$) is simulated
 !! using the equation from Lin et al. (1983) \cite lin_et_al_1983
 !!\f[
@@ -371,11 +369,9 @@
 !!\f]
 !! where \f$m_{i0}\f$ is the threshold of cloud ice mixing ratio for production of snow
 !! from cloud ice and is set to a value of \f$1.0\times 10^{-5} (kg/kg)\f$. Since snow
-!! prodcution in this process is caused by the size increases of cloud ice particles due
-!! to depositional growth and aggregation among small ice particles, \f$P_{saut}\f$ should
-!! be a function of temperature. According to Lin et al. (1983) \cite lin_et_al_1983,\f$a_{1}\f$ is specified as
-!! a function of temperature to account for the temperature effects on \f$P_{saut}\f$ and
-!! is given by
+!! production in this process is caused by the increase in size of cloud ice particles due
+!! to depositional growth and aggregation of small ice particles, \f$P_{saut}\f$ is
+!! a function of temperature as determined by coefficient \f$a_{1}\f$, given by 
 !! \f[
 !!   a_{1}=10^{-3}exp\left[ 0.025\left(T-273.15\right)\right]
 !! \f]
@@ -385,15 +381,15 @@
 !!\f[
 !!  P_{saci}=C_{s}mP_{s}
 !!\f]
-!! where \f$P_{s}\f$ is the precipitation rate of snow. The collection coefficients \f$C_{s}\f$
+!! where \f$P_{s}\f$ is the precipitation rate of snow. The collection coefficient \f$C_{s}\f$
 !! is a function of temperature since the open structures of ice crystals at relative warm
 !! temperatures are more likely to stick, given a collision, than crystals of other shapes
 !! (Rogers 1979 \cite rogers_1979). Above the freezing level, \f$C_{s}\f$ is expressed by
 !!\f[
 !!   C_{s}=c_{1}exp[c_{2}(T-273.15)]
 !!\f]
-!! and zero below. where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$
-!! and \f$c_{2}=0.025 K^{-1}\f$ are used.
+!! where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$ and \f$c_{2}=0.025 K^{-1}\f$ are used. 
+!! \f$C_{s}\f$ is set to zero below the freezing level.
 !!
 !---   precipitation production --  auto conversion and accretion
 !
@@ -417,7 +413,7 @@
                precsl(n) = precsl(n) + (wws - ww(n)) * condt(n)
             else                                    !  liquid water
 !
-!>    - Following Sundqvist et al. (1989), the autoconversion of cloud water to rain
+!>    - Following Sundqvist et al. (1989) \cite sundqvist_et_al_1989, the autoconversion of cloud water to rain
 !! (\f$P_{raut}\f$) can be parameterized from the cloud water mixing ratio \f$m\f$ and cloud
 !! coverage \f$b\f$, that is,
 !!\f[
@@ -460,15 +456,15 @@
             endif
           endif
         enddo
-!> -# The evaporation of precipitation (\f$E_{rr}\f$,and \f$E_{rs}\f$)
-!!\n The evaporation of precipitation is important in moistening the layers below
+!> -# Evaporation of precipitation (\f$E_{rr}\f$ and \f$E_{rs}\f$)
+!!\n Evaporation of precipitation is an important process that  moistens the layers below
 !! cloud base. Through this process, some of the precipitating water is evaporated
 !! back to the atmosphere and the precipitation efficiency is reduced.
 !!    - Evaporation of rain is calculated using the equation (Sundqvist 1988 \cite sundqvist_1988):
 !!\f[
 !!   E_{rr}=k_{e}(f_{0}-f)(P_{r})^{\beta}
 !!\f]
-!! where \f$k_{e}\f$ and \f$\beta\f$ are parameters that need to be determined empirically.
+!! where \f$k_{e}\f$ and \f$\beta\f$ are empirical parameters.
 !! In Zhao and Carr (1997) \cite zhao_and_carr_1997, \f$k_{e}=2\times 10^{-5}m^{1}kg^{-0.5}s^{-1}\f$ and \f$\beta=0.5\f$
 !! gave reasonable values of rain evaporation.
 !!
@@ -524,9 +520,9 @@
             precsl(n) = precsl(n) - pps
           endif
         enddo
-!> -# The melting of the snow (\f$P_{sm1}\f$ and \f$P_{sm2}\f$)
-!!\n In this scheme, we allow the melting of snow take place in certain temperature regions
-!! below the freezing level in two ways. The melted snow in both cases is assumed to become
+!> -# Melting of snow (\f$P_{sm1}\f$ and \f$P_{sm2}\f$)
+!!\n In this scheme, we allow snow melting to take place in certain temperature regions
+!! below the freezing level in two ways. In both cases, the melted snow is assumed to become
 !! raindrops.
 !!    - One is the continuous melting of snow due to the increase in temperature as it falls
 !! down through the freezing level. This process is parameterized as a function of temperature
@@ -534,12 +530,12 @@
 !!\f[
 !! P_{sm1}=C_{sm}(T-273.15)^{\alpha}P_{s}
 !!\f]
-!! in Zhao and Carr (1997) \cite zhao_and_carr_1997, parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
+!! In Zhao and Carr (1997) \cite zhao_and_carr_1997, parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
 !! and \f$\alpha=2\f$ cause the falling snow to melt almost completely before it reaches the
 !! \f$T=278.15 K\f$ level.
 !!    - Another is the immediate melting of melting snow by collection of the cloud water
-!! below the freezing level. In order to calculate the melting rate, we need to compute the
-!! collection rate of cloud water by melting snow first. Similar to the collection of cloud water
+!! below the freezing level. In order to calculate the melting rate, the
+!! collection rate of cloud water by melting snow is computed first. Similar to the collection of cloud water
 !! by rain, the collection of cloud water by melting snow can be parameterized to be proportional
 !! to the cloud water mixing ratio \f$m\f$ and the precipitation rate of snow \f$P_{s}\f$:
 !!\f[
@@ -575,7 +571,7 @@
             endif
 !
 !---------------update t and q------------------------------------------
-!>    - Update t and q
+!>    - Update t and q.
             tt(n) = tt(n) - dtcp * (elwv*err(n)+eliv*ers(n)+eliw*psm1)
             qq(n) = qq(n) + dt * (err(n)+ers(n))
           endif
@@ -618,7 +614,7 @@
 !-----------------------end of precipitation processes-----------------
 !**********************************************************************
 !
-!> -# Compute precip at surface and fraction of forzen precip.
+!> -# Compute precipitation at surface and determine fraction of frozen precipitation.
       do n=1,ihpr
         i = ipr(n)
         rn(i) = (precrl1(n)  + precsl1(n)) * rrow  ! precip at surface

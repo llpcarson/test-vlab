@@ -27,36 +27,37 @@
 !! a value just below it. The method employing the wave saturation hypothesis in GFS physics is 
 !! essentially the same as that which has been used in mountian wave drag parameterization (Kim 1996 \cite kim_1996).
 !!
-!> \param[in] im       integer, horizontal number of used pts
-!> \param[in] ix       integer, horizontal dimention 
-!> \param[in] iy       integer, horizontal number of used pts
-!> \param[in] km       integer, vertical layer dimension
-!> \param[in] lat      integer, latitude index - used for debug prints
-!> \param[in] u1       real, (IX,KM), u component of layer wind
-!> \param[in] v1       real, (IX,KM), v component of layer wind
-!> \param[in] t1       real, (IX,KM), layer mean temperature (K)
-!> \param[in] q1       real, (IX,LEVS,NTRAC), layer mean tracer concentration
-!> \param[in] pmid1    real, (IX,KM), mean layer pressure
-!> \param[in] pint1    real, (IX,KM+1), pressure at layer interfaces
-!> \param[in] dpmid1   real, (IX,KM), mean layer delta p   
-!> \param[in] qmax     real, (IX), maximum convective heating rate (k/s) in a horizontal 
+!> \param[in] IM       horizontal number of used pts
+!> \param[in] IX       horizontal dimension 
+!> \param[in] IY       horizontal number of used pts
+!> \param[in] KM       vertical layer dimension
+!> \param[in] LAT      latitude index - used for debug prints
+!> \param[in] U1       u component of layer wind
+!> \param[in] V1       v component of layer wind
+!> \param[in] T1       layer mean temperature (K)
+!> \param[in] Q1       layer mean tracer concentration
+!> \param[in] PMID1    mean layer pressure
+!> \param[in] PINT1    pressure at layer interfaces
+!> \param[in] DPMID1   mean layer delta p   
+!> \param[in] QMAX     maximum convective heating rate (k/s) in a horizontal 
 !!                     grid point calculated from cumulus parameterization
-!> \param[in] ktop     integer, (IX), vertical level index for cloud top
-!> \param[in] kbot     integer, (IX), vertical level index for cloud bottom
-!> \param[in] kcnv     integer, (IX), (0,1) dependent on whether convection occur or not
-!> \param[in] cldf     real, (IX), deep convective cloud fraction at the cloud top
-!> \param[in] grav     real, gravity defined in physcon
-!> \param[in] cp       real, specific heat air at p defined in physcon
-!> \param[in] rd       real, gas constant air defined in physcon
-!> \param[in] fv       real, con_fvirt = con_rv/con_rd-1
-!> \param[in] dlength  real, (IX), grid spacing in the direction of basic wind at the cloud top 
-!> \param[in] lprnt    logical,printout for diagnostics
-!> \param[in] ipr      integer, for diagnostics  
-!> \param[in] fhour    real, forecast hour
-!> \param[out] utgwc   real, (IY,KM), zonal wind tendency 
-!> \param[out] vtgwc   real, (IY,KM), meridional wind tendency
-!> \param[out] tauctx   dusfcg,real, (IX), wave stress at the cloud top projected in the east
-!> \param[out] taucty   dvsfcg,real, (IX), wave stress at the cloud top projected in the north
+!> \param[in] KTOP     vertical level index for cloud top
+!> \param[in] KBOT     vertical level index for cloud bottom
+!> \param[in] KCNV     (0,1) dependent on whether convection occur or not
+!> \param[in] CLDF     deep convective cloud fraction at the cloud top
+!> \param[in] GRAV     gravity defined in physcon
+!> \param[in] CP       specific heat air at p defined in physcon
+!> \param[in] RD       gas constant air defined in physcon
+!> \param[in] FV       con_fvirt = con_rv/con_rd-1
+!> \param[in] DLENGTH  grid spacing in the direction of basic wind at the cloud top 
+!> \param[in] LPRNT    printout for diagnostics
+!> \param[in] IPR      for diagnostics  
+!> \param[in] FHOUR    forecast hour
+!> \param[out] UTGWC   zonal wind tendency 
+!> \param[out] VTGWC   meridional wind tendency
+!> \param[out] TAUCTX  wave stress at the cloud top projected in the east
+!> \param[out] TAUCTY  wave stress at the cloud top projected in the north
+!!
 !> \section al_gwdc General Algorithm
 !> @{
       subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,

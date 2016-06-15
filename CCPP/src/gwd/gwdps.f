@@ -98,47 +98,48 @@
 !! are input topographic statistics needed. 
 !! - Modified for USGS orography data (ncep office note 424) \cite hong_1999
 !! - 4/02: Changed to include the Lott and Miller (1997) \cite lott_and_miller_1997 mountain blocking with some modification.
-!> \param[in] IM       integer, number of used pts
-!> \param[in] IX       integer, horizontal dimention
-!> \param[in] IY       integer, number of used pts
-!> \param[in] KM       integer, vertical layer dimension
-!> \param[in,out] A    real, (IY,KM), non-linear tendency for v wind component
-!> \param[in,out] B    real, (IY,KM), non-linear tendency for u wind component
-!> \param[in,out] C    real, (IY,KM), non-linear tendency for temperature (not used)
-!> \param[in] U1       real, (IX,KM), zonal wind at t0-dt (m/s)
-!> \param[in] V1       real, (IX,KM), meridional wind at t0-dt (m/s)
-!> \param[in] T1       real, (IX,KM), temperature at t0-dt (K)
-!> \param[in] Q1       real, (IX,KM), specific humidity at t0-dt 
-!> \param[in] KPBL     integer, (IM), index for the PBL top layer
-!> \param[in] PRSI     real, (IX,KM+1),pressure at layer interfaces
-!> \param[in] DEL      real, (IX,KM), positive increment of p/psfc across layer 
-!> \param[in] PRSL     real, (IX,KM), mean layer pressure
-!> \param[in] PRSLK    real, (IX,KM), exner function at layer
-!> \param[in] PHII     real, (IX,KM+1), interface geopotential (\f$m^2/s^2\f$)
-!> \param[in] PHIL     real, (IX,KM), layer geopotential (\f$m^2/s^2\f$)
-!> \param[in] DELTIM   real, dtp, physics time step in seconds
-!> \param[in] KDT      integer, number of the current time step
-!> \param[in] HPRIME   real, (IM), hprime(:,1),orographic standard deviation (m)
-!> \param[in] OC       real, (IM), hprime(:,2),Orographic Convexity
-!> \param[in] OA4      real, (IY,4),hprime(:,3:6),Orographic Asymmetry
-!> \param[in] CLX4     real, (IY,4),hprime(im,7:10)
-!> \param[in] THETA    real, (IM), hprime(:,11),the angle of the mtn with that to the east (x) axis
-!> \param[in] SIGMA    real, (IM), hprime(:,13),orographic slope
-!> \param[in] GAMMA    real, (IM), hprime(:,12),orographic anisotropy
-!> \param[in] ELVMAX   real, (IM), hprime(:,14),orographic maximum(?)
-!> \param[out] DUSFC   real, (IM), u component of surface stress
-!> \param[out] DVSFC   real, (IM), v component of surface stress
-!> \param[in] G        real, see physcons::con_g
-!> \param[in] CP       real, see physcons::con_cp
-!> \param[in] RD       real, see physcons::con_tird
-!> \param[in] RV       real, see physcons::con_rv
-!> \param[in] IMX      integer, number of longitude points
-!> \param[in] nmtvr    integer, number of topographic variables such as variance etc
+!> \param[in] IM       horizontal number of used pts
+!> \param[in] IX       horizontal dimension
+!> \param[in] IY       horizontal number of used pts
+!> \param[in] KM       vertical layer dimension
+!> \param[in,out] A    non-linear tendency for v wind component
+!> \param[in,out] B    non-linear tendency for u wind component
+!> \param[in,out] C    non-linear tendency for temperature (not used)
+!> \param[in] U1       zonal wind at t0-dt (m/s)
+!> \param[in] V1       meridional wind at t0-dt (m/s)
+!> \param[in] T1       temperature at t0-dt (K)
+!> \param[in] Q1       specific humidity at t0-dt 
+!> \param[in] KPBL     index for the PBL top layer
+!> \param[in] PRSI     pressure at layer interfaces
+!> \param[in] DEL      positive increment of p/psfc across layer 
+!> \param[in] PRSL     mean layer pressure
+!> \param[in] PRSLK    exner function at layer
+!> \param[in] PHII     interface geopotential (\f$m^2/s^2\f$)
+!> \param[in] PHIL     layer geopotential (\f$m^2/s^2\f$)
+!> \param[in] DELTIM   physics time step in seconds
+!> \param[in] KDT      number of the current time step
+!> \param[in] HPRIME   hprime(:,1),orographic standard deviation (m)
+!> \param[in] OC       hprime(:,2),Orographic Convexity
+!> \param[in] OA4      hprime(:,3:6),Orographic Asymmetry
+!> \param[in] CLX4     hprime(im,7:10), Lx, the fractional area covered by the subgrid-scale orography
+!! higher than a critical height for a grid box with the interval \f$ \triangle x \f$
+!> \param[in] THETA    hprime(:,11),the angle of the mtn with that to the east (x) axis
+!> \param[in] SIGMA    hprime(:,13),orographic slope
+!> \param[in] GAMMA    hprime(:,12),orographic anisotropy
+!> \param[in] ELVMAX   hprime(:,14),orographic maximum(?)
+!> \param[out] DUSFC   u component of surface stress
+!> \param[out] DVSFC   v component of surface stress
+!> \param[in] G        see physcons::con_g
+!> \param[in] CP       see physcons::con_cp
+!> \param[in] RD       see physcons::con_tird
+!> \param[in] RV       see physcons::con_rv
+!> \param[in] IMX      number of longitude points
+!> \param[in] NMTVR    number of topographic variables such as variance etc
 !! used in the GWD parameterization,current operational, nmtvr=14
-!> \param[in] cdmbgwd  real,(2), multiplication factors for cdmb and gwd
-!> \param[in] me       integer, pe number - used for debug prints
-!> \param[in] lprnt    logical, printout for diagnostics
-!> \param[in] ipr      integer, for diagnostics
+!> \param[in] CDMBGWD  multiplication factors for cdmb and gwd
+!> \param[in] ME       pe number - used for debug prints
+!> \param[in] LPRNT    printout for diagnostics
+!> \param[in] IPR      for diagnostics
 !> \section gen_gwdps General Algorithm
 !> @{
       SUBROUTINE GWDPS(IM,IX,IY,KM,A,B,C,U1,V1,T1,Q1,KPBL,
