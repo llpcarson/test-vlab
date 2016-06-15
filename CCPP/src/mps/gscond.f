@@ -19,9 +19,9 @@
 !> \section tune Important Tunable Parameters
 !! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in the atmosphere and
 !! thus the cloud radiative properties:
-!! - Auto conversion coefficients (for both ice and water)
-!! - Minimum value of cloud condensate to conversion from condensate to precipitation
-!! - Coefficient for evaporation of precipitation
+!! - PSAUTCO, PRAUTCO: Auto conversion coefficients (for both ice and water)
+!! - WMINCO(2): Minimum value of cloud condensate to conversion from condensate to precipitation
+!! - EVPCO: Coefficient for evaporation of precipitation
 !!
 !! \section intramps Intraphysics Communication
 !! - Routine GSCOND is called from GBPHYS after call to SHALCNV
@@ -216,7 +216,7 @@
 !> -# Condensation and evaporation of cloud
 !--------------condensation and evaporation of cloud--------------------
         do i = 1, im
-!>    - Compute the changes in t, q and p (at,aq and ap) caused by
+!>    - Compute the changes in t, q and p (\f$A_{t}\f$,\f$A_{q}\f$ and \f$A_{p}\f$) caused by
 !! all the processes except grid-scale condensation and evaporation.
 !------------------------at, aq and dp/dt-------------------------------
           qik   = max(q(i,k),epsq)
@@ -241,40 +241,40 @@
           else
             rqik = qik/qc
           endif
-!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, cloud fraction \f$b\f$ at a grid point can be estimated from relative humidity using the equation
+!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, estimate cloud fraction \f$b\f$ at a grid point from relative humidity \f$f\f$ using the equation 
 !!\f[
-!!       b=1-\left ( \frac{f_{s}-f}{f_{s}-f_{0}} \right )^{1/2}
+!!       b=1-\left ( \frac{f_{s}-f}{f_{s}-u} \right )^{1/2}
 !!\f]
-!! for \f$f>f_{0}\f$, and \f$ccr=0\f$ for \f$f<f_{0}\f$. where \f$f_{s}=1.0\f$ is the
-!! relative humidity in a cloud region.\f$f_{0}\f$ is the critical value of relative humidity for large-scale condensation.
-!!\n Since both temperature and moisture may vary at scales smaller than model
-!!grid scale, it is possible for condensation to occur before the grid-average
-!!relative humidity reaches 100%. Therefore \f$f_{0}\f$ needs to be less than
+!! for \f$f>u\f$; and \f$b=0\f$ for \f$f<u\f$. where \f$f_{s}=1.0\f$ is the
+!! relative humidity in a cloud region and \f$u\f$ accounts for the effects of subgrid-scale variations in 
+!! moisture on large-scale condensation. Since both temperature and moisture may vary at scales smaller than the model
+!! grid scale, it is possible for condensation to occur before the grid-average
+!!relative humidity reaches 100%. Therefore \f$u\f$ (see \f$rhc\f$ in gbphs.f)needs to be less than
 !!1.0 to account for the subgrid-scale variation of temperature and moisture
-!!fields.
-!!    - If cloud cover \f$\leq \f$ cclimitm then evaporate any existing cloud condensate (\f$E_{c}\f$)
+!!fields and allow subgrid-scale condensation.
+!!    - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate 
+!! using evaporation rate \f$E_{c}\f$ as computed below.
 !!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$f_{0}\f$, then
 !!\f[
-!!           q_{0}=f_{0}q_{s}
+!!           q_{0}=uq_{s}
 !!\f]
 !!\n if the cloud water/ice at this point is enough to be evaporated until \f$f_{0}\f$ is
-!! reached, then the evaporation rate \f$E_{c}\f$, if we assume that the evaporation process
+!! reached, then the evaporation rate \f$E_{c}\f$, assuming that the evaporation process
 !! occurs in one time step, is determined by
 !!\f[
 !!           E_{c}=\frac{q_{0}-q}{\triangle t}
 !!\f]
-!!\n using \f$q_{0}=f_{0}q_{s}\f$ and the equation \f$q=fq_{s}\f$,\f$E_{c}\f$ then becomes
+!!\n  Using \f$q_{0}=f_{0}q_{s}\f$ and the equation \f$q=fq_{s}\f$,\f$E_{c}\f$ then becomes
 !!\f[
-!!  E_{c}=\frac{q_{s}}{\triangle t}(f_{0}-f)
+!!  E_{c}=\frac{q_{s}}{\triangle t}(u-f)
 !!\f]
-!! where \f$\triangle t\f$ is the time step for precipitation calculation in the model.It is
-!! a simplified version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
-!!    - If cloud over > cclimit, condense water vapor in to cloud condensate (\f$C_{g}\f$)
-!!\n Following Sundqvist et al.(1989) \cite sundqvist_et_al_1989, the grid-scale condensation rate is solving (\f$C_{g}\f$) from
-!! Eqs (6) and (7) with equations \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
+!! where \f$\triangle t\f$ is the time step for precipitation calculation in the model
+!! (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
+!!    - If cloud fraction \f$b>1.0\times10^{-3}\f$, condense water vapor in to cloud condensate (\f$C_{g}\f$).
+!!\n Using \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
 !! equation \f$de_{s}/dT=\epsilon Le_{s}/RT^{2}\f$,where \f$q_{s}\f$ is the saturation specific humidity,\f$e_{s}\f$
 !! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,\f$P\f$ is the pressure,
-!! \f$f\f$ is the relative humidity, and \f$\epsilon=0.622\f$. The expression for \f$C_{g}\f$ has the form
+!! \f$f\f$ is the relative humidity, and \f$\epsilon=0.622\f$, the expression for \f$C_{g}\f$ has the form
 !!\f[
 !!       C_{g}=\frac{M-q_{s}f_{t}}{1+(f\epsilon L^{2}q_{s}/RC_{p}T^{2})}+E_{c}
 !!\f]
@@ -282,16 +282,16 @@
 !!\f[
 !!       M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}\partial p}{p\partial t}
 !!\f]
-!! To close the system, an equation for relative humidity tendency \f$f_{t}\f$ was derived by Sundqvist et al.
+!! To close the system, an equation for the relative humidity tendency \f$f_{t}\f$ was derived by Sundqvist et al.
 !! (1989) \cite sundqvist_et_al_1989 using the hypothesis that the quantity \f$M+E_{c}\f$ is divided into one part,\f$bM\f$,which condenses
 !! in the already cloudy portion of a grid square, and another part,\f$(1-b)M+E_{c}\f$,which is used to increase
-!! the relative humidity of the cloud-free portion and to increase the cloudiness in the square. The equation is
+!! the relative humidity of the cloud-free portion and the cloudiness in the square. The equation is
 !! written as
 !!\f[
-!!  f_{t}=\frac{2(1-b)(f_{s}-f_{0})[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-f_{0})+m/b}
+!!  f_{t}=\frac{2(1-b)(f_{s}-u)[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-u)+m/b}
 !!\f]
-!!    - Check & correct if over condensation occurs
-!!    - Update of t, q and cwm (see Eqs(6),(7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
+!!    - Check and correct if over condensation occurs.
+!!    - Update  t, q and cwm (according to Eqs(6) and (7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
 !!\f[
 !!   cwm=cwm+(C_{g}-E_{c})\times dt
 !!\f]
@@ -301,7 +301,7 @@
 !!\f[
 !!   t=t+\frac{L}{C_{p}}(C_{g}-E_{c})\times dt
 !!\f]
-!!\n where \f$L\f$ is the latent heat of condensation/deposition,\f$C_{p}\f$ is the
+!!\n where \f$L\f$ is the latent heat of condensation/deposition,and \f$C_{p}\f$ is the
 !! specific heat of air at constant pressure.
 !----------------cloud cover ratio ccrik--------------------------------
           if (rqik .lt. u00ik) then
@@ -412,7 +412,7 @@
 !****************end of the condensation/evaporation loop*************
 !*********************************************************************
 !
-!> -# Store \f$t\f$, \f$q\f$, \f$ps\f$ for next time step
+!> -# Store \f$t\f$, \f$q\f$, \f$ps\f$ for next time step.
 !----------------store t, q, ps for next time step
 
       if (dt > dtf+0.001) then     ! three time level

@@ -16,7 +16,6 @@
 !! cloud water, production of snow from cloud ice, melting of snow to form rain below the
 !! freezing level, and the evaporation of precipitation). Finally, the fourth simplification
 !! is that precipitation is diagnostically calculated directly from the cloud mixing ratio.
-!! \todo unit for param
 !! \param[in] im        horizontal number of used pts
 !! \param[in] ix        horizontal dimension
 !! \param[in] km        vertical layer dimension
@@ -28,12 +27,16 @@
 !! \param[in,out] t         temperature (updated in the code)
 !! \param[out] rn        precipitation over one time-step dt (m/dt)
 !! \param[out] sr        "snow ratio", ratio of snow to total precipitation
-!! \param[out] rainp    precip in vertical \todo what is rainp
-!! \param[in] u00k      rhc  \todo what is u00k
-!! \param[in] psautco   auto convertion coeff from ice to snow
-!! \param[in] prautco   auto conversion coeff from cloud to rain
+!! \param[out] rainp    rainwater path
+!! \param[in] u00k      the critical value of relative humidity for large-scale condensation
+!! \param[in] psautco   auto conversion coeff from ice to snow 
+!! \n                   = 4.0E-4; defined in module_MP_GFS.F90
+!! \param[in] prautco   auto conversion coeff from cloud to rain 
+!! \n                   = 1.0E-4; defined in module_MP_GFS.F90 
 !! \param[in] evpco     coeff for evaporation of largescale rain
-!! \param[in] wminco    water and ice minimum threshold for Zhao  \todo Ligia: ?
+!! \n                   = 2.0E-5; defined in module_MP_GFS.F90
+!! \param[in] wminco    water and ice minimum threshold to conversion from condensate to precipitation
+!! \n                   = \1.0E-5, 1.0E-5\; defined in module_MP_GFS.F90
 !! \param[in] lprnt     logical print flag
 !! \param[in] jpr       check print point for debugging
 !> \section general General Algorithm
