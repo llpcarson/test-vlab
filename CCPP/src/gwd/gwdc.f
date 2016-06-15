@@ -46,12 +46,12 @@
 !> \param[in] KCNV     (0,1) dependent on whether convection occur or not
 !> \param[in] CLDF     deep convective cloud fraction at the cloud top
 !> \param[in] GRAV     gravity defined in physcon
-!> \param[in] CP       specific heat air at p defined in physcon
+!> \param[in] CP       specific heat at constant pressure defined in physcon
 !> \param[in] RD       gas constant air defined in physcon
 !> \param[in] FV       con_fvirt = con_rv/con_rd-1
 !> \param[in] DLENGTH  grid spacing in the direction of basic wind at the cloud top 
-!> \param[in] LPRNT    printout for diagnostics
-!> \param[in] IPR      for diagnostics  
+!> \param[in] LPRNT    logical print flag
+!> \param[in] IPR      check print point for debugging 
 !> \param[in] FHOUR    forecast hour
 !> \param[out] UTGWC   zonal wind tendency 
 !> \param[out] VTGWC   meridional wind tendency
@@ -474,15 +474,15 @@
 !
 
 !
-!>  - Top interface temperature/density/Brunt-Vaisala(\f$N\f$) is calculated assuming an isothermal 
+!>  - The top interface temperature, density, and Brunt-Vaisala frequencies (\f$N\f$) are calculated assuming an isothermal 
 !!  atmosphere above the top mid level.
 
         ti(i,1)    = t(i,1)
         rhoi(i,1)  = pint(i,1)/(rd*ti(i,1))
         bruni(i,1) = sqrt ( gsqr / (cp*ti(i,1)) )
 !
-!>  - Bottom interface temperature/density/Brunt-Vaisala(\f$N\f$) is calculated assuming an isothermal
-!!  atmosphere below the bottom mid level
+!>  - The bottom interface temperature, density, and Brunt-Vaisala frequencies (\f$N\f$) are calculated assuming an isothermal
+!!  atmosphere below the bottom mid level.
 
         ti(i,km+1)    = t(i,km)
         rhoi(i,km+1)  = pint(i,km+1)/(rd*ti(i,km+1)*(1.0+fv*spfh(i,km)))
@@ -491,8 +491,8 @@
 
 !-----------------------------------------------------------------------
 !
-!>  - Calculate interface level temperature/density/Brunt-Vaisala
-!!  frequencies (\f$N\f$) based on linear interpolation of Temp in ln(Pressure)
+!>  - The interface level temperature, density, and Brunt-Vaisala
+!!  frequencies (\f$N\f$) are calculated based on linear interpolation of temperature in ln(P).
 !
 !-----------------------------------------------------------------------
 
@@ -512,8 +512,8 @@
       deallocate (spfh)
 !-----------------------------------------------------------------------
 !
-!>  - Calculate the mid-level Brunt-Vaisala frequencies (brum).
-!!    based on interpolated interface Temperatures 
+!>  - The mid-level Brunt-Vaisala frequencies (\f$N\f$) are calculated
+!!    based on interpolated interface temperatures. 
 !-----------------------------------------------------------------------
 
       do k = 1, km
@@ -581,7 +581,7 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate cloud top wind component, direction, and speed (ucltop/vcltop/windcltop). 
+!> -# Calculate the cloud top wind components and speed (ucltop/vcltop/windcltop). 
 
 !
 !-----------------------------------------------------------------------
@@ -598,8 +598,12 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate basic state wind projected in the direction of the cloud 
-!!  top wind at mid level and interface level  (basicum, basicui).
+!> -# Calculate the basic state wind projected in the direction of the cloud 
+!!  top wind at mid level and interface level  (U, UI), where:
+!! \n  U  : Basic-wind speed profile. Basic-wind is parallel to the wind
+!!             vector at the cloud top level. (mid level)
+!! \n  UI : Basic-wind speed profile. Basic-wind is parallel to the wind
+!!             vector at the cloud top level. ( interface level )
 !  Input u(i,k) and v(i,k) is defined at mid level
 !
 !-----------------------------------------------------------------------
@@ -633,7 +637,7 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate local Richardson number 
+!> -# Calculate the local Richardson number 
 !! \f[
 !!    Ri=N^2/\eta^2
 !! \f]
@@ -701,7 +705,7 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate gravity wave stress at the interface level cloud top
+!> -# Calculate the gravity wave stress at the interface level cloud top
 !      
 !  kcldtopi  : The interface level cloud top index
 !  kcldtop   : The midlevel cloud top index
@@ -732,34 +736,39 @@
 !>  - Wave stress at cloud top is calculated when the atmosphere
 !!    is dynamically stable at the cloud top
 !!
-!>  - Cloud top wave stress and nonlinear parameter are calculated 
+!>  - The cloud top wave stress and nonlinear parameter are calculated 
 !!      using density, temperature, and wind that are defined at mid
 !!      level just below the interface level in which cloud top wave
 !!      stress is defined.
 !! The parameter \f$\mu\f$ is the nonlinearity factor of thermally induced internal
-!! gravity waves defined by equ.(17) in Chun and Baik,1998 \cite chun_and_baik_1998
+!! gravity waves defined by eq.(17) in Chun and Baik,1998 \cite chun_and_baik_1998
 !! \f[
 !!  \mu=\frac{gQ_{0}a_{1}}{c_{p}T_{0}NU^{2}}
 !! \f]
-!! As equ.(18) and (19) \cite chun_and_baik_1998, the zonal momentum flux is given by
+!! where \f$Q_{0}\f$ is the maximum deep convective heating rate in a horizontal grid
+!! point calculated from cumulus parameterization. \f$a_{1}\f$ is the half-width of 
+!! the forcing function.\f$g\f$ is gravity. \f$c_{p}\f$ is specific heat at constant pressure.
+!! \f$T_{0}\f$ is the layer mean temperature (T1).
+!! As eqs.(18) and (19) \cite chun_and_baik_1998, the zonal momentum flux is given by
 !! \f[
-!! \tau_{x}=-[\rho U^{3}/N\triangle x]G(\mu)
+!! \tau_{x}=-[\rho U^{3}/(N\triangle x)]G(\mu)
 !! \f]
 !! where
 !! \f[
 !! G(\mu)=c_{1}c_2^2 \mu^{2}
 !! \f]
+!! wher \f$\rho\f$ is the local density.
 !! The tunable parameter \f$c_1\f$ is related to the horizontal structure of thermal forcing.
 !! The tunable parameter \f$c_2\f$ is related to the basic-state wind and stability and the
 !! bottom and top heights of thermal forcing.
 !! If the atmosphere is dynamically unstable at the cloud top,
-!! GWDC calculation in current horizontal grid is skipped.  
+!! the convective GWD calculation is skipped at that grid point.  
 !!
-!>  - If mean wind at the cloud top is less than zero, GWDC
-!!      calculation in current horizontal grid is skipped.
+!  - If mean wind at the cloud top is less than zero, GWDC
+!      calculation in current horizontal grid is skipped.
 !
 ! H : Maximum cloud top stress, tauctmax =  -20 N m^(-2),
-!>  -  Max stress (5/2015): tauctmax =  - 5\f$n/m^2\f$
+!>  - The stress is capped at tauctmax =  - 5\f$n/m^2\f$
 !!      in order to prevent numerical instability.
 !
 !-----------------------------------------------------------------------
@@ -821,7 +830,7 @@
 !  1 - nonlin*|c2|.
 !
 !-----------------------------------------------------------------------
-!> -# Calculate minimum of Richardson number including both basic-state
+!> -# Calculate the minimum Richardson number including both the basic-state
 !! condition and wave effects.
 !!\f[
 !! Ri_{min}\approx\frac{Ri(1-\mu|c_{2}|)}{(1+\mu Ri^{1/2}|c_{2}|)^{2}}
@@ -863,14 +872,14 @@
 
 !-----------------------------------------------------------------------
 !
-!>  - If minimum RI at interface cloud top is less than or equal to 1/4,
-!!  GWDC calculation for current horizontal grid is skipped 
+!>  - If the minimum RI at interface cloud top is less than or equal to 1/4,
+!!  the convective GWD calculation is skippedth that grid point. 
 !
 !-----------------------------------------------------------------------
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate gravity wave stress profile using the wave saturation
+!> -# Calculate the gravity wave stress profile using the wave saturation
 !!  hypothesis of Lindzen (1981) \cite lindzen_1981.   
 !
 !  Assuming kcldtop(i)=10 and kcldbot=16,
