@@ -6,7 +6,7 @@
 !!  \brief  Radiative process is one of the most complex and computational intensive part of all model physics.
 !!  As an essential part of model physics, it directly and indirectly connects all physics processes with model dynamics,
 !!  and regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in NEMS physics
-!!  has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html 
+!!  has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html
 !!  schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 !!
 !!  Radiation parameterizations are intended to provide a fast and accurate method of determined the total radiative
@@ -17,49 +17,49 @@
 !!  the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
 !!  have strong dynamic effect on cloud evolution.
 !!
-!!  The shortwave radiation parameterization is based on Chou and Suarez (1999) \cite chou_and_suarez_1999 and was modified by 
-!!  Hou et al.(2002) \cite hou_et_al_2002 for 
-!!  the GFS. It contains eight spectral bands in the ultraviolet and visible region and one spectral band in the near-infrared 
-!!  region. It includes absorption by ozone, water vapor,carbon dioxide, and oxygen. A random-maximum cloud overlapping is 
-!!  assumed for radiative transfer calculations in the operational GFS. Cloud optical depth is parameterized as a function 
-!!  of the predicted cloud condensate path and the effective radius of cloud particles (\f$r_e\f$). Cloud particle single-scattering 
-!!  albedo and asymmetry factors are functions of \f$r_e\f$. For water droplets. \f$r_e\f$ is fixed at \f$10\mu m\f$ over 
-!!  the ocean, and specified as \f$r_e=min[max(5-0.25T_c , 5),10]\mu m\f$ over land, where \f$T_c\f$ is temperature in degrees 
-!!  Celsius. For ice particles, \f$r_e\f$ is an empirical function of ice water content and temperature that follows Heymsfield 
-!!  and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996. The radiative effects of rain and snow are not included in the 
-!!  operational GFS, but the direct radiative 
-!!  effect of atmospheric aerosols is included. The surface albedo over land varies with the surface type, solar spectral band, 
-!!  and season, and is further adjusted by a solar zenith-angle-dependent factor for the direct solar beam. When the ground has 
-!!  snow cover the grid-mean surface albedo is first computed separately for snow-free and snow-covered areas, and then combined 
-!!  using a snow-cover fraction that depends on the surface roughness and snow depth. Snow albedo depends on the solar zenith angle 
+!!  The shortwave radiation parameterization is based on Chou and Suarez (1999) \cite chou_and_suarez_1999 and was modified by
+!!  Hou et al.(2002) \cite hou_et_al_2002 for
+!!  the GFS. It contains eight spectral bands in the ultraviolet and visible region and one spectral band in the near-infrared
+!!  region. It includes absorption by ozone, water vapor,carbon dioxide, and oxygen. A random-maximum cloud overlapping is
+!!  assumed for radiative transfer calculations in the operational GFS. Cloud optical depth is parameterized as a function
+!!  of the predicted cloud condensate path and the effective radius of cloud particles (\f$r_e\f$). Cloud particle single-scattering
+!!  albedo and asymmetry factors are functions of \f$r_e\f$. For water droplets. \f$r_e\f$ is fixed at \f$10\mu m\f$ over
+!!  the ocean, and specified as \f$r_e=min[max(5-0.25T_c , 5),10]\mu m\f$ over land, where \f$T_c\f$ is temperature in degrees
+!!  Celsius. For ice particles, \f$r_e\f$ is an empirical function of ice water content and temperature that follows Heymsfield
+!!  and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996. The radiative effects of rain and snow are not included in the
+!!  operational GFS, but the direct radiative
+!!  effect of atmospheric aerosols is included. The surface albedo over land varies with the surface type, solar spectral band,
+!!  and season, and is further adjusted by a solar zenith-angle-dependent factor for the direct solar beam. When the ground has
+!!  snow cover the grid-mean surface albedo is first computed separately for snow-free and snow-covered areas, and then combined
+!!  using a snow-cover fraction that depends on the surface roughness and snow depth. Snow albedo depends on the solar zenith angle
 !!  (Briegleb 1992 \cite briegleb_1992).
 !!
-!!  A major change was made in longwave radiation on 28 August 2003. The Geophysical Fluid Dynamics Laboratory (GFDL) model 
-!!  (Schwarzkopf and Fels 1991 \cite schwarzkopf_and_fels_1991) was replaced by the Rapid Radiative Transfer Model (RRTM; 
-!!  Mlawer et al. 1997 \cite mlawer_et_al_1997). The RRTM computes 
-!!  longwave absorption and emission by water vapor,carbon dioxide,ozone,cloud particles, and various trace gases including 
-!!  \f$N_2O\f$,\f$CH_4\f$,\f$O_2\f$,and four types of halocarbons[chlorofluorocarbons(CFCs)].Aerosol effects are not included. 
-!!  For consistency with the earlier GFDL module, no trace gases are included in the RRTM for the GFS forecasts. 
-!!  The RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth 
-!!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands. 
-!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor 
-!!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and 
-!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992 
+!!  A major change was made in longwave radiation on 28 August 2003. The Geophysical Fluid Dynamics Laboratory (GFDL) model
+!!  (Schwarzkopf and Fels 1991 \cite schwarzkopf_and_fels_1991) was replaced by the Rapid Radiative Transfer Model (RRTM;
+!!  Mlawer et al. 1997 \cite mlawer_et_al_1997). The RRTM computes
+!!  longwave absorption and emission by water vapor,carbon dioxide,ozone,cloud particles, and various trace gases including
+!!  \f$N_2O\f$,\f$CH_4\f$,\f$O_2\f$,and four types of halocarbons[chlorofluorocarbons(CFCs)].Aerosol effects are not included.
+!!  For consistency with the earlier GFDL module, no trace gases are included in the RRTM for the GFS forecasts.
+!!  The RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth
+!!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed intervals in 16 spectral bands.
+!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor
+!!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and
+!!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992
 !!  \cite ebert_and_curry_1992).
 !!
 !! \section change Changes to Radiation Parameterization since 2007:
 !! The longwave (LW) and the shortwave (SW) radiation parameterizations in NCEP's operational GFS are both
 !! modified and optimized versions of the Rapid Radiative Transfer Models (RRTMG_LW v2.3 and RRTMG_SW v2.3
-!! , respectively) developed at AER Inc.(Mlawer et al. 1997 \cite mlawer_et_al_1997, Iacono et al., 2000 
-!! \cite iacono_et_al_2000, Clough et al., 2005 \cite clough_et_al_2005). The LW algorithm contains 140 
+!! , respectively) developed at AER Inc.(Mlawer et al. 1997 \cite mlawer_et_al_1997, Iacono et al., 2000
+!! \cite iacono_et_al_2000, Clough et al., 2005 \cite clough_et_al_2005). The LW algorithm contains 140
 !! unevenly distributed g-points in 16 broad spectral bands, while the SW algorithm includes 112 g-points
-!! in 14 bands. In addition to the major atmospheric absorbing gases of ozone, water vapor, and carbon 
-!! dioxide, the algorithm also includes various minor absorbing species such as methane, nitrous oxide, 
-!! oxygen, and up to four types of halocarbons (CFCs). To mitigate the unresolved subgrid cloud variability 
-!! when dealing multi layered clouds, a Monte-Carlo Independent Column Approximation (McICA) method is used 
+!! in 14 bands. In addition to the major atmospheric absorbing gases of ozone, water vapor, and carbon
+!! dioxide, the algorithm also includes various minor absorbing species such as methane, nitrous oxide,
+!! oxygen, and up to four types of halocarbons (CFCs). To mitigate the unresolved subgrid cloud variability
+!! when dealing multi layered clouds, a Monte-Carlo Independent Column Approximation (McICA) method is used
 !! in the RRTMG radiation transfer computations. A maximum-random cloud overlapping method is used in both
 !! LW and SW radiation calculations. Cloud condensate path and effective radius for water and ice are used
-!! for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993 
+!! for calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993
 !! is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
 !!(1996,1998) \cite fu_1996 fu_1998 are used in the SW and LW, respectively.
 !!
@@ -90,7 +90,7 @@
 !! calculations, and computes radiative fluxes and heating rates
 !! for some arbitrary number of vertical colums.There are three
 !! externally accessible subroutines: radinit, radupdate, and grrad.
-!! \version NCEP-Radiation_driver    v5.2  Jan 2013 
+!! \version NCEP-Radiation_driver    v5.2  Jan 2013
 ! ==========================================================  !!!!!
 !             'module_radiation_driver' descriptions           !!!!!
 !  ==========================================================  !!!!!
@@ -303,7 +303,7 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::   
+      character(40), parameter ::
      &   VTAGRAD='NCEP-Radiation_driver    v5.2  Jan 2013 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.1  Nov 2012 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.0  Aug 2012 '
@@ -326,12 +326,12 @@
       real, parameter :: prsmin = 1.0e-6
 
 !> control flag for lw sfc air/ground interface temp setting
-      integer :: itsfc  =0           
+      integer :: itsfc  =0
 
 !  ---  data input control variables set in subr radupdate:
       integer :: month0=0,   iyear0=0,   monthd=0
 !> first-time clim ozone data read flag
-      logical :: loz1st =.true.       
+      logical :: loz1st =.true.
 
 !> optional extra top layer on top of low ceiling models
 !!\n LTP=0: no extra top layer
@@ -349,9 +349,9 @@
 ! =================
 
 !> This subroutine is the initialization of radiation calculations
-!> \param[in] si       real, L+1, model vertical sigma interface
-!> \param[in] nlay     integer, 1, number of model vertical layers
-!> \param[in] me       integer, 1, print control flag
+!> \param[in] si       (L+1), model vertical sigma interface
+!> \param[in] nlay     number of model vertical layers
+!> \param[in] me       print control flag
 !> \section gen_radinit General Algorithm
 !> @{
 !-----------------------------------
@@ -577,15 +577,15 @@
 
 !> This subroutine calls many update subroutines to check and update radiation required
 !! but time varying data sets and module variables.
-!! \param[in] idate          integer, ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)
-!! \param[in] jdate          integer, ncep absolute date and time at fcst time (yr,mon,day,t-zone,hr,min,sec,mil-sec)
-!! \param[in] deltsw         real, 1, sw radiation calling frequency in seconds
-!! \param[in] deltim         real, 1, model timestep in seconds
-!! \param[in] lsswr          logical, logical flags for sw radiation calculations
-!! \param[in] me             integer, 1, print control flag
-!! \param[out] slag          real, equation of time in radians
-!! \param[out] sdec,cdec     real, sin and cos of the solar declination angle
-!! \param[out] solcon        real, sun-earth distance adjusted solar constant (w/m2)
+!! \param[in] idate          (8), ncep absolute date and time of intial condition (yr,mon,day,t-zone,hr,min,sec,mil-sec)
+!! \param[in] jdate          (8), ncep absolute date and time at fcst time (yr,mon,day,t-zone,hr,min,sec,mil-sec)
+!! \param[in] deltsw         sw radiation calling frequency in seconds
+!! \param[in] deltim         model timestep in seconds
+!! \param[in] lsswr          logical flags for sw radiation calculations
+!! \param[in] me             print control flag
+!! \param[out] slag          equation of time in radians
+!! \param[out] sdec,cdec     sin and cos of the solar declination angle
+!! \param[out] solcon        sun-earth distance adjusted solar constant (w/m2)
 !> \section gen_radupdate General Algorithm
 !> @{
 !-----------------------------------
@@ -769,96 +769,96 @@
 !> This subroutine is the driver of radiation calculation subroutines. It sets
 !! up profile variables for radiation input, including clouds, surface albedos,
 !! atmospheric aerosols, ozone, etc.
-!! \param[in] prsi       real, (IX,LM+1),model level pressure in Pa
-!! \param[in] prsl       real, (IX,LM),model layer mean pressure in Pa
-!! \param[in] prslk      real, (IX,LM),exner function = \f$ (p/p0)^{rocp} \f$
-!! \param[in] tgrs       real, (IX,LM),model layer mean temperature in K
-!! \param[in] qgrs       real, (IX,LM),layer specific humidity in gm/gm
-!! \param[in] tracer     real, (IX,LM,NTRAC),layer prognostic tracer amount/mixing-ration; incl: oz,cwc,aeros,etc
-!! \param[in] vvl        real, (IX,LM),layer mean vertical velocity in pa/sec
-!! \param[in] slmsk      real, (IM),sea/land mask array (sea:0,land:1,sea-ice:2)
-!! \param[in] xlon       real, (IM),grid longitude in radians,ok for both 0->2pi or -pi->+pi ranges
-!! \param[in] xlat       real, (IM),grid latitude in radians, default to pi/2->-pi/2 range, otherwise adj in subr called
-!! \param[in] tsfc       real, (IM),surface temperature in K
-!! \param[in] snowd      real, (IM),snow depth water equivalent in mm
-!! \param[in] sncovr     real, (IM),snow cover in fraction
-!! \param[in] snoalb     real, (IM),maximum snow albedo in fraction
-!! \param[in] zorl       real, (IM),surface roughness in cm
-!! \param[in] hprim      real, (IM),topographic standard deviation in m
-!! \param[in] alvsf      real, (IM),mean vis albedo with strong cosz dependency
-!! \param[in] alnsf      real, (IM),mean nir albedo with strong cosz dependency
-!! \param[in] alvwf      real, (IM),mean vis albedo with weak cosz dependency
-!! \param[in] alnwf      real, (IM),mean nir albedo with weak cosz dependency
-!! \param[in] facsf      real, (IM),fractional coverage with strong cosz dependency
-!! \param[in] facwf      real, (IM),fractional coverage with weak cosz dependency
-!! \param[in] fice       real, (IM),ice fraction over open water grid
-!! \param[in] tisfc      real, (IM),surface temperature over ice fraction
-!! \param[in] sinlat     real, (IM),sine of the grids' corresponding latitudes
-!! \param[in] coslat     real, (IM),cosine of the grids' corresponding latitudes
-!! \param[in] solhr      real, 1, hour time after 00z at the t-stepe
-!! \param[in] jdate      integer(8),current forecast date and time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
-!! \param[in] solcon     real, 1, solar constant (sun-earth distant adjusted)
-!! \param[in] cv         real, (IM),fraction of convective cloud
-!! \param[in] cvt,cvb    real, (IM),convective cloud top/bottom pressure in pa
-!! \param[in] fcice      real, (IX,LM),fraction of cloud ice  (in ferrier scheme)
-!! \param[in] frain      real, (IX,LM),fraction of rain water (in ferrier scheme)
-!! \param[in] rrime      real, (IX,LM),mass ratio of total to unrimed ice ( >= 1 )
-!! \param[in] flgmin     real, (IM),minimim large ice fraction
-!! \param[in] icsdsw,icsdlw    integer, (IM),auxiliary cloud control arrays passed to main radiations. if isubcsw/isubclw (input to init) are set to 2, the arrays contains provided random seeds for sub-column clouds generators  !
-!! \param[in] ntcw       integer, =0 no cloud condensate calculated; >0 array index location for cloud condensate
-!! \param[in] ncld       integer, only used when ntcw .gt. 0
-!! \param[in] ntoz       integer, =0 climatological ozone profile; >0 interactive ozone profile
-!! \param[in] NTRAC      integer, dimension veriable for array oz
-!! \param[in] NFXR       integer, second dimension of input/output array fluxr
-!! \param[in] dtlw,dtsw      real, time duration for lw/sw radiation call in sec
+!! \param[in] prsi       model level pressure in Pa
+!! \param[in] prsl       model layer mean pressure in Pa
+!! \param[in] prslk      exner function = \f$ (p/p0)^{rocp} \f$
+!! \param[in] tgrs       model layer mean temperature in K
+!! \param[in] qgrs       layer specific humidity in gm/gm
+!! \param[in] tracer     layer prognostic tracer amount/mixing-ration; incl: oz,cwc,aeros,etc
+!! \param[in] vvl        layer mean vertical velocity in pa/sec
+!! \param[in] slmsk      sea/land mask array (sea:0,land:1,sea-ice:2)
+!! \param[in] xlon       grid longitude in radians,ok for both 0->2pi or -pi->+pi ranges
+!! \param[in] xlat       grid latitude in radians, default to pi/2->-pi/2 range, otherwise adj in subr called
+!! \param[in] tsfc       surface temperature in K
+!! \param[in] snowd      snow depth water equivalent in mm
+!! \param[in] sncovr     snow cover in fraction
+!! \param[in] snoalb     maximum snow albedo in fraction
+!! \param[in] zorl       surface roughness in cm
+!! \param[in] hprim      topographic standard deviation in m
+!! \param[in] alvsf      mean vis albedo with strong cosz dependency
+!! \param[in] alnsf      mean nir albedo with strong cosz dependency
+!! \param[in] alvwf      mean vis albedo with weak cosz dependency
+!! \param[in] alnwf      mean nir albedo with weak cosz dependency
+!! \param[in] facsf      fractional coverage with strong cosz dependency
+!! \param[in] facwf      fractional coverage with weak cosz dependency
+!! \param[in] fice       ice fraction over open water grid
+!! \param[in] tisfc      surface temperature over ice fraction
+!! \param[in] sinlat     sine of the grids' corresponding latitudes
+!! \param[in] coslat     cosine of the grids' corresponding latitudes
+!! \param[in] solhr      hour time after 00z at the t-stepe
+!! \param[in] jdate      current forecast date and time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
+!! \param[in] solcon     solar constant (sun-earth distant adjusted)
+!! \param[in] cv         fraction of convective cloud
+!! \param[in] cvt,cvb    convective cloud top/bottom pressure in pa
+!! \param[in] fcice      fraction of cloud ice  (in ferrier scheme)
+!! \param[in] frain      fraction of rain water (in ferrier scheme)
+!! \param[in] rrime      mass ratio of total to unrimed ice ( >= 1 )
+!! \param[in] flgmin     minimim large ice fraction
+!! \param[in] icsdsw,icsdlw    auxiliary cloud control arrays passed to main radiations. if isubcsw/isubclw (input to init) are set to 2, the arrays contains provided random seeds for sub-column clouds generators
+!! \param[in] ntcw       =0 no cloud condensate calculated; >0 array index location for cloud condensate
+!! \param[in] ncld       only used when ntcw .gt. 0
+!! \param[in] ntoz       =0 climatological ozone profile; >0 interactive ozone profile
+!! \param[in] NTRAC      dimension veriable for array oz
+!! \param[in] NFXR       second dimension of input/output array fluxr
+!! \param[in] dtlw,dtsw   time duration for lw/sw radiation call in sec
 !! \param[in] lsswr,lslwr    logical flags for sw/lw radiation calls
 !! \param[in] lssav      logical flag for store 3-d cloud field
-!! \param[in] IX,IM      integer, horizontal dimention and num of used points
-!! \param[in] LM         integer, vertical layer dimension
-!! \param[in] me         integer, control flag for parallel process
-!! \param[in] lprnt      logical, control flag for diagnostic print out
-!! \param[in] ipt        integer, index for diagnostic printout point
-!! \param[in] kdt        integer, time-step number
-!! \param[in] deltaq     real, (IX,LM),half width of uniform total water distribution
-!! \param[in] sup        real, supersaturation in pdf cloud when t is very low
-!! \param[in] cnvw       real, (IX.LM),layer convective cloud water
-!! \param[in] cnvc       real, (IX,LM),layer convective cloud cover
-!! \param[out] htrsw     real, (IX,LM),total sky sw heating rate in k/sec
-!! \param[out] topfsw    type(topfsw_type), (IM),sw radiation fluxes at toa, components: (check module_radsw_parameters for definition)
+!! \param[in] IX,IM      horizontal dimention and num of used points
+!! \param[in] LM         vertical layer dimension
+!! \param[in] me         control flag for parallel process
+!! \param[in] lprnt      control flag for diagnostic print out
+!! \param[in] ipt        index for diagnostic printout point
+!! \param[in] kdt        time-step number
+!! \param[in] deltaq     half width of uniform total water distribution
+!! \param[in] sup        supersaturation in pdf cloud when t is very low
+!! \param[in] cnvw       layer convective cloud water
+!! \param[in] cnvc       layer convective cloud cover
+!! \param[out] htrsw     total sky sw heating rate in k/sec
+!! \param[out] topfsw    sw radiation fluxes at toa, components: (check module_radsw_parameters for definition)
 !! \n          %upfxc       - total sky upward sw flux at toa (\f$W/m^2\f$)
 !! \n          %dnflx       - total sky downward sw flux at toa (\f$W/m^2\f$)
 !! \n          %upfx0       - clear sky upward sw flux at toa (\f$W/m^2\f$)
-!! \param[out] sfcfsw    type(sfcfsw_type), (IM),sw radiation fluxes at sfc, components: (check module_radsw_parameters for definition)
+!! \param[out] sfcfsw    sw radiation fluxes at sfc, components: (check module_radsw_parameters for definition)
 !! \n          %upfxc       - total sky upward sw flux at sfc (\f$W/m^2\f$)
 !! \n          %dnfxc       - total sky downward sw flux at sfc (\f$W/m^2\f$)
 !! \n          %upfx0       - clear sky upward sw flux at sfc (\f$W/m^2\f$)
 !! \n          %dnfx0       - clear sky downward sw flux at sfc (\f$W/m^2\f$)
-!! \param[out] dswcmp    real, (IX,4),dn sfc sw spectral components:
+!! \param[out] dswcmp    dn sfc sw spectral components:
 !! \n          (:, 1)       -  total sky sfc downward nir direct flux
 !! \n          (:, 2)       -  total sky sfc downward nir diffused flux
 !! \n          (:, 3)       -  total sky sfc downward uv+vis direct flux
 !! \n          (:, 4)       -  total sky sfc downward uv+vis diff flux
-!! \param[out] uswcmp    real, (IX,4),up sfc sw spectral components:
+!! \param[out] uswcmp    up sfc sw spectral components:
 !! \n          (:, 1)       -  total sky sfc upward nir direct flux
 !! \n          (:, 2)       -  total sky sfc upward nir diffused flux
 !! \n          (:, 3)       -  total sky sfc upward uv+vis direct flux
 !! \n          (:, 4)       -  total sky sfc upward uv+vis diff flux
-!! \param[out] sfalb     real, (IM),mean surface diffused sw albedo
-!! \param[out] coszen    real, (IM),mean cos of zenith angle over rad call period
-!! \param[out] coszdg    real, (IM),daytime mean cosz over rad call period
-!! \param[out] htrlw       (IX,LM),total sky lw heating rate in k/sec
-!! \param[out] topflw    type(topflw_type), (IM),lw radiation fluxes at top, component:(check module_radlw_paramters for definition)
+!! \param[out] sfalb     mean surface diffused sw albedo
+!! \param[out] coszen    mean cos of zenith angle over rad call period
+!! \param[out] coszdg    daytime mean cosz over rad call period
+!! \param[out] htrlw     total sky lw heating rate in k/sec
+!! \param[out] topflw    lw radiation fluxes at top, component:(check module_radlw_paramters for definition)
 !! \n          %upfxc       - total sky upward lw flux at toa (\f$W/m^2\f$)
 !! \n          %upfx0       - clear sky upward lw flux at toa (\f$W/m^2\f$)
-!! \param[out] sfcflw    type(sfcflw_type), (IM),lw radiation fluxes at sfc, component:(check module_radlw_paramters for definition)
+!! \param[out] sfcflw    lw radiation fluxes at sfc, component:(check module_radlw_paramters for definition)
 !! \n          %upfxc       - total sky upward lw flux at sfc (\f$W/m^2\f$)
 !! \n          %upfx0       - clear sky upward lw flux at sfc (\f$W/m^2\f$)
 !! \n          %dnfxc       - total sky downward lw flux at sfc (\f$W/m^2\f$)
 !! \n          %dnfx0       - clear sky downward lw flux at sfc (\f$W/m^2\f$)
-!! \param[out] semis     real, (IM),surface lw emissivity in fraction
-!! \param[out] cldcov    real, (IX,LM),3-d cloud fraction
-!! \param[out] tsflw     real, (IM),surface air temp during lw calculation in K
-!! \param[in,out] fluxr  real, (IX,NFXR),to save time accumulated 2-d fields defined as:
+!! \param[out] semis     surface lw emissivity in fraction
+!! \param[out] cldcov    3-d cloud fraction
+!! \param[out] tsflw     surface air temp during lw calculation in K
+!! \param[in,out] fluxr  to save time accumulated 2-d fields defined as:
 !! \n                           1      - toa total sky upwd lw radiation flux
 !! \n                           2      - toa total sky upwd sw radiation flux
 !! \n                           3      - sfc total sky upwd sw radiation flux
@@ -898,9 +898,9 @@
 !! \n                          36      - aeros opt depth at 550nm for bc component
 !! \n                          37      - aeros opt depth at 550nm for oc component
 !! \n                          38      - aeros opt depth at 550nm for su component
-!! \n                          39      - aeros opt depth at 550nm for ss component       
-!! \param[out] htrswb     real, (IX,LM,NBDSW),spectral band total sky sw heating rate
-!! \param[out] htrlwb     real, (IX,LM,NBDLW),spectral band total sky lw heating rate
+!! \n                          39      - aeros opt depth at 550nm for ss component
+!! \param[out] htrswb     spectral band total sky sw heating rate
+!! \param[out] htrlwb     spectral band total sky lw heating rate
 !!
 !> \section gen_grrad General Algorithm
 !> @{
@@ -1612,7 +1612,7 @@
 !      write(0,*)' tlvl=',tlvl(ipt,1:65)
 !      write(0,*)' qlyr=',qlyr(ipt,1:10)*1000
 
-!> -# Calling module_radiation_aerosols::setaer(), setup aerosols property 
+!> -# Calling module_radiation_aerosols::setaer(), setup aerosols property
 !! profile for radiation (faersw,faerlw,aerodp)
 !  --- ...  setup aerosols property profile for radiation
 
@@ -1736,7 +1736,7 @@
 
       if (lsswr) then
 
-!> -# calling module_radiation_surface::setalb(),setup surface albedo 
+!> -# calling module_radiation_surface::setalb(),setup surface albedo
 !!  for SW radiation, incl xw (nov04) sea-ice
 
 !  ---  setup surface albedo for sw radiation, incl xw (nov04) sea-ice
@@ -1765,14 +1765,14 @@
 
           if ( present(htrswb) .and. present(htrsw0)) then
 
-            call swrad                                             
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,            
-     &       clouds,icsdsw,faersw,sfcalb,                    
-     &       coszen,solcon, nday,idxday,                
-     &       IM, LMK, LMP, lprnt,                    
-     &       htswc,topfsw,sfcfsw                                 
+            call swrad
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,
+     &       clouds,icsdsw,faersw,sfcalb,
+     &       coszen,solcon, nday,idxday,
+     &       IM, LMK, LMP, lprnt,
+     &       htswc,topfsw,sfcfsw
 !!   &,      HSW0=htsw0,FLXPRF=fswprf                                   &
-     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw          
+     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw
      &     )
 
             do k = 1, LM
