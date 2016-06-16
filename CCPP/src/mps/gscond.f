@@ -10,11 +10,11 @@
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
 !! There are two sources of prognostic cloud condensate, convective detrainment (see convection) and grid-sale
 !! condensate. The sinks of cloud condensate are grid-scale precipitation and evaporation of the cloud condensate.
-!! Evaporation of rain in the unsaturated layers below the level of condensation is also taken into account.All 
+!! Evaporation of rain in the unsaturated layers below the level of condensation is also taken into account.All
 !! precipitation that penetrates the lowest atmospheric layer is allowed to fall to the surface.
 !! Subsequent to the May 2001 implementation, excessive amounts of light precipitation were noted. This was addressed
-!! through a minor implementation in August 2001, which involved a slight modification of the autoconversion rate of 
-!! ice. At the same time, an empirically-based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar 
+!! through a minor implementation in August 2001, which involved a slight modification of the autoconversion rate of
+!! ice. At the same time, an empirically-based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar
 !! 1996 \cite heymsfield_and_mcfarquhar_1996) was introduced.
 !> \section tune Important Tunable Parameters
 !! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in the atmosphere and
@@ -29,6 +29,7 @@
 
 !> \defgroup condense Grid-Scale Condensation and Evaporation of Cloud
 !! @{
+
 !> This subroutine computes grid-scale condensation and evaporation of cloud condensate.
 !! \param[in] ix         horizontal dimension
 !! \param[in] im         horizontal number of used pts
@@ -184,11 +185,11 @@
 !!    - All clouds are defined to consist of liquid water below
 !! the freezing level (\f$T>0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
 !! level.
-!!    - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of 
+!!    - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of
 !! liquid water or ice. If there are cloud ice particles above this point at the
 !! previous or current time step, or if the cloud at this point at the previous
 !! time step consists of ice particles, then the cloud substance at this point
-!! is considered to be ice particles because of the cloud seeding effect and the 
+!! is considered to be ice particles because of the cloud seeding effect and the
 !! memory of its content. Otherwise, all clouds in this region are considered to contain supercooled
 !! cloud water.
 !-------------------ice-water id number iw------------------------------
@@ -241,18 +242,18 @@
           else
             rqik = qik/qc
           endif
-!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, estimate cloud fraction \f$b\f$ at a grid point from relative humidity \f$f\f$ using the equation 
+!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, estimate cloud fraction \f$b\f$ at a grid point from relative humidity \f$f\f$ using the equation
 !!\f[
 !!       b=1-\left ( \frac{f_{s}-f}{f_{s}-u} \right )^{1/2}
 !!\f]
 !! for \f$f>u\f$; and \f$b=0\f$ for \f$f<u\f$. where \f$f_{s}=1.0\f$ is the
-!! relative humidity in a cloud region and \f$u\f$ accounts for the effects of subgrid-scale variations in 
+!! relative humidity in a cloud region and \f$u\f$ accounts for the effects of subgrid-scale variations in
 !! moisture on large-scale condensation. Since both temperature and moisture may vary at scales smaller than the model
 !! grid scale, it is possible for condensation to occur before the grid-average
 !!relative humidity reaches 100%. Therefore \f$u\f$ (see \f$rhc\f$ in gbphs.f)needs to be less than
 !!1.0 to account for the subgrid-scale variation of temperature and moisture
 !!fields and allow subgrid-scale condensation.
-!!    - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate 
+!!    - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate
 !! using evaporation rate \f$E_{c}\f$ as computed below.
 !!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$f_{0}\f$, then
 !!\f[

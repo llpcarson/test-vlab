@@ -4,6 +4,7 @@
 !> \ingroup MPscheme
 !> \defgroup precip Precipitation (snow or rain) Production
 !! @{
+
 !> This subroutine computes the conversion from condensation to precipitation (snow or rain) or
 !! evaporation of rain.
 !! \brief The parameterization of precipitation is required in order to remove water from the atmosphere
