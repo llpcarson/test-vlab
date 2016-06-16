@@ -872,8 +872,8 @@
 
 !-----------------------------------------------------------------------
 !
-!>  - If the minimum RI at interface cloud top is less than or equal to 1/4,
-!!  the convective GWD calculation is skippedth that grid point. 
+! If the minimum \f$R_{i}\f$ at interface cloud top is less than or equal to 1/4,
+!  the convective GWD calculation is skipped at that grid point. 
 !
 !-----------------------------------------------------------------------
 
@@ -960,7 +960,10 @@
                   end if                                              ! RImin
                 else
 
-!>  - In the dynamically unstable environment, there is no gravity wave stress
+! In the dynamically unstable environment, there is no gravity wave stress
+!>  - If the minimum \f$R_{i}\f$ at interface cloud top is less than or equal to 1/4,
+!!  the convective GWD calculation is skipped at that grid point. 
+
 
                   taugwci(i,k) = zero    
                 end if                                                ! RIloc
@@ -979,7 +982,7 @@
 
             elseif (k == 1) then
 
-!>  - Upper boundary condition - permit upward propagation of gravity wave energy
+!>  - As an upper boundary condition, upward propagation of gravity wave energy is permitted.
 
               taugwci(i,1) = taugwci(i,2)
             endif
@@ -987,7 +990,8 @@
         enddo                     ! end of i=1,npt loop
       enddo                       ! end of k=kcldm,1,-1 loop
 
-!>  - Vertical differentiation
+!> -# Calculate wind tendency in direction to the wind vector,zonal wind tendency and meridional wind
+!! tendency above the cloud top level due to convectively generated gravity waves. 
 
       do k=1,km
         do i=1,npt
@@ -1007,7 +1011,7 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate momentum flux = stress deposited above cloup top
+!  Calculate momentum flux = stress deposited above cloup top
 !  Apply equal amount with opposite sign within cloud
 !
 !-----------------------------------------------------------------------
@@ -1196,7 +1200,7 @@
 !     enddo
 
 !-----------------------------------------------------------------------
-!> -# Convert back local GWDC Tendency arrays to GFS model vertical indices
+!> -# Convert back local convective GWD tendency arrays to GFS model vertical indices.
 !  Outgoing (FU1,FV1)=(utgwc,vtgwc)
 !-----------------------------------------------------------------------
 
