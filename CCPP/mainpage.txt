@@ -8,9 +8,7 @@ Documentation for the operational physics suite can be found here. As of January
 	-  \ref SASHAL
 	-  \ref MPscheme
 	-  \ref gwd
-	- Ozone Sources and Sinks
-	- Earth System Surface Fluxes and State
-	- Land Surface Model - NOAH
+	-  \ref ozn
 
 \section stru Structure
 This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
