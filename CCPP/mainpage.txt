@@ -1,20 +1,20 @@
 /**
 \mainpage GFS Operational Physics
-	
+
 Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
 	-  \ref rad
-	-  \ref PBL 
-	- Simplified Arakawa-Schubert Deep Convection 
-	- Shallow Convection - SAS
+	-  \ref PBL
+	-  \ref SAS
+	-  \ref SASHAL
 	-  \ref MPscheme
 	-  \ref gwd
-	- Ozone Sources and Sinks 
+	- Ozone Sources and Sinks
 	- Earth System Surface Fluxes and State
 	- Land Surface Model - NOAH
 
 \section stru Structure
 This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
-      
+
 \section plan Future Plans
 NCEP plans to improve the physics package based on the ongoing physics developments which include:
 - Modified deep and shallow convection parameterizations with scale and aerosol awareness.
