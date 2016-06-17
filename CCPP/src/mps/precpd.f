@@ -3,12 +3,11 @@
 
 !> \ingroup MPscheme
 !> \defgroup precip Precipitation (snow or rain) Production
-!! @{
-!> This subroutine computes the conversion from condensation to precipitation (snow or rain) or
-!! evaporation of rain.
-!! \brief The parameterization of precipitation is required in order to remove water from the atmosphere
+!! This subroutine computes the conversion from condensation to precipitation (snow or rain) or evaporation of rain.
+!!
+!> The parameterization of precipitation is required in order to remove water from the atmosphere
 !! and transport it to the ground. In the scheme discussed here, simplifications in the precipitation parameterization
-!! are used due to computational limitations required by operational NWP models. First, consideration of particle 
+!! are used due to computational limitations required by operational NWP models. First, consideration of particle
 !! size and shape can be avoided by using the bulk
 !! parameterization method introduced by Kessler (1969) \cite kessler_1969. Second, only two types of precipitation
 !! , rain and snow, are considered in this scheme. Third, only the most important microphysical
@@ -16,7 +15,9 @@
 !! cloud water, production of snow from cloud ice, melting of snow to form rain below the
 !! freezing level, and the evaporation of precipitation). Finally, the fourth simplification
 !! is that precipitation is diagnostically calculated directly from the cloud mixing ratio.
-!! \param[in] im        horizontal number of used pts
+!! @{
+
+!> \param[in] im        horizontal number of used pts
 !! \param[in] ix        horizontal dimension
 !! \param[in] km        vertical layer dimension
 !! \param[in] dt        time step in seconds
@@ -113,12 +114,9 @@
 !
       integer im, ix, km, jpr
       real (kind=kind_phys) q(ix,km),   t(ix,km),    cwm(ix,km)
-     &,                                 del(ix,km),  prsl(ix,km)
-!    &,                     cll(im,km), del(ix,km),  prsl(ix,km)
+     &,                                 del(ix,km),  prsl(ix,km)   !    &, cll(im,km), del(ix,km),  prsl(ix,km)
      &,                     rn(im),      sr(im)
-     &,                     dt
-!hchuang code change [+1l] : add record to record information in vertical in
-!                       addition to total column precrl
+     &,                     dt   !hchuang code change [+1l] : add record to record information in vertical in addition to total column precrl
      &,                     rainp(im,km), rnp(im),
      &                      psautco(im), prautco(im), evpco, wminco(2)
 !

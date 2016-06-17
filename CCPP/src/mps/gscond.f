@@ -28,24 +28,31 @@
 !! - Routine PRECPD is called from GBPHYS after call to GSCOND
 
 !> \defgroup condense Grid-Scale Condensation and Evaporation of Cloud
+!! This subroutine computes grid-scale condensation and evaporation of cloud condensate.
+!!
+!> There are two sources of condensation, one from large-scale processes and the other
+!! from convective processes. Both of them produce either cloud water or cloud ice, depending 
+!! on the cloud substance at and above the grid point at current and previous time steps,
+!! and on the temperature. Evaporation of cloud is allowed at points where the relative humidity
+!! is lower than the critical value required for condensation. 
 !! @{
-!> This subroutine computes grid-scale condensation and evaporation of cloud condensate.
-!! \param[in] ix         horizontal dimension
+
+!> \param[in] ix         horizontal dimension
 !! \param[in] im         horizontal number of used pts
 !! \param[in] km         vertical layer dimension
 !! \param[in] dt         physics time step in seconds
 !! \param[in] dtf        dynamics time step in seconds
 !! \param[in] prsl       pressure values for model layers
 !! \param[in] ps         surface pressure (Pa)
-!! \param[in,out] q      updated tracers (gq0(:,:,1))
-!! \param[in,out] cwm    updated tracers (gq0(:,:,ntcw))
-!! \param[in,out] t      updated temperature
-!! \param[in,out] tp     see phy_f3d(:,:,1)
-!! \param[in,out] qp     see phy_f3d(:,:,2)
-!! \param[in,out] psp    see phy_f2d(:,1)
-!! \param[in,out] tp1    see phy_f3d(:,:,3)
-!! \param[in,out] qp1    see phy_f3d(:,:,4)
-!! \param[in,out] psp1   see phy_f2d(:,2)
+!! \param[in,out] q      model layer specific humidity (gm/gm)
+!! \param[in,out] cwm    model layer cloud condensate 
+!! \param[in,out] t      model layer mean temperature (K)
+!! \param[in,out] tp     model layer mean temperature (K) saved for restart
+!! \param[in,out] qp     model layer specific humidity (gm/gm) saved for restart
+!! \param[in,out] psp    surface pressure (Pa) saved for restart
+!! \param[in,out] tp1    updated model layer mean temperature (K) saved for restart
+!! \param[in,out] qp1    updated model layer specific humidity (gm/gm) saved for restart
+!! \param[in,out] psp1   updated surface pressure (Pa) saved for restart
 !! \param[in] u          the critical value of relative humidity for large-scale condensation
 !! \param[in] lprnt      logical print flag
 !! \param[in] ipr        check print point for debugging
@@ -181,10 +188,10 @@
 !!\n    See Table 2 in Zhao and Carr (1997) \cite zhao_and_carr_1997 , the distinction between cloud
 !! water and cloud ice is made by the cloud identification number IW, which
 !! is zero for cloud water and unity for cloud ice.
-!!    - All clouds are defined to consist of liquid water below
+!!  - All clouds are defined to consist of liquid water below
 !! the freezing level (\f$T>0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
 !! level.
-!!    - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of 
+!!  - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of 
 !! liquid water or ice. If there are cloud ice particles above this point at the
 !! previous or current time step, or if the cloud at this point at the previous
 !! time step consists of ice particles, then the cloud substance at this point
@@ -216,7 +223,7 @@
 !> -# Condensation and evaporation of cloud
 !--------------condensation and evaporation of cloud--------------------
         do i = 1, im
-!>    - Compute the changes in t, q and p (\f$A_{t}\f$,\f$A_{q}\f$ and \f$A_{p}\f$) caused by
+!>  - Compute the changes in t, q and p (\f$A_{t}\f$,\f$A_{q}\f$ and \f$A_{p}\f$) caused by
 !! all the processes except grid-scale condensation and evaporation.
 !------------------------at, aq and dp/dt-------------------------------
           qik   = max(q(i,k),epsq)
@@ -229,7 +236,7 @@
           at    = (tik-tp(i,k)) * rdt
           aq    = (qik-qp(i,k)) * rdt
           ap    = (pres-pp0)    * rdt
-!>    - Compute the saturation specific humidity and the relative humidity.
+!>  - Compute the saturation specific humidity and the relative humidity.
 !----------------the satuation specific humidity------------------------
           fiw   = float(iwik)
           elv   = (h1-fiw)*elwv    + fiw*eliv
@@ -241,7 +248,7 @@
           else
             rqik = qik/qc
           endif
-!>    - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, estimate cloud fraction \f$b\f$ at a grid point from relative humidity \f$f\f$ using the equation 
+!>  - According to Sundqvist et al. (1989) \cite sundqvist_et_al_1989, estimate cloud fraction \f$b\f$ at a grid point from relative humidity \f$f\f$ using the equation 
 !!\f[
 !!       b=1-\left ( \frac{f_{s}-f}{f_{s}-u} \right )^{1/2}
 !!\f]
@@ -252,13 +259,13 @@
 !!relative humidity reaches 100%. Therefore \f$u\f$ (see \f$rhc\f$ in gbphs.f)needs to be less than
 !!1.0 to account for the subgrid-scale variation of temperature and moisture
 !!fields and allow subgrid-scale condensation.
-!!    - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate 
+!!  - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate 
 !! using evaporation rate \f$E_{c}\f$ as computed below.
-!!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$f_{0}\f$, then
+!!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$u\f$, then
 !!\f[
 !!           q_{0}=uq_{s}
 !!\f]
-!!\n if the cloud water/ice at this point is enough to be evaporated until \f$f_{0}\f$ is
+!!\n if the cloud water/ice at this point is enough to be evaporated until \f$u\f$ is
 !! reached, then the evaporation rate \f$E_{c}\f$, assuming that the evaporation process
 !! occurs in one time step, is determined by
 !!\f[
@@ -270,7 +277,7 @@
 !!\f]
 !! where \f$\triangle t\f$ is the time step for precipitation calculation in the model
 !! (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
-!!    - If cloud fraction \f$b>1.0\times10^{-3}\f$, condense water vapor in to cloud condensate (\f$C_{g}\f$).
+!!  - If cloud fraction \f$b>1.0\times10^{-3}\f$, condense water vapor in to cloud condensate (\f$C_{g}\f$).
 !!\n Using \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
 !! equation \f$de_{s}/dT=\epsilon Le_{s}/RT^{2}\f$,where \f$q_{s}\f$ is the saturation specific humidity,\f$e_{s}\f$
 !! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,\f$P\f$ is the pressure,
@@ -290,8 +297,8 @@
 !!\f[
 !!  f_{t}=\frac{2(1-b)(f_{s}-u)[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-u)+m/b}
 !!\f]
-!!    - Check and correct if over condensation occurs.
-!!    - Update  t, q and cwm (according to Eqs(6) and (7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
+!!  - Check and correct if over condensation occurs.
+!!  - Update  t, q and cwm (according to Eqs(6) and (7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
 !!\f[
 !!   cwm=cwm+(C_{g}-E_{c})\times dt
 !!\f]

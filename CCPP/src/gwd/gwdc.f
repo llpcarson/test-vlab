@@ -3,11 +3,11 @@
 
 !> \ingroup gwd
 !> \defgroup convective Convective Gravity Wave Drag
-!! @{
-!> This subroutine is the parameterization of convective gravity wave drag 
+!! This subroutine is the parameterization of convective gravity wave drag
 !! based on the theory given by Chun and Baik (1998)
 !! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005).
-!!
+!! @{
+
 !! Parameterizing subgrid-scale convection-induced gravity wave momentum flux for use in large-scale
 !! models inherently requires some information from subgrid-scale cumulus parameterization. 
 !! The methodology for parameterizing the zonal momentum flux induced by thermal forcing can be
