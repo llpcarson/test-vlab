@@ -10,8 +10,9 @@ Documentation for the operational physics suite can be found here. As of January
 	-  \ref gwd
 	-  \ref ozn
 
-\section stru Structure
-This is a placeholder for a graphic depicting the calling structure of GFS, including calls to all physics schemes listed above.
+\section structure Structure
+\image html GFS_Operational_Physics.png "This diagram represents the GFS physics calling structure. Colors represent layers of abstraction in the code, with cooler colors being deeper in the calling hierarchy. Labels represent subroutine names and those in parentheses reflect that they are one of many options (the subroutines that are written are the current operational schemes). The sfc_* subroutine represents sfc_diff and other subroutines that are called depending on the underlying surface (sea, ice, land)."
+The operational GFS physics suite is called from the GSM dycore according to the diagram above. The highest tiers (red and yellow) can be considered part of the GSM model and are located within the "atmos/gsm/phys" directory of NEMS. The lower tiers (green and blue) consist of driving routines (green) and the parameterization code (blue) and are found in the "atmos/phys" directory of NEMS. In this way, the bottom two tiers are currently considered the GFS physics suite -- the parameterization code and the code necessary to connect it to a dycore. The Interoperable Physics Driver (IPD), currently found within the "nuopc_physics.F90" file, is an additional layer of abstraction (not shown) between the yellow and green tiers. Although it functions as a "wrapper" to the green tier at present, it will likely evolve to replace much of its functionality. Functionality found in the green tier that is not generalizable, that is inextricably linked to the GFS physics suite, will be part of the pre/post GFS physics routine that interfaces with the IPD.
 
 \section plan Future Plans
 NCEP plans to improve the physics package based on the ongoing physics developments which include:
