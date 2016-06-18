@@ -30,10 +30,10 @@
 !! \param[out] sr        "snow ratio", ratio of snow to total precipitation
 !! \param[out] rainp    rainwater path
 !! \param[in] u00k      the critical value of relative humidity for large-scale condensation
-!! \param[in] psautco   auto conversion coeff from ice to snow 
+!! \param[in] psautco   auto conversion coeff from ice to snow
 !! \n                   = 4.0E-4; defined in module_MP_GFS.F90
-!! \param[in] prautco   auto conversion coeff from cloud to rain 
-!! \n                   = 1.0E-4; defined in module_MP_GFS.F90 
+!! \param[in] prautco   auto conversion coeff from cloud to rain
+!! \n                   = 1.0E-4; defined in module_MP_GFS.F90
 !! \param[in] evpco     coeff for evaporation of largescale rain
 !! \n                   = 2.0E-5; defined in module_MP_GFS.F90
 !! \param[in] wminco    water and ice minimum threshold to conversion from condensate to precipitation
@@ -372,7 +372,7 @@
 !! from cloud ice and is set to a value of \f$1.0\times 10^{-5} (kg/kg)\f$. Since snow
 !! production in this process is caused by the increase in size of cloud ice particles due
 !! to depositional growth and aggregation of small ice particles, \f$P_{saut}\f$ is
-!! a function of temperature as determined by coefficient \f$a_{1}\f$, given by 
+!! a function of temperature as determined by coefficient \f$a_{1}\f$, given by
 !! \f[
 !!   a_{1}=10^{-3}exp\left[ 0.025\left(T-273.15\right)\right]
 !! \f]
@@ -389,7 +389,7 @@
 !!\f[
 !!   C_{s}=c_{1}exp[c_{2}(T-273.15)]
 !!\f]
-!! where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$ and \f$c_{2}=0.025 K^{-1}\f$ are used. 
+!! where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$ and \f$c_{2}=0.025 K^{-1}\f$ are used.
 !! \f$C_{s}\f$ is set to zero below the freezing level.
 !!
 !---   precipitation production --  auto conversion and accretion

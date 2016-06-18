@@ -120,12 +120,12 @@
 !!  This module contains climatological atmospheric aerosol schemes for
 !!  radiation computations.
 !!
-!!\version NCEP-Radiation_aerosols  v5.2  Jan 2013 
+!!\version NCEP-Radiation_aerosols  v5.2  Jan 2013
 !!
-!!\n This module has three externally callable subroutines: 
-!! - aer_init() -- initialization; called at the start of run to set up module parameters                         
-!! - aer_update() -- updating aerosol data; called within the time loop to check and update data sets   
-!! - setaer() -- mapping aeros profile, compute aeros opticals  
+!!\n This module has three externally callable subroutines:
+!! - aer_init() -- initialization; called at the start of run to set up module parameters
+!! - aer_update() -- updating aerosol data; called within the time loop to check and update data sets
+!! - setaer() -- mapping aeros profile, compute aeros opticals
 !!
 !!\n References:
 !! - OPAC climatological aerosols:
@@ -158,22 +158,22 @@
 
 !  ---  version tag and last revision date
 !> version tag
-      character(40), parameter ::      
+      character(40), parameter ::
      &   VTAGAER='NCEP-Radiation_aerosols  v5.2  Jan 2013 '
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.1  Nov 2012 '
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.0  Aug 2012 '
 
 ! --- general use parameter constants:
 !> num of output fields for SW rad
-      integer, parameter, public :: NF_AESW = 3     
+      integer, parameter, public :: NF_AESW = 3
 !> num of output fields for LW rad
-      integer, parameter, public :: NF_AELW = 3   
+      integer, parameter, public :: NF_AELW = 3
 !> starting band number in ir region
-      integer, parameter, public :: NLWSTR  = 1  
+      integer, parameter, public :: NLWSTR  = 1
 !> num of species for output aod (opnl)
-      integer, parameter, public :: NSPC    = 5 
+      integer, parameter, public :: NSPC    = 5
 !> total+species
-      integer, parameter, public :: NSPC1   = NSPC + 1 
+      integer, parameter, public :: NSPC1   = NSPC + 1
 
       real (kind=kind_phys), parameter :: f_zero = 0.0
       real (kind=kind_phys), parameter :: f_one  = 1.0
@@ -181,24 +181,24 @@
 ! module control parameters set in subroutine "aer_init"
 
 !> number of actual bands for SW aerosols. calculated according to laswflg setting
-      integer, save :: NSWBND  = NBDSW      
-                                           
+      integer, save :: NSWBND  = NBDSW
+
 !> number of actual bands for LW aerosols. calculated according to lalwflg and lalw1bd settings
-      integer, save :: NLWBND  = NBDLW   
-                                       
+      integer, save :: NLWBND  = NBDLW
+
 !> total number of bands for SW+LW aerosols
-      integer, save :: NSWLWBD = NBDSW+NBDLW 
+      integer, save :: NSWLWBD = NBDSW+NBDLW
 
 ! section-1 : module variables for spectral band interpolation similar to gfdl-sw treatment (2000 version)
 
 !  ---  parameter constants:
 !> num of wvnum regions where solar flux is constant
-      integer, parameter, public :: NWVSOL  = 151   
-                                                   
+      integer, parameter, public :: NWVSOL  = 151
+
 !> total num of wvnum included
-      integer, parameter, public :: NWVTOT  = 57600 
+      integer, parameter, public :: NWVTOT  = 57600
 !> total num of wvnum in ir range
-      integer, parameter, public :: NWVTIR  = 4000  
+      integer, parameter, public :: NWVTIR  = 4000
 
 !> number of wavenumbers in each region where the solar flux is constant
       integer, dimension(NWVSOL), save :: nwvns0
@@ -262,9 +262,9 @@
 
 !  ---  parameter constants:
 !> lower limit (year) data available
-      integer, parameter :: MINVYR = 1850    
+      integer, parameter :: MINVYR = 1850
 !> upper limit (year) data available
-      integer, parameter :: MAXVYR = 1999   
+      integer, parameter :: MAXVYR = 1999
 
 !> monthly, 45-deg lat-zone aerosols data set in subroutine 'aer_init'
       integer, allocatable, save :: ivolae(:,:,:)
@@ -283,27 +283,27 @@
 !   section-3 : module variables for opac climatological aerosols       !
 !               optical properties (hess et al. 1989)                   !
 ! --------------------------------------------------------------------- !
-! section-3 : module variables for opac climatological aerosols optical properties (hess et al. 1989) 
+! section-3 : module variables for opac climatological aerosols optical properties (hess et al. 1989)
 
 !  ---  parameters and constants:
 !> num of max componets in a profile
-      integer, parameter :: NXC = 5   
+      integer, parameter :: NXC = 5
 !> num of aerosols profile structures
-      integer, parameter :: NAE = 7 
+      integer, parameter :: NAE = 7
 !> num of atmos aerosols domains
       integer, parameter :: NDM = 5
 !> num of lon-points in glb aeros data set
-      integer, parameter :: IMXAE = 72 
+      integer, parameter :: IMXAE = 72
 !> num of lat-points in glb aeros data set
-      integer, parameter :: JMXAE = 37 
+      integer, parameter :: JMXAE = 37
 !> num of bands for clim aer data (opac)
-      integer, parameter :: NAERBND=61 
+      integer, parameter :: NAERBND=61
 !> num of rh levels for rh-dep components
-      integer, parameter :: NRHLEV =8  
+      integer, parameter :: NRHLEV =8
 !> num of rh independent aeros species
-      integer, parameter :: NCM1 = 6   
+      integer, parameter :: NCM1 = 6
 !> num of rh dependent aeros species
-      integer, parameter :: NCM2 = 4 
+      integer, parameter :: NCM2 = 4
       integer, parameter :: NCM  = NCM1+NCM2
 !> predefined rh levels
       real (kind=kind_phys), dimension(NRHLEV), save :: rhlev
@@ -350,7 +350,7 @@
      real (kind=kind_phys), allocatable, save :: extrhi(:,:)
 !> scattering coefficient for sw+lw spectral band
      real (kind=kind_phys), allocatable, save, dimension(:,:) :: scarhi
-!> single scattering albedo for sw+lw spectral band 
+!> single scattering albedo for sw+lw spectral band
      real (kind=kind_phys), allocatable, save, dimension(:,:) :: ssarhi
 !> asymmetry parameter for sw+lw spectral band
      real (kind=kind_phys), allocatable, save, dimension(:,:) :: asyrhi
@@ -359,7 +359,7 @@
 !! \todo comment on extrhd, scarhd, ssarhd, asyrhd
 
 !> extinction coefficient for sw+lw band
-     real (kind=kind_phys),allocatable, save, dimension(:,:,:) ::extrhd 
+     real (kind=kind_phys),allocatable, save, dimension(:,:,:) ::extrhd
 !> scattering coefficient for sw+lw band
      real (kind=kind_phys),allocatable, save, dimension(:,:,:) :: scarhd
 !> single scattering albedo for sw+lw band
@@ -371,7 +371,7 @@
 !!\todo comment on extstra
 
 !> extinction coefficient for sw+lw band
-     real (kind=kind_phys),allocatable, save, dimension(:)  :: extstra 
+     real (kind=kind_phys),allocatable, save, dimension(:)  :: extstra
 
 !  ---  the following arrays are calculated in subr 'clim_aerinit'
 !   - for topospheric aerosol profile distibution:
@@ -380,7 +380,7 @@
 !      cmixg (NXC*IMXAE*JMXAE)   - aeros component mixing ratio
 !      denng ( 2 *IMXAE*JMXAE)   - aerosols number density
 
-!> \name topospheric aerosol profile distribution 
+!> \name topospheric aerosol profile distribution
 
 !> aeros component mixing ratio
       real (kind=kind_phys), dimension(NXC,IMXAE,JMXAE), save :: cmixg
@@ -399,18 +399,18 @@
 !  ---  parameters and constants:
 !   - KCM, KCM1, KCM2 are determined from subroutine 'set_aerspc'
 !> num of bands for aer data (gocart)
-      integer, parameter :: KAERBND=61 
+      integer, parameter :: KAERBND=61
 !> num of rh levels for rh-dep components
-      integer, parameter :: KRHLEV =36 
+      integer, parameter :: KRHLEV =36
 !*    integer, parameter :: KCM1 = 8   ! num of rh independent aer !species
 !*    integer, parameter :: KCM2 = 5   ! num of rh dependent aer species
 !*    integer, parameter :: KCM  = KCM1 + KCM2
 !> num of rh indep aerosols (set in subr set_aerspc)
-      integer, save      :: KCM1 = 0   
+      integer, save      :: KCM1 = 0
 !> num of rh dep aerosols (set in subr set_aerspc)
-      integer, save      :: KCM2 = 0   
+      integer, save      :: KCM2 = 0
 !> =KCM1+KCM2 (set in subr set_aerspc)
-      integer, save      :: KCM       
+      integer, save      :: KCM
 
       real (kind=kind_phys), dimension(KRHLEV) :: rhlev_grt             &
       data  rhlev_grt (:)/ .00, .05, .10, .15, .20, .25, .30, .35,      &
@@ -457,14 +457,14 @@
 !> \name relative humidity independent aerosol optical properties:
 !! species : dust (8 bins)
 
-!> extinction coefficient 
+!> extinction coefficient
       real (kind=kind_phys),allocatable, dimension(:,:)  :: rhidext0_grt
-!> single scattering albedo 
+!> single scattering albedo
       real (kind=kind_phys),allocatable, dimension(:,:)  :: rhidssa0_grt
-!> asymmetry parameter 
+!> asymmetry parameter
       real (kind=kind_phys), allocatable, dimension(:,:) :: rhidasy0_grt
 !
-! relative humidity dependent aerosol optical properties: 
+! relative humidity dependent aerosol optical properties:
 ! species : soot, suso, waso, ssam, sscm
 
 !> \name relative humidity dependent aerosol optical properties:
@@ -583,7 +583,7 @@
       real (kind=kind_phys), save :: ctaer = f_zero   ! user specified wgt
 
 !   - option to get fcst or clim gocart aerosol fields
-!> option to get fcst gocart aerosol field 
+!> option to get fcst gocart aerosol field
       logical, save :: get_fcst = .true.    ! option to get fcst field
 !> option to get clim gocart aerosol field
       logical, save :: get_clim = .true.    ! option to get clim field
@@ -617,10 +617,10 @@
 
 !   - index for gocart aerosol species to be included in the
 !     calculations of aerosol optical properties (ext, ssa, asy)
-!>  index for gocart aerosol species to be included in the 
+!>  index for gocart aerosol species to be included in the
 !!  calculations of aerosol optical properties (ext, ssa, asy)
       type  gocart_index_type
-! dust 
+! dust
          integer :: dust1, dust2, dust3, dust4, dust5
 ! sea salt
          integer :: ssam,  sscm
@@ -629,22 +629,22 @@
 ! oc
          integer :: waso_phobic, waso_philic
 ! bc
-         integer :: soot_phobic, soot_philic 
+         integer :: soot_phobic, soot_philic
       endtype
       type (gocart_index_type), save :: dm_indx
 
 !>  index for gocart aerosols from prognostic tracer fields
       type  tracer_index_type
 ! dust
-         integer :: du001, du002, du003, du004, du005             
+         integer :: du001, du002, du003, du004, du005
 ! sea salt
-         integer :: ss001, ss002, ss003, ss004, ss005      
+         integer :: ss001, ss002, ss003, ss004, ss005
 ! sulfate
-         integer :: so4    
+         integer :: so4
 ! oc
-         integer :: ocphobic, ocphilic    
+         integer :: ocphobic, ocphilic
 ! bc
-         integer :: bcphobic, bcphilic                     
+         integer :: bcphobic, bcphilic
       endtype
       type (tracer_index_type), save :: dmfcs_indx
 
@@ -694,7 +694,7 @@
       contains
 ! =================
 
-!>\defgroup aer_init aer_init 
+!>\defgroup aer_init aer_init
 !! The initialization program to set up necessary parameters and working arrays
 !!
 !> \n External module variables:
@@ -709,7 +709,7 @@
 !!\n   --  set_aercoef(): the initialization program for climatological aerosols. The program reads and maps the pre-tabulated aerosol optical
 !! spectral data onto corresponding sw radiation spectral bands.
 !!\n   --  optavg(): computes mean aerosols optical properties over each sw radiation spectral band for each of the species components.
-!! This program follows gfdl's approach for thick cloud optical property in sw radiation scheme.   
+!! This program follows gfdl's approach for thick cloud optical property in sw radiation scheme.
 !! - wrt_aerlog(): writes aerosol parameter configuration to run log file.
 !! - set_volcaer(): the initialization program for stratospheric volcanic aerosols.
 !! - set_spectrum(): defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the one
@@ -1098,8 +1098,8 @@
 
 !> \ingroup aer_init
 !! This subroutine is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
-!!\n subprograms called:  
-!! - set_aercoef() 
+!!\n subprograms called:
+!! - set_aercoef()
 !! - optavg()
 !!\param[in] solfwv     real, (NWVTOT), solar flux for each individual wavenumber \f$(w/m^2)\f$
 !!\param[in] eirfwv     real, (NWVTIR), IR flux(273k) for each individual wavenum \f$(w/m^2)\f$
@@ -1182,7 +1182,7 @@
 !===>  ...  begin here
 !
 !  --- ...  invoke tropospheric aerosol initialization
-!> -# call set_aeroef() to invoke tropospheric aerosol initialization 
+!> -# call set_aeroef() to invoke tropospheric aerosol initialization
       call set_aercoef
 !  ---  inputs:   (in-scope variables, module constants)
 !  ---  outputs:  (module variables)
@@ -1192,7 +1192,7 @@
       contains
 ! =================
 
-!> \ingroup clim_aerinit 
+!> \ingroup clim_aerinit
 !> The initialization program for climatological aerosols. The program reads and
 !! maps the pre-tabulated aerosol optical spectral data onto corresponding SW
 !!radiation spectral bands.
@@ -1535,7 +1535,7 @@
 !--------------------------------
 !! @}
 
-!>\ingroup clim_aerinit 
+!>\ingroup clim_aerinit
 !! compute mean aerosols optical properties over each SW radiation spectral band
 !! for each of the species components. This program follows GFDL's approach for
 !! thick cloud optical property in SW radiation scheme (2000).
@@ -2165,8 +2165,8 @@
 !>\defgroup setaer setaer
 !! This subroutine computes aerosols optical properties.
 !!
-!!\n subprograms called:  
-!! - aer_property() 
+!!\n subprograms called:
+!! - aer_property()
 !!
 !!\param[in] prsi    (IMAX,NLP1), pressure at interface in mb
 !!\param[in] prsl    (IMAX,NLAY), layer mean pressure in mb
@@ -4861,14 +4861,14 @@
 !-----------------------------------
 
 !>\ingroup setaer
-!! This subroutine computes SW + LW aerosol optical properties for gocart aerosol 
+!! This subroutine computes SW + LW aerosol optical properties for gocart aerosol
 !!species (merged from fcst and clim fields).
 !!
-!!\n subprograms called:  
-!! - map_aermr():maps input tracer fields (trcly) to local tracer array (aermr) 
+!!\n subprograms called:
+!! - map_aermr():maps input tracer fields (trcly) to local tracer array (aermr)
 !! - aeropt_grt():computes aerosols optical properties in NSWLWBD SW/LW bands.
 !! Aerosol distribution at each grid point is composed from up to NMXG aerosol
-!! species (from NUM_GRIDCOMP components). 
+!! species (from NUM_GRIDCOMP components).
 !!
 !>\param
 !-----------------------------------

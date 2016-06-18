@@ -37,7 +37,7 @@
 !!  \param[in] islimsk sea/land/ice mask (=0/1/2)
 !!  \param[in] dot layer mean vertical velocity (Pa/s)
 !!  \param[in] ncloud number of cloud species
-!!  \param[in] hbpl PBL height (m)
+!!  \param[in] hpbl PBL height (m)
 !!  \param[in] heat surface sensible heat flux (units?)
 !!  \param[in] evap surface latent heat flux (units?)
 !!  \param[out] ud_mf updraft mass flux (units?)
