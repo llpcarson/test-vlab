@@ -136,17 +136,7 @@
 ! =================
 
 !> This subroutine initializes astronomy process, and set up module constants.
-!!\param[in] me         print message control flag
-!!\param[out] NONE
-!> @{
-!> \section ext_sol_init External Module Variable:
-!!\n \ref physparam::isolar
-!!\n     - = 0: use the old fixed solar constant in "physcon"
-!!\n     - =10: use the new fixed solar constant in "physcon"
-!!\n     - = 1: use noaa ann-mean tsi tbl abs-scale with cyc apprx
-!!\n     - = 2: use noaa ann-mean tsi tbl tim-scale with cyc apprx
-!!\n     - = 3: use cmip5 ann-mean tsi tbl tim-scale with cyc apprx
-!!\n     - = 4: use cmip5 mon-mean tsi tbl tim-scale with cyc apprx
+!!\param me         print message control flag
       subroutine sol_init
      &     ( me ) !  ---  inputs
 !  ---  outputs: ( none )
@@ -303,18 +293,19 @@
 !...................................
       end subroutine sol_init
 !-----------------------------------
-!> @}
 
 !> This subroutine computes solar parameters at forecast time.
-!!\param[in] jdate     integer, 1, ncep absolute date and time at fcst time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
-!!\param[in] kyear     integer, 1, usually kyear=jdate(1). if not, it is for hindcast mode, and it is usually the init cond time and serves as the upper limit of data can be used.
-!!\param[in] deltsw    real, 1, time duration in seconds per sw calculation
-!!\param[in] deltim    real, 1, timestep in seconds
-!!\param[in] lsol_chg  logical flags for change solar constant
-!!\param[in] me        integer, print message control flag
-!!\param[out] slag               real, equation of time in radians
-!!\param[out] sdec, cdec         real, sin and cos of the solar declination angle
-!!\param[out] solcon             real, sun-earth distance adjusted solar constant \f$(w/m^2)\f$
+!!\param jdate     ncep absolute date and time at fcst time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
+!!\param kyear     usually kyear=jdate(1). if not, it is for hindcast mode, and it is usually the init cond time and serves as the upper limit of data can be used.
+!!\param deltsw    time duration in seconds per sw calculation
+!!\param deltim    timestep in seconds
+!!\param lsol_chg  logical flags for change solar constant
+!!\param me        print message control flag
+!!\param slag               equation of time in radians
+!!\param sdec, cdec         sin and cos of the solar declination angle
+!!\param solcon             sun-earth distance adjusted solar constant \f$(w/m^2)\f$
+!>\section gen_sol_update General Algorithm
+!! @{
 !-----------------------------------
       subroutine sol_update
      &     ( jdate,kyear,deltsw,deltim,lsol_chg, me,                    !  ---  inputs
@@ -568,7 +559,7 @@
 
       jd  = int(fjd1)
       fjd = fjd1 - jd
-
+!> -# Call solar()
       call solar                                                        &
 !  ---  inputs:
      &     ( jd, fjd,                                                   &
@@ -587,6 +578,7 @@
 
       if (me == 0) then
 
+!> -# Call prtime()
         call prtime                                                     &
 !  ---  inputs:
      &     ( jd, fjd, dlt, alp, r1, solcon )
@@ -620,6 +612,7 @@
 !...................................
       end subroutine sol_update
 !-----------------------------------
+!! @}
 
 !> This subroutine computes radius vector, declination and right ascension of sun, and equation of time
 !-----------------------------------
@@ -779,14 +772,14 @@
 !-----------------------------------
 
 !> This subroutine computes mean cos solar zenith angle over SW calling interval
-!!\param[in] xlon       real, (IM), grids' longitudes in radians, work both on zonal, 0->2pi and -pi->+pi arrangements
-!!\param[in] sinlat     real, (IM), sine of the corresponding latitudes
-!!\param[in] coslat     real, (IM), cosine of the corresponding latitudes
-!!\param[in] solhr      real, time after 00z in hours
-!!\param[in] IM         integer, num of grids in horizontal dimension
-!!\param[in] me         integer, print message control flag
-!!\param[out] coszen    real, (IM), average of cosz for daytime only in sw call interval
-!!\param[out] coszdg    real, (IM), average of cosz over entire sw call interval
+!!\param xlon       (IM), grids' longitudes in radians, work both on zonal, 0->2pi and -pi->+pi arrangements
+!!\param sinlat     (IM), sine of the corresponding latitudes
+!!\param coslat     (IM), cosine of the corresponding latitudes
+!!\param solhr      time after 00z in hours
+!!\param IM         num of grids in horizontal dimension
+!!\param me         print message control flag
+!!\param coszen     (IM), average of cosz for daytime only in sw call interval
+!!\param coszdg     (IM), average of cosz over entire sw call interval
 !-----------------------------------
       subroutine coszmn
      &     ( xlon,sinlat,coslat,solhr, IM, me,                          !  ---  inputs

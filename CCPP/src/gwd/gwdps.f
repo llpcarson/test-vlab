@@ -979,17 +979,16 @@
           ENDIF
         ENDDO
 !
-!> - The drag above the reference level
-!!  - Calculate the ratio of the Scorer parameter (RSCOR).
+!> - Compute the drag above the reference level (\f$k\geq kref\f$):
+!!  - Calculate the ratio of the Scorer parameter (\f$R_{scor}\f$).
 !! \n From a series of experiments, Kim and Arakawa (1995) \cite kim_and_arakawa_1995 found that the magnitude 
 !! of drag divergence tends to be underestimated by the revised scheme in low-level downstream regions 
 !! with wave breaking. Therefore, at low levels when OA > 0 (i.e., in the "downstream" region)  
 !! the saturation hypothesis is replaced by the following formula based on the ratio of the 
 !! the Scorer parameter:
 !!\f[
-!! R_{scor}=\frac{\tau_i}{\tau_{i+1}}=\min \left[C_{l}\frac{l_i^2}{l_{i+1}^2},1\right]
+!! R_{scor}=\min \left[\frac{\tau_i}{\tau_{i+1}},1\right]
 !!\f]
-!! where \f$C_l=1\f$ and \f$l^2\f$ is calculated from the input.
         DO I = 1,npt
           IF (K .GE. kref(I))   THEN
             IF (.NOT.ICRILV(I) .AND. TAUP(I,K) .GT. 0.0 ) THEN
@@ -1118,8 +1117,8 @@
 !     endif
 
 !> - Calculate outputs: A, B, DUSFC, DVSFC (see parameter description).
-!!  - Below the dividing streamline height (k < idxzb), mountain blocking(\f$D_{b}\f$) is applied for outputs. 
-!!  - Otherwise (k>= idxzb), orographic GWD (\f$\tau\f$) is applied for outputs.
+!!  - Below the dividing streamline height (k < idxzb), mountain blocking(\f$D_{b}\f$) is applied. 
+!!  - Otherwise (k>= idxzb), orographic GWD (\f$\tau\f$) is applied.
       DO K = 1,KM
         DO I = 1,npt
           J          = ipt(i)

@@ -221,25 +221,7 @@
 
 !> This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then
 !! read in monthly ozone data.
-!!\param[in] me         integer, 1, print message control flag
-!!\section ex_gas_init External Module Variables:
-!!\n physparam::ico2flg    - co2 data source control flag
-!!\n                         =0: use prescribed co2 global mean value
-!!\n                         =1: use input global mean co2 value (co2_glb)
-!!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav)
-!!\n physparam::ictmflg    - =yyyy#, data ic time/date control flag
-!!\n                         =   -2: same as 0, but superimpose seasonal cycle from climatology data set.
-!!\n                         =   -1: use user provided external data for the fcst time, no extrapolation.
-!!\n                         =    0: use data at initial condition time, if not existed then use latest, without extrapolation.
-!!\n                         =    1: use data at the forecast time, if not existed then use latest and extrapolate to fcst time.
-!!\n                         =yyyy0: use yyyy data for the forecast time, no further data extrapolation.
-!!\n                         =yyyy1: use yyyy data for the fcst. if needed, do extrapolation to match the fcst time.
-!!\n physparam::ioznflg    - ozone data control flag
-!!\n                         =0: use climatological ozone profile
-!!\n                         >0: use interactive ozone profile
-!!\n physparam::ivflip     - vertical profile indexing flag
-!!\n physparam::co2usr_file   - external co2 user defined data table
-!!\n physparam::co2cyc_file   - external co2 climotology monthly cycle data table
+!!\param me         print message control flag
 !-----------------------------------
       subroutine gas_init
      &     ( me )!  ---  inputs:
@@ -528,33 +510,13 @@
 
 !> This subroutine reads in 2-d monthly co2 data set for a specified year.
 !! data are in a 15 degree lat/lon horizontal resolution.
-
-!!\param[in] iyear      integer, 1, year of the requested data for fcst
-!!\param[in] imon       integer, 1, month of the year
-!!\param[in] iday       integer, 1, day of the month
-!!\param[in] ihour      integer, 1, hour of the day
-!!\param[in] loz1st     logical, 1, clim ozone 1st time update control flag
-!!\param[in] ldoco2     logical, 1, co2 update control flag
-!!\param[in] me         integer, 1, print message control flag
-!!\param[out] NONE
-!!\section external External Module Variables:
-!!\n physparam::ico2flg    - co2 data source control flag
-!!\n                         =0: use prescribed co2 global mean value
-!!\n                         =1: use input global mean co2 value (co2_glb)
-!!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav)
-!!\n physparam::ictmflg    - =yyyy#, data ic time/date control flag
-!!\n                         =   -2: same as 0, but superimpose seasonal cycle from climatology data set.
-!!\n                         =   -1: use user provided external data for the fcst time, no extrapolation.
-!!\n                         =    0: use data at initial condition time, if not existed then use latest, without extrapolation.
-!!\n                         =    1: use data at the forecast time, if not existed then use latest and extrapolate to fcst time.
-!!\n                         =yyyy0: use yyyy data for the forecast time, no further data extrapolation.
-!!\n                         =yyyy1: use yyyy data for the fcst. if needed, do extrapolation to match the fcst time.
-!!\n physparam::ioznflg    - ozone data control flag
-!!\n                         =0: use climatological ozone profile
-!!\n                         >0: use interactive ozone profile
-!!\n physparam::ivflip     - vertical profile indexing flag
-!!\n physparam::co2usr_file   - external co2 user defined data table
-!!\n physparam::co2cyc_file   - external co2 climotology monthly cycle data table
+!!\param iyear      year of the requested data for fcst
+!!\param imon       month of the year
+!!\param iday       day of the month
+!!\param ihour      hour of the day
+!!\param loz1st     clim ozone 1st time update control flag
+!!\param ldoco2     co2 update control flag
+!!\param me         print message control flag
 !-----------------------------------
       subroutine gas_update
      &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
@@ -929,11 +891,11 @@
 !> This subroutine sets up global distribution of radiation absorbing gases in volume
 !! mixing ratio. currently only co2 has the options from observed values, all other
 !! gases are asigned to the climatological values.
-!!\param[in] plvl       real, (IMAX,LMAX+1), pressure at model layer interfaces (mb)
-!!\param[in] xlon       real, (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements
-!!\param[in] xlat       real, (IMAX), grid latitude in radians, default range to pi/2 -> -pi/2, otherwise see in-line comment
-!!\param[in] IMAX, LMAX       integer, horiz/vert dimensions for output data
-!!\param[out] gasdat    real, (IMAX,LMAX,NF_VGAS) - gases volume mixing ratioes
+!!\param plvl       (IMAX,LMAX+1), pressure at model layer interfaces (mb)
+!!\param xlon       (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements
+!!\param xlat       (IMAX), grid latitude in radians, default range to pi/2 -> -pi/2, otherwise see in-line comment
+!!\param IMAX, LMAX        horizontal/vertical dimensions for output data
+!!\param gasdat     (IMAX,LMAX,NF_VGAS) - gases volume mixing ratioes
 !!\n                    (:,:,1)           - co2
 !!\n                    (:,:,2)           - n2o
 !!\n                    (:,:,3)           - ch4
@@ -944,12 +906,6 @@
 !!\n                    (:,:,8)           - cfc22
 !!\n                    (:,:,9)           - ccl4
 !!\n                    (:,:,10)          - cfc113
-!!\section external External Module Variables
-!!\n physparam::ico2flg    - co2 data source control flag
-!!\n                         =0: use prescribed co2 global mean value
-!!\n                         =1: use input global mean co2 value (co2_glb)
-!!\n                         =2: use input 2-d monthly co2 value (co2vmr_sav)
-!!\n physparam::ivflip     - vertical profile indexing flag
 !-----------------------------------
       subroutine getgases         
      &     ( plvl, xlon, xlat,   ! ---  inputs               
@@ -1095,10 +1051,10 @@
 
 !> This subroutine sets up climatological ozone profile for radiation calculation
 !! this code is originally written by Shrinivas Moorthi.
-!!\param[in] prslk       real, (IMAX,LM), exner function = \f$(p/p0)^{rocp}\f$
-!!\param[in] xlat        real, (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
-!!\param[in] IMAX, LM    integer, horizontal and vertical dimensions
-!!\param[out] o3mmr      real, (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
+!!\param prslk       (IMAX,LM), exner function = \f$(p/p0)^{rocp}\f$
+!!\param xlat        (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param IMAX, LM    horizontal and vertical dimensions
+!!\param o3mmr      (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
 !-----------------------------------
       subroutine getozn 
      &     ( prslk,xlat,                                                !  ---  inputs
