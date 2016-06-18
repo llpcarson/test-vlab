@@ -267,33 +267,34 @@
 
 
 !========================================!
-      module module_radiation_driver     !
+
+      module module_radiation_driver !
 !........................................!
 !
       use physparam
-      use physcons,                 only : eps   => con_eps,            &
-     &                                     epsm1 => con_epsm1,          &
-     &                                     fvirt => con_fvirt           &
+      use physcons,                 only : eps   => con_eps,           &
+     &                                     epsm1 => con_epsm1,         &
+     &                                     fvirt => con_fvirt          &
      &,                                    rocp  => con_rocp
       use funcphys,                 only : fpvs
 
       use module_radiation_astronomy,only: sol_init, sol_update, coszmn
-      use module_radiation_gases,   only : NF_VGAS, getgases, getozn,   &
+      use module_radiation_gases,   only : NF_VGAS, getgases, getozn,  &
      &                                     gas_init, gas_update
-      use module_radiation_aerosols,only : NF_AESW, NF_AELW, setaer,    &
-     &                                     aer_init, aer_update,        &
-     &                                     NSPC1                       
-      use module_radiation_surface, only : NF_ALBD, sfc_init, setalb,   &
+      use module_radiation_aerosols,only : NF_AESW, NF_AELW, setaer,   &
+     &                                     aer_init, aer_update,       &
+     &                                     NSPC1
+      use module_radiation_surface, only : NF_ALBD, sfc_init, setalb,  &
      &                                     setemis
-      use module_radiation_clouds,  only : NF_CLDS, cld_init,           &
-     &                                     progcld1, progcld2, progcld3,&
+      use module_radiation_clouds,  only : NF_CLDS, cld_init,          &
+     &                                    progcld1, progcld2, progcld3,&
      &                                     diagcld1
 
-      use module_radsw_parameters,  only : topfsw_type, sfcfsw_type,    &
+      use module_radsw_parameters,  only : topfsw_type, sfcfsw_type,   &
      &                                     profsw_type,cmpfsw_type,NBDSW
       use module_radsw_main,        only : rswinit,  swrad
 
-      use module_radlw_parameters,  only : topflw_type, sfcflw_type,    &
+      use module_radlw_parameters,  only : topflw_type, sfcflw_type,   &
      &                                     proflw_type, NBDLW
       use module_radlw_main,        only : rlwinit,  lwrad
 !
@@ -302,7 +303,7 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                       &
+      character(40), parameter ::
      &   VTAGRAD='NCEP-Radiation_driver    v5.2  Jan 2013 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.1  Nov 2012 '
 !    &   VTAGRAD='NCEP-Radiation_driver    v5.0  Aug 2012 '
@@ -442,6 +443,7 @@
 !              =0: with out sub-column cloud approximation              !
 !              =1: mcica sub-col approx. prescribed random seed         !
 !              =2: mcica sub-col approx. provided random seed           !
+!   lsashal  : shallow convection scheme flag                           !
 !   lcrick   : control flag for eliminating CRICK                       !
 !              =t: apply layer smoothing to eliminate CRICK             !
 !              =f: do not apply layer smoothing                         !
@@ -486,18 +488,19 @@
 
       if (me == 0) then
 !       print *,' NEW RADIATION PROGRAM STRUCTURES -- SEP 01 2004'
-        print *,' NEW RADIATION PROGRAM STRUCTURES BECAME OPER. ',      &
+        print *,' NEW RADIATION PROGRAM STRUCTURES BECAME OPER. ',     &
      &          '  May 01 2007'
         print *, VTAGRAD                !print out version tag
-        print *,' - Selected Control Flag settings: ICTMflg=',ictmflg,  &
-     &    ' ISOLar =',isolar, ' ICO2flg=',ico2flg,' IAERflg=',iaerflg,  &
-     &    ' IALBflg=',ialbflg,' IEMSflg=',iemsflg,' ICLDflg=',icldflg,  &
+        print *,' - Selected Control Flag settings: ICTMflg=',ictmflg, &
+     &    ' ISOLar =',isolar, ' ICO2flg=',ico2flg,' IAERflg=',iaerflg, &
+     &    ' IALBflg=',ialbflg,' IEMSflg=',iemsflg,' ICLDflg=',icldflg, &
      &    ' ICMPHYS=',icmphys,' IOZNflg=',ioznflg
-        print *,' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw,  &
+        print *,' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw, &
      &    ' ISUBCSW=',isubcsw,' ISUBCLW=',isubclw
 !       write(0,*)' IVFLIP=',ivflip,' IOVRSW=',iovrsw,' IOVRLW=',iovrlw,&
 !    &    ' ISUBCSW=',isubcsw,' ISUBCLW=',isubclw
-        print *,' LCRICK=',lcrick,' LCNORM=',lcnorm,' LNOPREC=',lnoprec
+       print *,' LSASHAL=',lsashal,' LCRICK=',lcrick,' LCNORM=',lcnorm,&
+     &    ' LNOPREC=',lnoprec
         print *,' LTP =',LTP,', add extra top layer =',lextop
 
         if ( ictmflg==0 .or. ictmflg==-2 ) then
@@ -699,7 +702,7 @@
 
       if ( month0 /= imon ) then
         lmon_chg = .true.
-        month0   = imon
+        month0 = imon
       else
         lmon_chg = .false.
       endif
@@ -902,20 +905,19 @@
 !> \section gen_grrad General Algorithm
 !> @{
 !-----------------------------------
-      subroutine grrad                                                  &
-!...................................
-     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,                &    !  ---  inputs
-     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,             &
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,            &
-     &       sinlat,coslat,solhr,jdate,solcon,                          &
-     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,                       &
-     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,                 &
-     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,lmfshal,lmfdeep2,   &
-     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,     &
-     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,     &    !  ---  outputs:
-     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,                    &
-     &       fluxr                                                      &    !  ---  input/output:
-     &,      htrlw0,htrsw0,htrswb,htrlwb                                &    !! ---  optional outputs:
+      subroutine grrad
+     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,              !  ---  inputs
+     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,
+     &       sinlat,coslat,solhr,jdate,solcon,
+     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,
+     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,
+     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,
+     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,
+     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,   !  ---  outputs
+     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,
+     &       fluxr                                                    !  ---  input/output
+     &,      htrlw0,htrsw0,htrswb,htrlwb                              ! ---  optional outputs:
      &     )
 
 ! =================   subprogram documentation block   ================ !
@@ -982,8 +984,6 @@
 !           (IM)         radiations. if isubcsw/isubclw (input to init) !
 !                        are set to 2, the arrays contains provided     !
 !                        random seeds for sub-column clouds generators  !
-!      lmfshal         : mass-flux shallow conv scheme flag             !
-!      lmfdeep2        : scale-aware mass-flux deep conv scheme flag    !
 !      ntcw            : =0 no cloud condensate calculated              !
 !                        >0 array index location for cloud condensate   !
 !      ncld            : only used when ntcw .gt. 0                     !
@@ -1205,27 +1205,26 @@
       implicit none
 
 !  ---  inputs: (for rank>1 arrays, horizontal dimensioned by IX)
-      integer,  intent(in) :: IX,IM, LM, NTRAC, NFXR, me,               &
+      integer,  intent(in) :: IX,IM, LM, NTRAC, NFXR, me,
      &                        ntoz, ntcw, ncld, ipt, kdt
       integer,  intent(in) :: icsdsw(IM), icsdlw(IM), jdate(8)
 
-      logical,  intent(in) :: lsswr, lslwr, lssav, lprnt, shoc_cld,     &
-     &                        lmfshal, lmfdeep2
+      logical,  intent(in) :: lsswr, lslwr, lssav, lprnt, shoc_cld
 
       real (kind=kind_phys), dimension(IX,LM+1), intent(in) ::  prsi
 
-      real (kind=kind_phys), dimension(IX,LM),   intent(in) ::  prsl,   &
-     &       prslk, tgrs, qgrs, vvl, fcice, frain, rrime, deltaq, cnvw, &
+      real (kind=kind_phys), dimension(IX,LM),   intent(in) ::  prsl,
+     &       prslk, tgrs, qgrs, vvl, fcice, frain, rrime, deltaq, cnvw,
      &       cnvc
       real (kind=kind_phys), dimension(IM), intent(in) :: flgmin
       real(kind=kind_phys), intent(in) :: sup
 
-      real (kind=kind_phys), dimension(IM),      intent(in) ::  slmsk,  &
-     &       xlon, xlat, tsfc, snowd, zorl, hprim, alvsf, alnsf, alvwf, &
-     &       alnwf, facsf, facwf, cv, cvt, cvb, fice, tisfc,            &
+      real (kind=kind_phys), dimension(IM),      intent(in) ::  slmsk,
+     &       xlon, xlat, tsfc, snowd, zorl, hprim, alvsf, alnsf, alvwf,
+     &       alnwf, facsf, facwf, cv, cvt, cvb, fice, tisfc,
      &       sncovr, snoalb, sinlat, coslat
 
-      real (kind=kind_phys), intent(in) :: solcon, dtlw, dtsw, solhr,   &
+      real (kind=kind_phys), intent(in) :: solcon, dtlw, dtsw, solhr,
      &       tracer(IX,LM,NTRAC)
 
       real (kind=kind_phys), dimension(IX,LM),intent(inout):: cldcov
@@ -1233,10 +1232,10 @@
 !  ---  outputs: (horizontal dimensioned by IX)
       real (kind=kind_phys), dimension(IX,LM),intent(out):: htrsw,htrlw
 
-      real (kind=kind_phys), dimension(IX,4), intent(out) :: dswcmp,    &
+      real (kind=kind_phys), dimension(IX,4), intent(out) :: dswcmp,
      &       uswcmp
 
-      real (kind=kind_phys), dimension(IM),   intent(out):: tsflw,      &
+      real (kind=kind_phys), dimension(IM),   intent(out):: tsflw,
      &       sfalb, semis, coszen, coszdg
 
       type (topfsw_type), dimension(IM), intent(out) :: topfsw
@@ -1270,7 +1269,7 @@
       real (kind=kind_phys), dimension(IM,LM+LTP,NF_CLDS) :: clouds
       real (kind=kind_phys), dimension(IM,LM+LTP,NF_VGAS) :: gasvmr
       real (kind=kind_phys), dimension(IM,       NF_ALBD) :: sfcalb
-      real (kind=kind_phys), dimension(IM,       NSPC1)   :: aerodp     
+      real (kind=kind_phys), dimension(IM,       NSPC1)   :: aerodp
       real (kind=kind_phys), dimension(IM,LM+LTP,NTRAC)   :: tracer1
 
       real (kind=kind_phys), dimension(IM,LM+LTP,NBDSW,NF_AESW)::faersw
@@ -1360,7 +1359,6 @@
 !     enddo
 
 !     print *,' in grrad : raddt=',raddt
-
 !> -# Setup surface ground temp and ground/air skin temp (tskn, tsfg)
 !  --- ...  setup surface ground temp and ground/air skin temp if required
 
@@ -1377,10 +1375,15 @@
           tsfg(i) = tsfc(i)
         enddo
       endif
-
 !> -# Prepare atmospheric profiles for radiation input
 !  --- ...  prepare atmospheric profiles for radiation input
 !
+!     if (im > ipt) then
+!       write(0,*)' prsi=',prsi(ipt,1:10)
+!       write(0,*)' prsi=',prsl(ipt,1:10)
+!       write(0,*)' tgrs=',tgrs(ipt,1:10)
+!     endif
+
 !           convert pressure unit from pa to mb
       do k = 1, LM
         k1 = k + kd
@@ -1481,7 +1484,6 @@
      &     )
 
       endif                            ! end_if_ntoz
-
 !> -# Compute cosin of zenith angle (coszen, coszdg)
 !  --- ...  compute cosin of zenith angle
 
@@ -1593,7 +1595,6 @@
         enddo
 
       endif                              ! end_if_ivflip
-
 !> -# Check for daytime points(ndate, idxday)
 !  --- ...  check for daytime points
 
@@ -1654,29 +1655,14 @@
             if ( clw(i,k) < EPSQ ) clw(i,k) = 0.0
           enddo
         enddo
-!
-!  --- add suspended convective cloud water to grid-scale cloud water
-!      only for cloud fraction & radiation computation
-!      it is to enhance cloudiness due to suspended convec cloud water
-!      for zhao/moorthi's (icmphys=1) & 
-!          ferrier's (icmphys=2) microphysics schemes
-!
-        if (icmphys == 1 .or. icmphys == 2) then
-          do k = 1, LMK
-            do i = 1, IM
-              clw(i,k) = clw(i,k) + cnvw(i,k)
-            enddo
-          enddo
-        endif
-!
 
         if (icmphys == 1) then           ! zhao/moorthi's prognostic cloud scheme
 
           call progcld1                                                 &
 !  ---  inputs:
      &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    &
-     &       xlat,xlon,slmsk, IM, LMK, LMP,                             &
-     &       shoc_cld, lmfshal, lmfdeep2, cldcov(1:im,1:lm),            &
+     &       xlat,xlon,slmsk,                                           &
+     &       IM, LMK, LMP, shoc_cld, cldcov(1:im,1:lm),                 &
 !  ---  outputs:
      &       clouds,cldsa,mtopa,mbota                                   &
      &      )
@@ -1688,7 +1674,7 @@
 !  ---  inputs:
      &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    &
      &       xlat,xlon,slmsk, gcice,grain,grime,flgmin,                 &
-     &       IM, LMK, LMP, lmfshal, lmfdeep2,                           &
+     &       IM, LMK, LMP,                                              &
 !  ---  outputs:
      &       clouds,cldsa,mtopa,mbota                                   &
      &      )
@@ -1745,7 +1731,7 @@
 
       endif                                ! end_if_ntcw
 
-!  --- ...  start radiation calculations 
+!  --- ...  start radiation calculations
 !           remember to set heating rate unit to k/sec!
 
       if (lsswr) then
@@ -1779,17 +1765,14 @@
 
           if ( present(htrswb) .and. present(htrsw0)) then
 
-            call swrad                                                  &
-!  ---  inputs:
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                      &
-     &       clouds,icsdsw,faersw,sfcalb,                               &
-     &       coszen,solcon, nday,idxday,                                &
-     &       IM, LMK, LMP, lprnt,                                       &
-!  ---  outputs:
-     &       htswc,topfsw,sfcfsw                                        &
-!! ---  optional:
+            call swrad
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,
+     &       clouds,icsdsw,faersw,sfcalb,
+     &       coszen,solcon, nday,idxday,
+     &       IM, LMK, LMP, lprnt,
+     &       htswc,topfsw,sfcfsw
 !!   &,      HSW0=htsw0,FLXPRF=fswprf                                   &
-     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw                        &
+     &,      hsw0=htsw0,hswb=htswb,fdncmp=scmpsw
      &     )
 
             do k = 1, LM
@@ -1934,7 +1917,7 @@
 !      write(0,*)' htrsw=',htrsw(ipt,1:64)*86400
       if (lslwr) then
 
-!> -# Calling module_radiation_surface::setemis(),setup surface emissivity (sfcemis) for LW radiation
+!> -# Calling module_radiation_surface::setemis(),setup surface emissivity (sfcemis) for lw radiation
 
         call setemis                                                    &
 !  ---  inputs:
@@ -1943,7 +1926,6 @@
 !  ---  outputs:
      &       sfcemis                                                    &
      &     )
-
 !> -# calling module_radlw_main::lwrad()
 !     print *,' in grrad : calling lwrad'
 
@@ -2180,9 +2162,6 @@
 !...................................
       end subroutine grrad
 !-----------------------------------
-
-
-!
 !> @}
 !........................................!
       end module module_radiation_driver !

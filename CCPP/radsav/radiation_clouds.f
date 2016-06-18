@@ -210,7 +210,7 @@
 !........................................!
 !
       use physparam,           only : icldflg, icmphys, iovrsw, iovrlw, &
-     &                                lcrick, lcnorm, lnoprec,          &
+     &                                lcrick, lcnorm, lnoprec, lsashal, &
      &                                ivflip, kind_phys, kind_io4
       use physcons,            only : con_fvirt, con_ttp, con_rocp,     &
      &                                con_t0c, con_pi, con_g, con_rd,   &
@@ -228,8 +228,7 @@
      &   VTAGCLD='NCEP-Radiation_clouds    v5.1  Nov 2012 '
 !    &   VTAGCLD='NCEP-Radiation_clouds    v5.0  Aug 2012 '
 
-!  ---  set constant parameters
-      real (kind=kind_phys), parameter :: gfac=1.0e5/con_g              &
+      real (kind=kind_phys), parameter :: gfac=1.0e5/con_g        
      &,                                   gord=con_g/con_rd
 !> number of fields in cloud array
       integer, parameter, public :: NF_CLDS = 9   
@@ -273,6 +272,7 @@
 
 !  ---  xlabdy: lat bndry between tuning regions, +/- xlim for transition
 !       xlobdy: lon bndry between tuning regions
+!>
 !> lat bndry between tuning regions
       real (kind=kind_phys)            :: xlabdy(3)
 !> lon bndry between tuning regions
@@ -282,6 +282,7 @@
 
       data xlabdy / 30.0,  0.0, -30.0 /,  xlobdy / 0.0, 180., 360. /
 
+!  ---  low cloud vertical velocity adjustment boundaries in mb/sec
 !> low cloud vertical velocity adjustment boundaries in mb/sec
       real (kind=kind_phys), parameter :: vvcld1= 0.0003e0
 !> low cloud vertical velocity adjustment boundaries in mb/sec
@@ -289,14 +290,14 @@
 
 !  ---  those data will be set up by "cld_init"
 !     rhcl : tuned rh relation table for diagnostic cloud scheme
-
 !> tuned rh relation table for diagnostic cloud scheme
       real (kind=kind_phys) :: rhcl(NBIN,NLON,NLAT,MCLD,NSEAL)
 
 !> upper limit of boundary layer clouds
-      integer  :: llyr   = 2          
+      integer  :: llyr   = 2           ! upper limit of boundary layer clouds
 !> maximum-random cloud overlapping method
-      integer  :: iovr   = 1           
+      integer  :: iovr   = 1           ! cloud over lapping method for diagnostic 3-domain
+                                       ! output calc (see iovrsw/iovrlw description)
 
       public progcld1, progcld2, progcld3, diagcld1, cld_init
 
@@ -304,7 +305,6 @@
 ! =================
       contains
 ! =================
-
 
 !> This subroutine is an initialization program for cloud-radiation calculations. It sets up boundary layer cloud top
 !!\param[in] si              model vertical sigma layer interface
@@ -405,6 +405,8 @@
       endif
 
 !> -# Compute llyr - the top of BL cld and is topmost non cld(low) layer for stratiform (at or above lowest 0.1 of the atmosphere)
+!  ---  compute llyr - the top of bl cld and is topmost non cld(low) layer
+!       for stratiform (at or above lowest 0.1 of the atmosphere)
 
       if ( ivflip == 0 ) then    ! data from toa to sfc
         lab_do_k0 : do k = NLAY, 2, -1
@@ -428,7 +430,6 @@
       end subroutine cld_init
 !-----------------------------------
 !> @}
-
 
 !> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme.
 !!\param[in] plyr    real, (IX,NLAY), model layer mean pressure in mb (100Pa)
@@ -461,13 +462,11 @@
 !>\section gen_progcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld1                                               &
-!...................................
-
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    & !  ---  inputs:
-     &       xlat,xlon,slmsk, IX, NLAY, NLP1,                           &
-     &       shoc_cld, lmfshal, lmfdeep2, cldcov,                       &
-     &       clouds,clds,mtop,mbot                                      & !  ---  outputs:
+      subroutine progcld1
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    !  ---  inputs:
+     &       xlat,xlon,slmsk,
+     &       IX, NLAY, NLP1, shoc_cld, cldcov,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -529,8 +528,7 @@
 !   ivflip          : control flag of vertical index direction          !
 !                     =0: index from toa to surface                     !
 !                     =1: index from surface to toa                     !
-!   lmfshal         : mass-flux shallow conv scheme flag                !
-!   lmfdeep2        : scale-aware mass-flux deep conv scheme flag       !
+!   lsashal         : control flag for shallow convection               !
 !   lcrick          : control flag for eliminating CRICK                !
 !                     =t: apply layer smoothing to eliminate CRICK      !
 !                     =f: do not apply layer smoothing                  !
@@ -545,12 +543,11 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      logical, intent(in)  :: shoc_cld, lmfshal, lmfdeep2
-
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      logical, intent(in)  :: shoc_cld
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw, cldcov
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
 
 !  ---  outputs
@@ -635,6 +632,7 @@
       enddo
 
 !> -# Compute cloud liquid/ice condensate path in \f$ g/m^2 \f$
+!  ---  compute liquid/ice condensate path in g/m**2
 
       if ( ivflip == 0 ) then          ! input data from toa to sfc
         do k = 1, NLAY
@@ -657,6 +655,7 @@
       endif                            ! end_if_ivflip
 
 !> -# Compute effective liquid cloud droplet radius over land
+!  ---  effective liquid cloud droplet radius over land
 
       do i = 1, IX
         if (nint(slmsk(i)) == 1) then
@@ -673,12 +672,13 @@
         enddo
 
       else
+!  ---  layer cloud fraction
 !> -# Calculate layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
 
         clwmin = 0.0
-        if (.not. lmfshal) then
+        if (.not. lsashal) then
           do k = NLAY, 1, -1
           do i = 1, IX
             clwt = 1.0e-6 * (plyr(i,k)*0.001)
@@ -709,14 +709,17 @@
             if (clwf(i,k) > clwt) then
               onemrh= max( 1.e-10, 1.0-rhly(i,k) )
               clwm  = clwmin / max( 0.01, plyr(i,k)*0.001 )
-!
+
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
+
               tem1  = min(max((onemrh*qstl(i,k))**0.49,0.0001),1.0)  !jhan
-              if (lmfdeep2) then
-                tem1  = 200.0 / tem1
-              else
-                tem1  = 100.0 / tem1
-              endif
+              tem1  = 100.0 / tem1
 !
+!             tem1  = 2000.0 / tem1
+!             tem1  = 1000.0 / tem1
+!
+
               value = max( min( tem1*(clwf(i,k)-clwm), 50.0 ), 0.0 )
               tem2  = sqrt( sqrt(rhly(i,k)) )
               cldtot(i,k) = max( tem2*(1.0-exp(-value)), 0.0 )
@@ -728,7 +731,7 @@
       else                                 ! input data from sfc to toa
 
         clwmin = 0.0
-        if (.not. lmfshal) then
+        if (.not. lsashal) then
           do k = 1, NLAY
           do i = 1, IX
             clwt = 1.0e-6 * (plyr(i,k)*0.001)
@@ -760,14 +763,17 @@
             if (clwf(i,k) > clwt) then
               onemrh= max( 1.e-10, 1.0-rhly(i,k) )
               clwm  = clwmin / max( 0.01, plyr(i,k)*0.001 )
-!
+
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
+
               tem1  = min(max((onemrh*qstl(i,k))**0.49,0.0001),1.0)  !jhan
-              if (lmfdeep2) then
-                tem1  = 200.0 / tem1
-              else
-                tem1  = 100.0 / tem1
-              endif
+              tem1  = 100.0 / tem1
 !
+!             tem1  = 2000.0 / tem1
+!             tem1  = 1000.0 / tem1
+!
+
               value = max( min( tem1*(clwf(i,k)-clwm), 50.0 ), 0.0 )
               tem2  = sqrt( sqrt(rhly(i,k)) )
 
@@ -848,7 +854,6 @@
         enddo
       enddo
 
-
 !> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
 !! and clouds top/bottom layer indices for low, mid, and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
@@ -905,16 +910,15 @@
 !!\param[out] clds  real, (IX,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param[out] mtop  integer, (IX,3), vertical indices for low, mid, hi cloud tops
 !!\param[out] mbot  integer, (IX,3), vertical indices for low, mid, hi cloud bases
+
 !>\section gen_progcld2 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld2                                               &
-!...................................
-
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    & !  ---  inputs:
-     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,               &
-     &       IX, NLAY, NLP1, lmfshal, lmfdeep2,                         &
-     &       clouds,clds,mtop,mbot                                      & !  ---  outputs:
+      subroutine progcld2
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                    !  ---  inputs
+     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,
+     &       IX, NLAY, NLP1,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -980,8 +984,7 @@
 !   ivflip          : control flag of vertical index direction          !
 !                     =0: index from toa to surface                     !
 !                     =1: index from surface to toa                     !
-!   lmfshal         : mass-flux shallow conv scheme flag                !
-!   lmfdeep2        : scale-aware mass-flux deep conv scheme flag       !
+!   lsashal         : control flag for shallow convection               !
 !   lcrick          : control flag for eliminating CRICK                !
 !                     =t: apply layer smoothing to eliminate CRICK      !
 !                     =f: do not apply layer smoothing                  !
@@ -1001,12 +1004,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      logical, intent(in)  :: lmfshal, lmfdeep2
-
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw, f_ice, f_rain, r_rime
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
       real (kind=kind_phys), dimension(:), intent(in) :: flgmin
 
@@ -1070,9 +1071,11 @@
           enddo
         enddo
       endif
-
 !> -# Find top pressure for each cloud domain for given latitude
 !!    - ptopc(k,i): top pressure of each cld domain (k=1-4 are sfc,l,m,h; i=1,2 are low-lat (<45 degree) and pole regions)
+!  ---  find top pressure for each cloud domain for given latitude
+!       ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,L,m,h;
+!  ---  i=1,2 are low-lat (<45 degree) and pole regions)
 
       do id = 1, 4
         tem1 = ptopc(id,2) - ptopc(id,1)
@@ -1086,7 +1089,10 @@
       enddo
 
 !> -# Seperate cloud condensate into liquid, ice, and rain types, and save the liquid+ice condensate
-!! in array clw2 for later calculation of cloud fraction.
+!! in array clw2 for later calculation of cloud fraction
+!  ---  separate cloud condensate into liquid, ice, and rain types, and
+!       save the liquid+ice condensate in array clw2 for later
+!       calculation of cloud fraction
 
       do k = 1, NLAY
         do i = 1, IX
@@ -1132,13 +1138,13 @@
           enddo
         enddo
       endif                            ! end_if_ivflip
-
 !> -# Compute layer cloud fraction
+!  ---  layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
 
         clwmin = 0.0
-        if (.not. lmfshal) then
+        if (.not. lsashal) then
           do k = NLAY, 1, -1
           do i = 1, IX
 !           clwt = 1.0e-7 * (plyr(i,k)*0.001)
@@ -1179,14 +1185,22 @@
             if (clw2(i,k) > clwt) then
               onemrh= max( 1.e-10, 1.0-rhly(i,k) )
               clwm  = clwmin / max( 0.01, plyr(i,k)*0.001 )
-!
+
               tem1  = min(max((onemrh*qstl(i,k))**0.49,0.0001),1.0)    !jhan
-              if (lmfdeep2) then
-                tem1  = 200.0 / tem1
-              else
-                tem1  = 100.0 / tem1
-              endif
+              tem1  = 100.0 / tem1
+
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
 !
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2200.0 / tem1
+!             tem1  = 2400.0 / tem1
+!             tem1  = 2500.0 / tem1
+!             tem1  = min(max(sqrt(onemrh*qstl(i,k)),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
+!             tem1  = 1000.0 / tem1
+!             tem1  = 100.0 / tem1
+
               value = max( min( tem1*(clw2(i,k)-clwm), 50.0 ), 0.0 )
               tem2  = sqrt( sqrt(rhly(i,k)) )
 
@@ -1199,7 +1213,7 @@
       else                                 ! input data from sfc to toa
 
         clwmin = 0.0e-6
-        if (.not. lmfshal) then
+        if (.not. lsashal) then
           do k = 1, NLAY
           do i = 1, IX
 !           clwt = 1.0e-7 * (plyr(i,k)*0.001)
@@ -1240,14 +1254,22 @@
             if (clw2(i,k) > clwt) then
               onemrh= max( 1.e-10, 1.0-rhly(i,k) )
               clwm  = clwmin / max( 0.01, plyr(i,k)*0.001 )
-!
+
               tem1  = min(max((onemrh*qstl(i,k))**0.49,0.0001),1.0)   !jhan
-              if (lmfdeep2) then
-                tem1  = 200.0 / tem1
-              else
-                tem1  = 100.0 / tem1
-              endif
+              tem1  = 100.0 / tem1
+
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
 !
+!             tem1  = min(max(sqrt(sqrt(onemrh*qstl(i,k))),0.0001),1.0)
+!             tem1  = 2200.0 / tem1
+!             tem1  = 2400.0 / tem1
+!             tem1  = 2500.0 / tem1
+!             tem1  = min(max(sqrt(onemrh*qstl(i,k)),0.0001),1.0)
+!             tem1  = 2000.0 / tem1
+!             tem1  = 1000.0 / tem1
+!             tem1  = 100.0 / tem1
+
               value = max( min( tem1*(clw2(i,k)-clwm), 50.0 ), 0.0 )
               tem2  = sqrt( sqrt(rhly(i,k)) )
 
@@ -1295,7 +1317,8 @@
         enddo
       endif
 
-!> -# Compute effective ice cloud droplet radius.
+!> -# Compute effective ice cloud droplet radius
+!  ---  effective ice cloud droplet radius
 
       do k = 1, NLAY
         do i = 1, IX
@@ -1341,7 +1364,6 @@
           clouds(i,k,9) = rei(i,k)
         enddo
       enddo
-
 
 !> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions and
 !! clouds top/bottom layer indices for low, mid, and high clouds.
@@ -1401,14 +1423,12 @@
 !!\section gen_progcld3 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld3                                               &
-!...................................
-
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,          & !  ---  inputs:
-     &       xlat,xlon,slmsk,                                           &
-     &       ix, nlay, nlp1,                                            &
-     &       deltaq,sup,kdt,me,                                         &
-     &       clouds,clds,mtop,mbot                                      & !  ---  outputs:
+      subroutine progcld3
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,         !  ---  inputs
+     &       xlat,xlon,slmsk,
+     &       ix, nlay, nlp1,
+     &       deltaq,sup,kdt,me,
+     &       clouds,clds,mtop,mbot                                      !  ---  outputs
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1489,7 +1509,7 @@
 !  ---  inputs
       integer,  intent(in) :: ix, nlay, nlp1,kdt
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, tvly, qlyr, qstl, rhly, clw
 !     &       tlyr, tvly, qlyr, qstl, rhly, clw, cnvw, cnvc
 !      real (kind=kind_phys), dimension(:,:), intent(in) :: deltaq
@@ -1498,7 +1518,7 @@
       real (kind=kind_phys), intent(in) :: sup
       real (kind=kind_phys), parameter :: epsq = 1.0e-12
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk
       integer :: me
 
@@ -1592,6 +1612,7 @@
       enddo
 
 !> -# Compute liquid/ice condensate path in \f$ g/m^2 \f$
+!  ---  compute liquid/ice condensate path in g/m**2
 
       if ( ivflip == 0 ) then          ! input data from toa to sfc
         do k = 1, nlay
@@ -1613,7 +1634,8 @@
         enddo
       endif                            ! end_if_ivflip
 
-!> -# Compute effective liquid cloud droplet radius over land.
+!> -# Compute effective liquid cloud droplet radius over land
+!  ---  effective liquid cloud droplet radius over land
 
       do i = 1, ix
         if (nint(slmsk(i)) == 1) then
@@ -1623,7 +1645,8 @@
         endif
       enddo
 
-!> -# Calculate layer cloud fraction.
+!  ---  layer cloud fraction
+!> -# Calculate layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
           do k = nlay, 1, -1
@@ -1733,6 +1756,7 @@
       endif
 
 !> -# Compute effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
+!  ---  effective ice cloud droplet radius
 
       do k = 1, nlay
         do i = 1, ix
@@ -1773,7 +1797,6 @@
           clouds(i,k,9) = rei(i,k)
         enddo
       enddo
-
 
 !> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
 !! and clouds top/bottom layer indices for low, mid, and high clouds.
@@ -1824,14 +1847,11 @@
 !!\section gen_diagcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine diagcld1                                               &
-
-!...................................
-
-     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                       &  !  ---  inputs:
-     &       xlat,xlon,slmsk,                                           &
-     &       IX, NLAY, NLP1,                                            &
-     &       clouds,clds,mtop,mbot                                      &  !  ---  outputs:
+      subroutine diagcld1
+     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                       !  ---  inputs:
+     &       xlat,xlon,slmsk,
+     &       IX, NLAY, NLP1,
+     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1896,10 +1916,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
      &       tlyr, rhly, vvel
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,  &
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
      &       slmsk, cv, cvt, cvb
 
 !  ---  outputs
@@ -1949,6 +1969,7 @@
         ireg = 4
 
 !> -# Get rh-cld relation for this lat
+!  ---  get rh-cld relation for this lat
 
         lab_do_j : do j = 1, 3
           if (xlatdg > xlabdy(j)) then
@@ -1967,7 +1988,8 @@
           enddo
         enddo
 
-!> -# Linear transition betweeen latitudinal regions.
+!> -# Linear transition betweeen latitudinal regions
+!  ---  linear transition between latitudinal regions...
         do j = 1, 3
           xlnn = xlabdy(j) + xlim
           xlss = xlabdy(j) - xlim
@@ -1989,6 +2011,8 @@
         enddo        ! end_j_loop
 
 !> -# Get rh-cld relationship for each grid point, interpolating longitudinally between regions if necessary.
+!  ---  get rh-cld relationship for each grid point, interpolating
+!       longitudinally between regions if necessary..
 
         if (slmsk(i) < 1.0) then
           is = 2
@@ -2033,7 +2057,8 @@
         enddo   ! end_do_ic_loop
       enddo  lab_do_i_IX
 
-!> -# Find top pressure for each cloud domain.
+!> -# Find top pressure for each cloud domain
+!  ---  find top pressure for each cloud domain
 
       do j = 1, 4
         tem1 = ptopc(j,2) - ptopc(j,1)
@@ -2046,7 +2071,8 @@
         enddo
       enddo
 
-!> -# Compute stratiform cloud optical depth.
+!> -# Compute stratiform cloud optical depth
+!  ---  stratiform cloud optical depth
 
       do k = 1, NLAY
         do i = 1, IX
@@ -2060,6 +2086,7 @@
       enddo
 
 !> -# Compute potential temperature and its lapse rate
+!  ---  potential temperature and its lapse rate
 
       do k = 1, NLAY
         do i = 1, IX
@@ -2075,14 +2102,16 @@
           dthdp(i,k) = (tem2d(i,k+1)-tem2d(i,k))/(plyr(i,k+1)-plyr(i,k))
         enddo
       enddo
-!
+
 !> -# Diagnostic method to find cloud amount cldtot, cldcnv
+!===> ... diagnostic method to find cloud amount cldtot, cldcnv
 !
 
       if ( ivflip == 0 ) then                 ! input data from toa to sfc
-
 !>    - Find the lowest low cloud top sigma level, computed for each lat cause
 !!      domain definition changes with latitude.
+!  ---  find the lowest low cloud top sigma level, computed for each lat cause
+!       domain definition changes with latitude...
 
 !       klowb = 1
         klowt = 1
@@ -2098,7 +2127,10 @@
 
 !>    - Find the stratosphere cut off layer for high cloud (about 250mb).
 !!      It is assumed to be above the layerwith dthdp less than -0.25 in
-!!      the high cloud domain.
+!!      the high cloud domain
+!  ---  find the stratosphere cut off layer for high cloud (about 250mb).
+!       it is assumed to be above the layer with dthdp less than -0.25 in
+!       the high cloud domain
 
           kcut(i) = 2
           lab_do_kcut0 : do k = klowt-1, 2, -1
@@ -2110,6 +2142,7 @@
           enddo  lab_do_kcut0
 
 !>    - Put convective cloud into 'cldcnv', no merge at this point.
+!  ---  put convective cloud into 'cldcnv', no merge at this point..
 
           if (cv(i) >= climit .and. cvt(i) < cvb(i)) then
             id  = NLAY
@@ -2205,7 +2238,8 @@
 
         enddo            ! end_do_k_loop
 
-!>    - Compute vertical velocity adjustment on low clouds.
+!>    - Compute vertical velocity adjustment on low clouds
+! --- vertical velocity adjustment on low clouds
 
         value = vvcld1 - vvcld2
         do k = klowt, llyr+1
@@ -2378,9 +2412,8 @@
         enddo       ! end_do_k_loop
 
       endif                                   ! end_if_ivflip
-
 !>    - Compute diagnostic cloud optical depth
-
+!  ---  diagnostic cloud optical depth
 !     cldtau = cldtau * taufac
 
       where (cldtot < climit)
@@ -2427,7 +2460,6 @@
 !-----------------------------------
 !> @}
 
-
 !> This subroutine computes high, mid, low, total, and boundary cloud fractions
 !! and cloud top/bottom layer indices for model diagnostic output.
 !! The three cloud domain boundaries are defined by ptopc. The cloud 
@@ -2447,12 +2479,10 @@
 !>\section detail Detailed Algorithm
 !! @{
 !-----------------------------------                                    !
-      subroutine gethml                                                 &
-!...................................                                    !
-
-     &     ( plyr, ptop1, cldtot, cldcnv,                               & !  ---  inputs:
-     &       IX, NLAY,                                                  &
-     &       clds, mtop, mbot                                           & !  ---  outputs:
+      subroutine gethml
+     &     ( plyr, ptop1, cldtot, cldcnv,                             !  ---  inputs:
+     &       IX, NLAY,
+     &       clds, mtop, mbot                                       !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -2506,7 +2536,7 @@
 !  ---  inputs:
       integer, intent(in) :: IX, NLAY
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, &
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, 
      &       cldtot, cldcnv
 
 !  ---  outputs
@@ -2533,7 +2563,6 @@
 
 !  ---  total and bl clouds, where cl1, cl2 are fractions of clear-sky view
 !       layer processed from surface and up
-
 !> -# Calculate total and BL cloud fractions (maximum-random cloud overlapping is operational)
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
@@ -2595,7 +2624,6 @@
 !       layer processed from one layer below llyr and up
 !  ---  change! layer processed from surface to top, so low clouds will
 !       contains both bl and low clouds.
-
 !> -# Calculte high, mid, low cloud fractions and vertical indices of cloud tops/bases
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
@@ -2771,14 +2799,12 @@
 !-----------------------------------
 !! @}
 
-
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !
-      subroutine rhtable                                                &
-!...................................                                    !
+      subroutine rhtable
+     &     ( me                                                       !  ---  inputs
+     &,      ier )                                                     !  ---  outputs
 
-     &     ( me                                                         & !  ---  inputs:
-     &,      ier )         !  ---  outputs:
 
 !  ===================================================================  !
 !                                                                       !

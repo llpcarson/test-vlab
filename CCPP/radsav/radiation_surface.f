@@ -2,9 +2,9 @@
 !!  This file contains routines that set up surface albedo for sw radiation and surface
 !!    emissivity for lw radiation.
 
-!  ==========================================================  !!!!!
-!            'module_radiation_surface' description            !!!!!
-!  ==========================================================  !!!!!
+!!!!!  ==========================================================  !!!!!
+!!!!!            'module_radiation_surface' description            !!!!!
+!!!!!  ==========================================================  !!!!!
 !                                                                      !
 !    this module sets up surface albedo for sw radiation and surface   !
 !    emissivity for lw radiation.                                      !
@@ -73,7 +73,6 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-
 !> \ingroup rad
 !! \defgroup module_radiation_surface module_radiation_surface
 !! @{
@@ -100,13 +99,11 @@
 
 !  ---  constant parameters
 !> num of sfc albedo components
-      integer, parameter, public :: NF_ALBD = 4 
-
+      integer, parameter, public :: NF_ALBD = 4  ! num of sfc albedo components
 !> num of longitude points in global emis-type map
-      integer, parameter, public :: IMXEMS = 360 
-
+      integer, parameter, public :: IMXEMS = 360 ! num of lon-pts in glb emis-type map
 !> num of latitude points in global emis-type map
-      integer, parameter, public :: JMXEMS = 180 
+      integer, parameter, public :: JMXEMS = 180 ! num of lat-pts in glb emis-type map
 
       real (kind=kind_phys), parameter :: f_zero = 0.0
       real (kind=kind_phys), parameter :: f_one  = 1.0
@@ -123,7 +120,6 @@
 ! =================
       contains
 ! =================
-
 
 !> This subroutine is the initialization program for surface radiation related quantities
 !! (albedo, emissivity, etc.)
@@ -267,7 +263,6 @@
       end subroutine sfc_init
 !-----------------------------------
 
-
 !> This subroutine computes four components of surface albedos (i.e., vis-nir,
 !! direct-diffused) according to control flag ialbflg.
 !! \n 1) climatological surface albedo scheme (briegleb 1992)
@@ -308,13 +303,11 @@
 !> @{
 !!\section general General Algorithm
 !-----------------------------------
-      subroutine setalb                                                 &
-!...................................
-
-     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,   & !  ---  inputs:
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,            &
-     &       IMAX,                                                      &
-     &       sfcalb                                                     & !  ---  outputs:
+      subroutine setalb
+     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,   !  ---  inputs:
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,
+     &       IMAX,
+     &       sfcalb                                                    !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -379,13 +372,13 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::                &
-     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,           &
-     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,     &
+      real (kind=kind_phys), dimension(:), intent(in) ::
+     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,
+     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,
      &       sncovr, snoalb
 
 !  ---  outputs
-      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) ::    &
+      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) ::
      &       sfcalb
 !     real (kind=kind_phys), dimension(:,:), intent(out) :: sfcalb
 
@@ -402,13 +395,14 @@
 !
 !===> ...  begin here
 !
-
 !> -# If use climatological albedo scheme:
       if ( ialbflg == 0 ) then   ! use climatological albedo scheme
 
         do i = 1, IMAX
 
 !>    - Modified snow albedo scheme - units convert to m (originally snowf in mm; zorlf in cm)
+! --- modified snow albedo scheme - units convert to m
+!     (originally snowf in mm; zorlf in cm)
 
          asnow = 0.02*snowf(i)
          argh  = min(0.50, max(.025, 0.01*zorlf(i)))
@@ -423,6 +417,7 @@
          flnd  = flnd0 * fsno1
 
 !>    - Compute diffused sea surface albedo
+! --- diffused sea surface albedo
 
          if (tsknf(i) >= 271.5) then
             asevd = 0.06
@@ -437,6 +432,7 @@
          endif
 
 !>    - Compute diffused snow albedo
+! --- diffused snow albedo
 
          if (nint(slmsk(i)) == 2) then
             ffw   = f_one - fice(i)
@@ -458,6 +454,7 @@
          endif
 
 !>    - Compute direct snow albedo
+! --- direct snow albedo
 
          if (coszf(i) < 0.5) then
             csnow = 0.5 * (3.0 / (f_one+4.0*coszf(i)) - f_one)
@@ -469,6 +466,7 @@
          endif
 
 !>    - Compute direct sea surface albedo
+! --- direct sea surface albedo
 
          if (coszf(i) > 0.0001) then
 !           rfcs = 1.4 / (f_one + 0.8*coszf(i))
@@ -506,11 +504,12 @@
         enddo    ! end_do_i_loop
 
 !> -# If use modis based albedo for land area:
-      else                      
+      else                       ! use modis based albedo for land area
 
         do i = 1, IMAX
 
 !>    - Compute snow cover input directly for land model, no conversion needed.
+! --- snow cover input directly from land model, no conversion needed
 
          fsno0 = sncovr(i)
 
@@ -531,6 +530,7 @@
          flnd  = flnd0 * fsno1
 
 !>    - Compute diffused sea surface albedo
+! --- diffused sea surface albedo
 
          if (tsknf(i) >= 271.5) then
             asevd = 0.06
@@ -545,6 +545,7 @@
          endif
 
 !>    - Compute diffused snow albedo, land area use input max snow albedo
+! --- diffused snow albedo, land area use input max snow albedo
 
          if (nint(slmsk(i)) == 2) then
             ffw   = f_one - fice(i)
@@ -566,6 +567,7 @@
          endif
 
 !>    - Compute direct snow albedo
+! --- direct snow albedo
 
          if (nint(slmsk(i)) == 2) then
            if (coszf(i) < 0.5) then
@@ -582,12 +584,13 @@
          endif
 
 !>    - Compute direct sea surface albedo, use fanglin's zenith angle treatment
+! --- direct sea surface albedo, use fanglin's zenith angle treatment
 
          if (coszf(i) > 0.0001) then
 
 !           rfcs = 1.89 - 3.34*coszf(i) + 4.13*coszf(i)*coszf(i)        &
 !    &           - 2.02*coszf(i)*coszf(i)*coszf(i)
-            rfcs = 1.775/(1.0+1.55*coszf(i))      
+            rfcs = 1.775/(1.0+1.55*coszf(i))
 
             if (tsknf(i) >= con_t0c) then
               asevb = max(asevd, 0.026/(coszf(i)**1.7+0.065)            &
@@ -636,12 +639,10 @@
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine setemis                                                &
-!...................................
-
-     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,      & !  ---  inputs:
-     &       IMAX,                                                      &
-     &       sfcemis                                                    & !  ---  outputs:
+      subroutine setemis
+     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,      !  ---  inputs
+     &       IMAX,
+     &       sfcemis                                                    !  ---  outputs
      &     )
 
 !  ===================================================================  !
@@ -688,7 +689,7 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::                &
+      real (kind=kind_phys), dimension(:), intent(in) ::
      &       xlon,xlat, slmsk, snowf,sncovr, zorlf, tsknf, tairf, hprif
 
 !  ---  outputs
@@ -722,6 +723,7 @@
         hdlt = 0.5 * dltg
 
 !> -# Map input data onto model grid
+!  --- ...  mapping input data onto model grid
 !           note: this is a simple mapping method, an upgrade is needed if
 !           the model grid is much corcer than the 1-deg data resolution
 
@@ -736,8 +738,8 @@
             sfcemis(i) = emsref(7)
 
           else                                     ! land
-
 !> -# Map grid in longitude direction
+!  ---  map grid in longitude direction
             i2 = 1
             j2 = 1
 
@@ -752,8 +754,8 @@
                 exit lab_do_IMXEMS
               endif
             enddo  lab_do_IMXEMS
-
 !> -# Map grid in latitude direction
+!  ---  map grid in latitude direction
             tmp1 = xlat(i) * rad2dg           ! if xlat in pi/2 -> -pi/2 range
 !           tmp1 = 90.0 - xlat(i)*rad2dg      ! if xlat in 0 -> pi range
 
@@ -774,6 +776,7 @@
           endif   ! end if_slmsk_block
 
 !> -# Check for snow covered area
+!  ---  check for snow covered area
 
           if ( ialbflg==1 .and. nint(slmsk(i))==1 ) then ! input land area snow cover
 
@@ -806,7 +809,6 @@
 !...................................
       end subroutine setemis
 !-----------------------------------
-
 !> @}
 !
 !.........................................!
