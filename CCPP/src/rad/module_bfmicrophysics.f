@@ -2906,32 +2906,32 @@
 
 
 !> \ingroup rad
-!! This subroutine is a modified version of ferrier's original "rsipath" subprogram.
+!! This subroutine is a modified version of Ferrier's original "rsipath" subprogram.
 !! It computes layer's cloud liquid, ice, rain, and snow water condensate path and
 !! the partical effective radius for liquid droplet, rain drop, and snow flake.
-!!\param[in] plyr    real, (IM,LEVS), model layer mean pressure in mb (100Pa)
-!!\param[in] plvl    real, (IM,LEVS+1), model level pressure in mb (100Pa)
-!!\param[in] tlyr    real, (IM,LEVS), model layer mean temperature in K
-!!\param[in] qlyr    real, (IM,LEVS), layer specific humidity in gm/gm
-!!\param[in] qcwat   real, (IM,LEVS), layer cloud liquid water condensate amount
-!!\param[in] qcice   real, (IM,LEVS), layer cloud ice water condensate amount
-!!\param[in] qrain   real, (IM,LEVS), layer rain drop water amount
-!!\param[in] rrime   real, (IM,LEVS), mass ratio of total to unrimed ice ( >= 1 )
-!!\param[in] IM      integer, horizontal dimention
-!!\param[in] LEVS    integer, vertical layer dimensions
-!!\param[in] iflip   integer, control flag for in/out vertical indexing
+!!\param plyr     (IM,LEVS), model layer mean pressure in mb (100Pa)
+!!\param plvl     (IM,LEVS+1), model level pressure in mb (100Pa)
+!!\param tlyr     (IM,LEVS), model layer mean temperature in K
+!!\param qlyr     (IM,LEVS), layer specific humidity in gm/gm
+!!\param qcwat    (IM,LEVS), layer cloud liquid water condensate amount
+!!\param qcice    (IM,LEVS), layer cloud ice water condensate amount
+!!\param qrain    (IM,LEVS), layer rain drop water amount
+!!\param rrime    (IM,LEVS), mass ratio of total to unrimed ice ( >= 1 )
+!!\param IM        horizontal dimention
+!!\param LEVS      vertical layer dimensions
+!!\param iflip     control flag for in/out vertical indexing
 !!\n                     =0: index from toa to surface
 !!\n                     =1: index from surface to toa
-!!\param[in] flgmin  real, minimum large ice fraction
-!!\param[in] lprnt   logical, logical check print control flag
-!!\param[out] cwatp    real, (IM,LEVS), layer cloud liquid water path
-!!\param[out] cicep    real, (IM,LEVS), layer cloud ice water path
-!!\param[out] rainp    real, (IM,LEVS), layer rain water path
-!!\param[out] snowp    real, (IM,LEVS), layer snow water path
-!!\param[out] recwat   real, (IM,LEVS), layer cloud eff radius for liqid water (micron)
-!!\param[out] rerain   real, (IM,LEVS), layer rain water effective radius      (micron)
-!!\param[out] resnow   real, (IM,LEVS), layer snow flake effective radius      (micron)
-!!\param[out] snden    real, (IM,LEVS), 1/snow density
+!!\param flgmin    minimum large ice fraction
+!!\param lprnt     logical check print control flag
+!!\param cwatp     (IM,LEVS), layer cloud liquid water path
+!!\param cicep     (IM,LEVS), layer cloud ice water path
+!!\param rainp     (IM,LEVS), layer rain water path
+!!\param snowp     (IM,LEVS), layer snow water path
+!!\param recwat    (IM,LEVS), layer cloud eff radius for liqid water (micron)
+!!\param rerain    (IM,LEVS), layer rain water effective radius      (micron)
+!!\param resnow    (IM,LEVS), layer snow flake effective radius      (micron)
+!!\param snden     (IM,LEVS), 1/snow density
 !>\section general General Algorithm
 !> @{
 !-----------------------------------

@@ -219,7 +219,7 @@
       contains
 ! =================
 
-!> This subroutine sets up ozone, co2, etc. parameters. if climatology ozone then
+!> This subroutine sets up ozone, co2, etc. parameters. If climatology ozone then
 !! read in monthly ozone data.
 !!\param me         print message control flag
 !-----------------------------------
@@ -509,7 +509,7 @@
 !-----------------------------------
 
 !> This subroutine reads in 2-d monthly co2 data set for a specified year.
-!! data are in a 15 degree lat/lon horizontal resolution.
+!! Data are in a 15 degree lat/lon horizontal resolution.
 !!\param iyear      year of the requested data for fcst
 !!\param imon       month of the year
 !!\param iday       day of the month
@@ -517,6 +517,8 @@
 !!\param loz1st     clim ozone 1st time update control flag
 !!\param ldoco2     co2 update control flag
 !!\param me         print message control flag
+!>\section gen_gas_update General Algorithm
+!! @{
 !-----------------------------------
       subroutine gas_update
      &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
@@ -602,7 +604,7 @@
 !
 !===>  ...  begin here
 !
-!  --- ...  ozone data section
+!> - Ozone data section
 
       if ( ioznflg == 0 ) then
         midmon = mdays(imon)/2 + 1
@@ -631,7 +633,7 @@
         facoz = float(id - midm) / float(midp - midm)
       endif
 
-!  --- ...  co2 data section
+!> - co2 data section
 
       if ( ico2flg == 0 ) return    ! use prescribed global mean co2 data
       if ( ictmflg ==-1 ) return    ! use user provided co2 data
@@ -887,9 +889,10 @@
 !...................................
       end subroutine gas_update
 !-----------------------------------
+!! @}
 
 !> This subroutine sets up global distribution of radiation absorbing gases in volume
-!! mixing ratio. currently only co2 has the options from observed values, all other
+!! mixing ratio. Currently only co2 has the options from observed values, all other
 !! gases are asigned to the climatological values.
 !!\param plvl       (IMAX,LMAX+1), pressure at model layer interfaces (mb)
 !!\param xlon       (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements
@@ -1049,8 +1052,8 @@
       end subroutine getgases
 !-----------------------------------
 
-!> This subroutine sets up climatological ozone profile for radiation calculation
-!! this code is originally written by Shrinivas Moorthi.
+!> This subroutine sets up climatological ozone profile for radiation calculation.
+!! This code is originally written by Shrinivas Moorthi.
 !!\param prslk       (IMAX,LM), exner function = \f$(p/p0)^{rocp}\f$
 !!\param xlat        (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
 !!\param IMAX, LM    horizontal and vertical dimensions

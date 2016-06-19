@@ -65,8 +65,13 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> \defgroup module_radsw_ref module_radsw_ref
-!> This module contains reference temperature and pressure
+!> This module contains reference temperature and pressure.
+!!
+!! - These pressures are chosen such that the ln of the first pressure
+!!   has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
+!!   each subsequent ln(pressure) differs from the previous one by 0.2.
+!! - These temperatures are associated with the respective
+!!   pressures for the MLS standard atmosphere.
 !========================================!
       module module_radsw_ref            !
 !........................................!
@@ -77,12 +82,8 @@
 !
       public
 
-!  ---  reference pressure and temperature
-!     real (kind=kind_phys), dimension(59) :: pref, preflog, tref
-!> reference pressure
-      real (kind=kind_phys), dimension(59) :: preflog 
-!> reference temperature
-      real (kind=kind_phys), dimension(59) :: tref
+! Reference pressure and temperature
+     real (kind=kind_phys), dimension(59) :: pref, preflog, tref
 
 !  ...  these pressures are chosen such that the ln of the first pressure
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -136,7 +137,6 @@
       end module module_radsw_ref        !
 !========================================!
 
-!> \defgroup module_radsw_cldprtb module_radsw_cldprtb
 !> This module contains coefficients of cloud optical properties for each of the spectral bands.
 !! It is modified from AER/ECMWF RRTM SW radiation package subroutine "susrtop".
 !========================================!
@@ -1866,7 +1866,6 @@
       end module module_radsw_cldprtb    !
 !========================================!
 
-!> \defgroup module_radsw_sflux module_radsw_sflux
 !> This module contains spectral distribution of solar radiation flux used to obtain the incoming solar flux at toa.
 !========================================!
       module module_radsw_sflux          !
@@ -2183,7 +2182,6 @@
       end module module_radsw_sflux      !
 !========================================!
 
-!> \defgroup module_radsw_kgb16 module_radsw_kgb16
 !> This module sets up absorption coefficients for band 16: 2600-3250 cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
       module module_radsw_kgb16          !
@@ -3377,7 +3375,6 @@
       end module module_radsw_kgb16      !
 !========================================!
 
-!> \defgroup module_radsw_kgb17 module_radsw_kgb17
 !> This module sets up absorption coeffients for band 17: 3250-4000 cm-1 (low - h2o,co2; high - h2o,co2)
 !========================================!
       module module_radsw_kgb17          !
@@ -7986,7 +7983,6 @@
       end module module_radsw_kgb17      !
 !========================================!
 
-!> \defgroup module_radsw_kgb18 module_radsw_kgb18
 !> This module sets up absorption coeffients for band 18: 4000-4650 cm-1 (low - h2o,ch4; high - ch4)
 !========================================!
       module module_radsw_kgb18          !
@@ -9505,7 +9501,6 @@
       end module module_radsw_kgb18      !
 !========================================!
 
-!> \defgroup module_radsw_kgb19 module_radsw_kgb19
 !> This module sets up absorption coeffients for band 19: 4650-5150 cm-1 (low - h2o,co2; high - co2)
 !========================================!
       module module_radsw_kgb19          !
@@ -11040,7 +11035,6 @@
       end module module_radsw_kgb19      !
 !========================================!
 
-!> \defgroup module_radsw_kgb20  module_radsw_kgb20
 !> This module sets up absorption coeffients for band 20: 5150-6150 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radsw_kgb20          !
@@ -11824,7 +11818,6 @@
       end module module_radsw_kgb20      !
 !========================================!
 
-!> \defgroup module_radsw_kgb21 module_radsw_kgb21
 !> This module sets up absorption coeffients for band 21: 6150-7700 cm-1 (low - h2o,co2; high - h2o,co2)
 !========================================!
       module module_radsw_kgb21          !
@@ -15681,7 +15674,6 @@
       end module module_radsw_kgb21      !
 !========================================!
 
-!> \defgroup module_radsw_kgb22  module_radsw_kgb22
 !> This module sets up absorption coeffients for band 22: 7700-8050 cm-1 (low - h2o, o2; high - o2)
 !========================================!
       module module_radsw_kgb22          !
@@ -16128,7 +16120,6 @@
       end module module_radsw_kgb22      !
 !========================================!
 
-!> \defgroup module_radsw_kgb23 module_radsw_kgb23
 !> This module sets up absorption coeffients for band 23: 8050-12850 cm-1 (low - h2o; high - nothing)
 !========================================!
       module module_radsw_kgb23          !
@@ -16401,7 +16392,6 @@
       end module module_radsw_kgb23      !
 !========================================!
 
-!> \defgroup module_radsw_kgb24 module_radsw_kgb24
 !> This module sets up absorption coeffients for band 24: 12850-16000 cm-1 (low - h2o, o2; high - o2)
 !========================================!
       module module_radsw_kgb24          !
@@ -17968,7 +17958,6 @@
       end module module_radsw_kgb24      !
 !========================================!
 
-!> \defgroup module_radsw_kgb25 module_radsw_kgb25
 !> This module sets up absorption coeffients for band 25: 16000-22650 cm-1 (low - h2o; high - nothing)
 !========================================!
       module module_radsw_kgb25          !
@@ -18129,7 +18118,6 @@
       end module module_radsw_kgb25      !
 !========================================!
 
-!> \defgroup module_radsw_kgb26 module_radsw_kgb26
 !> This module sets up absorption coeffients for band 26: 22650-29000 cm-1 (low - nothing; high - nothing)
 !========================================!
       module module_radsw_kgb26          !
@@ -18166,7 +18154,6 @@
       end module module_radsw_kgb26      !
 !========================================!
 
-!> \defgroup module_radsw_kgb27 module_radsw_kgb27
 !> This module sets up absorption coeffients for band 27: 29000-38000 cm-1 (low - o3; high - o3)
 !========================================!
       module module_radsw_kgb27          !
@@ -18770,7 +18757,6 @@
       end module module_radsw_kgb27      !
 !========================================!
 
-!> \defgroup module_radsw_kgb28 module_radsw_kgb28
 !> This module sets up absorption coeffients for band 28: 38000-50000 cm-1 (low - o3,o2; high - o3,o2)
 !========================================!
       module module_radsw_kgb28          !
@@ -21084,7 +21070,6 @@
       end module module_radsw_kgb28      !
 !========================================!
 
-!> \defgroup module_radsw_kgb29 module_radsw_kgb29
 !> This module sets up absorption coeffients for band 29: 820-2600 cm-1 (low - h2o; high - co2)
 !========================================!
       module module_radsw_kgb29          !
@@ -22025,5 +22010,5 @@
 !........................................!
       end module module_radsw_kgb29      !
 !========================================!
-!> @}
+!! @}
 !! @}
