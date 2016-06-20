@@ -536,10 +536,10 @@
 !! down through the freezing level. This process is parameterized as a function of temperature
 !! and snow precipitation rate, that is,
 !!\f[
-!! P_{sm1}=C_{sm}(T-273.15)^{\alpha}P_{s}
+!! P_{sm1}=C_{sm}(T-273.15)^{2}P_{s}
 !!\f]
-!! In Zhao and Carr (1997) \cite zhao_and_carr_1997, parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
-!! and \f$\alpha=2\f$ cause the falling snow to melt almost completely before it reaches the
+!! where \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
+!! cause the falling snow to melt almost completely before it reaches the
 !! \f$T=278.15 K\f$ level.
 !!  - Another is the immediate melting of melting snow by collection of the cloud water
 !! below the freezing level. In order to calculate the melting rate, the
