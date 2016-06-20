@@ -227,7 +227,18 @@
 !
         rnp(i)     = d00
       enddo
-!> -# Select columns where rain can be produced.
+!> -# Select columns where rain can be produced, where
+!!\f[
+!!  cwm > \min (wmin, wmini)
+!!\f]
+!! where the cloud water and ice conversion threshold:
+!! \f[
+!! wmin=wminco(1)\times prsl\times 10^{-5}
+!! \f]
+!! \f[
+!! wmini=wminco(2)\times prsl\times 10^{-5}
+!! \f]
+
 !------------select columns where rain can be produced--------------
       do k=1, km-1
         do i=1,im
@@ -310,6 +321,7 @@
 !           if (tmt0(n).le.-40.) qint = qi
 !
 !-------------------ice-water id number iw------------------------------
+!> -# Compute ice-water identification number IW (see algorithm in \ref condense).
             if(tmt0(n) < -15.) then
                fi = qk - u00k(i,k)*qi
                if(fi > d00 .or. wwn > climit) then
@@ -340,6 +352,7 @@
                rq(n) = qk / qc
             endif
 !----------------cloud cover ratio ccr----------------------------------
+!> -# Calculate cloud fraction \f$b\f$ (see algorithm in \ref condense)
             if(rq(n) < u00k(i,k)) then
                    ccr(n) = d00
             elseif(rq(n) >= us) then
@@ -363,33 +376,31 @@
 !       enddo
 !
 !> -# Precipitation production by auto conversion and accretion
-!!    - The autoconversion of cloud ice to snow (\f$P_{saut}\f$) is simulated
+!!  - The autoconversion of cloud ice to snow (\f$P_{saut}\f$) is simulated
 !! using the equation from Lin et al. (1983) \cite lin_et_al_1983
 !!\f[
-!!   P_{saut}=a_{1}(m-m_{i0})
+!!   P_{saut}=a_{1}(cwm-wmini)
 !!\f]
-!! where \f$m_{i0}\f$ is the threshold of cloud ice mixing ratio for production of snow
-!! from cloud ice and is set to a value of \f$1.0\times 10^{-5} (kg/kg)\f$. Since snow
-!! production in this process is caused by the increase in size of cloud ice particles due
+!! Since snow production in this process is caused by the increase in size of cloud ice particles due
 !! to depositional growth and aggregation of small ice particles, \f$P_{saut}\f$ is
 !! a function of temperature as determined by coefficient \f$a_{1}\f$, given by
 !! \f[
-!!   a_{1}=10^{-3}exp\left[ 0.025\left(T-273.15\right)\right]
+!!   a_{1}=psautco \times dt \times exp\left[ 0.025\left(T-273.15\right)\right]
 !! \f]
 !!
-!!    - The accretion of cloud ice by snow (\f$P_{saci}\f$) in the regions where  cloud ice
+!!  - The accretion of cloud ice by snow (\f$P_{saci}\f$) in the regions where  cloud ice
 !! exists is simulated by
 !!\f[
-!!  P_{saci}=C_{s}mP_{s}
+!!  P_{saci}=C_{s}cwm P_{s}
 !!\f]
 !! where \f$P_{s}\f$ is the precipitation rate of snow. The collection coefficient \f$C_{s}\f$
 !! is a function of temperature since the open structures of ice crystals at relative warm
 !! temperatures are more likely to stick, given a collision, than crystals of other shapes
 !! (Rogers 1979 \cite rogers_1979). Above the freezing level, \f$C_{s}\f$ is expressed by
 !!\f[
-!!   C_{s}=c_{1}exp[c_{2}(T-273.15)]
+!!   C_{s}=c_{1}exp\left[ 0.025\left(T-273.15\right)\right]
 !!\f]
-!! where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$ and \f$c_{2}=0.025 K^{-1}\f$ are used.
+!! where \f$c_{1}=1.25\times 10^{-3} m^{2}kg^{-1}s^{-1}\f$ are used.
 !! \f$C_{s}\f$ is set to zero below the freezing level.
 !!
 !---   precipitation production --  auto conversion and accretion
@@ -414,14 +425,13 @@
                precsl(n) = precsl(n) + (wws - ww(n)) * condt(n)
             else                                    !  liquid water
 !
-!>    - Following Sundqvist et al. (1989) \cite sundqvist_et_al_1989, the autoconversion of cloud water to rain
+!>  - Following Sundqvist et al. (1989) \cite sundqvist_et_al_1989, the autoconversion of cloud water to rain
 !! (\f$P_{raut}\f$) can be parameterized from the cloud water mixing ratio \f$m\f$ and cloud
 !! coverage \f$b\f$, that is,
 !!\f[
-!!  P_{raut}=c_{0}m\left\{1-exp[-(\frac{m}{m_{r}b})^{2}]\right\}
+!!  P_{raut}=(prautco \times dt )\times (cwm-wmin)\left\{1-exp[-(\frac{cwm-wmin}{m_{r}b})^{2}]\right\}
 !!\f]
-!! where \f$c_{0}\f$ and \f$m_{r}\f$ are \f$1.0\times 10^{-4}s^{-1}\f$ and \f$3.0\times 10^{-4}\f$,
-!! respectively.
+!! where \f$m_{r}\f$ is \f$3.0\times 10^{-4}\f$.
 !          for using sundqvist precip formulation of rain
 !
                amaxcm    = max(cons_0, cwmk - wmink(n))
@@ -461,17 +471,14 @@
 !!\n Evaporation of precipitation is an important process that  moistens the layers below
 !! cloud base. Through this process, some of the precipitating water is evaporated
 !! back to the atmosphere and the precipitation efficiency is reduced.
-!!    - Evaporation of rain is calculated using the equation (Sundqvist 1988 \cite sundqvist_1988):
+!!  - Evaporation of rain is calculated using the equation (Sundqvist 1988 \cite sundqvist_1988):
 !!\f[
-!!   E_{rr}=k_{e}(f_{0}-f)(P_{r})^{\beta}
+!!   E_{rr}= evpco \times (u-f)(P_{r})^{\beta}
 !!\f]
-!! where \f$k_{e}\f$ and \f$\beta\f$ are empirical parameters.
-!! In Zhao and Carr (1997) \cite zhao_and_carr_1997, \f$k_{e}=2\times 10^{-5}m^{1}kg^{-0.5}s^{-1}\f$ and \f$\beta=0.5\f$
-!! gave reasonable values of rain evaporation.
-!!
-!!    - Evaporation of snow is calculated using the equation:
+!! where \f$u\f$ is u00k, \f$f\f$ is the relative humidity. \f$\beta = 0.5\f$ are empirical parameter. 
+!!  - Evaporation of snow is calculated using the equation:
 !!\f[
-!!  E_{rs}=[C_{rs1}+C_{rs2}(T-273.15)](\frac{f_{0}-f}{f_{0}})P_{s}
+!!  E_{rs}=[C_{rs1}+C_{rs2}(T-273.15)](\frac{u-f}{u})P_{s}
 !!\f]
 !! where \f$C_{rs1}=5\times 10^{-6}m^{2}kg^{-1}s^{-1}\f$ and
 !! \f$C_{rs2}=6.67\times 10^{-10}m^{2}kg^{-1}K^{-1}s^{-1}\f$. The evaporation of melting snow
@@ -525,7 +532,7 @@
 !!\n In this scheme, we allow snow melting to take place in certain temperature regions
 !! below the freezing level in two ways. In both cases, the melted snow is assumed to become
 !! raindrops.
-!!    - One is the continuous melting of snow due to the increase in temperature as it falls
+!!  - One is the continuous melting of snow due to the increase in temperature as it falls
 !! down through the freezing level. This process is parameterized as a function of temperature
 !! and snow precipitation rate, that is,
 !!\f[
@@ -534,20 +541,20 @@
 !! In Zhao and Carr (1997) \cite zhao_and_carr_1997, parameter values of \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
 !! and \f$\alpha=2\f$ cause the falling snow to melt almost completely before it reaches the
 !! \f$T=278.15 K\f$ level.
-!!    - Another is the immediate melting of melting snow by collection of the cloud water
+!!  - Another is the immediate melting of melting snow by collection of the cloud water
 !! below the freezing level. In order to calculate the melting rate, the
 !! collection rate of cloud water by melting snow is computed first. Similar to the collection of cloud water
 !! by rain, the collection of cloud water by melting snow can be parameterized to be proportional
 !! to the cloud water mixing ratio \f$m\f$ and the precipitation rate of snow \f$P_{s}\f$:
 !!\f[
-!!   P_{sacw}=C_{r}mP_{s}
+!!   P_{sacw}=C_{r}cwmP_{s}
 !!\f]
 !! where \f$C_{r}\f$ is the collection coefficient,\f$C_{r}=5.0\times 10^{-4}m^{2}kg^{-1}s^{-1}\f$
 !!. The melting rate of snow then can be computed from
 !!\f[
 !!   P_{sm2}=C_{ws}P_{sacw}
 !!\f]
-!! where \f$C_{ws}=0.025\f$
+!! where \f$C_{ws}=0.025\f$.
 !--------------------melting of the snow--------------------------------
         do n=1,ihpr
           if (comput(n)) then
@@ -572,7 +579,7 @@
             endif
 !
 !---------------update t and q------------------------------------------
-!>    - Update t and q.
+!>  - Update t and q.
             tt(n) = tt(n) - dtcp * (elwv*err(n)+eliv*ers(n)+eliw*psm1)
             qq(n) = qq(n) + dt * (err(n)+ers(n))
           endif
