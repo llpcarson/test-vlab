@@ -580,6 +580,13 @@
 !
 !---------------update t and q------------------------------------------
 !>  - Update t and q.
+!!\f[
+!!   t=t-\frac{L}{C_{p}}(E_{rr}+E_{rs}+P_{sm1})\times dt
+!!\f]
+!!\f[
+!!   q=q+(E_{rr}+E_{rs})\times dt
+!!\f]
+
             tt(n) = tt(n) - dtcp * (elwv*err(n)+eliv*ers(n)+eliw*psm1)
             qq(n) = qq(n) + dt * (err(n)+ers(n))
           endif
@@ -622,7 +629,13 @@
 !-----------------------end of precipitation processes-----------------
 !**********************************************************************
 !
-!> -# Compute precipitation at surface and determine fraction of frozen precipitation.
+!> -# Compute precipitation at surface (\f$rn\f$)and determine fraction of frozen precipitation (\f$sr\f$).
+!!\f[
+!!   rn=(P_{r}+P_{s})\times 10^{-3}
+!!\f]
+!!\f[
+!!   sr=\frac{P_{s}}{P_{s}+P_{r}}
+!!\f]
       do n=1,ihpr
         i = ipr(n)
         rn(i) = (precrl1(n)  + precsl1(n)) * rrow  ! precip at surface

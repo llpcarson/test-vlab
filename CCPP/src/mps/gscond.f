@@ -17,8 +17,8 @@
 !! ice. At the same time, an empirically-based calculation of the effective radius for ice crystals (Heymsfield and McFarquhar
 !! 1996 \cite heymsfield_and_mcfarquhar_1996) was introduced.
 !> \section tune Important Tunable Parameters
-!! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in the atmosphere and
-!! thus the cloud radiative properties:
+!! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in 
+!! the atmosphere and thus the cloud radiative properties:
 !! - PSAUTCO, PRAUTCO: Auto conversion coefficients (for both ice and water)
 !! - WMINCO(2): Minimum value of cloud condensate to conversion from condensate to precipitation
 !! - EVPCO: Coefficient for evaporation of precipitation
@@ -56,6 +56,10 @@
 !! \param[in] u          the critical value of relative humidity for large-scale condensation
 !! \param[in] lprnt      logical print flag
 !! \param[in] ipr        check print point for debugging
+!! 
+!! \section def Definition of symbols
+!! - \f$C_{g}\f$: grid-scale condensation rate (\f$s^{-1}\f$)
+!! - \f$E_{c}\f$: evaporation rate of cloud (\f$s^{-1}\f$)
 !> \section gen_algorithm General Algorithm
 !> @{
       subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t
@@ -150,7 +154,7 @@
 !      endif
 !
 !*************************************************************
-!*******begining of  grid-scale condensation/evap. loop*******
+!> -# Begining of  grid-scale condensation/evap. loop (start of k-loop, i-loop)
 !*************************************************************
 !
 !     do k = km-1,2,-1
@@ -185,11 +189,10 @@
           qint(i) = qw
 !         if (tmt0 .le. -40.) qint(i) = qi(i)
 !> -# Compute ice-water identification number IW.
-!!\n    See Table 2 in Zhao and Carr (1997) \cite zhao_and_carr_1997 , the distinction between cloud
-!! water and cloud ice is made by the cloud identification number IW, which
-!! is zero for cloud water and unity for cloud ice.
+!!\n  The distinction between cloud water and cloud ice is made by the cloud identification number IW, which
+!! is zero for cloud water and unity for cloud ice (Table 2 in zhao and Carr (1997) \cite zhao_and_carr_1997):
 !!  - All clouds are defined to consist of liquid water below
-!! the freezing level (\f$T>0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
+!! the freezing level (\f$T\geq 0^oC\f$) and of ice particles above the \f$T=-15^oC\f$
 !! level.
 !!  - In the temperature region between \f$-15^oC\f$ and \f$0^oC\f$, clouds may be composed of 
 !! liquid water or ice. If there are cloud ice particles above this point at the
@@ -225,6 +228,15 @@
         do i = 1, im
 !>  - Compute the changes in t, q and p (\f$A_{t}\f$,\f$A_{q}\f$ and \f$A_{p}\f$) caused by
 !! all the processes except grid-scale condensation and evaporation.
+!!\f[
+!!   A_{t}=(t-tp)/dt
+!!\f]
+!!\f[
+!!   A_{q}=(q-qp)/dt
+!!\f]
+!!\f[
+!!   A_{p}=(prsl-\frac{prsl}{ps} \times psp)/dt
+!!\f]
 !------------------------at, aq and dp/dt-------------------------------
           qik   = max(q(i,k),epsq)
           cwmik = max(cwm(i,k),climit)
@@ -236,7 +248,7 @@
           at    = (tik-tp(i,k)) * rdt
           aq    = (qik-qp(i,k)) * rdt
           ap    = (pres-pp0)    * rdt
-!>  - Compute the saturation specific humidity and the relative humidity.
+!>  - Calculate the saturation specific humidity \f$q_{s}\f$ and the relative humidity \f$f\f$ using IW.
 !----------------the satuation specific humidity------------------------
           fiw   = float(iwik)
           elv   = (h1-fiw)*elwv    + fiw*eliv
@@ -253,12 +265,11 @@
 !!       b=1-\left ( \frac{f_{s}-f}{f_{s}-u} \right )^{1/2}
 !!\f]
 !! for \f$f>u\f$; and \f$b=0\f$ for \f$f<u\f$. where \f$f_{s}=1.0\f$ is the
-!! relative humidity in a cloud region and \f$u\f$ accounts for the effects of subgrid-scale variations in
+!! relative humidity in a cloud region and \f$u\f$ ,which is an input parameter accounts for the effects of subgrid-scale variations in
 !! moisture on large-scale condensation. Since both temperature and moisture may vary at scales smaller than the model
-!! grid scale, it is possible for condensation to occur before the grid-average
-!!relative humidity reaches 100%. Therefore \f$u\f$ (see \f$rhc\f$ in gbphs.f)needs to be less than
-!!1.0 to account for the subgrid-scale variation of temperature and moisture
-!!fields and allow subgrid-scale condensation.
+!! grid scale, it is possible for condensation to occur before the grid-average relative humidity reaches 100%. Therefore \f$u\f$ 
+!! needs to be less than 1.0 to account for the subgrid-scale variation of temperature and moisture
+!! fields and allow subgrid-scale condensation.
 !!  - If cloud fraction \f$b\leq 1.0\times10^{-3}\f$, then evaporate any existing cloud condensate 
 !! using evaporation rate \f$E_{c}\f$ as computed below.
 !!\n If \f$q_{0}\f$ represents the specific humidity at relative humidity \f$u\f$, then
@@ -269,25 +280,30 @@
 !! reached, then the evaporation rate \f$E_{c}\f$, assuming that the evaporation process
 !! occurs in one time step, is determined by
 !!\f[
-!!           E_{c}=\frac{q_{0}-q}{\triangle t}
+!!           E_{c}=\frac{q_{0}-q}{dt}
 !!\f]
 !!\n  Using \f$q_{0}=uq_{s}\f$ and the equation \f$q=fq_{s}\f$,\f$E_{c}\f$ then becomes
 !!\f[
-!!  E_{c}=\frac{q_{s}}{\triangle t}(u-f)
+!!  E_{c}=\frac{q_{s}}{dt}(u-f)
 !!\f]
-!! where \f$\triangle t\f$ is the time step for precipitation calculation in the model
-!! (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983).
+!! where \f$dt\f$ is the time step for precipitation calculation in the model. It is a simplified
+!! version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite 
+!! rutledge_and_hobbs_1983). In the case where
+!! all clouds will evaporate before \f$u\f$ is reached, the following equation is used:
+!! \f[
+!!  E_{c}=\frac{cwm}{dt}
+!! \f]
 !!  - If cloud fraction \f$b>1.0\times10^{-3}\f$, condense water vapor in to cloud condensate (\f$C_{g}\f$).
 !!\n Using \f$q=fq_{s}\f$, \f$q_{s}=\epsilon e_{s}/p\f$, and the Clausius-Clapeyron
 !! equation \f$de_{s}/dT=\epsilon Le_{s}/RT^{2}\f$,where \f$q_{s}\f$ is the saturation specific humidity,\f$e_{s}\f$
-!! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,\f$P\f$ is the pressure,
+!! is the saturation vapor pressure, \f$R\f$ is the specific gas constant for dry air,
 !! \f$f\f$ is the relative humidity, and \f$\epsilon=0.622\f$, the expression for \f$C_{g}\f$ has the form
 !!\f[
 !!       C_{g}=\frac{M-q_{s}f_{t}}{1+(f\epsilon L^{2}q_{s}/RC_{p}T^{2})}+E_{c}
 !!\f]
 !! where
 !!\f[
-!!       M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}\partial p}{p\partial t}
+!!   M=A_{q}-\frac{f\epsilon Lq_{s}}{RT^{2}}A_{t}+\frac{fq_{s}}{p}A_{p}
 !!\f]
 !! To close the system, an equation for the relative humidity tendency \f$f_{t}\f$ was derived by Sundqvist et al.
 !! (1989) \cite sundqvist_et_al_1989 using the hypothesis that the quantity \f$M+E_{c}\f$ is divided into one part,\f$bM\f$,which condenses
@@ -295,7 +311,7 @@
 !! the relative humidity of the cloud-free portion and the cloudiness in the square. The equation is
 !! written as
 !!\f[
-!!  f_{t}=\frac{2(1-b)(f_{s}-u)[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-u)+m/b}
+!!  f_{t}=\frac{2(1-b)(f_{s}-u)[(1-b)M+E_{c}]}{2q_{s}(1-b)(f_{s}-u)+cwm/b}
 !!\f]
 !!  - Check and correct if over condensation occurs.
 !!  - Update  t, q and cwm (according to Eqs(6) and (7) in Zhao and Carr (1997) \cite zhao_and_carr_1997)
@@ -416,7 +432,7 @@
       enddo                                    ! end of k-loop!
 !
 !*********************************************************************
-!****************end of the condensation/evaporation loop*************
+!> -# End of the condensation/evaporation loop (end of i-loop,k-loop)
 !*********************************************************************
 !
 !> -# Store \f$t\f$, \f$q\f$, \f$ps\f$ for next time step.
