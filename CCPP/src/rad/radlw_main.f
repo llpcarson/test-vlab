@@ -1,6 +1,6 @@
 !>  \file radlw_main.f
-!!  This file contains NCEP's modifications of the rrtm-lw radiation
-!!  code from AER inc.
+!!  This file contains NCEP's modifications of the rrtmg-lw radiation
+!!  code from AER.
 
 !!!!!  ==============================================================  !!!!!
 !!!!!               lw-rrtm3 radiation package description             !!!!!
@@ -236,8 +236,8 @@
 
 !> \defgroup module_radlw_main module_radlw_main
 !! \ingroup rad
-!! This module includes NCEP's modifications of the rrtm-lw radiation
-!! code from AER inc.
+!! This module includes NCEP's modifications of the rrtmg-lw radiation
+!! code from AER.
 !!
 !! The RRTM-LW package includes three files:
 !! - radlw_param.f, which contains:

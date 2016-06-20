@@ -1,6 +1,6 @@
 !>  \file radsw_main.f
-!!  This file contains NCEP's modifications of the rrtm-sw radiation
-!!  code from AER inc.
+!!  This file contains NCEP's modifications of the rrtmg-sw radiation
+!!  code from AER.
 
 !  ==============================================================  !!!!!
 !             sw-rrtm3 radiation package description              !!!!!
@@ -261,8 +261,8 @@
 
 !> \ingroup rad
 !! \defgroup module_radsw_main module_radsw_main
-!! This module includes NCEP's modifications of the rrtm-sw radiation
-!! code from AER inc.
+!! This module includes NCEP's modifications of the rrtmg-sw radiation
+!! code from AER.
 !!
 !! The RRTM-SW package includes three files:
 !! - radsw_param.f, which contains:

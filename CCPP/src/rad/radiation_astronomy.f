@@ -1,5 +1,5 @@
 !>  \file radiation_astronomy.f
-!!  This file sets up astronomy quantities for solar radiation calculations
+!!  This file sets up astronomical quantities for solar radiation calculations
 
 !  ==========================================================  !!!!!
 !          'module_radiation_astronomy'  description           !!!!!
@@ -75,7 +75,7 @@
 !> \ingroup rad
 !! \defgroup module_radiation_astronomy module_radiation_astronomy
 !! @{
-!> This module sets up astronomy quantities for solar radiation calculations.
+!> This module sets up astronomical quantities for solar radiation calculations.
 !! \version NCEP-Radiation_astronomy v5.2  Jan 2013
 !========================================!
       module module_radiation_astronomy  !
