@@ -271,7 +271,7 @@
 !!\f[
 !!           E_{c}=\frac{q_{0}-q}{\triangle t}
 !!\f]
-!!\n  Using \f$q_{0}=f_{0}q_{s}\f$ and the equation \f$q=fq_{s}\f$,\f$E_{c}\f$ then becomes
+!!\n  Using \f$q_{0}=uq_{s}\f$ and the equation \f$q=fq_{s}\f$,\f$E_{c}\f$ then becomes
 !!\f[
 !!  E_{c}=\frac{q_{s}}{\triangle t}(u-f)
 !!\f]
