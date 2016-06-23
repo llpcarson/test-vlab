@@ -114,7 +114,6 @@
 !!!!!  ==========================================================  !!!!!
 
 
-
 !> \ingroup rad
 !! \defgroup module_radiation_aerosols module_radiation_aerosols
 !> @{
@@ -158,7 +157,8 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                       &
+!> version tag
+      character(40), parameter ::
      &   VTAGAER='NCEP-Radiation_aerosols  v5.2  Jan 2013 '
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.1  Nov 2012 '
 !    &   VTAGAER='NCEP-Radiation_aerosols  v5.0  Aug 2012 '
@@ -178,18 +178,18 @@
       real (kind=kind_phys), parameter :: f_zero = 0.0
       real (kind=kind_phys), parameter :: f_one  = 1.0
 
-!  ---  module control parameters set in subroutine "aer_init"
-!> number of actual bands for sw aerosols; calculated according to laswflg setting
-      integer, save :: NSWBND  = NBDSW       
-!> number of actual bands for lw aerosols; calculated according to lalwflg and lalw1bd settings
-      integer, save :: NLWBND  = NBDLW       
-!> total number of bands for sw+lw aerosols
-      integer, save :: NSWLWBD = NBDSW+NBDLW 
+! module control parameters set in subroutine "aer_init"
 
-! --------------------------------------------------------------------- !
-!   section-1 : module variables for spectral band interpolation        !
-!               similar to gfdl-sw treatment (2000 version)             !
-! --------------------------------------------------------------------- !
+!> number of actual bands for SW aerosols. calculated according to laswflg setting
+      integer, save :: NSWBND  = NBDSW
+
+!> number of actual bands for LW aerosols. calculated according to lalwflg and lalw1bd settings
+      integer, save :: NLWBND  = NBDLW
+
+!> total number of bands for SW+LW aerosols
+      integer, save :: NSWLWBD = NBDSW+NBDLW
+
+! section-1 : module variables for spectral band interpolation similar to gfdl-sw treatment (2000 version)
 
 !  ---  parameter constants:
 !> num of wvnum regions where solar flux is constant
@@ -253,10 +253,12 @@
      &     6.52736E-3, 4.99410E-3, 4.39350E-3, 2.21676E-3, 1.33812E-3,  &
      &     1.12320E-3, 5.59000E-4, 3.60000E-4, 2.98080E-4, 7.46294E-5  /
 
+
 ! --------------------------------------------------------------------- !
 !   section-2 : module variables for stratospheric volcanic aerosols    !
 !               from historical data (sato et al. 1993)                 !
 ! --------------------------------------------------------------------- !
+! section-2 : module variables for stratospheric volcanic aerosols from historical data (sato et al.1993)
 
 !  ---  parameter constants:
 !> lower limit (year) data available
@@ -281,6 +283,7 @@
 !   section-3 : module variables for opac climatological aerosols       !
 !               optical properties (hess et al. 1989)                   !
 ! --------------------------------------------------------------------- !
+! section-3 : module variables for opac climatological aerosols optical properties (hess et al. 1989)
 
 !  ---  parameters and constants:
 !> num of max componets in a profile
@@ -302,7 +305,6 @@
 !> num of rh dependent aeros species
       integer, parameter :: NCM2 = 4
       integer, parameter :: NCM  = NCM1+NCM2
-
 !> predefined rh levels
       real (kind=kind_phys), dimension(NRHLEV), save :: rhlev
       data  rhlev (:) / 0.0, 0.5, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99 /
@@ -341,12 +343,35 @@
 !   - for stratospheric aerosols optical properties:
 !      extstra(NSWLWBD)            - extinction coefficient for sw+lw band
 
-      real (kind=kind_phys), allocatable, save, dimension(:,:)   ::     &
-     &       extrhi, scarhi, ssarhi, asyrhi
-      real (kind=kind_phys), allocatable, save, dimension(:,:,:) ::     &
-     &       extrhd, scarhd, ssarhd, asyrhd
-      real (kind=kind_phys), allocatable, save, dimension(:)     ::     &
-     &       extstra
+!> \name  relative humidity independent aerosol optical properties
+!! \todo comments on extrhi,scarhi, ssarhi,asyrhi
+
+!> extinction coefficient for SW+LW spectral band
+     real (kind=kind_phys), allocatable, save :: extrhi(:,:)
+!> scattering coefficient for sw+lw spectral band
+     real (kind=kind_phys), allocatable, save, dimension(:,:) :: scarhi
+!> single scattering albedo for sw+lw spectral band
+     real (kind=kind_phys), allocatable, save, dimension(:,:) :: ssarhi
+!> asymmetry parameter for sw+lw spectral band
+     real (kind=kind_phys), allocatable, save, dimension(:,:) :: asyrhi
+
+! > \name relative humidity dependent aerosol optical properties
+!! \todo comment on extrhd, scarhd, ssarhd, asyrhd
+
+!> extinction coefficient for sw+lw band
+     real (kind=kind_phys),allocatable, save, dimension(:,:,:) ::extrhd
+!> scattering coefficient for sw+lw band
+     real (kind=kind_phys),allocatable, save, dimension(:,:,:) :: scarhd
+!> single scattering albedo for sw+lw band
+     real (kind=kind_phys),allocatable, save, dimension(:,:,:) :: ssarhd
+!> asymmetry paramter for sw+lw band
+     real (kind=kind_phys),allocatable, save, dimension(:,:,:) :: asyrhd
+
+!>\name stratospheric aerosols optical properties
+!!\todo comment on extstra
+
+!> extinction coefficient for sw+lw band
+     real (kind=kind_phys),allocatable, save, dimension(:)  :: extstra
 
 !  ---  the following arrays are calculated in subr 'clim_aerinit'
 !   - for topospheric aerosol profile distibution:
@@ -366,9 +391,8 @@
 !> aeros profile index
       integer,               dimension(    IMXAE,JMXAE), save :: kprfg
 
-! --------------------------------------------------------------------- !
-!   section-4 : module variables for gocart aerosol optical properties  !
-! --------------------------------------------------------------------- !
+
+! section-4: module variables for gocart aerosol optical properties
 
 !> \name module variables for gocart aerosol optical properties
 
@@ -483,9 +507,6 @@
 ! section-5 : module variables for gocart aerosol clim data set
 !> \name module variables for gocart aerosol clim data set
 
-! --------------------------------------------------------------------- !
-!   section-5 : module variables for gocart aerosol climo data set      !
-! --------------------------------------------------------------------- !
 !     This version only supports geos3-gocart data set (Jan 2010)
 !     Modified to support geos4-gocart data set        (May 2010)
 !
@@ -500,14 +521,14 @@
 !      aerosol units (mass concentration for geos3/mixing ratio for geos4)
 
 !> num of lon-points in geos dataset
-      integer, parameter :: IMXG = 144 
+      integer, parameter :: IMXG = 144 ! num of lon-points in geos dataset
 !> num of lat-points in geos dataset
-      integer, parameter :: JMXG = 91 
+      integer, parameter :: JMXG = 91  ! num of lat-points in geos dataset
 !> num of vertical layers in geos dataset
-      integer, parameter :: KMXG = 30  
-!*    integer, parameter :: NMXG = 12 
+      integer, parameter :: KMXG = 30  ! num of vertical layers in geos dataset
+!*    integer, parameter :: NMXG = 12  ! num of gocart aer spec for opt calc
 !> to be determined by set_aerspc
-      integer, save      :: NMXG    
+      integer, save      :: NMXG       ! to be determined by set_aerspc
 
       real (kind=kind_phys), parameter :: dltx = 360.0 / float(IMXG)
       real (kind=kind_phys), parameter :: dlty = 180.0 / float(JMXG-1)
@@ -539,28 +560,33 @@
 !> molecular wght of gocart aerosol species
       real (kind=kind_io4), allocatable :: molwgt(:)
 
+
 ! ---------------------------------------------------------------------
 ! !
 !   section-6 : module variables for gocart aerosol scheme options
 !   !
 ! ---------------------------------------------------------------------
 
+!  ---  logical parameter for gocart initialization control
 !> logical parameter for gocart initialization control
       logical, save :: lgrtint = .true.
 
+!  ---  logical parameter for gocart debug print control
 !> logical parameter for gocart debug print control
 !     logical, save :: lckprnt = .true.
       logical, save :: lckprnt = .false.
 
 !  --- the following index/flag/weight are set up in 'set_aerspc'
 
+!   - merging coefficients for fcst/clim; determined from fdaer
 !> merging coefficients for fcst/clim; determined from fdaer
       real (kind=kind_phys), save :: ctaer = f_zero   ! user specified wgt
 
+!   - option to get fcst or clim gocart aerosol fields
 !> option to get fcst gocart aerosol field
-      logical, save :: get_fcst = .true.   
+      logical, save :: get_fcst = .true.    ! option to get fcst field
 !> option to get clim gocart aerosol field
-      logical, save :: get_clim = .true.  
+      logical, save :: get_clim = .true.    ! option to get clim field
 
 !  ------  gocart aerosol specification    ------
 !  =>  transported aerosol species:
@@ -580,6 +606,8 @@
 !      OC (waso) and BC (soot)
 !
 
+!   - index for rh dependent aerosol optical properties (2nd
+!     dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
 !> index for rh dependent aerosol optical properties (2nd dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
       integer, save :: isoot, iwaso, isuso, issam, isscm
 
@@ -622,9 +650,9 @@
 
 !   - grid components to be included in the aeropt calculations
 !> number of aerosol grid components
-      integer, save                  :: num_gridcomp = 0 
+      integer, save                  :: num_gridcomp = 0  ! number of aerosol grid components
 !> aerosol grid components
-      character, allocatable , save  :: gridcomp(:)*2   
+      character, allocatable , save  :: gridcomp(:)*2     ! aerosol grid components
 
 !  --- default full-package setting
 !> default full-package setting
@@ -666,12 +694,30 @@
       contains
 ! =================
 
-!> The initialization program is to set up necessary parameters and working arrays.
+!>\defgroup aer_init aer_init
+!! The initialization program to set up necessary parameters and working arrays
 !!
-!>\param NLAY    number of model vertical layers (not used)
-!>\param me      print message control flag
-!>\section gen_al General Algorithm
-!! @{
+!> \n External module variables:
+!! - physparam::iaermdl : tropospheric aerosol model scheme flag. =0 opac-clim; =1 gocart-clim; =2 gocart-prognostic
+!! - physparam::lalwflg : logical lw aerosol effect control flag. =t compute lw aerosol optical property
+!! - physparam::laswflg : logical sw aerosols effect control flag. =t compute sw aerosol optical property
+!! - physparam::lavoflg : logical stratosphere volcanic aerosol control flag. =t include volcanic aerosol effect
+!! - physparam::lalw1bd : logical lw aerosol property 1 band vs multi-band control flag. =t use 1 broad band optical property; =f use multi bands optical property
+!!
+!> \n Subprograms called:
+!! - clim_aerinit(): the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
+!!\n   --  set_aercoef(): the initialization program for climatological aerosols. The program reads and maps the pre-tabulated aerosol optical
+!! spectral data onto corresponding sw radiation spectral bands.
+!!\n   --  optavg(): computes mean aerosols optical properties over each sw radiation spectral band for each of the species components.
+!! This program follows gfdl's approach for thick cloud optical property in sw radiation scheme.
+!! - wrt_aerlog(): writes aerosol parameter configuration to run log file.
+!! - set_volcaer(): the initialization program for stratospheric volcanic aerosols.
+!! - set_spectrum(): defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the one
+!! wavenumber ir fluxes based on black-body emission distribution at a predefined temperature.
+!!
+!>\param[in] NLAY    integer, number of model vertical layers (not used)
+!>\param[in] me      integer, print message control flag
+!>\param[in] NONE
 !-----------------------------------
       subroutine aer_init
      &     ( NLAY, me ) !  ---  inputs
@@ -732,7 +778,6 @@
       kmonsav = 1
 
 !  --- ...  write aerosol parameter configuration to output logs
-!> -# Call wrt_aerlog() to write aerosol parameter configuration to output logs.
 
       if ( me == 0 ) then
 
@@ -769,14 +814,12 @@
       if ( iaerflg /= 100 ) then
 
 !  --- ...  set up spectral one wavenumber solar/ir fluxes
-!> -# Call set_spectrum() to set up spectral one wavenumber solar/IR fluxes.
 
         call set_spectrum
 !  ---  inputs:   (module constants)
 !  ---  outputs:  (in-scope variables)
 
 !  --- ...  invoke tropospheric aerosol initialization
-!> -# Call clim_aerinit() to invoke tropospheric aerosol initialization.
 
         if ( iaermdl == 0 ) then                    ! opac-climatology scheme
 
@@ -806,7 +849,6 @@
       endif    ! end if_iaerflg_block
 
 !  --- ...  invoke stratosperic volcanic aerosol initialization
-!> -# Call set_volcaer() to invoke stratospheric volcanic aerosol initialization.
 
       if ( lavoflg ) then
 
@@ -821,7 +863,8 @@
       contains
 ! =================
 
-!> This subroutine writes aerosol parameter configuration to run log file.
+!> \ingroup aer_init
+!! This subroutine writes aerosol parameter configuration to run log file.
 !--------------------------------
       subroutine wrt_aerlog
 !................................
@@ -917,9 +960,9 @@
       end subroutine wrt_aerlog
 !--------------------------------
 
-!> This subroutine defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the
+!> \ingroup aer_init
+!! This subroutine defines the one wavenumber solar fluxes based on toa solar spectral distribution, and define the
 !! one wavenumber IR fluxes based on black-body emission distribution at a predefined temperature.
-!>\section gel_set_spec General Algorithm
 !--------------------------------
       subroutine set_spectrum
 !................................
@@ -936,13 +979,13 @@
 !                                                                      !
 !  ====================  defination of variables  ===================  !
 !                                                                      !
-!> -  inputs:  (module constants)                                 
-!!  -   NWVTOT:  total num of wave numbers used in sw spectrum   
-!!  -   NWVTIR:  total num of wave numbers used in the ir region 
-!!                                                                      
-!> -  outputs: (in-scope variables)                                       
-!!  -   solfwv(NWVTOT):   solar flux for each individual wavenumber (\f$W/m^2\f$)
-!!  -   eirfwv(NWVTIR):   ir flux(273k) for each individual wavenum (\f$W/m^2\f$)
+!  inputs:  (module constants)                                         !
+!   NWVTOT           - total num of wave numbers used in sw spectrum   !
+!   NWVTIR           - total num of wave numbers used in the ir region !
+!                                                                      !
+!  outputs: (in-scope variables)                                       !
+!   solfwv(NWVTOT)   - solar flux for each individual wavenumber (w/m2)!
+!   eirfwv(NWVTIR)   - ir flux(273k) for each individual wavenum (w/m2)!
 !                                                                      !
 !  subroutines called: none                                            !
 !                                                                      !
@@ -995,10 +1038,9 @@
 !  --- ...  define the one wavenumber ir fluxes based on black-body
 !           emission distribution at a predefined temperature
 
-      tmp1 = (con_pi + con_pi) * con_plnk * con_c* con_c
+      tmp1 = 2.0 * con_pi * con_plnk * (con_c**2)
       tmp2 = con_plnk * con_c / (con_boltz * con_t0c)
 
-!$omp parallel do private(nw,tmp3)
       do nw = 1, NWVTIR
         tmp3 = 100.0 * nw
         eirfwv(nw) = (tmp1 * tmp3**3) / (exp(tmp2*tmp3) - 1.0)
@@ -1009,8 +1051,8 @@
       end subroutine set_spectrum
 !--------------------------------
 
-
-!> The initialization program for stratospheric volcanic aerosols.
+!> \ingroup aer_init
+!! The initialization program for stratospheric volcanic aerosols.
 !-----------------------------
       subroutine set_volcaer
 !.............................
@@ -1053,13 +1095,15 @@
 !...................................
       end subroutine aer_init
 !-----------------------------------
-!!@}
 
-
-!> This subroutine is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
-!>\param solfwv     (NWVTOT), solar flux for each individual wavenumber \f$(w/m^2)\f$
-!!\param eirfwv     (NWVTIR), IR flux(273k) for each individual wavenum \f$(w/m^2)\f$
-!!\param me         print message control flag
+!> \ingroup aer_init
+!! This subroutine is the opac-climatology aerosol initialization program to set up necessary parameters and working arrays.
+!!\n subprograms called:
+!! - set_aercoef()
+!! - optavg()
+!!\param[in] solfwv     real, (NWVTOT), solar flux for each individual wavenumber \f$(w/m^2)\f$
+!!\param[in] eirfwv     real, (NWVTIR), IR flux(273k) for each individual wavenum \f$(w/m^2)\f$
+!!\param[in] me         integer, 1, print message control flag
 !!
 !!\section gen_clim_aerinit General Algorithm
 !!@{
@@ -1138,8 +1182,7 @@
 !===>  ...  begin here
 !
 !  --- ...  invoke tropospheric aerosol initialization
-
-!> - call set_aeroef() to invoke tropospheric aerosol initialization
+!> -# call set_aeroef() to invoke tropospheric aerosol initialization
       call set_aercoef
 !  ---  inputs:   (in-scope variables, module constants)
 !  ---  outputs:  (module variables)
@@ -1149,10 +1192,11 @@
       contains
 ! =================
 
+!> \ingroup clim_aerinit
 !> The initialization program for climatological aerosols. The program reads and
 !! maps the pre-tabulated aerosol optical spectral data onto corresponding SW
 !!radiation spectral bands.
-!!\section det_set_aercoef General Algorithm
+!!\section det_set_aercoef Detailed Algorithm
 !! @{
 !--------------------------------
       subroutine set_aercoef
@@ -1246,14 +1290,15 @@
 !
 !===>  ...  begin here
 !
-!> -# Reading climatological aerosols optical data from aeros_file, including:
+!  --- ...  reading climatological aerosols data
+!> - reading climatological aerosols data
 
       inquire (file=aeros_file, exist=file_exist)
 
       if ( file_exist ) then
         close (NIAERCM)
         open  (unit=NIAERCM,file=aeros_file,status='OLD',               &
-     &        action='read',form='FORMATTED')
+     &        form='FORMATTED')
         rewind (NIAERCM)
       else
         print *,'    Requested aerosol data file "',aeros_file,         &
@@ -1262,7 +1307,8 @@
         stop
       endif     ! end if_file_exist_block
 
-! - Skip monthly global distribution
+!  --- ...  skip monthly global distribution
+!> - skip monthly global distribution
 
       do m = 1, 12
         read (NIAERCM,12) cline
@@ -1289,86 +1335,68 @@
         allocate ( extstra(            NSWLWBD) )
       endif
 
-!>  - ending wave num for 61 aerosol spectral bands
       read(NIAERCM,21) cline   ! ending wave num for 61 aeros spectral bands
   21  format(a80)
       read(NIAERCM,22) iendwv(:)
   22  format(13i6)
 
-!>  - atmos scale height for 5 domains, 7 profs
       read(NIAERCM,21) cline   ! atmos scale height for 5 domains, 7 profs
       read(NIAERCM,24) haer(:,:)
   24  format(20f4.1)
 
-!>  - reference pressure for 5 domains, 7 profs
       read(NIAERCM,21) cline   ! reference pressure for 5 domains, 7 profs
       read(NIAERCM,26) prsref(:,:)
   26  format(10f7.2)
 
-!>  - rh independent ext coef for 61 bands, 6 species
       read(NIAERCM,21) cline   ! rh indep ext coef for 61 bands, 6 species
       read(NIAERCM,28) rhidext0(:,:)
   28  format(8e10.3)
 
-!>  - rh independent sca coef for 61 bands, 6 species
       read(NIAERCM,21) cline   ! rh indep sca coef for 61 bands, 6 species
       read(NIAERCM,28) rhidsca0(:,:)
 
-!>  - rh independent ssa coef for 61 bands, 6 species
       read(NIAERCM,21) cline   ! rh indep ssa coef for 61 bands, 6 species
       read(NIAERCM,28) rhidssa0(:,:)
 
-!>  - rh independent asy coef for 61 bands, 6 species
       read(NIAERCM,21) cline   ! rh indep asy coef for 61 bands, 6 species
       read(NIAERCM,28) rhidasy0(:,:)
 
-!>  - rh dependent ext coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,21) cline   ! rh dep ext coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpext0(:,:,:)
 
-!>  - rh dependent sca coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,21) cline   ! rh dep sca coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpsca0(:,:,:)
 
-!>  - rh dependent ssa coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,21) cline   ! rh dep ssa coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpssa0(:,:,:)
 
-!>  - rh dependent asy coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,21) cline   ! rh dep asy coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpasy0(:,:,:)
 
-!>  - stratospheric background aeros for 61 bands
       read(NIAERCM,21) cline   ! stratospheric background aeros for 61 bands
       read(NIAERCM,28) straext0(:)
 
       close (NIAERCM)
 
-!> -# Convert pressure reference level (in mb) to sigma reference level
-!!    assume an 1000mb reference surface pressure.
+!  --- ...  convert pressure reference level (in mb) to sigma reference level
+!           assume an 1000mb reference surface pressure
 
       sigref(:,:) = 0.001 * prsref(:,:)
 
-!> -# Compute solar flux weights and interval indices for mapping
-!!    spectral bands between SW radiation and aerosol data.
+!  --- ...  compute solar flux weights and interval indices for mapping
+!           spectral bands between sw radiation and aerosol data
 
       if ( laswflg ) then
         solbnd (:)   = f_zero
-!$omp parallel do private(i,j)
-        do j=1,naerbnd
-          do i=1,nswbnd
-            solwaer(i,j) = f_zero
-          enddo
-        enddo
+        solwaer(:,:) = f_zero
 
-!$omp parallel do private(ib,mb,ii,iw1,iw2,iw,nv_aod,sumsol)
         do ib = 1, NSWBND
           mb = ib + NSWSTR - 1
           ii = 1
           iw1 = nint(wvnsw1(mb))
           iw2 = nint(wvnsw2(mb))
 
-          if ( wvnsw2(mb) >= wvn550 .and. wvn550 >= wvnsw1(mb) ) then
+          if ( wvnsw2(mb)>=wvn550 .and. wvn550>=wvnsw1(mb) ) then
             nv_aod = ib                  ! sw band number covering 550nm wavelenth
           endif
 
@@ -1382,7 +1410,7 @@
 
           do iw = iw1, iw2
             solbnd(ib) = solbnd(ib) + solfwv(iw)
-            sumsol     = sumsol     + solfwv(iw)
+            sumsol = sumsol + solfwv(iw)
 
             if ( iw == iendwv(ii) ) then
               solwaer(ib,ii) = sumsol
@@ -1403,19 +1431,13 @@
         enddo     ! end do_ib_block for sw
       endif    ! end if_laswflg_block
 
-!> -# Compute LW flux weights and interval indices for mapping
-!!    spectral bands between lw radiation and aerosol data.
+!  --- ...  compute lw flux weights and interval indices for mapping
+!           spectral bands between lw radiation and aerosol data
 
       if ( lalwflg ) then
         eirbnd (:)   = f_zero
-!$omp parallel do private(i,j)
-        do j=1,naerbnd
-          do i=1,nlwbnd
-            eirwaer(i,j) = f_zero
-          enddo
-        enddo
+        eirwaer(:,:) = f_zero
 
-!$omp parallel do private(ib,ii,iw1,iw2,iw,mb,sumir)
         do ib = 1, NLWBND
           ii = 1
           if ( NLWBND == 1 ) then
@@ -1459,7 +1481,6 @@
       endif    ! end if_lalwflg_block
 
 !  ---  compute spectral band mean properties for each species
-!> -# Call optavg() to compute spectral band mean properties for each species.
 
       call optavg
 !  ---  inputs:  (in-scope variables, module variables)
@@ -1514,7 +1535,8 @@
 !--------------------------------
 !! @}
 
-!> This subroutine computes mean aerosols optical properties over each SW radiation spectral band
+!>\ingroup clim_aerinit
+!! compute mean aerosols optical properties over each SW radiation spectral band
 !! for each of the species components. This program follows GFDL's approach for
 !! thick cloud optical property in SW radiation scheme (2000).
 !--------------------------------
@@ -1573,14 +1595,12 @@
 
       if ( laswflg ) then
 
-!$omp parallel do private(nb,nc,sumk,sums,sumok,sumokg,sumreft)
-!$omp+private(ni,nh,sp,reft,refb,rsolbd)
         do nb = 1, NSWBND
           rsolbd = f_one / solbnd(nb)
 
 !  ---  for rh independent aerosol species
 
-          do nc = 1, NCM1        !  ---  for rh independent aerosol species
+          do nc = 1, NCM1
             sumk    = f_zero
             sums    = f_zero
             sumok   = f_zero
@@ -1610,8 +1630,9 @@
      &         / ( (f_one+refb)**2 - asyrhi(nc,nb)*(f_one-refb)**2 )
           enddo   ! end do_nc_block for rh-ind aeros
 
+!  ---  for rh dependent aerosols species
 
-          do nc = 1, NCM2        !  ---  for rh dependent aerosols species
+          do nc = 1, NCM2
             do nh = 1, NRHLEV
               sumk    = f_zero
               sums    = f_zero
@@ -1672,14 +1693,14 @@
 
       if ( lalwflg ) then
 
-!$omp parallel do private(nb,ib,nc,rirbd,sumk,sums,sumok,sumokg,sumreft)
-!$omp+private(ni,nh,sp,reft,refb,rsolbd)
         do nb = 1, NLWBND
 
           ib = NSWBND + nb
           rirbd = f_one / eirbnd(nb)
 
-          do nc = 1, NCM1        !  ---  for rh independent aerosol species
+!  ---  for rh independent aerosol species
+
+          do nc = 1, NCM1
             sumk    = f_zero
             sums    = f_zero
             sumok   = f_zero
@@ -1709,7 +1730,9 @@
      &         / ( (f_one+refb)**2 - asyrhi(nc,ib)*(f_one-refb)**2 )
           enddo   ! end do_nc_block for rh-ind aeros
 
-          do nc = 1, NCM2        !  ---  for rh dependent aerosols species
+!  ---  for rh dependent aerosols species
+
+          do nc = 1, NCM2
             do nh = 1, NRHLEV
               sumk    = f_zero
               sums    = f_zero
@@ -1776,14 +1799,24 @@
 !-----------------------------------
 !!@}
 
-
-!> This subroutine checks and updates time varying climatology aerosol data sets.
+!> \defgroup aer_update aer_update
+!! This subroutine checks and updates time varying climatology aerosol data sets.
 !!
-!>\param iyear    4-digit calender year
-!!\param imon     month of the year
-!!\param me       print message control flag
-!>\section gen_aer_upd General Algorithm
-!! @{
+!>\n External module variables:
+!! - physparam::lalwflg - control flag for tropospheric lw aerosol
+!! - physparam::laswflg - control flag for tropospheric sw aerosol
+!! - physparam::lavoflg - control flag for stratospheric volcanic aerosol
+!!
+!>\n Subprograms called:
+!! - trop_update(): updates the monthly global distribution of aerosol profiles in
+!! five degree horizontal resolution.
+!! - volc_update(): searches historical volcanic data sets to find and read in monthly
+!! 45-degree lat-zone band data of optical depth
+!!
+!>\param[in] iyear    integer, 1, 4-digit calender year
+!>\param[in] imon     integer, 1, month of the year
+!>\param[in] me       integer, 1, print message control flag
+!>\param[out] NONE
 !-----------------------------------
       subroutine aer_update
      &     ( iyear, imon, me ) !  ---  inputs:
@@ -1828,12 +1861,10 @@
         stop
       endif
 
-!> -# Call trop_update() to update monthly tropospheric aerosol data.
       if ( lalwflg .or. laswflg ) then ! update monthly tropspheric aerosol data
         call trop_update
       endif
 
-!> -# Call volc_update() to update yearly stratospheric volcanic aerosol data.
       if ( lavoflg ) then              ! update yearly stratospheric volcanic aerosol data
         call volc_update
       endif
@@ -1843,7 +1874,8 @@
       contains
 ! =================
 
-!> This subroutine updates the monthly global distribution of aerosol profiles in five degree
+!>\ingroup aer_update
+!! update the monthly global distribution of aerosol profiles in five degree
 !! horizontal resolution.
 !--------------------------------
       subroutine trop_update
@@ -1887,9 +1919,9 @@
 !  ---  output: ( none )
 
 !  ---  locals:
-!     real (kind=kind_io8)  :: cmix(NXC), denn, tem
+!     real (kind=kind_io8) :: cmix(NXC), denn, tem
       real (kind=kind_phys) :: cmix(NXC), denn, tem
-      integer               :: idxc(NXC), kprf
+      integer              :: idxc(NXC), kprf
 
       integer :: i, id, j, k, m, nc
       logical :: file_exist
@@ -1905,7 +1937,7 @@
       if ( file_exist ) then
         close(NIAERCM)
         open (unit=NIAERCM,file=aeros_file,status='OLD',                &
-     &        action='read',form='FORMATTED')
+     &        form='FORMATTED')
         rewind (NIAERCM)
 
         if ( me == 0 ) then
@@ -1918,7 +1950,6 @@
         stop
       endif      ! end if_file_exist_block
 
-!$omp parallel do private(i,j,m)
       do j = 1, JMXAE
         do i = 1, IMXAE
           do m = 1, NXC
@@ -1928,11 +1959,11 @@
         enddo
       enddo
 
-!$omp parallel do private(i,j)
       do j = 1, JMXAE
         do i = 1, IMXAE
-          denng(1,i,j) = f_zero
-          denng(2,i,j) = f_zero
+          do m = 1, 2
+            denng(m,i,j) = f_zero
+          enddo
         enddo
       enddo
 
@@ -1947,36 +1978,35 @@
 !         if ( me == 0 ) print *,'  *** Skipped ',cline
 
           do j = 1, JMXAE
-            do i = 1, IMXAE
-              read(NIAERCM,*) id
-            enddo
+          do i = 1, IMXAE
+            read(NIAERCM,*) id
+          enddo
           enddo
         else
           if ( me == 0 ) print *,'  --- Reading ',cline
 
           do j = 1, JMXAE
-            do i = 1, IMXAE
-              read(NIAERCM,14) (idxc(k),cmix(k),k=1,NXC),kprf,denn,nc,  &
-     &                         ctyp
-  14          format(5(i2,e11.4),i2,f8.2,i3,1x,a3)
+          do i = 1, IMXAE
+            read(NIAERCM,14) (idxc(k),cmix(k),k=1,NXC),kprf,denn,nc,ctyp
+  14        format(5(i2,e11.4),i2,f8.2,i3,1x,a3)
 
-              kprfg(i,j)     = kprf
-              denng(1,i,j)   = denn       ! num density of 1st layer
-              if ( kprf >= 6 ) then
-                denng(2,i,j) = cmix(NXC)  ! num density of 2dn layer
-              else
-                denng(2,i,j) = f_zero
-              endif
+            kprfg(i,j)     = kprf
+            denng(1,i,j)   = denn       ! num density of 1st layer
+            if ( kprf >= 6 ) then
+              denng(2,i,j) = cmix(NXC)  ! num density of 2dn layer
+            else
+              denng(2,i,j) = f_zero
+            endif
 
-              tem = f_one
-              do k = 1, NXC-1
-                idxcg(k,i,j) = idxc(k)    ! component index
-                cmixg(k,i,j) = cmix(k)    ! component mixing ratio
-                tem          = tem - cmix(k)
-              enddo
-              idxcg(NXC,i,j) = idxc(NXC)
-              cmixg(NXC,i,j) = tem        ! to make sure all add to 1.
+            tem = f_one
+            do k = 1, NXC-1
+              idxcg(k,i,j) = idxc(k)    ! component index
+              cmixg(k,i,j) = cmix(k)    ! component mixing ratio
+              tem          = tem - cmix(k)
             enddo
+            idxcg(NXC,i,j) = idxc(NXC)
+            cmixg(NXC,i,j) = tem        ! to make sure all add to 1.
+          enddo
           enddo
 
           close (NIAERCM)
@@ -2003,8 +2033,8 @@
       end subroutine trop_update
 !--------------------------------
 
-
-!> This subroutine searches historical volcanic data sets to find and read in monthly 45-degree lat-zone
+!>\ingroup aer_update
+!> searches historical volcanic data sets to find and read in monthly 45-degree lat-zone
 !! band of optical depth.
 !--------------------------------
       subroutine volc_update
@@ -2086,7 +2116,7 @@
           if ( file_exist ) then
             close(NIAERCM)
             open (unit=NIAERCM,file=volcano_file,status='OLD',          &
-     &            action='read',form='FORMATTED')
+     &            form='FORMATTED')
 
             read(NIAERCM,62) cline
   62        format(a80)
@@ -2131,12 +2161,14 @@
 !...................................
       end subroutine aer_update
 !-----------------------------------
-!! @}
 
-
-
-!> This subroutine computes aerosols optical properties.
-!>\param[in] prsi    (IMAX,NLP1), pressure at interface in mb
+!>\defgroup setaer setaer
+!! This subroutine computes aerosols optical properties.
+!!
+!!\n subprograms called:
+!! - aer_property()
+!!
+!!\param[in] prsi    (IMAX,NLP1), pressure at interface in mb
 !!\param[in] prsl    (IMAX,NLAY), layer mean pressure in mb
 !!\param[in] prslk   (IMAX,NLAY), exner function = \f$(p/p0)^{rocp}\f$
 !!\param[in] tvly    (IMAX,NLAY), layer virtual temperature in K
@@ -2224,7 +2256,7 @@
 !  ---  inputs:
       integer, intent(in) :: IMAX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl,
      &       prslk, tvly, rhlay
       real (kind=kind_phys), dimension(:),   intent(in) :: xlon, xlat,
      &       slmsk
@@ -2234,7 +2266,7 @@
 
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::   
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::
      &       aerosw, aerolw
 
       real (kind=kind_phys), dimension(:,:)    , intent(out) :: aerodp
@@ -2298,7 +2330,8 @@
       laersw = lsswr .and. laswflg
       laerlw = lslwr .and. lalwflg
 
-!> -# Convert lat/lon from radiance to degree.
+!> -# Convert lat/lon from radiance to degree
+!  ---  ...  convert lat/lon from radiance to degree
 
       do i = 1, IMAX
         alon(i) = xlon(i) * rdg
@@ -2307,7 +2340,8 @@
 !       alat(i) = 90.0 - xlat(i)*rdg     ! if xlat in 0 -> pi range
       enddo
 
-!> -# Compute level height and layer thickness.
+!> -# Compute level height and layer thickness
+!  ---  ...  compute level height and layer thickness
 
       if ( laswflg .or. lalwflg ) then
 
@@ -2350,7 +2384,6 @@
           endif  lab_if_flip
 
         enddo  lab_do_IMAX
-
 
 !> -# Calculate sw aerosol optical properties for the corresponding frequency bands
 !!    - if opac aerosol climatology is used, call aer_property(): this subroutine maps the 5 degree global climatological aerosol data
@@ -2717,40 +2750,39 @@
 !-----------------------------------
 !> @}
 
-
+!>\ingroup setaer
 !> This subroutine maps the 5 degree global climatological aerosol data set onto model grids, and
 !! compute aerosol optical properties for SW and LW radiations.
-!!\param prsi           (IMAX,NLP1), pressure at interface in mb
-!!\param prsl           (IMAX,NLAY), layer mean pressure(not used)
-!!\param prslk          (IMAX,NLAY), exner function=\f$(p/p0)^{rocp}\f$   (not used)
-!!\param tvly           (IMAX,NLAY), layer virtual temperature   (not used)
-!!\param rhlay          (IMAX,NLAY), layer mean relative humidity
-!!\param dz             (IMAX,NLAY), layer thickness in m
-!!\param hz             (IMAX,NLP1), level high in m
-!!\param tracer         (IMAX,NLAY,NTRAC), aer tracer concentrations   (not used)
-!!\param alon, alat     (IMAX), longitude and latitude of given points in degree
-!!\param slmsk          (IMAX), sea/land mask (sea:0,land:1,sea-ice:2)
-!!\param laersw,laerlw  logical flag for sw/lw aerosol calculations
-!!\param IMAX           horizontal dimension of arrays
-!!\param NLAY,NLP1      vertical dimensions of arrays
-!!\param NSPC           num of species for optional aod output fields
-!!\param aerosw        (IMAX,NLAY,NBDSW,NF_AESW), aeros opt properties for sw
+!!\param[in] prsi           real, (IMAX,NLP1), pressure at interface in mb
+!!\param[in] prsl           real, (IMAX,NLAY), layer mean pressure(not used)
+!!\param[in] prslk          real, (IMAX,NLAY), exner function=\f$(p/p0)^{rocp}\f$   (not used)
+!!\param[in] tvly           real, (IMAX,NLAY), layer virtual temperature   (not used)
+!!\param[in] rhlay          real, (IMAX,NLAY), layer mean relative humidity
+!!\param[in] dz             real, (IMAX,NLAY), layer thickness in m
+!!\param[in] hz             real, (IMAX,NLP1), level high in m
+!!\param[in] tracer         real, (IMAX,NLAY,NTRAC), aer tracer concentrations   (not used)
+!!\param[in] alon, alat     real, (IMAX), longitude and latitude of given points in degree
+!!\param[in] slmsk          real, (IMAX), sea/land mask (sea:0,land:1,sea-ice:2)
+!!\param[in] laersw,laerlw  logical, 1, logical flag for sw/lw aerosol calculations
+!!\param[in] IMAX           integer, 1, horizontal dimension of arrays
+!!\param[in] NLAY,NLP1      integer, 1, vertical dimensions of arrays
+!!\param[in] NSPC           integer, 1, num of species for optional aod output fields
+!!\param[out] aerosw        real, (IMAX,NLAY,NBDSW,NF_AESW), aeros opt properties for sw
 !!\n                              (:,:,:,1): optical depth
 !!\n                              (:,:,:,2): single scattering albedo
 !!\n                              (:,:,:,3): asymmetry parameter
-!!\param aerolw        (IMAX,NLAY,NBDLW,NF_AELW), aeros opt properties for lw
+!!\param[out] aerolw        real, (IMAX,NLAY,NBDLW,NF_AELW), aeros opt properties for lw
 !!\n                              (:,:,:,1): optical depth
 !!\n                              (:,:,:,2): single scattering albedo
 !!\n                              (:,:,:,3): asymmetry parameter
-!!\param aerodp        (IMAX,NSPC+1), vertically integrated aer-opt-depth
-!!\section gel_aer_pro General Algorithm 
+!!\param[out] aerodp        real, (IMAX,NSPC+1), vertically integrated aer-opt-depth
 !> @{
 !-----------------------------------
-      subroutine aer_property                                           
-     &     ( prsi,prsl,prslk,tvly,rhlay,dz,hz,tracer,                    !  ---  inputs:
-     &       alon,alat,slmsk, laersw,laerlw,                            
-     &       IMAX,NLAY,NLP1,                                           
-     &       aerosw,aerolw,aerodp                                        !  ---  outputs:
+      subroutine aer_property
+     &     ( prsi,prsl,prslk,tvly,rhlay,dz,hz,tracer,                   !  ---  inputs
+     &       alon,alat,slmsk, laersw,laerlw,
+     &       IMAX,NLAY,NLP1,                                            !    &       IMAX,NLAY,NLP1,NSPC,                                       &
+     &       aerosw,aerolw,aerodp                                       !  ---  outputs
      &     )
 
 !  ==================================================================  !
@@ -2819,14 +2851,14 @@
 !     integer, intent(in) :: IMAX, NLAY, NLP1, NSPC
       logical, intent(in) :: laersw, laerlw
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl,  
+      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl,
      &       prslk, tvly, rhlay, dz, hz
-      real (kind=kind_phys), dimension(:),   intent(in) :: alon, alat,  
+      real (kind=kind_phys), dimension(:),   intent(in) :: alon, alat,
      &       slmsk
       real (kind=kind_phys), dimension(:,:,:),intent(in):: tracer
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::         
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::
      &       aerosw, aerolw
       real (kind=kind_phys), dimension(:,:)    , intent(out) :: aerodp
 
@@ -2942,6 +2974,8 @@
         enddo  lab_do_JMXAE
 
 !> -# Determin the type of aerosol profile (kp) and scale hight for domain 1 (h1) to be used at this grid point
+!  ---  determin the type of aerosol profile (kp) and scale hight for domain 1 (h1)
+!       to be used at this grid point
 
         kp = kprfg(kpi,kpj)                     ! nearest typical aeros profile as default
         kpa = max( kprfg(i1,j1),kprfg(i1,j2),kprfg(i2,j1),kprfg(i2,j2) )
@@ -2976,6 +3010,7 @@
         endif
 
 !> -# Compute horizontal bi-linear interpolation weights
+!  ---  compute horizontal bi-linear interpolation weights
 
         w11 = (f_one-wi) * (f_one-wj)
         w12 = (f_one-wi) *       wj
@@ -2991,6 +3026,7 @@
 !       print *,'   kp,kpa,slmsk,h1 =',kp,m1,slmsk(i),h1
 
 !> -# Do horizontal bi-linear interpolation on aerosol partical density (denn)
+!  ---  do horizontal bi-linear interpolation on aerosol partical density (denn)
 
         do m = 1, ii                            ! ii=1 for domain 1; =2 for domain 2.
           denn(m) = w11*denng(m,i1,j1) + w12*denng(m,i1,j2)             &
@@ -2998,6 +3034,7 @@
         enddo  ! end_do_m_loop
 
 !> -# Do horizontal bi-linear interpolation on mixing ratios
+!  ---  do horizontal bi-linear interpolation on mixing ratios
 
         cmix(:) = f_zero
         do m = 1, NXC
@@ -3025,6 +3062,8 @@
 
 !> -# Prepare to setup domain index array and effective layer thickness. also
 !! convert pressure level to sigma level to follow the terrain
+!  ---  prepare to setup domain index array and effective layer thickness
+!       also convert pressure level to sigma level to follow the terrain
 
         do k = 1, NLAY
           rh1(k) = rhlay(i,k)
@@ -3108,8 +3147,10 @@
 !       print *,'  delz :',delz
 !       print *,'  idmaer:',idmaer
 
-!> -# Call radclimaer() to calculate SW/LW aerosol optical properties for the
-!! corresponding frequency bands.
+!> -# Call radclimaer() to calculate sw/lw aerosol optical properties for the
+!! corresponding frequency bands
+!  ---  calculate sw/lw aerosol optical properties for the
+!       corresponding frequency bands
 
         call radclimaer
 !  ---  inputs:  (in-scope variables)
@@ -3474,7 +3515,6 @@
 !...................................
       end subroutine aer_property
 !-----------------------------------
-
 !> @}
 ! =======================================================================
 ! GOCART code modification starts here (Sarah lu)  ---------------------!
@@ -3482,30 +3522,16 @@
 !! gocart_init : set_aerspc, rd_gocart_clim, rd_gocart_luts, optavg_grt
 !! setgocartaer: aeropt_grt, map_aermr
 
-!> The initialization program for gocart aerosols
+!>\defgroup gocart_init gocart_init
+!! The initialization program for gocart aerosols
 !! - determine weight and index for aerosol composition/luts
 !! - read in monthly global distribution of gocart aerosols
 !! - read and map the tabulated aerosol optical spectral data onto corresponding SW/LW radiation spectral bands.
-!!
-!>\param NWVTOT           total num of wave numbers used in sw spectrum   
-!!\param solfwv           (NWVTOT), solar flux for each individual wavenumber (w/m2)
-!!\param soltot           total solar flux for the spectrual range  (w/m2)
-!!\param NWVTIR           total num of wave numbers used in the ir region 
-!!\param eirfwv           (NWVTIR), ir flux(273k) for each individual wavenum (w/m2)
-!!\param NBDSW            num of bands calculated for sw aeros opt prop   
-!!\param NLWBND           num of bands calculated for lw aeros opt prop   
-!!\param NSWLWBD          total num of bands calc for sw+lw aeros opt prop
-!!\param imon             month of the year                               
-!!\param me               print message control flag    
-!!\param raddt
-!!\param fdaer
-!>\section gel_go_ini General Algorithm
-!! @{
 !-----------------------------------
-      subroutine gocart_init                                            
-     &     ( NWVTOT,solfwv,soltot,NWVTIR,eirfwv,                      !  ---  inputs:
-     &       NBDSW,NLWBND,NSWLWBD,imon,me,raddt,fdaer                 !  ---  outputs: ( none )
-     &     )
+      subroutine gocart_init
+     &     ( NWVTOT,solfwv,soltot,NWVTIR,eirfwv,                       !  ---  inputs
+     &       NBDSW,NLWBND,NSWLWBD,imon,me,raddt,fdaer
+     &     )!  ---  outputs: ( none )
 
 !  ==================================================================  !
 !                                                                      !
@@ -3816,7 +3842,8 @@
       contains
 ! =================
 
-!> This subroutine determines merging coefficients ctaer; setup aerosol specification.
+!>\ingroup gocart_init
+!! This subroutine determines merging coefficients ctaer; setup aerosol specification.
 !-----------------------------
       subroutine set_aerspc(raddt,fdaer)
 !.............................
@@ -4115,7 +4142,8 @@
       end subroutine set_aerspc
 
 !-----------------------------------
-!> This subroutine reads input gocart aerosol optical data from Mie code calculations.
+!>\ingroup gocart_init
+!! This subroutine reads input gocart aerosol optical data from Mie code calculations.
 !-----------------------------
       subroutine rd_gocart_luts
 !.............................
@@ -4154,7 +4182,7 @@
       real (kind=kind_io8), Dimension( NP2 ) :: Angle, Cos_Angle,       &
      &                                          Cos_Weight
       real (kind=kind_io8), Dimension(n_p,nAero) :: RH, rm, reff
-      real (kind=kind_io8), Dimension(nWave,n_p,nAero) ::               & 
+      real (kind=kind_io8), Dimension(nWave,n_p,nAero) ::               &
      &                      ext0, sca0, asy0
       real (kind=kind_io8), Dimension(NP2,n_p,nWave,nAero) :: ph0
       real (kind=kind_io8) :: wavelength(nWave), density(nAero),        &
@@ -4200,7 +4228,7 @@
         if(me==0 .and. lckprnt) print *,'RAD -open :',aerosol_file
         close (NIAERCM)
         open (unit=NIAERCM,file=aerosol_file,status='OLD',              &
-     &        action='read',form='UNFORMATTED')
+     &        form='UNFORMATTED')
       else
         print *,'    Requested aerosol data file "',aerosol_file,       &
      &          '" not found!', me
@@ -4288,8 +4316,9 @@
 !...................................
       end subroutine rd_gocart_luts
 !-----------------------------------
-!                                                                      !
-!> This subroutine computes mean aerosols optical properties over each SW/LW radiation
+!
+!> \ingroup gocart_init
+!! This subroutine computes mean aerosols optical properties over each SW/LW radiation
 !! spectral band for each of the species components. This program follows GFDL's approach
 !! for thick cloud optical property in SW radiation scheme (2000)
 !-----------------------------
@@ -4506,7 +4535,8 @@
       end subroutine optavg_grt
 !--------------------------------
 !
-!> This subroutine:
+!>\ingroup gocart_init
+!! This subroutine:
 !! 1. read in aerosol dry mass and surface pressure from GEOS3-GOCART C3.1 2000 monthly dataset
 !!    or aerosol mixing ratio and surface pressure from GEOS4-GOCART 2000-2007 averaged monthly data set.
 !! 2. compute goes lat/lon array (for horizontal mapping)
@@ -4664,7 +4694,7 @@
        if ( gocart_climo == 'ver3' ) then
         nrecl = 4 * (IMXG * JMXG)
         open(NIAERCM, file=trim(aerosol_file),                          &
-     &       action='read',access='direct',recl=nrecl)
+     &       access='direct',recl=nrecl)
         read(NIAERCM, rec=1) ps
         do j = 1, JMXG
           do i = 1, IMXG
@@ -4677,7 +4707,7 @@
 
        elseif ( gocart_climo == 'ver4' ) then
          open(NIAERCM, file=trim(aerosol_file),                         &
-     &        action='read',status='old', form='unformatted')
+     &        status='old', form='unformatted')
          read(NIAERCM) ps(:,:)
          do j = 1, JMXG
            do i = 1, IMXG
@@ -4732,12 +4762,12 @@
           if ( gocart_climo == 'ver3' ) then
           nrecl = 4 * numspci * (IMXG * JMXG * KMXG + 3)
           open (NIAERCM, file=trim(aerosol_file),                       &
-     &         action='read',access='direct', recl=nrecl)
+     &         access='direct', recl=nrecl)
           read(NIAERCM,rec=1)(nt1,nt2,nn(i),buff(:,:,:,i),i=1,numspci)
 
           elseif ( gocart_climo == 'ver4' ) then
            open (NIAERCM, file=trim(aerosol_file),                      &
-     &           action='read',status='old', form='unformatted')
+     &           status='old', form='unformatted')
            do i = 1, numspci
              do k = 1, KMXG
               read(NIAERCM) temp(:,:,k)
@@ -4829,43 +4859,24 @@
 !...................................
       end subroutine gocart_init
 !-----------------------------------
-!! @}
 
-!> This subroutine computes SW + LW aerosol optical properties for gocart aerosol
-!! species (merged from fcst and clim fields).
+!>\ingroup setaer
+!! This subroutine computes SW + LW aerosol optical properties for gocart aerosol
+!!species (merged from fcst and clim fields).
 !!
-!>\param alon      IMAX, longitude of given points in degree
-!!\param alat      IMAX, latitude of given points in degree       
-!!\param prslk     (IMAX,NLAY), pressure in cb  
-!!\param rhlay     (IMAX,NLAY), layer mean relative humidity
-!!\param dz        (IMAX,NLAY), layer thickness in m
-!!\param hz        (IMAX,NLP1), level high in m   
-!!\param NSWLWBD   total number of sw+ir bands for aeros opt prop  
-!!\param prsl      (IMAX,NLAY), layer mean pressure in mb 
-!!\param tvly      (IMAX,NLAY), layer mean virtual temperature in K  
-!!\param trcly     (IMAX,NLAY,NTRAC), layer mean specific tracer in g/g
-!!\param IMAX      horizontal dimension of arrays              
-!!\param NLAY,NLP1 vertical dimensions of arrays                   
-!!\param ivflip    control flag for direction of vertical index  
-!!\n               =0: index from toa to surface                
-!!\n               =1: index from surface to toa               
-!!\param lsswr,lslwr       logical flag for sw/lw radiation calls  
-!!\param aerosw    (IMAX,NLAY,NBDSW,NF_AESW), aeros opt properties for sw  
-!!\n               (:,:,:,1): optical depth                               
-!!\n               (:,:,:,2): single scattering albedo                   
-!!\n               (:,:,:,3): asymmetry parameter                       
-!!\param aerolw    (IMAX,NLAY,NBDLW,NF_AELW), aeros opt properties for lw     
-!!\n               (:,:,:,1): optical depth                               
-!!\n               (:,:,:,2): single scattering albedo                    
-!!\n               (:,:,:,3): asymmetry parameter                
-!>\section gen_setgo General Algorithm
-!!@{
+!!\n subprograms called:
+!! - map_aermr():maps input tracer fields (trcly) to local tracer array (aermr)
+!! - aeropt_grt():computes aerosols optical properties in NSWLWBD SW/LW bands.
+!! Aerosol distribution at each grid point is composed from up to NMXG aerosol
+!! species (from NUM_GRIDCOMP components).
+!!
+!>\param
 !-----------------------------------
-      subroutine setgocartaer                                           
-     &     ( alon,alat,prslk,rhlay,dz,hz,NSWLWBD,                   !  ---  inputs:
-     &       prsl,tvly,trcly,                              
-     &       IMAX,NLAY,NLP1, ivflip, lsswr,lslwr,         
-     &       aerosw,aerolw                                          !  ---  outputs:
+      subroutine setgocartaer
+     &     ( alon,alat,prslk,rhlay,dz,hz,NSWLWBD,                      !  ---  inputs:
+     &       prsl,tvly,trcly,
+     &       IMAX,NLAY,NLP1, ivflip, lsswr,lslwr,
+     &       aerosw,aerolw                                              !  ---  outputs:
      &     )
 
 
@@ -4924,19 +4935,19 @@
       integer, intent(in) :: IMAX,NLAY,NLP1,ivflip,NSWLWBD
       logical, intent(in) :: lsswr, lslwr
 
-      real (kind=kind_phys), dimension(:,:),   intent(in) :: prslk,    
+      real (kind=kind_phys), dimension(:,:),   intent(in) :: prslk,     &
      &       prsl, rhlay, tvly, dz, hz
       real (kind=kind_phys), dimension(:),     intent(in) :: alon, alat
       real (kind=kind_phys), dimension(:,:,:), intent(in) :: trcly
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::       
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::         &
      &       aerosw, aerolw
 
 !  ---  locals:
       real (kind=kind_phys), dimension(NLAY) :: rh1, dz1
       real (kind=kind_phys), dimension(NLAY,NSWLWBD)::tauae,ssaae,asyae
-      real (kind=kind_phys), dimension(NLAY,max_num_gridcomp) ::      
+      real (kind=kind_phys), dimension(NLAY,max_num_gridcomp) ::        &
      &                       tauae_gocart
 
       real (kind=kind_phys) :: tmp1, tmp2
@@ -4947,7 +4958,7 @@
       real (kind=kind_phys), dimension(:,:,:),allocatable:: aermr,dmfcs
 
 ! aerosol (dry mass) on gfs grids/levels
-      real (kind=kind_phys), dimension(:,:), allocatable :: dmanl,dmclm,
+      real (kind=kind_phys), dimension(:,:), allocatable :: dmanl,dmclm, &
      &                                                      dmclmx
       real (kind=kind_phys), dimension(KMXG)     :: pstmp, pkstr
       real (kind=kind_phys) :: ptop, psfc, tem, plv, tv, rho
@@ -4967,8 +4978,8 @@
         allocate ( dmfcs(IMAX,NLAY,NMXG) )
       endif
 !
-!> -# Call map_aermr() to map input tracer array (trcly) to local tracer array (aermr).
-
+! --  map input tracer array (trcly) to local tracer array (aermr)
+!
       dmfcs(:,:,:) = f_zero
       lab_if_fcst : if ( get_fcst ) then
 
@@ -4978,7 +4989,8 @@
 
       endif       lab_if_fcst
 !
-!> -# Map geos-gocart climo (dmclmg) to gfs grids (dmclm).
+! --  map geos-gocart climo (dmclmg) to gfs grids (dmclm)
+!
       lab_do_IMAX : do i = 1, IMAX
 
         dmclm(:,:) = f_zero
@@ -5037,7 +5049,7 @@
           enddo
         endif    lab_if_clim
 !
-! Compute fcst/clim merged aerosol loading (dmanl) and the
+!  ---  compute fcst/clim merged aerosol loading (dmanl) and the
 !       radiation optical properties (aerosw, aerolw)
 !
         do k = 1, NLAY
@@ -5072,8 +5084,8 @@
           enddo
         enddo
 
-!> -# Call aeropt_grt() to alculate sw/lw aerosol optical properties for the
-!!    corresponding frequency bands.
+!  ---  calculate sw/lw aerosol optical properties for the
+!       corresponding frequency bands
 
         call aeropt_grt
 !  ---  inputs:  (in scope variables)
@@ -5220,7 +5232,6 @@
 !...................................
       end subroutine map_aermr
 !-----------------------------------
-
 
 !>\ingroup setaer
 !! This subroutine computes aerosols optical properties in NSWLWBD SW/LW bands.
@@ -5461,7 +5472,6 @@
 !................................
       end subroutine setgocartaer
 !--------------------------------
-!! @}
 !
 ! GOCART code modification end here (Sarah Lu)  ------------------------!
 ! =======================================================================

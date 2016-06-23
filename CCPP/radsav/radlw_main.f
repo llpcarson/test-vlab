@@ -1,6 +1,6 @@
 !>  \file radlw_main.f
-!!  This file contains NCEP's modifications of the rrtmg-lw radiation
-!!  code from AER.
+!!  This file contains NCEP's modifications of the rrtm-lw radiation
+!!  code from AER inc.
 
 !!!!!  ==============================================================  !!!!!
 !!!!!               lw-rrtm3 radiation package description             !!!!!
@@ -236,26 +236,10 @@
 
 !> \defgroup module_radlw_main module_radlw_main
 !! \ingroup rad
-!! This module includes NCEP's modifications of the rrtmg-lw radiation
-!! code from AER.
-!!
-!! The RRTM-LW package includes three files:
-!! - radlw_param.f, which contains:
-!!  - module_radlw_parameters: band parameters set up
-!! - radlw_datatb.f, which contains modules:
-!!  - module_radlw_avplank: plank flux data
-!!  - module_radlw_ref: reference temperature and pressure
-!!  - module_radlw_cldprlw: cloud property coefficients
-!!  - module_radlw_kgbnn: absorption coeffients for 16 bands, where nn = 01-16
-!! - radlw_main.f, which contains:
-!!  - module_radlw_main, which is the main LW radiation transfer program and contains two 
-!! externally callable subroutines:
-!!   - lwrad(): the main LW radiation routine
-!!   - rlwinit(): the initialization routine
-!!
-!! All the LW radiation subprograms become contained subprograms in module
-!! 'module_radlw_main' and many of them are not directly accessable from places
-!! outside the module.
+!! \brief  This module includes NCEP's modifications of the rrtm-lw radiation
+!! code from AER inc.
+!!    + rrtm_lw/rrtmg_lw:  Clough et al., 2005 \cite clough_et_al_2005 
+!!    + mcica:  Pincus et al., 2003 \cite pincus_et_al_2003
 !!
 !!\author   Eli J. Mlawer, emlawer@aer.com 
 !!\author   Jennifer S. Delamere, jdelamer@aer.com                    
@@ -389,13 +373,13 @@
 ! ================
 
 !> This subroutine is the main lw radiation routine.
-!!\param plyr           model layer mean pressure in mb
-!!\param plvl           model interface pressure in mb
-!!\param tlyr           model layer mean temperature in K
-!!\param tlvl           model interface temperature in K
-!!\param qlyr           layer specific humidity in gm/gm   *see inside
-!!\param olyr           layer ozone concentration in gm/gm   *see inside
-!!\param gasvmr         atmospheric gases amount:(check module_radiation_gases for definition)
+!!\param[in] plyr           (npts,nlay),model layer mean pressure in mb
+!!\param[in] plvl           (npts,nlp1),model interface pressure in mb
+!!\param[in] tlyr           (npts,nlay),model layer mean temperature in K
+!!\param[in] tlvl           (npts,nlp1),model interface temperature in K
+!!\param[in] qlyr           (npts,nlay),layer specific humidity in gm/gm   *see inside
+!!\param[in] olyr           (npts,nlay),layer ozone concentration in gm/gm   *see inside
+!!\param[in] gasvmr         (npts,nlay,:),atmospheric gases amount:(check module_radiation_gases for definition)
 !!\n                        (:,:,1)  - co2 volume mixing ratio
 !!\n                        (:,:,2)  - n2o volume mixing ratio
 !!\n                        (:,:,3)  - ch4 volume mixing ratio
@@ -405,7 +389,7 @@
 !!\n                        (:,:,7)  - cfc12 volume mixing ratio
 !!\n                        (:,:,8)  - cfc22 volume mixing ratio
 !!\n                        (:,:,9)  - ccl4  volume mixing ratio
-!!\param clouds         layer cloud profile(check module_radiation_clouds for definition)
+!!\param[in] clouds         (npts,nlay,:),layer cloud profile(check module_radiation_clouds for definition)
 !!\n                ---  for  ilwcliq > 0  ---
 !!\n                        (:,:,1)  - layer total cloud fraction
 !!\n                        (:,:,2)  - layer in-cloud liq water path   (\f$ g/m^2 \f$)
@@ -421,28 +405,29 @@
 !!\n                        (:,:,2)  - layer cloud optical depth
 !!\n                        (:,:,3)  - layer cloud single scattering albedo
 !!\n                        (:,:,4)  - layer cloud asymmetry factor
-!!\param icseed         auxiliary special cloud related array.
-!!\param aerosols       aerosol optical properties (check module_radiation_aerosols for definition)
+!!\param[in] icseed         (npts),auxiliary special cloud related array.when module variable isubclw=2, it provides permutation seed for each column profile that are used for generating random numbers.when isubclw /=2, it will not be used.
+!!\param[in] aerosols       (npts,nlay,nbdsw,:),aerosol optical properties (check module_radiation_aerosols for definition)
 !!\n                        (:,:,:,1) - optical depth
 !!\n                        (:,:,:,2) - single scattering albedo
 !!\n                        (:,:,:,3) - asymmetry parameter
-!!\param sfemis         surface emissivity
-!!\param sfgtmp         surface ground temperature in K
-!!\param npts           total number of horizontal points
-!!\param nlay, nlp1     total number of vertical layers, levels
-!!\param lprnt          cntl flag for diagnostic print out
-!!\param hlwc           total sky heating rate in k/day or k/sec
-!!\param topflx         radiation fluxes at top, components (check module_radlw_parameters for definition)
+!!\param[in] sfemis         (npts),surface emissivity
+!!\param[in] sfgtmp         (npts),surface ground temperature in K
+!!\param[in] npts            total number of horizontal points
+!!\param[in] nlay, nlp1      total number of vertical layers, levels
+!!\param[in] lprnt           cntl flag for diagnostic print out
+!!\param[out] hlwc          (npts,nlay),total sky heating rate in k/day or k/sec
+!!\param[out] topflx         (npts),radiation fluxes at top, components (check module_radlw_parameters for definition)
 !!\n                          upfxc - total sky upward flux at top (\f$ w/m^2 \f$)
 !!\n                          upfx0 - clear sky upward flux at top (\f$ w/m^2 \f$)
-!!\param sfcflx         radiation fluxes at sfc, components (check module_radlw_parameters for definition)
+!!\param[out] sfcflx         (npts),radiation fluxes at sfc, components (check module_radlw_parameters for definition)
 !!\n                          upfxc - total sky upward flux at sfc (\f$ w/m^2 \f$)
 !!\n                          dnfxc - total sky downward flux at sfc (\f$ w/m^2 \f$)
 !!\n                          upfx0 - clear sky upward flux at sfc (\f$ w/m^2 \f$)
 !!\n                          dnfx0 - clear sky downward flux at sfc (\f$ w/m^2 \f$)
-!!\param hlwb           spectral band total sky heating rates
-!!\param hlw0           clear sky heating rates (k/sec or k/day)
-!!\param flxprf         level radiation fluxes (\f$ w/m^2 \f$), components (check module_radlw_parameters for definition)
+!!\n Optional:
+!!\param[out] hlwb           (npts,nlay,nbands),spectral band total sky heating rates
+!!\param[out] hlw0           (npts,nlay),clear sky heating rates (k/sec or k/day)
+!!\param[out] flxprf         (npts,nlp1),level radiation fluxes (\f$ w/m^2 \f$), components (check module_radlw_parameters for definition)
 !!\n                          dnfxc - total sky downward flux
 !!\n                          upfxc - total sky upward flux
 !!\n                          dnfx0 - clear sky downward flux
@@ -1255,7 +1240,29 @@
 !! of the longwave model.  lookup tables are computed for use in the lw
 !! radiative transfer, and input absorption coefficient data for each
 !! spectral band are reduced from 256 g-point intervals to 140.
-!!\param me        print control for parallel process
+!!\param[in] me        integer, print control for parallel process
+!!\param[out] NONE
+!!\section ext_rlwinit External Module Variables
+!!\n physparam::ilwrate - heating rate unit selections
+!!\n                      =1: output in k/day
+!!\n                      =2: output in k/second
+!!\n physparam::ilwrgas - control flag for rare gases (ch4,n2o,o2,cfcs, etc.)
+!!\n                      =0: do not include rare gases
+!!\n                      >0: include all rare gases
+!!\n physparam::ilwcliq - liquid cloud optical properties contrl flag
+!!\n                      =0: input cloud opt depth from diagnostic scheme
+!!\n                      >0: input cwp,rew, and other cloud content parameters
+!!\n physparam::isubclw - sub-column cloud approximation control flag
+!!\n                      =0: no sub-col cld treatment, use grid-mean cld quantities
+!!\n                      =1: mcica sub-col, prescribed seeds to get random numbers
+!!\n                      =2: mcica sub-col, providing array icseed for random numbers
+!!\n physparam::icldflg - cloud scheme control flag
+!!\n                      =0: diagnostic scheme gives cloud tau, omiga, and g.
+!!\n                      =1: prognostic scheme gives cloud liq/ice path, etc.
+!!\n physparam::iovrlw  - clouds vertical overlapping control flag
+!!\n                      =0: random overlapping clouds
+!!\n                      =1: maximum/random overlapping clouds
+!!\n                      =2: maximum overlap cloud (isubcol>0 only)
 !-----------------------------------
       subroutine rlwinit
      &     ( me ) !  ---  inputs
@@ -1454,30 +1461,30 @@
 
 !> This subroutine computes the cloud optical depth(s) for each cloudy layer
 !! and g-point interval.
-!!\param cfrac           (0:nlp1), layer cloud fraction
-!!\n     ---  for  ilwcliq > 0 (prognostic cloud scheme)  - - -
-!!\param cliqp           (nlay), layer in-cloud liq water path (\f$g/m^2\f$)
-!!\param reliq           (nlay), mean eff radius for liq cloud (micron)
-!!\param cicep           (nlay), layer in-cloud ice water path (\f$g/m^2\f$)
-!!\param reice           (nlay), mean eff radius for ice cloud (micron)
-!!\param cdat1           (nlay), layer rain drop water path (\f$g/m^2\f$)
-!!\param cdat2           (nlay), effective radius for rain drop (micron)
-!!\param cdat3           (nlay), layer snow flake water path(\f$g/m^2\f$)
-!!\param cdat4           (nlay), mean eff radius for snow flake(micron)
-!!\n     ---  for ilwcliq = 0  (diagnostic cloud scheme)  - - -
-!!\param cliqp           (nlay), not used
-!!\param cicep           (nlay), not used
-!!\param reliq           (nlay), not used
-!!\param reice           (nlay), not used
-!!\param cdat1           (nlay), layer cloud optical depth
-!!\param cdat2           (nlay), layer cloud single scattering albedo
-!!\param cdat3           (nlay), layer cloud asymmetry factor
-!!\param cdat4           (nlay), optional use
-!!\param nlay            number of layer number
-!!\param nlp1            number of veritcal levels
-!!\param ipseed          permutation seed for generating random numbers (isubclw>0)
-!!\param cldfmc          (ngptlw,nlay), cloud fraction for each sub-column
-!!\param taucld          (nbands,nlay), cloud optical depth for bands (non-mcica)
+!!\param[in] cfrac           real, (0:nlp1), layer cloud fraction
+!!\n        .....  for  ilwcliq > 0 (prognostic cloud scheme)  - - -
+!!\param[in] cliqp           real, (nlay), layer in-cloud liq water path (\f$g/m^2\f$)
+!!\param[in] reliq           real, (nlay), mean eff radius for liq cloud (micron)
+!!\param[in] cicep           real, (nlay), layer in-cloud ice water path (\f$g/m^2\f$)
+!!\param[in] reice           real, (nlay), mean eff radius for ice cloud (micron)
+!!\param[in] cdat1           real, (nlay), layer rain drop water path (\f$g/m^2\f$)
+!!\param[in] cdat2           real, (nlay), effective radius for rain drop (micron)
+!!\param[in] cdat3           real, (nlay), layer snow flake water path(\f$g/m^2\f$)
+!!\param[in] cdat4           real, (nlay), mean eff radius for snow flake(micron)
+!!\n        .....  for ilwcliq = 0  (diagnostic cloud scheme)  - - -
+!!\param[in] cliqp           real, (nlay), not used
+!!\param[in] cicep           real, (nlay), not used
+!!\param[in] reliq           real, (nlay), not used
+!!\param[in] reice           real, (nlay), not used
+!!\param[in] cdat1           real, (nlay), layer cloud optical depth
+!!\param[in] cdat2           real, (nlay), layer cloud single scattering albedo
+!!\param[in] cdat3           real, (nlay), layer cloud asymmetry factor
+!!\param[in] cdat4           real, (nlay), optional use
+!!\param[in] nlay            integer, 1, number of layer number
+!!\param[in] nlp1            integer, 1, number of veritcal levels
+!!\param[in] ipseed          integer, 1, permutation seed for generating random numbers (isubclw>0)
+!!\param[out] cldfmc         real,(ngptlw,nlay), cloud fraction for each sub-column
+!!\param[out] taucld         real,(nbands,nlay), cloud optical depth for bands (non-mcica)
 !!\section gen_cldprop General Algorithm
 !> @{
 ! ----------------------------
@@ -1780,11 +1787,14 @@
 ! ----------------------------------
 !> @}
 
-!> This suroutine computes sub-colum cloud profile flag array.
-!!\param cldf        layer cloud fraction
-!!\param nlay        number of model vertical layers
-!!\param ipseed      permute seed for random num generator
-!!\param lcloudy     sub-colum cloud profile flag array
+!> This suroutine computes sub-colum cloud profile flag array
+!!\param[in] cldf      real, (nlay), layer cloud fraction
+!!\param[in] nlay      integer, 1, number of model vertical layers
+!!\param[in] ipseed    integer, 1, permute seed for random num generator
+!!\param[out] lcloudy     logical, (ngptlw,nlay),sub-colum cloud profile flag array
+!!\section ext_mcica_subcol External Module Variables
+!!\n physparam::iovrlw    - control flag for cloud overlapping method
+!!\n                        =0:random; =1:maximum/random: =2:maximum
 ! ----------------------------------
       subroutine mcica_subcol
      &    ( cldf, nlay, ipseed,                                        !  ---  inputs
@@ -1943,35 +1953,35 @@
 ! ----------------------------------
 
 !> This subroutine computes various coefficients needed in radiative transfer calculations.
-!!\param pavel           layer pressure (mb)
-!!\param tavel           layer temperature (K)
-!!\param tz              level(interface) temperatures (K)
-!!\param stemp           surface ground temperature (K)
-!!\param h2ovmr          layer w.v. volumn mixing ratio (kg/kg)
-!!\param colamt           column amounts of absorbing gases.
+!!\param[in] pavel          real, (nlay), layer pressure (mb)
+!!\param[in] tavel          real, (nlay), layer temperature (K)
+!!\param[in] tz             real, (0:nlay), level(interface) temperatures (K)
+!!\param[in] stemp          real, 1, surface ground temperature (K)
+!!\param[in] h2ovmr         real, (nlay), layer w.v. volumn mixing ratio (kg/kg)
+!!\param[in] colamt         real, (nlay,maxgas), column amounts of absorbing gases.
 !! 2nd indices range: 1-maxgas, for watervapor,carbon dioxide, ozone, nitrous oxide, methane,oxigen, carbon monoxide,etc. \f$(mol/cm^2)\f$
-!!\param coldry          dry air column amount
-!!\param colbrd          column amount of broadening gases
-!!\param nlay            total number of vertical layers
-!!\param nlp1            total number of vertical levels
-!!\param laytrop         tropopause layer index (unitless)
-!!\param pklay           integrated planck func at lay temp
-!!\param pklev           integrated planck func at lev temp
-!!\param jp              indices of lower reference pressure
-!!\param jt, jt1         indices of lower reference temperatures
-!!\param rfrate          ref ratios of binary species param
+!!\param[in] coldry         real, (nlay), dry air column amount
+!!\param[in] colbrd         real, (nlay), column amount of broadening gases
+!!\param[in] nlay           integer, 1, total number of vertical layers
+!!\param[in] nlp1           integer, 1, total number of vertical levels
+!!\param[out] laytrop       integer, 1, tropopause layer index (unitless)
+!!\param[out] pklay         real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[out] pklev         real, (nbands,0:nlay), integrated planck func at lev temp
+!!\param[out] jp            integer, (nlay), indices of lower reference pressure
+!!\param[out] jt, jt1       integer, (nlay), indices of lower reference temperatures
+!!\param[out] rfrate        real, (nlay,nrates,2), ref ratios of binary species param
 !!\n                        (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
 !!\n                        (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
-!!\param facij           factors multiply the reference ks, i,j=0/1 for lower/higher of the 2 appropriate temperatures and altitudes.
-!!\param selffac         scale factor for w. v. self-continuum equals (w. v. density)/(atmospheric density at 296k and 1013 mb)
-!!\param selffrac        factor for temperature interpolation of reference w. v. self-continuum data
-!!\param indself         index of lower ref temp for selffac
-!!\param forfac          scale factor for w. v. foreign-continuum
-!!\param forfrac         factor for temperature interpolation of reference w.v. foreign-continuum data
-!!\param indfor          index of lower ref temp for forfac
-!!\param minorfrac       factor for minor gases
-!!\param scaleminor,scaleminorn2         scale factors for minor gases
-!!\param indminor        index of lower ref temp for minor gases
+!!\param[out] facij         real, (nlay), factors multiply the reference ks, i,j=0/1 for lower/higher of the 2 appropriate temperatures and altitudes.
+!!\param[out] selffac       real, (nlay), scale factor for w. v. self-continuum equals (w. v. density)/(atmospheric density at 296k and 1013 mb)
+!!\param[out] selffrac      real, (nlay), factor for temperature interpolation of reference w. v. self-continuum data
+!!\param[out] indself       integer, (nlay), index of lower ref temp for selffac
+!!\param[out] forfac        real, (nlay), scale factor for w. v. foreign-continuum
+!!\param[out] forfrac       real, (nlay), factor for temperature interpolation of reference w.v. foreign-continuum data
+!!\param[out] indfor        integer, (nlay), index of lower ref temp for forfac
+!!\param[out] minorfrac     real, (nlay), factor for minor gases
+!!\param[out] scaleminor,scaleminorn2         real, (nlay), scale factors for minor gases
+!!\param[out] indminor      integer, (nlay), index of lower ref temp for minor gases
 ! ----------------------------------
       subroutine setcoef
      &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,         !  ---  inputs:
@@ -2241,24 +2251,24 @@
 !! a value of 1.66. The gaussian weight appropriate to this angle (wtdiff =0.5) is applied here. Note
 !! that use of the emissivity angle for the flux integration can cause errors of 1 to 4 \f$W/m^2\f$ within
 !! cloudy layers. Clouds are treated with a random cloud overlap method.
-!!\param semiss      lw surface emissivity
-!!\param delp        layer pressure thickness (mb)
-!!\param cldfrc      layer cloud fraction
-!!\param taucld      layer cloud opt depth
-!!\param tautot      total optical depth (gas+aerosols)
-!!\param pklay       integrated planck function at lay temp
-!!\param pklev       integrated planck func at lev temp
-!!\param fracs       planck fractions
-!!\param secdif      secant of diffusivity angle
-!!\param nlay        number of vertical layers
-!!\param nlp1        number of vertical levels (interfaces)
-!!\param totuflux    total sky upward flux \f$(w/m^2)\f$
-!!\param totdflux    total sky downward flux \f$(w/m^2)\f$
-!!\param htr         total sky heating rate (k/sec or k/day)
-!!\param totuclfl    clear sky upward flux \f$(w/m^2)\f$
-!!\param totdclfl    clear sky downward flux \f$(w/m^2)\f$
-!!\param htrcl       clear sky heating rate (k/sec or k/day)
-!!\param htrb        spectral band lw heating rate (k/day)
+!!\param[in] semiss      real,(nbands), lw surface emissivity
+!!\param[in] delp        real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfrc      real, (0:nlp1), layer cloud fraction
+!!\param[in] taucld      real, (nbands,nlay), layer cloud opt depth
+!!\param[in] tautot      real, (ngptlw,nlay), total optical depth (gas+aerosols)
+!!\param[in] pklay       real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[in] pklev       real, (nbands,0:nlay), integrated planck func at lev temp
+!!\param[in] fracs       real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif      real, (nbands), secant of diffusivity angle
+!!\param[in] nlay        integer, 1, number of vertical layers
+!!\param[in] nlp1        integer, 1, number of vertical levels (interfaces)
+!!\param[out] totuflux        real, (0:nlay), total sky upward flux \f$(w/m^2)\f$
+!!\param[out] totdflux        real, (0:nlay), total sky downward flux \f$(w/m^2)\f$
+!!\param[out] htr             real, (nlay), total sky heating rate (k/sec or k/day)
+!!\param[out] totuclfl        real, (0:nlay), clear sky upward flux \f$(w/m^2)\f$
+!!\param[out] totdclfl        real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
+!!\param[out] htrcl           real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb            real, (nlay,nbands), spectral band lw heating rate (k/day)
 !!\section gen_rtrn General Algorithm
 ! ----------------------------------
       subroutine rtrn
@@ -2628,24 +2638,24 @@
 !> This subroutine computes the upward/downward radiative fluxes, and heating
 !! rates for both clear or cloudy atmosphere. Clouds are assumed as in maximum-randomly
 !! overlaping in a vertical column.
-!!\param semiss        lw surface emissivity
-!!\param delp          layer pressure thickness (mb)
-!!\param cldfrc        layer cloud fraction
-!!\param taucld        layer cloud opt depth
-!!\param tautot        total optical depth (gas+aerosols)
-!!\param pklay         integrated planck func at lay temp
-!!\param pklev         integrated planck func at lev temp
-!!\param fracs         planck fractions
-!!\param secdif        secant of diffusivity angle
-!!\param nlay          number of vertical layers
-!!\param nlp1          number of vertical levels (interfaces)
-!!\param totuflux      total sky upward flux (\f$w/m^2\f$)
-!!\param totdflux      total sky downward flux (\f$w/m^2\f$)
-!!\param htr           total sky heating rate (k/sec or k/day)
-!!\param totuclfl      clear sky upward flux (\f$w/m^2\f$)
-!!\param totdclfl      clear sky downward flux (\f$w/m^2\f$)
-!!\param htrcl         clear sky heating rate (k/sec or k/day)
-!!\param htrb          spectral band lw heating rate (k/day)
+!!\param[in] semiss       real, (nbands), lw surface emissivity
+!!\param[in] delp         real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfrc       real, (0:nlp1), layer cloud fraction
+!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth
+!!\param[in] tautot       real, (ngptlw,nlay), total optical depth (gas+aerosols)
+!!\param[in] pklay        real, (nbands*0:nlay), integrated planck func at lay temp
+!!\param[in] pklev        real, (nbands*0:nlay), integrated planck func at lev temp
+!!\param[in] fracs        real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif       real, (nbands), secant of diffusivity angle
+!!\param[in] nlay         integer, 1, number of vertical layers
+!!\param[in] nlp1         integer, 1, number of vertical levels (interfaces)
+!!\param[out] totuflux    real, (0:nlay), total sky upward flux (\f$w/m^2\f$)
+!!\param[out] totdflux    real, (0:nlay), total sky downward flux (\f$w/m^2\f$)
+!!\param[out] htr         real, (nlay), total sky heating rate (k/sec or k/day)
+!!\param[out] totuclfl    real, (0:nlay), clear sky upward flux (\f$w/m^2\f$)
+!!\param[out] totdclfl    real, (0:nlay), clear sky downward flux (\f$w/m^2\f$)
+!!\param[out] htrcl       real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb        real, (nlay*nbands), spectral band lw heating rate (k/day)
 !!\section gen_rtrnmr General Algorithm
 !> @{
 ! ----------------------------------
@@ -3223,24 +3233,24 @@
 !> This subroutine computes the upward/downward radiative fluxes, and heating
 !! rates for both clear or cloudy atmosphere.Clouds are treated with the mcica stochastic
 !! approach.
-!!\param semiss       lw surface emissivity
-!!\param delp         layer pressure thickness (mb)
-!!\param cldfmc       layer cloud fraction (sub-column)
-!!\param taucld       layer cloud opt depth
-!!\param tautot       total optical depth (gas+aerosols)
-!!\param pklay        integrated planck func at lay temp
-!!\param pklev        integrated planck func at lev temp
-!!\param fracs        planck fractions
-!!\param secdif       secant of diffusivity angle
-!!\param nlay         number of vertical layers
-!!\param nlp1         number of vertical levels (interfaces)
-!!\param totuflux     total sky upward flux \f$(w/m^2)\f$
-!!\param totdflux     total sky downward flux \f$(w/m^2)\f$
-!!\param htr          total sky heating rate (k/sec or k/day)
-!!\param totuclfl     clear sky upward flux \f$(w/m^2)\f$
-!!\param totdclfl     clear sky downward flux \f$(w/m^2)\f$
-!!\param htrcl        clear sky heating rate (k/sec or k/day)
-!!\param htrb         spectral band lw heating rate (k/day)
+!!\param[in] semiss       real, (nbands), lw surface emissivity
+!!\param[in] delp         real, (nlay), layer pressure thickness (mb)
+!!\param[in] cldfmc       real, (ngptlw,nlay), layer cloud fraction (sub-column)
+!!\param[in] taucld       real, (nbands,nlay), layer cloud opt depth
+!!\param[in] tautot       real, (ngptlw,nlay), total optical depth (gas+aerosols)
+!!\param[in] pklay        real, (nbands,0:nlay), integrated planck func at lay temp
+!!\param[in] pklev        real, (nbands,0:nlay), integrated planck func at lev temp
+!!\param[in] fracs        real, (ngptlw,nlay), planck fractions
+!!\param[in] secdif       real, (nbands), secant of diffusivity angle
+!!\param[in] nlay         integer, 1, number of vertical layers
+!!\param[in] nlp1         integer, 1, number of vertical levels (interfaces)
+!!\param[out] totuflux       real, (0:nlay), total sky upward flux \f$(w/m^2)\f$
+!!\param[out] totdflux       real, (0:nlay), total sky downward flux \f$(w/m^2)\f$
+!!\param[out] htr            real, (nlay), total sky heating rate (k/sec or k/day)
+!!\param[out] totuclfl       real, (0:nlay), clear sky upward flux \f$(w/m^2)\f$
+!!\param[out] totdclfl       real, (0:nlay), clear sky downward flux \f$(w/m^2)\f$
+!!\param[out] htrcl          real, (nlay), clear sky heating rate (k/sec or k/day)
+!!\param[out] htrb           real, (nlay,nbands), spectral band lw heating rate (k/day)
 !!\section gen_rtrnmc General Algorithm
 !> @{
 ! ---------------------------------
@@ -3620,31 +3630,32 @@
 !!\brief This file contains the subroutines taugbn (where n goes from 1 to 16).
 !! taugbn calculates the optical depths and planck fractions per g-value and layer
 !! for band n.
-!!\param laytrop          tropopause layer index (unitless) layer at which switch is made for key species
-!!\param pavel            layer pressures (mb)
-!!\param coldry           column amount for dry air \f$(mol/cm^2)\f$
-!!\param colamt           column amounts of h2o, co2, o3, n2o, ch4,o2, co \f$(mol/cm^2)\f$
-!!\param colbrd           column amount of broadening gases
-!!\param wx               cross-section amounts \f$(mol/cm^2)\f$
-!!\param tauaer           aerosol optical depth
-!!\param rfrate           reference ratios of binary species parameter
+!!\param[in] laytrop          integer, 1, tropopause layer index (unitless) layer at which switch is made for key species
+!!\param[in] pavel            real, (nlay), layer pressures (mb)
+!!\param[in] coldry           real, (nlay), column amount for dry air \f$(mol/cm^2)\f$
+!!\param[in] colamt           real, (nlay,maxgas), column amounts of h2o, co2, o3, n2o, ch4,o2, co \f$(mol/cm^2)\f$
+!!\param[in] colbrd           real, (nlay), column amount of broadening gases
+!!\param[in] wx               real, (nlay,maxxsec), cross-section amounts \f$(mol/cm^2)\f$
+!!\param[in] tauaer           real, (nbands,nlay), aerosol optical depth
+!!\param[in] rfrate           real, (nlay,nrates,2), reference ratios of binary species parameter
 !!\n                          (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
 !!\n                          (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
-!!\param facij            factors multiply the reference ks, i,j of 0/1 for lower/higher of the 2 appropriate temperatures and altitudes
-!!\param jp               index of lower reference pressure
-!!\param jt, jt1          indices of lower reference temperatures for pressure levels jp and jp+1, respectively
-!!\param selffac          scale factor for water vapor self-continuum equals (water vapor density)/(atmospheric density at 296k and 1013 mb)
-!!\param selffrac         factor for temperature interpolation of reference water vapor self-continuum data
-!!\param indself          index of lower reference temperature for the self-continuum interpolation
-!!\param forfac           scale factor for w. v. foreign-continuum
-!!\param forfrac          factor for temperature interpolation of reference w.v. foreign-continuum data
-!!\param indfor           index of lower reference temperature for the foreign-continuum interpolation
-!!\param minorfrac        factor for minor gases
-!!\param scaleminor,scaleminorn2            scale factors for minor gases
-!!\param indminor         index of lower reference temperature for minor gases
-!!\param nlay             total number of layers
-!!\param fracs            planck fractions
-!!\param tautot           total optical depth (gas+aerosols)
+!!\param[in] facij            real, (nlay), factors multiply the reference ks, i,j of 0/1 for lower/higher of the 2 appropriate temperatures and altitudes
+!!\param[in] jp               integer, (nlay), index of lower reference pressure
+!!\param[in] jt, jt1          integer, (nlay), indices of lower reference temperatures for pressure levels jp and jp+1, respectively
+!!\param[in] selffac          real, (nlay), scale factor for water vapor self-continuum equals (water vapor density)/(atmospheric density at 296k and 1013 mb)
+!!\param[in] selffrac         real, (nlay), factor for temperature interpolation of reference water vapor self-continuum data
+!!\param[in] indself          integer, (nlay), index of lower reference temperature for the self-continuum interpolation
+!!\param[in] forfac           real, (nlay), scale factor for w. v. foreign-continuum
+!!\param[in] forfrac          real, (nlay), factor for temperature interpolation of reference w.v. foreign-continuum data
+!!\param[in] indfor           integer, (nlay), index of lower reference temperature for the foreign-continuum interpolation
+!!\param[in] minorfrac        real, (nlay), factor for minor gases
+!!\param[in] scaleminor,scaleminorn2            real, (nlay), scale factors for minor gases
+!!\param[in] indminor         integer, (nlay), index of lower reference temperature for minor gases
+!!\param[in] nlay             integer, 1, total number of layers
+!!\param[out] fracs           real, (ngptlw,nlay), planck fractions
+!!\param[out] tautot          real, (ngptlw,nlay), total optical depth (gas+aerosols)
+!                                                                       !
 ! ----------------------------------
       subroutine taumol
      &     ( laytrop,pavel,coldry,colamt,colbrd,wx,tauaer,              !  ---  inputs
@@ -3829,7 +3840,13 @@
       contains
 ! =================
 
-!> band 1:  10-350 cm-1 (low key - h2o; low minor - n2);  (high key - h2o; high minor - n2)         
+!> This subroutine computes the optical depth by interpolating in ln(pressure)
+!! and temperature. Below laytrop, the water vapor self-continuum and foreign 
+!! continuum is interpolated (in temperature) seperately.
+!! \brief band 1:  10-350 cm-1 (low key - h2o; low minor - n2)        
+!!                          (high key - h2o; high minor - n2)         
+!! \author Eli J. Mlawer, Atmospheric&Environmental Research
+!! \author Michael J. Iacono, Atmospheric&Environmental Research
 ! ----------------------------------
       subroutine taugb01
 ! ..................................
@@ -6632,4 +6649,4 @@
 !........................................!
       end module module_radlw_main       !
 !========================================!
-!! @}
+!> @}

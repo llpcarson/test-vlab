@@ -3,13 +3,11 @@
 
 !> \ingroup gwd
 !> \defgroup convective Convective Gravity Wave Drag
-!! @{
-
-!> This subroutine is the parameterization of convective gravity wave drag
-!! based on the theory given by Chun and Baik (1998)
-!! \cite chun_and_baik_1998 modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005).
+!! This subroutine is the parameterization of convective gravity wave drag
+!! based on the theory given by Chun and Baik (1998) \cite chun_and_baik_1998
+!! modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005).
 !!
-!! Parameterizing subgrid-scale convection-induced gravity wave momentum flux for use in large-scale
+!> Parameterizing subgrid-scale convection-induced gravity wave momentum flux for use in large-scale
 !! models inherently requires some information from subgrid-scale cumulus parameterization.
 !! The methodology for parameterizing the zonal momentum flux induced by thermal forcing can be
 !! summarized as follows. From the cloud-base to cloud-top height, the effect of the momentum flux
@@ -21,13 +19,9 @@
 !! One way is to specify a vertical structure of the momentum flux normalized by the cloud-top value,
 !! similar to what has been done for mountain drag parameterization. The other way is to apply the wave
 !! saturation hypothesis in order to find wave breaking levels in terms of the Richardon number
-!! criterion using the nonlinearity factor of thermally induced waves. That is, if \f$Ri_{min}\geq1/4\f$,
-!! the momentum flux at a certain level above the cloud top is equal to that below that level, while
-!! if \f$Ri_{min}<1/4\f$, the saturation momentum flux given by (25) is used. This procedure is repeated
-!! until the model top is reached. At the model top, the momentum flux can be specified as
-!! a value just below it. The method employing the wave saturation hypothesis in GFS physics is
-!! essentially the same as that which has been used in mountian wave drag parameterization (Kim 1996 \cite kim_1996).
-!!
+!! criterion using the nonlinearity factor of thermally induced waves. 
+!!@{
+
 !> \param[in] IM       horizontal number of used pts
 !> \param[in] IX       horizontal dimension
 !> \param[in] IY       horizontal number of used pts
