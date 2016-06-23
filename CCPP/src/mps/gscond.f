@@ -19,8 +19,8 @@
 !> \section tune Important Tunable Parameters
 !! The parameters below, which can be set through a namelist, influence the amount of cloud condensate in 
 !! the atmosphere and thus the cloud radiative properties:
-!! - PSAUTCO, PRAUTCO: Auto conversion coefficients (for both ice and water)
-!! - WMINCO(2): Minimum value of cloud condensate to conversion from condensate to precipitation
+!! - PSAUTCO, PRAUTCO: Auto conversion coefficients (ice and water)
+!! - WMINCO(2): Coefficients for minimum value of cloud condensate to conversion from condensate (water and ice)  to precipitation
 !! - EVPCO: Coefficient for evaporation of precipitation
 !!
 !! \section intramps Intraphysics Communication
@@ -154,7 +154,7 @@
 !      endif
 !
 !*************************************************************
-!> -# Begining of  grid-scale condensation/evap. loop (start of k-loop, i-loop)
+!> -# Begining of  grid-scale condensation/evaporation loop (start of k-loop, i-loop)
 !*************************************************************
 !
 !     do k = km-1,2,-1
@@ -287,8 +287,7 @@
 !!  E_{c}=\frac{q_{s}}{dt}(u-f)
 !!\f]
 !! where \f$dt\f$ is the time step for precipitation calculation in the model. It is a simplified
-!! version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite 
-!! rutledge_and_hobbs_1983). In the case where
+!! version of a higher-order cloud evaporation algorithm (Rutledge and Hobbs 1983 \cite rutledge_and_hobbs_1983). In the case where
 !! all clouds will evaporate before \f$u\f$ is reached, the following equation is used:
 !! \f[
 !!  E_{c}=\frac{cwm}{dt}
