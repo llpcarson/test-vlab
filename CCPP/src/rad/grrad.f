@@ -3,7 +3,8 @@
 
 !> \defgroup rad RRTMG Shortwave/Longwave Radiation Scheme
 !> @{
-!!  \brief  Radiative processes are among the most complex and computationally intensive parts of all model physics.
+!!  \brief The GFS radiation scheme  
+!!  \details Radiative processes are among the most complex and computationally intensive parts of all model physics.
 !!  As an essential component of modeling the atmosphere, radiation directly and indirectly connects all 
 !!  physics processes with model dynamics,
 !!  and it regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in GFS physics
@@ -67,7 +68,8 @@
 !!
 !> \defgroup module_radiation_driver module_radiation_driver
 !> @{
-!!  module_radiation_driver prepares the atmospheric profile, invokes the main radiation
+!! \brief The GFS radiation driver module 
+!! \details module_radiation_driver prepares the atmospheric profile, invokes the main radiation
 !! calculations, and computes radiative fluxes and heating rates
 !! for some arbitrary number of vertical columns. There are three
 !! externally accessible subroutines: 
