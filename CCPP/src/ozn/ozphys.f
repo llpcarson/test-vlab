@@ -2,7 +2,6 @@
 !! This file is ozone sources and sinks.
 
 !> \defgroup ozn Ozone Sources and Sinks
-!! @{
 !! - Current operational version based on Naval Research Laboratory's CHEM2D model (McCormack et al. 2006
 !!   \cite mccormack_et_al_2006)
 !! - Monthly and zonal mean ozone production rate and ozone dustruction rate per unit ozone
@@ -12,6 +11,8 @@
 !!
 !! \section intra_oz Intraphysics Cummunication
 !! - Routine OZPHYS is called from GBPHYS after call to RAYLEIGH_DAMP
+!! @{
+!!
 !! \param[in] ix,im     integer, horizontal dimension and num of used pts
 !! \param[in] levs      integer, vertical layer dimension
 !! \param[in] ko3       integer, number of layers for ozone data
