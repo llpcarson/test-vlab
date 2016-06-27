@@ -6,34 +6,6 @@
 !! Parameterization developed specifically for orographic and convective source of gravity waves
 !! are documented separately.
 !! 
-!! At present, global models must be run with horizontal resolutions 
-!! that cannot typically resolve atmospheric phenomena smaller than ~10-100 km 
-!! for weather prediction and smaller than ~100-1000 km for climate predicition. Many
-!! atmospheric processes have shorter horizontal scales and these "subgrid-scale" processes
-!! interact with and affect the larger-scale atmosphere in important ways.
-!!
-!! Atmospheric gravity waves are one such unresolved processes. These waves can be generated 
-!! by air flow over irregularities of the Earth's surface, such
-!! as mountains and valleys, as well by uneven distribution of diabatic heat sources associated with 
-!! convective systems and by highly dynamic atmospheric processes, such as jet streams and fronts.
-!! The dissipation of these waves produces synoptic-scale body forces that act on the atmospheric flow, 
-!! known as "gravity wave drag" (GWD), which affect both short-term evolution of weather systems and 
-!! long-term climate.  In addition, the role of GWD in driving the global middle atmosphere circulation, and thus global
-!! mean wind/temperature structures, is well established. Thus, GWD parameterizations are now critical
-!! components of virtually all large-scale atmospheric models. The GFS physics suite includes parameterizations
-!! of gravity waves from two important sources: orography and convection.  
-!!
-!! Atmospheric flow is significantly influenced by orography, which creates lift and frictional forces. The representation 
-!! of orography, and its influence in numerical weather prediction models, are necessarily divided into the resolvable 
-!! scales of motion treated by primitive equations, and the remaining subgrid scales to be treated by parameterization.
-!! In terms of large scale NWP models, mountain blocking of wind flow around subgrid scale orography is a process that
-!! retards motion at various model vertical levels near or in the boundary layer. Flow around mountains encounters
-!! larger frictional forces by being in contact with the mountain surfaces for longer time. Additionally, it can produce
-!! vortex shedding, which has been shown to affect the mean flow. Lott and Miller (1997) \cite
-!! lott_and_miller_1997, incorporated the dividing streamline and mountain blocking, in conjunction with subgrid scale
-!! vertically propagating gravity wave parameterization, into a NWP model. The dividing streamline is seen as a source 
-!! of gravity waves to the atmosphere above and creates an nonlinear subgrid low-level mountain drag effect below. 
-!!
 !! At present, global models must be run with horizontal resolutions
 !! that cannot typically resolve atmospheric phenomena shorter than ~10-100 km or greater
 !! for weather prediction and ~100-1000 km or greater for climate predicition. Many
