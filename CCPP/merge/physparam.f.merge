@@ -19,15 +19,9 @@
 !                                                                      !
 !!!!!  ==========================================================  !!!!!
 
-!> \defgroup physparam physparam
 !! \ingroup rad
 !! @{
-!> This module defines commonly used control variables/parameters in physics related programs.
-!! -# contains control variables defined in the form of parameter. They are pre-determined 
-!!    choices and not adjustable during model's run-time.
-!! -# contains control variables defined as module variables. They are more flexible to be 
-!!    changed during run-time by either through input namelist, or through model environment condition.
-!!    They are preassigned here as the default values.
+!> This module defines commonly used control variables and parameters in physics related programs.
 !========================================!
       module physparam                   !
 !........................................!
@@ -56,74 +50,61 @@
 !==================================================================================
 
 ! ............................................. !
-!  -1.1- control flags for sw radiation         !
+!> \name  -1.1- Control flags for SW radiation       
 ! ............................................. !
-!> \name 1.1 control flags for sw radiation
 
-!> sw heating rate unit control flag: =1:k/day; =2:k/second.
-      integer,parameter :: iswrate = 2  ! sw heating rate unit control flag
-                                        ! =1:k/day; =2:k/second.
-!> sw rare gases effect control flag (ch4,n2o,o2,...): =0:no; =1:yes.
-      integer,parameter :: iswrgas = 1  ! sw rare gases effect control flag (ch4,n2o,o2,...)
-                                        ! =0:no; =1:yes.
-!> sw optical property for liquid clouds
+!> SW heating rate unit control flag: =1:k/day; =2:k/second.
+      integer,parameter :: iswrate = 2  
+                                       
+!> SW rare gases effect control flag (ch4,n2o,o2,...): =0:no; =1:yes.
+      integer,parameter :: iswrgas = 1
+                                       
+!> SW optical property for liquid clouds
 !!\n =0:input cld opt depth, ignoring iswcice setting
-!!\n =1:input cwp,rew, use hu and stamnes(1993) method
+!!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite hu_and_stamnes_1993 method
 !!\n =2:not defined yet
-      integer,save      :: iswcliq = 1  ! sw optical property for liquid clouds
-                                        ! =0:input cld opt depth, ignoring iswcice setting
-                                        ! =1:input cwp,rew, use hu and stamnes(1993) method
-                                        ! =2:not defined yet
-!> sw optical property for ice clouds (only iswcliq>0)
+      integer,save      :: iswcliq = 1  
+                                       
+!> SW optical property for ice clouds (only iswcliq>0)
 !!\n =0:not defined yet
-!!\n =1:input cip,rei, use ebert and curry (1992) method
-!!\n =2:input cip,rei, use streamer v3.0 (2001) method
-!!\n =3:input cip,rei, use fu's method (1996) method
-      integer,save      :: iswcice = 3  ! sw optical property for ice clouds (only iswcliq>0)
-                                        ! =0:not defined yet
-                                        ! =1:input cip,rei, use ebert and curry (1992) method
-                                        ! =2:input cip,rei, use streamer v3.0 (2001) method
-                                        ! =3:input cip,rei, use fu's method (1996) method
-!> sw control flag for 2-stream transfer scheme
-!!\n =1:delta-eddington    (joseph et al., 1976)
-!!\n =2:pifm               (zdunkowski et al., 1980)
-!!\n =3:discrete ordinates (liou, 1973)
-      integer,parameter :: iswmode = 2  ! sw control flag for 2-stream transfer scheme
-                                        ! =1:delta-eddington    (joseph et al., 1976)
-                                        ! =2:pifm               (zdunkowski et al., 1980)
-                                        ! =3:discrete ordinates (liou, 1973)
-
+!!\n =1:input cip,rei, use Ebert and Curry (1992) \cite ebert_and_curry_1992 method
+!!\n =2:input cip,rei, use Streamer v3.0 (2001) \cite key_2001 method
+!!\n =3:input cip,rei, use Fu's method (1996) \cite fu_1996 method
+      integer,save      :: iswcice = 3  
+                                       
+!> SW control flag for 2-stream transfer scheme
+!!\n =1:delta-eddington    (Joseph et al. 1976 \cite joseph_et_al_1976)
+!!\n =2:pifm               (Zdunkowski et al. 1980 \cite zdunkowski_et_al_1980)
+!!\n =3:discrete ordinates (Liou, 1973 \cite liou_1973)
+      integer,parameter :: iswmode = 2 
 
 ! ............................................. !
-!  -1.2- control flags for lw radiation         !
+> \name  -1.2- Control flags for LW radiation  
 ! ............................................. !
-!> \name 1.2 control flags for lw radiation
 
-!> lw heating rate unit (1:k/day; 2:k/second): =1:k/day; =2:k/second.
+!> LW heating rate unit (1:k/day; 2:k/second): =1:k/day; =2:k/second.
       integer,parameter :: ilwrate = 2  
 
-!> lw rare gases effect control flag (ch4,n2o,o2,cfcs...): =0:no; =1:yes.
+!> LW rare gases effect control flag (ch4,n2o,o2,cfcs...): =0:no; =1:yes.
       integer,parameter :: ilwrgas = 1  
 
-!> lw optical property for liquid clouds
+!> LW optical property for liquid clouds
 !!\n =0:input cld opt depth, ignoring ilwcice setting
-!!\n =1:input cwp,rew, use hu and stamnes(1993) method
+!!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite hu_and_stamnes_1993 method
 !!\n =2:not defined yet
       integer,save      :: ilwcliq = 1 
 
-!> lw optical property for ice clouds (only ilwcliq>0)
+!> LW optical property for ice clouds (only ilwcliq>0)
 !!\n =0:not defined yet
-!!\n =1:input cip,rei, use ebert and curry (1992) method
-!!\n =2:input cip,rei, use streamer (1996) method
-!!\n =3:input cip,rei, use fu's method (1998) method
+!!\n =1:input cip,rei, use Ebert and Curry (1992) \cite ebert_and_curry_1992 method
+!!\n =2:input cip,rei, use Streamer (1996) method
+!!\n =3:input cip,rei, use Fu's method (1998) \cite fu_et_al_1998 method
       integer,save      :: ilwcice = 3  
 
 ! ............................................. !
-!  -1.3- control flag for lw aerosol property   !
+!>\name  -1.3- Control flag for LW aerosol property 
 
-!>\name 1.3 control flag for lw aerosol property
-
-!> =t: use 1 broad-band lw aeros properties
+!> =t: use 1 broad-band LW aeros properties
 !!\n =f: use multi bands aeros properites
       logical,parameter :: lalw1bd =.false. 
 
@@ -134,9 +115,8 @@
 !==================================================================================
 
 ! ............................................. !
-!  -2.1- for module radiation_astronomy         !
+!>\name  -2.1- For module radiation_astronomy 
 ! ............................................. !
-!> \name 2.1 for module radiation_astronomy 
 
 !> solar constant scheme control flag
       integer, save :: isolar  = 0   
@@ -147,17 +127,16 @@
       data solar_file   / 'solarconstant_noaa_a0.txt ' /
 
 ! ............................................. !
-!  -2.2- for module radiation_aerosols          !
+!> \name  -2.2- For module radiation_aerosols   
 ! ............................................. !
-!> \name 2.2 for module radiation_aerosols
 
 !> aerosol model scheme control flag
       integer, save :: iaermdl = 0      
 !> aerosol effect control flag
       integer, save :: iaerflg = 0     
-!> lw aerosols effect control flag
+!> LW aerosols effect control flag
       logical, save :: lalwflg = .true. 
-!> sw aerosols effect control flag
+!> SW aerosols effect control flag
       logical, save :: laswflg = .true. 
 !> stratospheric volcanic effect flag
       logical, save :: lavoflg = .true. 
@@ -167,9 +146,8 @@
       data aeros_file   / 'aerosol.dat               ' /
 
 ! ............................................. !
-!  -2.3- for module radiation_gases             !
+!> \name  -2.3- For module radiation_gases 
 ! ............................................. !
-!> \name 2.3 for module radiation_gases
 
 !> co2 data source control flag
       integer, save :: ico2flg = 0    
@@ -191,9 +169,8 @@
       data co2cyc_file   / 'co2monthlycyc.txt         ' /
 
 ! ............................................. !
-!  -2.4- for module radiation_clouds            !
+!>\name  -2.4- For module radiation_clouds 
 ! ............................................. !
-!> \name 2.4 for module radiation_clouds
 
 !> cloud optical property scheme control flag
       integer, save :: icldflg = 1      
@@ -213,9 +190,8 @@
       logical, save :: lsashal =.false. 
 
 ! ............................................. !
-!  -2.5- for module radiation_surface           !
+!>\name  -2.5- For module radiation_surface 
 ! ............................................. !
-!> \name 2.5 for module radiation_surface
 
 !> surface albedo scheme control flag
       integer, save :: ialbflg = 0      
@@ -227,9 +203,8 @@
       data semis_file   / 'sfc_emissivity_idx.txt    ' /
 
 ! ............................................. !
-!  -2.6- general purpose                        !
+!> \name  -2.6- general purpose     
 ! ............................................. !
-!> \name 2.6 general purpose 
 
 !> vertical profile indexing flag
       integer, save :: ivflip  = 1      
@@ -239,7 +214,6 @@
       integer, save :: isubclw = 0      
 !> initial permutaion seed for mcica radiation
       integer, save :: ipsd0   = 0    
-
 !
 !...................................!
       end module physparam          !

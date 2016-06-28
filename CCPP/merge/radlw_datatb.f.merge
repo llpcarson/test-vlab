@@ -65,8 +65,7 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> \defgroup module_radlw_avplank module_radlw_avplank
-!! This module contains plank flux data
+!> This module contains plank flux data.
 !========================================!
       module module_radlw_avplank        !
 !........................................!
@@ -742,8 +741,13 @@
       end module module_radlw_avplank    !
 !========================================!
 
-!> \defgroup module_radlw_ref module_radlw_ref
-!! This module contains reference temperature and pressure
+!> This module contains reference temperature and pressure.
+!!
+!!  - These pressures are chosen such that the ln of the first one
+!!    has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
+!!    each subsequent ln(pref) differs from the previous one by 0.2.
+!!  - These temperatures are associated with the respective
+!!    pressures for the MLS standard atmosphere.
 !========================================!
       module module_radlw_ref            !
 !........................................!
@@ -755,14 +759,7 @@
       public
 
 !  ---  reference pressure and temperature
-!> reference pressure
-      real (kind=kind_phys), dimension(59) :: pref 
-!> the ln of the reference pressure
-      real (kind=kind_phys), dimension(59) :: preflog
-
-!> reference temperature. these are the temperatures associated with the respective
-!! pressures for the MLS standard atmosphere.
-      real (kind=kind_phys), dimension(59) :: tref
+      real (kind=kind_phys), dimension(59) :: pref, preflog, tref
 
 !  ...  these pressures are chosen such that the ln of the first one
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -927,8 +924,7 @@
       end module module_radlw_ref        !
 !========================================!
 
-!> \defgroup module_radlw_cldprlw module_radlw_cldprlw
-!! This module contains cloud property coefficients
+!> This module contains cloud property coefficients.
 !========================================!
       module module_radlw_cldprlw        !
 !........................................!
@@ -945,15 +941,12 @@
 ! --- ipat is bands index for ebert & curry ice cloud (for iflagice=1)
       data ipat / 1, 2, 3,3,3, 4,4,4, 5,5,5,5,5,5,5,5 /
 
-!> absrain is the rain drop absorption coefficient (m2/g)
-! --- absrain is the rain drop absorption coefficient (m2/g)
+!> absrain is the rain drop absorption coefficient \f$(m^{2}/g)\f$ .
 !     real (kind=kind_phys), parameter :: absrain = 3.07e-3       ! chou coeff
       real (kind=kind_phys), parameter :: absrain = 0.33e-3       ! ncar coeff
 
-! --- abssnow is the snow flake absorption coefficient (micron)
 !> abssnow0 is the snow flake absorption coefficient (micron), fu coeff
       real (kind=kind_phys), parameter :: abssnow0 = 1.5          ! fu   coeff
-! --- abssnow is the snow flake absorption coefficient (m2/g)
 !> abssnow1 is the snow flake absorption coefficient \f$(m^{2}/g)\f$, ncar coeff
       real (kind=kind_phys), parameter :: abssnow1 = 2.34e-3      ! ncar coeff
 
@@ -968,9 +961,7 @@
 !     real (kind=kind_phys), parameter :: absliqb = 0.0903614
 
 ! --- for iflagliq = 1
-!     hu and stamnes method. the absorption coef's are listed for a range of
-!     effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.
-!> Hu and Stamnes method. the liquid water absorption coefficients are listed for a
+!> Hu and Stamnes method \cite hu_and_stamnes_1993 . the liquid water absorption coefficients are listed for a
 !! range of effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.
       real (kind=kind_phys), dimension(58,NBANDS) :: absliq1
 
@@ -1205,8 +1196,7 @@
 !     absorption coefficients in spectral region ib for iflagice=#.  the
 !     units of absice#(1,ib) are m2/g and absice#(2,ib) has units
 !     (microns*m^2/g)).
-! --- for iflagice = 2 or 3, absice0 is used for large ice partical size
-!     such as refice > 131 microns.
+
 !> for iflagice = 2 or 3, absice0 are the ice water absorption coefficients used for
 !! large ice partical size such as refice > 131 microns.
       real (kind=kind_phys), dimension(2) :: absice0
@@ -1214,20 +1204,13 @@
       data absice0 / 0.005,  1.0 /
 !!    data absice0 / 0.0029,  1.0 /       ! moorthi's coeff
 
-! --- for iflagice = 1
-!     ebert and curry method.
 !> for iflagice = 1, absice1 are the ice water absorption coefficients used for
-!! ebert and curry method
+!! ebert and curry method \cite ebert_and_curry_1992 .
       real (kind=kind_phys), dimension(2,5) :: absice1
 
       data absice1 / 0.0036, 1.136,  0.0068, 0.600,  0.0003, 1.338,      &
      &               0.0016, 1.166,  0.0020, 1.118  /
 
-! --- for iflagice = 2
-!     streamer method. the absorption coef's are listed for a range of effective
-!     radii from 5.0 to 131.0 microns in increments of 3.0 microns.
-!     spherical ice particle parameterization absorption units (abs coef/iwc):
-!     [(m^-1)/(g m^-3)]
 !> for iflagice =2, absice2 are the ice water absorption coefficients used for
 !! streamer method. the absorption coefficients are listed for a range of effective
 !! radii from 5.0 to 131.0 microns in increments of 3.0 microns. spherical ice
@@ -1413,10 +1396,6 @@
      & 6.150751e-03,6.030462e-03,5.915860e-03 /
 
 
-! --- for iflagice = 3
-!     fu parameterization. particle size 5 - 140 micron in increments of
-!     3 microns. units = m2/g. hexagonal ice particle parameterization
-!     absorption units (abs coef/iwc): [(m^-1)/(g m^-3)]
 !> for iflagice = 3, absice3 are the ice water absorption coefficients used for
 !! fu parameterization. particle size 5 - 140 micron in increments of 3 microns.
 !! units = m2/g. hexagonal ice particle parameterization absorption units (abs coef/iwc):
@@ -1626,7 +1605,6 @@
 !                                                                     !
 ! *********    *********    end description    *********    ********* !
 
-!> \defgroup module_radlw_kgb01 module_radlw_kgb01
 !> This module sets up absorption coefficients for band 01: 10-250 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb01          !
@@ -1651,9 +1629,9 @@
       integer, public :: MMN01
       parameter (MSA01=65, MSB01=235, MSF01=10, MFR01=4, MMN01=19)
 
-      real (kind=kind_phys), public ::                                 &
-     &       absa(NG01,MSA01), absb(NG01,MSB01), selfref(NG01,MSF01),  &
-     &       forref(NG01,MFR01), fracrefa(NG01), fracrefb(NG01),       &
+      real (kind=kind_phys), public ::                                  &
+     &       absa(NG01,MSA01), absb(NG01,MSB01), selfref(NG01,MSF01),   &
+     &       forref(NG01,MFR01), fracrefa(NG01), fracrefb(NG01),        &
      &       ka_mn2(NG01,MMN01), kb_mn2(NG01,MMN01)
 
 !>  the array absa(NG01,65) = ka(NG01,5,13) contains absorption coefs
@@ -1839,6 +1817,7 @@
      & 5.449538e+01,4.046072e+02,1.570843e+03,5.139500e+03,1.049300e+04,&
      & 1.522400e-02,4.699900e-02,1.662093e-01,5.726528e-01,4.071345e+00,&
      & 5.401111e+01,4.026425e+02,1.564332e+03,5.139700e+03,1.047300e+04/
+
 
       data   absb(:, 1:30) /                                            &
      & 1.014400e-02,4.193800e-02,1.766623e-01,5.758703e-01,4.289268e+00,&
@@ -2319,6 +2298,7 @@
      & 1.431400e-06,5.388000e-06,2.240495e-05,7.783655e-05,7.936564e-04,&
      & 2.039213e-02,4.493887e-01,2.278674e+01,4.899000e+03,1.695600e+05/
 
+
       data  selfref(:, :) /                                             &
      & 2.168030e+00,3.701490e+00,6.362042e+00,6.498625e+00,6.557401e+00,&
      & 6.583180e+00,7.064571e+00,7.464597e+00,7.518950e+00,7.847740e+00,&
@@ -2443,8 +2423,7 @@
       end module module_radlw_kgb01      !
 !========================================!
 
-!> \defgroup module_radlw_kgb02 module_radlw_kgb02
-!! This module sets up absorption coefficients for band 02: 250-500 cm-1 (low - h2o; high - h2o)
+!> This module sets up absorption coefficients for band 02: 250-500 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb02          !
 !........................................!
@@ -3245,6 +3224,7 @@
      & 7.693300E-08,1.498700E-07,3.309600E-07,1.053300E-06,3.491900E-06,&
      & 1.353400E-05,2.315021E-04,5.286700E-03,1.221836E+00,4.507178E+02/
 
+
       data  selfref(:, :) /                                             &
      & 7.256950E-01,9.619960E-01,9.725840E-01,1.247900E+00,1.235740E+00,&
      & 1.209210E+00,1.381120E+00,1.303210E+00,1.289824E+00,1.419931E+00,&
@@ -3271,6 +3251,7 @@
      & 4.969270E-01,5.686080E-01,5.493050E-01,5.443840E-01,6.367390E-01,&
      & 6.260960E-01,6.644681E-01,7.764753E-01,8.567281E-01,8.905786E-01/
 
+
       data  forref(:, :) /                                              &
      & 2.854900E-03,4.828100E-03,6.257000E-03,8.273100E-03,7.905600E-03,&
      & 7.784000E-03,1.011500E-02,9.659900E-03,1.022842E-02,1.288835E-02,&
@@ -3283,9 +3264,11 @@
      & 8.615100E-03,8.676200E-03,1.147600E-02,1.024600E-02,1.080142E-02,&
      & 1.053970E-02,1.035826E-02,1.047106E-02 /
 
+
       data  fracrefa(:) /                     1.638800e-01,1.524100e-01,&
      & 1.429000e-01,1.286400e-01,1.161500e-01,1.004700e-01,8.001300e-02,&
      & 6.044500e-02,4.491790e-02,6.339500e-03,3.294200e-03,5.454090e-04/
+
 
       data  fracrefb(:) /                     1.469700e-01,1.482600e-01,&
      & 1.427800e-01,1.332000e-01,1.196500e-01,1.029700e-01,8.417000e-02,&
@@ -3296,8 +3279,8 @@
       end module module_radlw_kgb02      !
 !========================================!
 
-!> \defgroup module_radlw_kgb03 module_radlw_kgb03
-!! This module sets up absorption coefficients for band 03: 500-630 cm-1 (low - h2o, co2; high - h2o, co2)
+
+!> This module sets up absorption coefficients for band 03: 500-630 cm-1 (low - h2o, co2; high - h2o, co2)
 !========================================!
       module module_radlw_kgb03          !
 !........................................!
@@ -10170,8 +10153,8 @@
       end module module_radlw_kgb03      !
 !========================================!
 
-!> \defgroup module_radlw_kgb04 module_radlw_kgb04
-!! This module sets up absorption coefficients for band 04: 630-700 cm-1 (low - h2o, co2; high - co2, o3)
+
+!> This module sets up absorption coefficients for band 04: 630-700 cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb04          !
 !........................................!
@@ -11920,7 +11903,6 @@
      & 1.499734E+04,2.903400E-04,5.510200E-04,8.657300E-04,1.231300E-03,&
      & 1.928300E-03,2.943000E-03,5.661700E-03,1.028300E-02,2.384100E-02,&
      & 5.072500E-02,6.831800E-02,1.151000E-01,2.232200E-01,6.194796E-01/
-
 
       data   absb(:,  1: 20) /                                          &
      & 1.928300E+01,6.652900E+01,1.388600E+02,2.158600E+02,3.954900E+02,&
@@ -15272,6 +15254,7 @@
      & 5.519800E-05,1.567800E-04,8.122600E-04,2.236300E-02,8.029200E-01,&
      & 5.917900E+00,1.115000E+01,2.051600E+01,3.485800E+01,6.974457E+01/
 
+
       data  selfref(:, :) /                                             &
      & 2.629220E-01,2.454480E-01,2.415950E-01,2.448180E-01,2.434580E-01,&
      & 2.401860E-01,2.427520E-01,2.396200E-01,2.388560E-01,2.298210E-01,&
@@ -15370,8 +15353,8 @@
       end module module_radlw_kgb04      !
 !========================================!
 
-!> \defgroup module_radlw_kgb05 module_radlw_kgb05
-!! This module sets up absorption coefficients for band 05: 700-820 cm-1 (low - h2o, co2; high - co2, o3)
+
+!> This module sets up absorption coefficients for band 05: 700-820 cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb05          !
 !........................................!
@@ -17362,6 +17345,7 @@
      & 1.070300E-04,2.186600E-04,4.301400E-04,7.683500E-04,1.181600E-03,&
      & 1.957800E-03,3.960600E-03,4.360200E-03,6.045900E-03,3.990300E-03,&
      & 1.382600E-02,8.681400E-03,3.361500E-05,1.891900E-05,2.128300E-05/
+
 
       data   absb(:,   1:  20) /                                        &
      & 1.573100E-03,3.627900E-03,9.154000E-03,6.704900E-02,4.323600E-01,&
@@ -21754,6 +21738,7 @@
      & 1.987770E-01,1.239810E-01,1.039040E-01,1.126260E-01,1.291010E-01,&
      & 2.177870E-01 /
 
+
       data  selfref(:,:) /                                              &
      & 1.276860E-01,1.400510E-01,1.423220E-01,1.532440E-01,1.710110E-01,&
      & 1.760120E-01,1.856000E-01,1.889310E-01,1.911220E-01,1.913340E-01,&
@@ -21788,6 +21773,7 @@
      & 4.626060E-02,4.662430E-02,4.665890E-02,5.011740E-02,5.065170E-02,&
      & 5.032020E-02,5.027780E-02,5.167310E-02,5.353760E-02,5.368480E-02/
 
+
       data  forref(:,:) /                                               &
      & 1.068900E-05,1.698700E-05,1.899300E-05,3.447000E-05,4.087300E-05,&
      & 4.827500E-05,6.117800E-05,6.403500E-05,6.625300E-05,7.891400E-05,&
@@ -21802,6 +21788,7 @@
      & 2.124600E-05,3.334900E-05,4.870400E-05,5.642400E-05,5.856900E-05,&
      & 5.878000E-05,6.035800E-05,6.158600E-05,6.428100E-05,6.933300E-05,&
      & 7.276300E-05,7.267500E-05,7.375400E-05,1.013100E-04 /
+
 
       data  fracrefa(:,:) /                                             &
      & 1.411100e-01,1.422200e-01,1.380200e-01,1.310100e-01,1.224400e-01,&
@@ -21834,6 +21821,7 @@
      & 6.362500e-02,4.295100e-02,4.731300e-03,3.915700e-03,3.087900e-03,&
      & 2.266600e-03,1.519300e-03,5.746900e-04,8.167400e-05 /
 
+
       data  fracrefb(:,:) /                                             &
      & 1.407500e-01,1.419600e-01,1.383300e-01,1.334500e-01,1.223400e-01,&
      & 1.071800e-01,8.800400e-02,6.630800e-02,4.502800e-02,4.902900e-03,&
@@ -21852,6 +21840,7 @@
      & 8.645000e-02,6.488900e-02,4.358400e-02,4.755100e-03,3.950900e-03,&
      & 3.137400e-03,2.322600e-03,1.494200e-03,5.754500e-04,8.088700e-05/
 
+
       data  ccl4(:) /                         2.614070e+01,5.397760e+01,&
      & 6.380850e+01,3.617010e+01,1.540990e+01,1.023116e+01,4.829480e+00,&
      & 5.038360e+00,1.755580e+00,0.000000e+00,0.000000e+00,0.000000e+00,&
@@ -21861,8 +21850,8 @@
       end module module_radlw_kgb05      !
 !========================================!
 
-!> \defgroup module_radlw_kgb06 module_radlw_kgb06
-!! This module sets up absorption coefficients for band 06: 820-980 cm-1 (low - h2o; high - /)
+
+!> This module sets up absorption coefficients for band 06: 820-980 cm-1 (low - h2o; high - /)
 !========================================!
       module module_radlw_kgb06          !
 !........................................!
@@ -22038,6 +22027,7 @@
      & 6.558903E-05,6.274919E-05,4.720687E-06,1.782078E-05,6.727193E-05,&
      & 2.288666E-04,4.469429E-04,1.511657E-04,1.056325E-04,1.110326E-04/
 
+
       data  ka_mco2(:, :) /                                             &
      & 1.229200E-05,1.088199E-05,1.350453E-05,8.226484E-05,3.148824E-05,&
      & 3.760573E-06,2.175457E-06,1.607842E-06,1.475920E-05,1.318776E-05,&
@@ -22071,6 +22061,7 @@
      & 3.470270E-04,3.972484E-04,2.636725E-03,1.005814E-03,2.987825E-04,&
      & 1.200051E-04,1.880790E-04 /
 
+
       data  selfref(:, :) /                                             &
      & 8.104007E-02,9.051144E-02,8.488708E-02,7.523175E-02,7.285671E-02,&
      & 9.040726E-02,9.108606E-02,9.448533E-02,6.775328E-02,7.666656E-02,&
@@ -22089,6 +22080,7 @@
      & 2.845217E-02,2.945506E-02,1.617660E-02,2.033082E-02,2.559575E-02,&
      & 2.534039E-02,2.426361E-02,2.357239E-02,2.460231E-02,2.546275E-02/
 
+
       data  forref(:, :) /                                              &
      & 4.229942E-07,1.253070E-06,3.301641E-06,3.223462E-06,2.413032E-06,&
      & 2.555740E-06,2.737261E-06,2.968633E-06,9.286954E-07,2.199977E-06,&
@@ -22097,6 +22089,7 @@
      & 1.111783E-06,5.010556E-07,3.236474E-07,3.077813E-07,1.723301E-06,&
      & 2.098087E-06,2.267954E-06,1.321898E-06,8.660148E-07,7.939696E-07,&
      & 7.133265E-07,3.134393E-07 /
+
 
       data  fracrefa(:) /        2.912700e-01,2.825200e-01,2.259000e-01,&
      & 1.431360e-01,4.549370e-02,7.179200e-03,3.848300e-03,6.571200e-04/
@@ -22117,8 +22110,8 @@
       end module module_radlw_kgb06      !
 !========================================!
 
-!> \defgroup module_radlw_kgb07 module_radlw_kgb07
-!! This module sets up absorption coefficients for band 07: 980-1080 cm-1 (low - h2o, o3; high - o3)
+
+!> This module sets up absorption coefficients for band 07: 980-1080 cm-1 (low - h2o, o3; high - o3)
 !========================================!
       module module_radlw_kgb07          !
 !........................................!
@@ -23638,6 +23631,7 @@
      & 3.148200E-05,4.204300E-05,1.015300E-04,2.826900E-04,2.984000E-04,&
      & 1.236700E-05,1.442000E-05,1.412400E-05,5.905551E-06,4.372274E-06/
 
+
       data   absb( : ,  1: 25) /                                        &
      & 1.747345E-01,2.201218E+00,6.955900E+00,1.387400E+01,2.638300E+01,&
      & 5.103600E+01,9.940600E+01,1.485400E+02,1.657200E+02,1.843700E+02,&
@@ -24213,6 +24207,7 @@
      & 2.001400E-02,1.059600E-01,5.828300E-01,2.954600E+00,3.609200E+01,&
      & 2.452500E+02,4.609900E+02,8.280000E+02,1.717511E+03,3.225982E+03/
 
+
       data  ka_mco2(:,:, 1) /    1.370502E-05,2.621626E-05,3.432130E-05,&
      & 4.146590E-05,6.845440E-05,1.181540E-04,3.306140E-04,9.104180E-04,&
      & 1.012750E-03,1.184690E-03,1.237325E-03,1.381582E-03,1.386827E-05,&
@@ -24634,6 +24629,7 @@
      & 6.422530E-03,1.138470E-02,2.130290E-03,1.583420E-03,1.644540E-03,&
      & 2.453564E-03,2.194686E-03 /
 
+
       data  kb_mco2(:, :) /                                             &
      & 5.905905E-06,1.415094E-05,3.721420E-05,7.741310E-05,1.322940E-04,&
      & 3.598680E-05,5.095430E-05,2.082530E-05,2.089530E-05,2.652950E-05,&
@@ -24682,6 +24678,7 @@
      & 1.338860E-02,3.438180E-03,5.441960E-03,1.582730E-03,1.561710E-03,&
      & 1.897240E-03,2.799757E-03,5.630248E-03 /
 
+
       data  selfref(:, :) /                                             &
      & 4.779220E-02,4.154768E-02,3.945120E-02,3.905670E-02,3.853970E-02,&
      & 3.796920E-02,3.688190E-02,3.651570E-02,3.599170E-02,3.669630E-02,&
@@ -24726,6 +24723,7 @@
      & 1.998700E-07,1.997800E-07,1.990200E-07,1.974200E-07,1.967200E-07,&
      & 1.961500E-07,1.956199E-07,1.958825E-07 /
 
+
       data  fracrefa(:,:) /                                             &
      & 3.126100e-01,2.746600e-01,1.168400e-01,9.990000e-02,8.091200e-02,&
      & 6.020300e-02,4.014900e-02,4.336500e-03,3.584400e-03,2.801900e-03,&
@@ -24759,8 +24757,8 @@
       end module module_radlw_kgb07      !
 !========================================!
 
-!> \defgroup module_radlw_kgb08 module_radlw_kgb08
-!! This module sets up absorption coefficients for band 08: 1080-1180 cm-1 (low - h2o; high - o3)
+
+!> This module sets up absorption coefficients for band 08: 1080-1180 cm-1 (low - h2o; high - o3)
 !========================================!
       module module_radlw_kgb08          !
 !........................................!
@@ -24956,6 +24954,7 @@
      & 1.434427E-04,3.683164E-04,7.949632E-04,2.146065E-03,2.833108E-05,&
      & 2.760798E-05,3.023029E-05,7.487870E-05,1.748729E-04,4.853462E-04,&
      & 9.349150E-04,3.193713E-03,4.781391E-03,3.768639E-05,1.408527E-05/
+
 
       data   absb(:,  1: 30) /                                          &
      & 2.970462E-02,8.096607E-02,2.128310E-01,6.115949E-01,1.399250E+00,&
@@ -25342,6 +25341,7 @@
      & 2.360267E+01,7.858685E+01,3.351616E-06,1.595156E-05,1.414304E-04,&
      & 2.624448E-02,1.344139E+00,1.032495E+01,2.347676E+01,7.300692E+01/
 
+
       data  selfref(:, :) /                                             &
      & 3.132587E-02,3.057763E-02,2.970334E-02,2.970046E-02,2.980793E-02,&
      & 2.954107E-02,2.937950E-02,2.808840E-02,2.729922E-02,2.671487E-02,&
@@ -25368,7 +25368,6 @@
      & 7.807491E-07,9.862459E-07,1.074420E-06,1.378222E-06,7.354748E-07,&
      & 5.461910E-07,5.019355E-07,5.212515E-07,4.848762E-07,4.756050E-07,&
      & 3.778721E-07,3.481208E-07 /
-
 
       data  ka_mco2(:, :) /                                             &
      & 5.908838E-06,1.539459E-05,2.580637E-05,1.596999E-06,1.110965E-06,&
@@ -25402,6 +25401,7 @@
      & 6.759026E-05,3.767398E-07,6.886968E-08,5.369960E-08,2.353193E-04,&
      & 4.307728E-04,7.421494E-04,8.708927E-05,8.607747E-05,4.401012E-07,&
      & 6.710143E-08,5.232460E-08 /
+
 
       data  kb_mco2(:, :) /                                             &
      & 8.075010E-08,4.884254E-07,1.783317E-06,7.812465E-06,3.159000E-05,&
@@ -25539,6 +25539,7 @@
       data  fracrefa(:) /        3.144100e-01,2.758600e-01,2.129730e-01,&
      & 1.406370e-01,4.558820e-02,6.566500e-03,3.423200e-03,5.319940e-04/
 
+
       data  fracrefb(:) /        2.965200e-01,2.735400e-01,2.225400e-01,&
      & 1.490440e-01,4.770290e-02,6.638900e-03,3.414800e-03,5.957930e-04/
 
@@ -25553,7 +25554,6 @@
       end module module_radlw_kgb08      !
 !========================================!
 
-!> \defgroup module_radlw_kgb09 module_radlw_kgb09
 !> This module sets up absorption coefficients for band 09: 1180-1390 cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
       module module_radlw_kgb09          !
@@ -27667,6 +27667,7 @@
      & 6.726100E-06,1.983100E-05,7.991300E-05,4.482400E-04,3.306500E-03,&
      & 2.946300E-02,9.704137E-01,2.222555E+01,3.722163E+02,1.592918E+03/
 
+
       data  ka_mn2o(:,:, 1) /                                           &
      & 5.410780E-02,9.466690E-02,1.500820E-01,6.112480E-01,2.534600E+00,&
      & 5.786950E+00,1.234170E+01,2.283840E+01,2.014079E+01,6.318874E+00,&
@@ -28230,7 +28231,7 @@
       end module module_radlw_kgb09      !
 !========================================!
 
-!> \defgroup module_radlw_kgb10 module_radlw_kgb10
+
 !> This module sets up absorption coefficients for band 10: 1390-1480 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb10          !
@@ -28378,6 +28379,7 @@
      & 2.819569E-01,7.926714E+00,1.427182E+02,4.928029E-03,1.402133E-02,&
      & 4.180069E-02,3.036336E-01,8.670511E+00,1.542483E+02,5.244065E-03,&
      & 1.384472E-02,4.654410E-02,3.231360E-01,9.367290E+00,1.648232E+02/
+
 
       data   absb(:,  1: 40) /                                          &
      & 3.937814E-03,1.196182E-02,2.955780E-02,2.311908E-01,6.298200E+00,&
@@ -28668,6 +28670,7 @@
      & 1.010838E-05,2.734323E-04,6.387627E-02,2.095823E+02,5.559251E-07,&
      & 1.893362E-06,1.309992E-05,3.521941E-04,8.423455E-02,2.342460E+02/
 
+
       data  selfref(:, :) /                                             &
      & 2.757227E-01,3.467635E-01,3.521956E-01,3.675792E-01,3.631232E-01,&
      & 4.295592E-01,2.592735E-01,3.249800E-01,3.277287E-01,3.430616E-01,&
@@ -28681,6 +28684,7 @@
      & 2.267381E-01,2.323669E-01,2.415340E-01,1.685671E-01,2.065467E-01,&
      & 1.979849E-01,2.116188E-01,2.180181E-01,2.225270E-01,1.585125E-01,&
      & 1.936220E-01,1.842316E-01,1.975081E-01,2.045581E-01,2.050303E-01/
+
 
       data  forref(:, :) /                                              &
      & 1.266174E-02,1.692174E-02,1.618326E-02,1.764254E-02,1.822239E-02,&
@@ -28701,7 +28705,7 @@
       end module module_radlw_kgb10      !
 !========================================!
 
-!> \defgroup module_radlw_kgb11 module_radlw_kgb11
+
 !> This module sets up absorption coefficients for band 11: 1480-1800 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb11          !
@@ -28725,6 +28729,7 @@
 !> mmo11=19
       integer, public :: MMO11
       parameter (MSA11=65, MSB11=235, MSF11=10, MFR11=4, MMO11=19)
+
 
 !>  the array absa(NG11,65) = ka(NG11,5,13) contains absorption coefs
 !!  at the NG11=8 chosen g-values for a range of pressure levels>~100mb
@@ -29290,6 +29295,7 @@
      & 1.314934E+01,1.402649E+03,1.638400E-06,4.506200E-06,5.628641E-06,&
      & 3.524717E-05,9.685135E-04,4.184342E-02,1.638576E+01,1.368006E+03/
 
+
       data  ka_mo2(:, :) /                                              &
      & 2.317230E-06,1.819800E-06,2.214545E-06,2.124552E-06,2.287900E-06,&
      & 2.282507E-06,2.557973E-06,2.441890E-06,2.286970E-06,1.813520E-06,&
@@ -29357,6 +29363,7 @@
      & 2.471620E-06,2.491594E-06,2.198933E-06,2.629590E-06,1.806729E-06,&
      & 2.200495E-06,2.602284E-06 /
 
+
       data  selfref(:, :) /                                             &
      & 5.964960E-01,7.464550E-01,7.987986E-01,8.126631E-01,8.187091E-01,&
      & 8.341900E-01,8.427325E-01,8.889891E-01,5.491710E-01,6.824590E-01,&
@@ -29375,6 +29382,7 @@
      & 4.258935E-01,4.479911E-01,2.834680E-01,3.331670E-01,3.654880E-01,&
      & 3.733298E-01,3.846201E-01,3.904518E-01,3.910801E-01,4.112244E-01/
 
+
       data  forref(:, :) /                                              &
      & 2.885800E-02,3.687900E-02,4.161900E-02,4.272472E-02,4.429408E-02,&
      & 4.515425E-02,4.557366E-02,4.798958E-02,2.788700E-02,3.737600E-02,&
@@ -29384,8 +29392,10 @@
      & 3.760800E-02,4.339831E-02,4.282106E-02,4.195525E-02,4.021513E-02,&
      & 4.233051E-02,4.448902E-02 /
 
+
       data  fracrefa(:) /        1.460100e-01,1.382400e-01,2.770300e-01,&
      & 2.238800e-01,1.544590e-01,4.868710e-02,9.805400e-03,1.886952e-03/
+
 
       data  fracrefb(:) /        7.292800e-02,1.490000e-01,3.175900e-01,&
      & 2.532800e-01,1.511940e-01,4.464970e-02,9.269700e-03,2.086153e-03/
@@ -29394,7 +29404,7 @@
       end module module_radlw_kgb11      !
 !========================================!
 
-!> \defgroup module_radlw_kgb12 module_radlw_kgb12
+
 !> This module sets up absorption coefficients for band 12: 1800-2080 cm-1 (low - h2o, co2; high - /)
 !========================================!
       module module_radlw_kgb12          !
@@ -30433,6 +30443,7 @@
      & 7.562235E-02,8.909458E-02,7.988880E-03,1.329060E-02,2.565530E-02,&
      & 4.272620E-02,6.402972E-02,6.857349E-02,7.059593E-02,8.310508E-02/
 
+
       data  forref(:, :) /                                              &
      & 1.473900E-04,3.168600E-04,8.597300E-04,1.903900E-03,3.403156E-03,&
      & 3.789137E-03,3.811255E-03,4.611905E-03,1.939700E-04,3.632200E-04,&
@@ -30441,6 +30452,7 @@
      & 2.809680E-03,2.826561E-03,2.732563E-03,4.293922E-03,8.819600E-04,&
      & 2.112500E-03,2.804200E-03,2.889100E-03,2.175546E-03,1.318010E-03,&
      & 1.195556E-03,1.420311E-03 /
+
 
       data  fracrefa(:,:) /                                             &
      & 1.398400e-01,1.680900e-01,1.807200e-01,1.540000e-01,2.230890e-01,&
@@ -30463,7 +30475,7 @@
       end module module_radlw_kgb12      !
 !========================================!
 
-!> \defgroup module_radlw_kgb13 module_radlw_kgb13
+
 !> This module sets up absorption coefficients for band 13: 2080-2250 cm-1 (low - h2o, n2o; high - /)
 !========================================!
       module module_radlw_kgb13          !
@@ -31333,6 +31345,7 @@
      & 1.788565E+00,1.127544E-02,1.725257E-01,8.683426E-01,1.777424E+00,&
      & 1.141338E-02 /
 
+
       data  selfref(:, :) /                                             &
      & 9.644149E-03,7.250704E-03,5.669677E-03,4.386020E-03,8.339429E-03,&
      & 6.340405E-03,5.034289E-03,4.269775E-03,7.211276E-03,5.545479E-03,&
@@ -31342,6 +31355,7 @@
      & 3.251417E-03,2.798787E-03,3.773114E-03,3.486929E-03,2.846528E-03,&
      & 2.492587E-03,3.689710E-03,3.015363E-03,2.492534E-03,2.221122E-03,&
      & 3.611348E-03,2.607591E-03,2.182978E-03,1.980355E-03,3.537928E-03/
+
 
       data  forref(:, :) /                                              &
      & 1.837004E-05,1.303163E-05,1.029351E-05,2.410602E-05,2.183948E-05,&
@@ -31367,7 +31381,7 @@
       end module module_radlw_kgb13      !
 !========================================!
 
-!> \defgroup module_radlw_kgb14 module_radlw_kgb14
+
 !> This module sets up absorption coefficients for band 14: 2250-2380 cm-1 (low - co2; high - co2)
 !========================================!
       module module_radlw_kgb14          !
@@ -31390,8 +31404,8 @@
       integer, public :: MFR14
       parameter (MSA14=65, MSB14=235, MSF14=10, MFR14=4)
 
-      real (kind=kind_phys), public ::                                 &
-     &       absa(NG14,MSA14), absb(NG14,MSB14), selfref(NG14,MSF14),  &
+      real (kind=kind_phys), public ::                                  &
+     &       absa(NG14,MSA14), absb(NG14,MSB14), selfref(NG14,MSF14),   &
      &       forref(NG14,MFR14), fracrefa(NG14), fracrefb(NG14)
 
 !>  the array absa(NG14,65) = ka(NG14,5,13) contains absorption coefs
@@ -31574,6 +31588,7 @@
      & 2.375139E-03,1.332864E+03,3.109563E-03,1.332268E+03,4.166618E-03,&
      & 1.331343E+03,5.708828E-03,1.330438E+03,7.961458E-03,1.329279E+03/
 
+
       data  selfref(:, :) /                                             &
      & 3.930090E-03,3.388899E-03,3.293934E-03,2.818632E-03,2.760914E-03,&
      & 2.344326E-03,2.314284E-03,1.949837E-03,1.940018E-03,1.621728E-03,&
@@ -31586,13 +31601,14 @@
 
       data  fracrefa(:) / 9.520200e-01,4.797805e-02 /
 
+
       data  fracrefb(:) / 9.474890e-01,5.252305e-02 /
 
 !........................................!
       end module module_radlw_kgb14      !
 !========================================!
 
-!> \defgroup module_radlw_kgb15 module_radlw_kgb15
+
 !> This module sets up absorption coefficients for band 15: 2380-2600 cm-1 (low - n2o, co2; high - /)
 !========================================!
       module module_radlw_kgb15          !
@@ -31903,6 +31919,7 @@
      & 2.912614E-01,1.023710E+03,2.898782E-01,7.698743E+02,2.810157E-01,&
      & 5.161611E+02,2.595202E-01,2.626492E+02,1.489091E-01,1.057919E+01/
 
+
       data  ka_mn2 (:,:, 1:10) /                                           &
      & 5.594486E-07,1.738457E-06,5.593694E-07,1.738457E-06,5.597305E-07,&
      & 1.738457E-06,5.600172E-07,1.738457E-06,5.620929E-07,1.738457E-06,&
@@ -31975,12 +31992,12 @@
      & 1.222506E-06,5.315800E-07,1.222506E-06,5.362903E-07,1.171908E-06,&
      & 5.310523E-07,1.221984E-06 /
 
+
       data  selfref(:, :) /                                             &
      & 2.113244E-03,2.866145E-03,1.732586E-03,2.379109E-03,1.420592E-03,&
      & 1.974833E-03,1.164859E-03,1.639260E-03,9.552300E-04,1.360716E-03,&
      & 7.833818E-04,1.129511E-03,6.424952E-04,9.375903E-04,5.269840E-04,&
      & 7.782827E-04,4.322720E-04,6.460456E-04,3.546087E-04,5.362797E-04/
-
 
       data  forref(:, :) /                                              &
      & 4.599959E-07,1.470318E-07,4.573767E-07,1.893844E-07,4.480988E-07,&
@@ -31996,7 +32013,7 @@
       end module module_radlw_kgb15      !
 !========================================!
 
-!> \defgroup module_radlw_kgb16 module_radlw_kgb16
+
 !> This module sets up absorption coefficients for band 16: 2600-3000 cm-1 (low - h2o, ch4; high - /)
 !========================================!
       module module_radlw_kgb16          !
@@ -32020,6 +32037,7 @@
 !> MAF16=9
       integer, public :: MAF16
       parameter (MSA16=585, MSB16=235, MSF16=10, MFR16=4, MAF16=9)
+
 
       real (kind=kind_phys), public ::          forref(NG16,MFR16),    &
      &      absa(NG16,MSA16), absb(NG16,MSB16), selfref(NG16,MSF16),   &
@@ -32314,7 +32332,6 @@
      & 2.000698E-03,8.865844E-01,1.592790E-03,6.690432E-01,1.154669E-03,&
      & 4.515378E-01,6.775183E-04,2.340734E-01,1.112603E-04,1.674009E-02/
 
-
       data   absb(:,  1:120) /                                          &
      & 7.138436E-03,4.154584E+00,7.449146E-03,4.156656E+00,7.746384E-03,&
      & 4.155860E+00,8.043989E-03,4.152614E+00,8.349585E-03,4.147179E+00,&
@@ -32412,11 +32429,13 @@
      & 1.660522E-06,4.144838E+00,1.824662E-06,4.154784E+00,1.986789E-06,&
      & 4.162636E+00,2.153293E-06,4.167493E+00,2.349694E-06,4.169450E+00/
 
+
       data  selfref(:, :) /                                             &
      & 2.338209E-03,5.039018E-03,1.942789E-03,4.660123E-03,1.619094E-03,&
      & 4.309895E-03,1.353323E-03,3.986148E-03,1.134457E-03,3.686872E-03,&
      & 9.536756E-04,3.410199E-03,8.039022E-04,3.154424E-03,6.794502E-04,&
      & 2.917946E-03,5.757334E-04,2.699306E-03,4.890464E-04,2.497155E-03/
+
 
       data  forref(:, :) /                                              &
      & 4.193838E-05,2.979746E-04,6.150636E-05,2.714236E-04,1.086590E-04,&
@@ -32434,5 +32453,6 @@
 !........................................!
       end module module_radlw_kgb16      !
 !========================================!
-!> @}
+
+!! @}
 !! @}

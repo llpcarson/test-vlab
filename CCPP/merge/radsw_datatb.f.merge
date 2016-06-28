@@ -65,8 +65,14 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-!> \defgroup module_radsw_ref module_radsw_ref
-!> This module contains reference temperature and pressure
+
+!> This module contains reference temperature and pressure.
+!!
+!! - These pressures are chosen such that the ln of the first pressure
+!!   has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
+!!   each subsequent ln(pressure) differs from the previous one by 0.2.
+!! - These temperatures are associated with the respective
+!!   pressures for the MLS standard atmosphere.
 !========================================!
       module module_radsw_ref            !
 !........................................!
@@ -77,12 +83,8 @@
 !
       public
 
-!  ---  reference pressure and temperature
-!     real (kind=kind_phys), dimension(59) :: pref, preflog, tref
-!> reference pressure
-      real (kind=kind_phys), dimension(59) :: preflog 
-!> reference temperature
-      real (kind=kind_phys), dimension(59) :: tref
+!> Reference pressure and temperature
+     real (kind=kind_phys), dimension(59) :: preflog, tref
 
 !  ...  these pressures are chosen such that the ln of the first pressure
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -136,9 +138,8 @@
       end module module_radsw_ref        !
 !========================================!
 
-!> \defgroup module_radsw_cldprtb module_radsw_cldprtb
+
 !> This module contains coefficients of cloud optical properties for each of the spectral bands.
-!! It is modified from AER/ECMWF RRTM SW radiation package subroutine "susrtop".
 !========================================!
       module module_radsw_cldprtb        !
 !........................................!
@@ -225,6 +226,7 @@
 !> fdelta from fu, unitless
       real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
      &       fdlice3
+
 !> \name coefficients from ebert and curry method
 !!@{
       real (kind=kind_phys), dimension(5), public ::                   &
@@ -1843,14 +1845,12 @@
      & 1.603020e-02,1.490925e-02,1.372635e-02,1.247363e-02,1.114319e-02,&
      & 9.727157e-03 /
 
-!  --- ...  coefficients to compute tau, ssa, asy for rain drop and
-!           (chou 1999), and snowflake (fu 2001 private communication)
 !> \name coefficients to compute tau, ssa, asy for rain drop and (chou 1999), and snowflake (fu 2001 private communication)
 !!@{
       real (kind=kind_phys), public  :: a0r, a1r, a0s, a1s
       data a0r,a1r / 3.07e-3, 0.0 /,    a0s,a1s / 0.0,     1.5 /  ! fu's coeff
 
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::         &
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
      &       b0r, b0s, b1s, c0r, c0s
       data b0r  / 0.466, 0.437, 0.416, 0.391, 0.374, 0.352, 0.183,      &
      &            0.048, 0.012, 0.000, 0.000, 0.000, 0.000, 0.496 /
@@ -1866,8 +1866,9 @@
       end module module_radsw_cldprtb    !
 !========================================!
 
-!> \defgroup module_radsw_sflux module_radsw_sflux
-!> This module contains spectral distribution of solar radiation flux used to obtain the incoming solar flux at toa.
+
+!> This module contains spectral distribution of solar radiation flux 
+!! used to obtain the incoming solar flux at toa.
 !========================================!
       module module_radsw_sflux          !
 !........................................!
@@ -1895,14 +1896,14 @@
 !
       public
 !
-      integer, parameter :: MFS01 = 1      
-      integer, parameter :: MFS02 = 5      
-      integer, parameter :: MFS03 = 9      
-      integer, parameter :: MFB01 = 7      
-      integer, parameter :: MFB02 = 2     
-      integer, parameter :: MFB03 = 5    
+      integer, parameter :: MFS01 = 1      !
+      integer, parameter :: MFS02 = 5      !
+      integer, parameter :: MFS03 = 9      !
+      integer, parameter :: MFB01 = 7      !
+      integer, parameter :: MFB02 = 2      !
+      integer, parameter :: MFB03 = 5      !
 !
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::        &
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
      &       strrat, specwt
 
 !  ---  original strrat
@@ -1925,9 +1926,9 @@
 
       real (kind=kind_phys), parameter, public :: scalekur=50.15/48.37
 !
-      real (kind=kind_phys), target, public ::                         &
-     &       sfluxref01(NGMAX,MFS01,MFB01),                            &
-     &       sfluxref02(NGMAX,MFS02,MFB02),                            &
+      real (kind=kind_phys), target, public ::                          &
+     &       sfluxref01(NGMAX,MFS01,MFB01),                             &
+     &       sfluxref02(NGMAX,MFS02,MFB02),                             &
      &       sfluxref03(NGMAX,MFS03,MFB03)
 
 !  ---  setup solar sfluxref01
@@ -2183,7 +2184,7 @@
       end module module_radsw_sflux      !
 !========================================!
 
-!> \defgroup module_radsw_kgb16 module_radsw_kgb16
+
 !> This module sets up absorption coefficients for band 16: 2600-3250 cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
       module module_radsw_kgb16          !
@@ -2258,7 +2259,6 @@
 
       real (kind=kind_phys), public ::  forref(MFR16,NG16)
 
-!  ---  rayleigh extinction coefficient at v = 2925 cm-1.
 !> rayleigh extinction coefficient at v = \f$2925 cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 2.91e-10
 
@@ -3377,7 +3377,7 @@
       end module module_radsw_kgb16      !
 !========================================!
 
-!> \defgroup module_radsw_kgb17 module_radsw_kgb17
+
 !> This module sets up absorption coeffients for band 17: 3250-4000 cm-1 (low - h2o,co2; high - h2o,co2)
 !========================================!
       module module_radsw_kgb17          !
@@ -3452,7 +3452,6 @@
 
       real (kind=kind_phys), public ::   forref(MFR17,NG17)
 
-!  ---  rayleigh extinction coefficient at v = 3625 cm-1.
 !> rayleigh extinction coefficient at v = 3625 \f$cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 6.86e-10
 
@@ -4955,6 +4954,7 @@
      & .2807593E+03,.2662071E+03,.2851390E+03,.3330291E+03,.3880528E+03,&
      & .4442749E+03,.4356281E+03,.3814241E+03,.3273328E+03,.2789760E+03,&
      & .2624596E+03,.2797763E+03,.3260499E+03,.3798827E+03,.4349494E+03/
+
 
       data   absb(  1:175, 1)   /                                       &
      & .1055400E-06,.3859600E-04,.6540200E-04,.8854000E-04,.1960100E-03,&
@@ -7986,7 +7986,7 @@
       end module module_radsw_kgb17      !
 !========================================!
 
-!> \defgroup module_radsw_kgb18 module_radsw_kgb18
+
 !> This module sets up absorption coeffients for band 18: 4000-4650 cm-1 (low - h2o,ch4; high - ch4)
 !========================================!
       module module_radsw_kgb18          !
@@ -8061,9 +8061,9 @@
 
       real (kind=kind_phys), public :: forref(MFR18,NG18)
 
-!  ---  rayleigh extinction coefficient at v = 4325 cm-1.
 !> rayleigh extinction coefficient at \f$v=4325 cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 1.39e-09
+
 
       data   absa(  1:180, 1)   /                                       &
      & .1481300E-04,.3984200E-04,.4336200E-04,.4309500E-04,.3981100E-04,&
@@ -9065,7 +9065,6 @@
      & .3941719E+00,.2087774E+00,.1996808E+00,.2143237E+00,.2388436E+00,&
      & .2697785E+00,.3069660E+00,.3509603E+00,.4031790E+00,.4260779E+00/
 
-
       data   absb(  1:120, 1)  /                                        &
      & .1281000E-03,.1289100E-03,.1289000E-03,.1271300E-03,.1247700E-03,&
      & .1065300E-03,.1066700E-03,.1064800E-03,.1047300E-03,.1029300E-03,&
@@ -9505,7 +9504,6 @@
       end module module_radsw_kgb18      !
 !========================================!
 
-!> \defgroup module_radsw_kgb19 module_radsw_kgb19
 !> This module sets up absorption coeffients for band 19: 4650-5150 cm-1 (low - h2o,co2; high - co2)
 !========================================!
       module module_radsw_kgb19          !
@@ -9580,25 +9578,8 @@
 
       real (kind=kind_phys), public :: forref(MFR19,NG19)
 
-!  ---  rayleigh extinction coefficient at v = 4900 cm-1.
 !> rayleigh extinction coefficient at \f$v=4900cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 2.29e-09
-
-!     the array absa(585,NG19) (ka(9,5,13,NG19)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 8, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1:180, 1)   /                                       &
      & .1498100E-05,.2665900E-05,.3187400E-05,.3550900E-05,.3759300E-05,&
@@ -10600,6 +10581,7 @@
      & .1426012E+00,.2869377E+00,.2542235E+00,.2278499E+00,.2081519E+00,&
      & .1935477E+00,.1842067E+00,.1812086E+00,.1856280E+00,.1773106E+00/
 
+
       data   absb(  1:120, 1)   /                                       &
      & .8084900E-06,.8136200E-06,.8139100E-06,.8183200E-06,.8100000E-06,&
      & .6259300E-06,.6309000E-06,.6315800E-06,.6282100E-06,.6250200E-06,&
@@ -11040,7 +11022,7 @@
       end module module_radsw_kgb19      !
 !========================================!
 
-!> \defgroup module_radsw_kgb20  module_radsw_kgb20
+
 !> This module sets up absorption coeffients for band 20: 5150-6150 cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radsw_kgb20          !
@@ -11118,7 +11100,6 @@
 !!    etc.  the second index runs over the g-channel (1 to 10).
       real (kind=kind_phys), public :: selfref(MSF20,NG20)
 
-!  ---  rayleigh extinction coefficient at v = 5670 cm-1.
 !> rayleigh extinction coefficient at \f$v=5670cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 4.12e-09
 
@@ -11793,6 +11774,7 @@
      & .4502450E-02,.3367180E-02,.4682248E-02,.4680093E-02,.4684726E-02,&
      & .3680135E-02,.5243173E-02,.5159096E-02,.5132896E-02,.3931064E-02/
 
+
       data   selfref(1:10,1:10)  /                                      &
      & .2170580E-03,.1763910E-03,.1433420E-03,.1164860E-03,.9466140E-04,&
      & .7692570E-04,.6251310E-04,.5080070E-04,.4128280E-04,.3354810E-04,&
@@ -11824,7 +11806,7 @@
       end module module_radsw_kgb20      !
 !========================================!
 
-!> \defgroup module_radsw_kgb21 module_radsw_kgb21
+
 !> This module sets up absorption coeffients for band 21: 6150-7700 cm-1 (low - h2o,co2; high - h2o,co2)
 !========================================!
       module module_radsw_kgb21          !
@@ -11899,9 +11881,9 @@
 !!    etc.  the second index runs over the g-channel (1 to 10).
       real (kind=kind_phys), public :: selfref(MSF21,NG21)
 
-!  ---  rayleigh extinction coefficient at v = 6925 cm-1.
 !> rayleigh extinction coefficient at \f$v=6925cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 9.41e-09
+
 
       data   absa(  1:180, 1)   /                                       &
      & .3148200E-07,.6401000E-05,.9501700E-05,.1173500E-04,.1356100E-04,&
@@ -13152,6 +13134,7 @@
      & .2920139E+01,.2909436E+01,.2922425E+01,.2961874E+01,.3037648E+01,&
      & .3239868E+01,.3205483E+01,.3018784E+01,.2942726E+01,.2905212E+01,&
      & .2895638E+01,.2910719E+01,.2952008E+01,.3029378E+01,.3233244E+01/
+
 
       data   absb(  1:175, 1)   /                                       &
      & .4063300E-08,.6471800E-06,.7956700E-06,.8126400E-06,.2508000E-07,&
@@ -15681,7 +15664,6 @@
       end module module_radsw_kgb21      !
 !========================================!
 
-!> \defgroup module_radsw_kgb22  module_radsw_kgb22
 !> This module sets up absorption coeffients for band 22: 7700-8050 cm-1 (low - h2o, o2; high - o2)
 !========================================!
       module module_radsw_kgb22          !
@@ -15707,8 +15689,6 @@
 !
       private
 !
-!> msa22=585
-      integer,  public :: MSA22
 !> msb22=235
       integer,  public :: MSB22
 !> msf22=10
@@ -15756,7 +15736,6 @@
 !!    etc.  the second index runs over the g-channel (1 to 2).
       real (kind=kind_phys), public :: selfref(MSF22,NG22)
 
-!  ---  rayleigh extinction coefficient at v = 8000 cm-1.
 !> rayleigh extinction coefficient at \f$v=8000cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 1.54e-08
 
@@ -16011,6 +15990,7 @@
      & .1698933E-03,.3839069E-03,.3546918E-03,.3299208E-03,.3063646E-03,&
      & .2835973E-03,.2614972E-03,.2400614E-03,.2193165E-03,.2060528E-03/
 
+
       data   absb(  1:120, 1)   /                                       &
      & .1148431E-07,.1166076E-07,.1181018E-07,.1191914E-07,.1198918E-07,&
      & .9447302E-08,.9588853E-08,.9702321E-08,.9781170E-08,.9829657E-08,&
@@ -16128,7 +16108,7 @@
       end module module_radsw_kgb22      !
 !========================================!
 
-!> \defgroup module_radsw_kgb23 module_radsw_kgb23
+
 !> This module sets up absorption coeffients for band 23: 8050-12850 cm-1 (low - h2o; high - nothing)
 !========================================!
       module module_radsw_kgb23          !
@@ -16191,7 +16171,6 @@
 !> rayleigh extinction coefficient at all v
       real (kind=kind_phys), public :: rayl(NG23)
 
-!  ---  average giver et al. correction factor for this band.
 !> average giver et al. correction factor for this band.
       real (kind=kind_phys), parameter, public :: givfac = 1.029
 
@@ -16199,22 +16178,6 @@
       data   rayl (1:10)         /                                      &
      & .5828588E-07,.5935776E-07,.5255710E-07,.4733880E-07,.4174660E-07,&
      & .3980970E-07,.4007860E-07,.3674780E-07,.3456143E-07,.3212082E-07/
-
-!     the array absa(65,NG23) (ka(5,13,NG23)) contains absorption coefs at
-!     the 16 chosen g-values for a range of pressure levels> ~100mb,
-!     temperatures, and binary species parameters (see taumol.f for definition).
-!     the first index in the array, js, runs from 1 to 9, and corresponds to
-!     different values of the binary species parameter.  for instance,
-!     js=1 refers to dry air, js = 2 corresponds to the paramter value 1/8,
-!     js = 3 corresponds to the parameter value 2/8, etc.  the second index
-!     in the array, jt, which runs from 1 to 5, corresponds to different
-!     temperatures.  more specifically, jt = 3 means that the data are for
-!     the reference temperature tref for this  pressure level, jt = 2 refers
-!     to tref-15, jt = 1 is for tref-30, jt = 4 is for tref+15, and jt = 5
-!     is for tref+30.  the third index, jp, runs from 1 to 13 and refers
-!     to the jpth reference pressure level (see taumol.f for these levels
-!     in mb).  the fourth index, ig, goes from 1 to 10, and indicates
-!     which g-interval the absorption coefficients are for.
 
       data   absa(  1: 65, 1)   /                                       &
      & .4349017E-06,.4470059E-06,.4658775E-06,.4619598E-06,.4690252E-06,&
@@ -16375,6 +16338,7 @@
      & .1428640E-03,.2204120E-03,.1829430E-03,.1509410E-03,.2312169E-03,&
      & .2065332E-03,.1728525E-03,.2740557E-03,.2606475E-03,.2434367E-03/
 
+
       data   selfref(1:10,1:10)  /                                      &
      & .1042197E-04,.8992829E-05,.7807679E-05,.6819782E-05,.5991772E-05,&
      & .5293756E-05,.4701789E-05,.4196660E-05,.3762952E-05,.3388235E-05,&
@@ -16401,7 +16365,6 @@
       end module module_radsw_kgb23      !
 !========================================!
 
-!> \defgroup module_radsw_kgb24 module_radsw_kgb24
 !> This module sets up absorption coeffients for band 24: 12850-16000 cm-1 (low - h2o, o2; high - o2)
 !========================================!
       module module_radsw_kgb24          !
@@ -16488,10 +16451,6 @@
       real (kind=kind_phys), public :: rayla(NG24,MFX24)
       real (kind=kind_phys), public :: raylb(NG24)
 
-     &       absa(MSA24,NG24), absb(MSB24,NG24), selfref(MSF24,NG24),  &
-     &       abso3a(NG24), abso3b(NG24), rayla(NG24,MFX24), raylb(NG24)
-
-!  ---  rayleigh extinction coefficient at all v
       data   rayla (1: 8,1:9)    /            .1368516E-06,.1805397E-06,&
      & .2243572E-06,.2191201E-06,.1450164E-06,.1344697E-06,.1214120E-06,&
      & .1199659E-06,.1672218E-06,.2134978E-06,.1793655E-06,.1624268E-06,&
@@ -16517,6 +16476,7 @@
 
       data   abso3b(1: 8)      / .3634220E-01,.8528316E-01,.1832493E+00,&
      & .2884644E+00,.3568897E+00,.3534033E+00,.1043294E+00,.2575196E-01/
+
 
       data   absa(  1:180, 1)   /                                       &
      & .9478488E-09,.2006042E-07,.2228363E-07,.2263495E-07,.2547446E-07,&
@@ -17946,6 +17906,7 @@
      & .5624835E-05,.1676442E-05,.3856211E-07,.3141158E-05,.1459015E-07,&
      & .2568816E-07,.8749816E-12,.8199214E-12,.8132942E-12/
 
+
       data   selfref(1:10,1: 8)  /                                      &
      & .1216369E-04,.7423490E-05,.4532882E-05,.2769295E-05,.1692770E-05,&
      & .1035295E-05,.6335399E-06,.3879104E-06,.2376510E-06,.1456812E-06,&
@@ -17968,7 +17929,7 @@
       end module module_radsw_kgb24      !
 !========================================!
 
-!> \defgroup module_radsw_kgb25 module_radsw_kgb25
+
 !> This module sets up absorption coeffients for band 25: 16000-22650 cm-1 (low - h2o; high - nothing)
 !========================================!
       module module_radsw_kgb25          !
@@ -18024,16 +17985,15 @@
 !> o3
       real (kind=kind_phys), public :: abso3b(NG25)
 
-!  ---  rayleigh extinction coefficient at v =      cm-1.
       data   rayl  (1: 6)        /                         .9811320E-06,&
      & .8256050E-06,.6146670E-06,.3838724E-06,.4417251E-06,.3613850E-06/
 
-!  ---  o3
       data   abso3a(1: 6)        /                         .2326640E-01,&
      & .5761540E-01,.1854021E+00,.3896100E+00,.3610619E+00,.4362158E+00/
 
       data   abso3b(1: 6)        /                         .1769170E-01,&
      & .4641850E-01,.1449232E+00,.3484920E+00,.4676420E+00,.5178092E+00/
+
 
       data   absa(  1: 65, 1)   /                                       &
      & .1646100E-08,.1678200E-08,.1933900E-08,.1710000E-08,.1704500E-08,&
@@ -18129,7 +18089,7 @@
       end module module_radsw_kgb25      !
 !========================================!
 
-!> \defgroup module_radsw_kgb26 module_radsw_kgb26
+
 !> This module sets up absorption coeffients for band 26: 22650-29000 cm-1 (low - nothing; high - nothing)
 !========================================!
       module module_radsw_kgb26          !
@@ -18158,7 +18118,6 @@
 !> rayleigh extinction coefficient at all v
       real (kind=kind_phys), public ::  rayl(NG26)
 
-!  ---  rayleigh extinction coefficient at all v
       data   rayl  (1: 6)        /                         .1212630E-05,&
      & .1434280E-05,.1799798E-05,.2307617E-05,.2814376E-05,.3092339E-05/
 
@@ -18166,7 +18125,7 @@
       end module module_radsw_kgb26      !
 !========================================!
 
-!> \defgroup module_radsw_kgb27 module_radsw_kgb27
+
 !> This module sets up absorption coeffients for band 27: 29000-38000 cm-1 (low - o3; high - o3)
 !========================================!
       module module_radsw_kgb27          !
@@ -18198,8 +18157,6 @@
       integer,  public :: MSB27
       parameter (MSA27=65, MSB27=235)
 
-      real (kind=kind_phys), public ::                                 &
-     &       absa(MSA27,NG27), absb(MSB27,NG27), rayl(NG27)
 
 !>    the array absa(65,NG27) (ka(5,13,NG27)) contains absorption coefs at
 !!    the 16 chosen g-values for a range of pressure levels> ~100mb,
@@ -18235,7 +18192,7 @@
       real (kind=kind_phys), public :: rayl(NG27)
 
 !  ---  rayleigh extinction coefficient at v =      cm-1.
-      data   rayl (1: 8)      / .3445340E-05,.4144800E-05,.4950690E-05,&
+      data   rayl (1: 8)       / .3445340E-05,.4144800E-05,.4950690E-05,&
      & .5812040E-05,.6697480E-05,.7564880E-05,.8886761E-05,.9744758E-05/
 
       data   absa(  1: 65, 1)   /                                       &
@@ -18357,6 +18314,7 @@
      & .9937640E+03,.9978135E+03,.1000658E+04,.1002444E+04,.1003004E+04,&
      & .9936612E+03,.9978143E+03,.1000698E+04,.1002407E+04,.1003004E+04,&
      & .9937589E+03,.9978125E+03,.1000708E+04,.1002433E+04,.1003006E+04/
+
 
       data   absb(  1:120, 1)   /                                       &
      & .1603600E+00,.1639900E+00,.1719800E+00,.1845500E+00,.2017300E+00,&
@@ -18770,7 +18728,7 @@
       end module module_radsw_kgb27      !
 !========================================!
 
-!> \defgroup module_radsw_kgb28 module_radsw_kgb28
+
 !> This module sets up absorption coeffients for band 28: 38000-50000 cm-1 (low - o3,o2; high - o3,o2)
 !========================================!
       module module_radsw_kgb28          !
@@ -18802,6 +18760,7 @@
       integer,  public :: MSB28
       parameter (MSA28=585, MSB28=1175)
 
+
 !>     the array absa(585,NG28) (ka((9,5,13,NG28)) contains absorption coefs at
 !!     the 16 chosen g-values for a range of pressure levels> ~100mb,
 !!     temperatures, and binary species parameters (see taumol.f for definition).
@@ -18832,7 +18791,6 @@
 !!     and tells us which g-interval the absorption coefficients are for.
       real (kind=kind_phys), public :: absb(MSB28,NG28)
 
-!  ---  rayleigh extinction coefficient at v =      cm-1.
 !> rayleigh extinction coefficient
       real (kind=kind_phys), parameter, public :: rayl = 2.02e-05
 
@@ -21084,7 +21042,7 @@
       end module module_radsw_kgb28      !
 !========================================!
 
-!> \defgroup module_radsw_kgb29 module_radsw_kgb29
+
 !> This module sets up absorption coeffients for band 29: 820-2600 cm-1 (low - h2o; high - co2)
 !========================================!
       module module_radsw_kgb29          !
@@ -21165,7 +21123,6 @@
 !> co2
       real (kind=kind_phys), public :: absco2(NG29)
 
-!  ---  rayleigh extinction coefficient at v = 2200 cm-1.
 !> rayleigh extinction coefficient at \f$v=2200cm^{-1}\f$
       real (kind=kind_phys), parameter, public :: rayl = 9.30e-11
 
@@ -22025,5 +21982,5 @@
 !........................................!
       end module module_radsw_kgb29      !
 !========================================!
-!> @}
+!! @}
 !! @}
