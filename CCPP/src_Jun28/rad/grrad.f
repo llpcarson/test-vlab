@@ -464,6 +464,7 @@
 !
 !===> ...  begin here
 !
+!  ---  set up control variables
 !> -# Set up control variables and external module variables in module physparam
       itsfc  = iemsflg / 10             ! sfc air/ground temp control
       loz1st = (ioznflg == 0)           ! first-time clim ozone data read flag
@@ -692,6 +693,7 @@
       endif
 !> -# Call astronomy updata routine, yearly update, no time interpolation
 !!\n  - subroutine called: module_radiation_astronomy::sol_update()
+!  --- ...  call astronomy update routine, yearly update, no time interpolation
 
       if (lsswr) then
 
@@ -712,9 +714,9 @@
      &     )
 
       endif  ! end_if_lsswr_block
-
 !> -# Call aerosols update routine, monthly update, no time interpolation
 !!\n  - subroutine called: module_radiation_aerosols::aer_update()
+!  --- ...  call aerosols update routine, monthly update, no time interpolation
 
       if ( lmon_chg ) then
         call aer_update ( iyear, imon, me )
@@ -722,6 +724,7 @@
 
 !> -# Call co2 and other gases update routine
 !!\n  - subroutine called: module_radiation_gases::gas_update()
+!  --- ...  call co2 and other gases update routine
 
       if ( monthd /= kmon ) then
         monthd = kmon
@@ -735,9 +738,11 @@
       if ( loz1st ) loz1st = .false.
 
 !> -# Call surface update routine (currently not needed)
+!  --- ...  call surface update routine (currently not needed)
 !     call sfc_update ( iyear, imon, me )
 
 !> -# Call clouds update routine (currently not needed)
+!  --- ...  call clouds update routine (currently not needed)
 !     call cld_update ( iyear, imon, me )
 !
       return
@@ -1343,7 +1348,8 @@
 
 !     print *,' in grrad : raddt=',raddt
 
-!> -# Setup surface ground temperature and ground/air skin temperature if required. 
+!> -# Setup surface ground temp and ground/air skin temp (tskn, tsfg)
+!  --- ...  setup surface ground temp and ground/air skin temp if required
 
       if ( itsfc == 0 ) then            ! use same sfc skin-air/ground temp
         do i = 1, IM
@@ -1359,7 +1365,8 @@
         enddo
       endif
 
-!> -# Prepare atmospheric profiles for radiation input.
+!> -# Prepare atmospheric profiles for radiation input
+!  --- ...  prepare atmospheric profiles for radiation input
 !
 !           convert pressure unit from pa to mb
       do k = 1, LM
@@ -1372,7 +1379,8 @@
           tlyr(i,k1)   = tgrs(i,k)
           prslk1(i,k1) = prslk(i,k)
 
-!> -# Compute relative humidity.
+!> -# Compute relative humidity
+!  --- ...  compute relative humidity
 !         es  = min( prsl(i,k), 0.001 * fpvs( tgrs(i,k) ) )   ! fpvs in pa
           es  = min( prsl(i,k),  fpvs( tgrs(i,k) ) )  ! fpvs and prsl in pa
           qs  = max( QMIN, eps * es / (prsl(i,k) + epsm1*es) )
@@ -1438,6 +1446,7 @@
       endif   ! if_icmphys
 
 !> -# Get layer ozone mass mixing ratio (olyr)
+!  --- ...  get layer ozone mass mixing ratio
 
       if (ntoz > 0) then            ! interactive ozone generation
 
@@ -1460,7 +1469,8 @@
 
       endif                            ! end_if_ntoz
 
-!> -# Call coszmn(), to compute cosin of zenith angle (coszen, coszdg).
+!> -# Compute cosin of zenith angle (coszen, coszdg)
+!  --- ...  compute cosin of zenith angle
 
       call coszmn                                                       &
 !  ---  inputs:
@@ -1468,8 +1478,7 @@
 !  ---  outputs:
      &       coszen, coszdg                                             &
      &      )
-
-!> -# Call getgases(), to set up non-prognostic gas volume mixing ratioes (gasvmr).
+!> -# Set up non-prognostic gas volume mixing ratioes(gasvmr)
 !!\n  - gasvmr(:,:,1)  -  co2 volume mixing ratio
 !!\n  - gasvmr(:,:,2)  -  n2o volume mixing ratio
 !!\n  - gasvmr(:,:,3)  -  ch4 volume mixing ratio
@@ -1490,7 +1499,8 @@
      &      gasvmr                                                      &
      &     )
 
-!> -# Get temperature at layer interface, and layer moisture.
+!> -# Get temperature at layer interface, and layer moisture
+!  --- ...  get temperature at layer interface, and layer moisture
 
       do k = 2, LMK
         do i = 1, IM
@@ -1572,6 +1582,7 @@
       endif                              ! end_if_ivflip
 
 !> -# Check for daytime points(ndate, idxday)
+!  --- ...  check for daytime points
 
       nday = 0
       do i = 1, IM
@@ -1587,8 +1598,9 @@
 !      write(0,*)' tlvl=',tlvl(ipt,1:65)
 !      write(0,*)' qlyr=',qlyr(ipt,1:10)*1000
 
-!> -# Call module_radiation_aerosols::setaer(),to setup aerosols property
-!! profile for radiation.
+!> -# Calling module_radiation_aerosols::setaer(), setup aerosols property
+!! profile for radiation (faersw,faerlw,aerodp)
+!  --- ...  setup aerosols property profile for radiation
 
 !check  print *,' in grrad : calling setaer '
 
@@ -1607,7 +1619,6 @@
 !!    - For zhao/moorthi's prognostic cloud+pdfcld, call module_radiation_clouds::progcld3()
 !!\n   for  diagnostic cloud  ---
 !!    - call module_radiation_clouds::diagcld1()
-
 !  --- ...  obtain cloud information for radiation calculations
 
       if (ntcw > 0) then                   ! prognostic cloud scheme
@@ -1727,8 +1738,9 @@
       if (lsswr) then
 
 !> -# calling module_radiation_surface::setalb(),setup surface albedo
-!!  for SW radiation, include xw (nov04) sea-ice.
+!!  for SW radiation, incl xw (nov04) sea-ice
 
+!  ---  setup surface albedo for sw radiation, incl xw (nov04) sea-ice
 
         call setalb                                                     &
 !  ---  inputs:
@@ -1739,7 +1751,9 @@
      &       sfcalb                                                     &
      &     )
 
-!> -# Approximate mean surface albedo from vis- and nir-  diffuse values.
+!> -# Approximate mean surface albedo from vis- and nir-  diffuse values
+
+!  ---  approximate mean surface albedo from vis- and nir- diffuse values
 
         do i = 1, IM
           sfalb(i) = max(0.01, 0.5 * (sfcalb(i,2) + sfcalb(i,4)))
@@ -1747,7 +1761,7 @@
 
         if (nday > 0) then
 
-!> -# Call module_radsw_main::swrad().
+!> -# Calling module_radsw_main::swrad()
 !     print *,' in grrad : calling swrad'
 
           if ( present(htrswb) .and. present(htrsw0)) then
@@ -1907,7 +1921,7 @@
 !      write(0,*)' htrsw=',htrsw(ipt,1:64)*86400
       if (lslwr) then
 
-!> -# Call module_radiation_surface::setemis(),to setup surface emissivity (sfcemis) for LW radiation.
+!> -# Calling module_radiation_surface::setemis(),setup surface emissivity (sfcemis) for LW radiation
 
         call setemis                                                    &
 !  ---  inputs:
@@ -1917,7 +1931,7 @@
      &       sfcemis                                                    &
      &     )
 
-!> -# Call module_radlw_main::lwrad().
+!> -# calling module_radlw_main::lwrad()
 !     print *,' in grrad : calling lwrad'
 
         if ( present(htrlwb) .and. present(htrlw0) ) then
@@ -2023,7 +2037,7 @@
 
       endif                                ! end_if_lslwr
 
-!> -# Save outputs.
+!> -# Save outputs
 !  --- ...  collect the fluxr data for wrtsfc
 
       if (lssav) then

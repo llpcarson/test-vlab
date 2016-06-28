@@ -19,6 +19,7 @@
 !                                                                      !
 !!!!!  ==========================================================  !!!!!
 
+!> \defgroup physparam physparam
 !! \ingroup rad
 !! @{
 !> This module defines commonly used control variables and parameters in physics related programs.
@@ -54,29 +55,38 @@
 ! ............................................. !
 
 !> SW heating rate unit control flag: =1:k/day; =2:k/second.
-      integer,parameter :: iswrate = 2  
-                                       
+      integer,parameter :: iswrate = 2  ! sw heating rate unit control flag
+                                        ! =1:k/day; =2:k/second.
 !> SW rare gases effect control flag (ch4,n2o,o2,...): =0:no; =1:yes.
-      integer,parameter :: iswrgas = 1
-                                       
+      integer,parameter :: iswrgas = 1  ! sw rare gases effect control flag (ch4,n2o,o2,...)
+                                        ! =0:no; =1:yes.
 !> SW optical property for liquid clouds
 !!\n =0:input cld opt depth, ignoring iswcice setting
 !!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite hu_and_stamnes_1993 method
 !!\n =2:not defined yet
-      integer,save      :: iswcliq = 1  
-                                       
+      integer,save      :: iswcliq = 1  ! sw optical property for liquid clouds
+                                        ! =0:input cld opt depth, ignoring iswcice setting
+                                        ! =1:input cwp,rew, use hu and stamnes(1993) method
+                                        ! =2:not defined yet
 !> SW optical property for ice clouds (only iswcliq>0)
 !!\n =0:not defined yet
 !!\n =1:input cip,rei, use Ebert and Curry (1992) \cite ebert_and_curry_1992 method
 !!\n =2:input cip,rei, use Streamer v3.0 (2001) \cite key_2001 method
 !!\n =3:input cip,rei, use Fu's method (1996) \cite fu_1996 method
-      integer,save      :: iswcice = 3  
-                                       
+      integer,save      :: iswcice = 3  ! sw optical property for ice clouds (only iswcliq>0)
+                                        ! =0:not defined yet
+                                        ! =1:input cip,rei, use ebert and curry (1992) method
+                                        ! =2:input cip,rei, use streamer v3.0 (2001) method
+                                        ! =3:input cip,rei, use fu's method (1996) method
 !> SW control flag for 2-stream transfer scheme
 !!\n =1:delta-eddington    (Joseph et al. 1976 \cite joseph_et_al_1976)
 !!\n =2:pifm               (Zdunkowski et al. 1980 \cite zdunkowski_et_al_1980)
 !!\n =3:discrete ordinates (Liou, 1973 \cite liou_1973)
-      integer,parameter :: iswmode = 2 
+      integer,parameter :: iswmode = 2  ! sw control flag for 2-stream transfer scheme
+                                        ! =1:delta-eddington    (joseph et al., 1976)
+                                        ! =2:pifm               (zdunkowski et al., 1980)
+                                        ! =3:discrete ordinates (liou, 1973)
+
 
 ! ............................................. !
 > \name  -1.2- Control flags for LW radiation  
@@ -134,9 +144,9 @@
       integer, save :: iaermdl = 0      
 !> aerosol effect control flag
       integer, save :: iaerflg = 0     
-!> LW aerosols effect control flag
+!> lw aerosols effect control flag
       logical, save :: lalwflg = .true. 
-!> SW aerosols effect control flag
+!> sw aerosols effect control flag
       logical, save :: laswflg = .true. 
 !> stratospheric volcanic effect flag
       logical, save :: lavoflg = .true. 
@@ -214,6 +224,7 @@
       integer, save :: isubclw = 0      
 !> initial permutaion seed for mcica radiation
       integer, save :: ipsd0   = 0    
+
 !
 !...................................!
       end module physparam          !

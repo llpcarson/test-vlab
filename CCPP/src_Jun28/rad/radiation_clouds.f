@@ -1,6 +1,6 @@
 !>  \file radiation_clouds.f
 !!  This file contains routines to compute cloud related quantities
-!!  for radiation computations.
+!!                for radiation computations
 !              module_radiation_clouds description             !!!!!
 !  ==========================================================  !!!!!
 !                                                                      !
@@ -223,7 +223,8 @@
       private
 
 !  ---  version tag and last revision date
-      character(40), parameter ::                                       &
+!> version tag and last revision date
+      character(40), parameter ::                        &             
      &   VTAGCLD='NCEP-Radiation_clouds    v5.1  Nov 2012 '
 !    &   VTAGCLD='NCEP-Radiation_clouds    v5.0  Aug 2012 '
 
@@ -289,7 +290,7 @@
 !  ---  those data will be set up by "cld_init"
 !     rhcl : tuned rh relation table for diagnostic cloud scheme
 
-!> tuned relative humidity relation table for diagnostic cloud scheme
+!> tuned rh relation table for diagnostic cloud scheme
       real (kind=kind_phys) :: rhcl(NBIN,NLON,NLAT,MCLD,NSEAL)
 
 !> upper limit of boundary layer clouds
@@ -305,7 +306,7 @@
 ! =================
 
 
-!> This subroutine is an initialization program for cloud-radiation calculations and sets up boundary layer cloud top.
+!> This subroutine is an initialization program for cloud-radiation calculations. It sets up boundary layer cloud top
 !!\param si              model vertical sigma layer interface
 !!\param NLAY            vertical layer number
 !!\param me              print control flag
@@ -375,7 +376,8 @@
       if ( icldflg == 0 ) then
         if (me == 0) print *,' - Using Diagnostic Cloud Method'
 
-!> -# Call rhtable() to set up tuned relative humidity table.
+!> -# Call rhtable(), set up tuned rh table
+!  ---  set up tuned rh table
 
         call rhtable( me, ier )
 
@@ -402,7 +404,7 @@
         endif
       endif
 
-!> -# Compute the top of BL cld (llyr), which is the topmost non cld(low) layer for stratiform (at or above lowest 0.1 of the atmosphere)
+!> -# Compute llyr - the top of BL cld and is topmost non cld(low) layer for stratiform (at or above lowest 0.1 of the atmosphere)
 
       if ( ivflip == 0 ) then    ! data from toa to sfc
         lab_do_k0 : do k = NLAY, 2, -1
@@ -426,6 +428,7 @@
       end subroutine cld_init
 !-----------------------------------
 !> @}
+
 
 !> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme.
 !!\param plyr    (IX,NLAY), model layer mean pressure in mb (100Pa)
@@ -614,6 +617,7 @@
       endif
 
 !> -# Find top pressure for each cloud domain for given latitude.
+!  ---  find top pressure for each cloud domain for given latitude
 !       ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,L,m,h;
 !  ---  i=1,2 are low-lat (<45 degree) and pole regions)
 
@@ -667,7 +671,6 @@
         enddo
 
       else
-
 !> -# Calculate layer cloud fraction.
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
@@ -1063,8 +1066,8 @@
         enddo
       endif
 
-!> -# Find top pressure (ptopc) for each cloud domain for given latitude.
-!    - ptopc(k,i): top pressure of each cld domain (k=1-4 are sfc,l,m,h; i=1,2 are low-lat (<45 degree) and pole regions)
+!> -# Find top pressure for each cloud domain for given latitude
+!!    - ptopc(k,i): top pressure of each cld domain (k=1-4 are sfc,l,m,h; i=1,2 are low-lat (<45 degree) and pole regions)
 
       do id = 1, 4
         tem1 = ptopc(id,2) - ptopc(id,1)
@@ -1125,7 +1128,7 @@
         enddo
       endif                            ! end_if_ivflip
 
-!> -# Calculate layer cloud fraction.
+!> -# Compute layer cloud fraction
 
       if ( ivflip == 0 ) then              ! input data from toa to sfc
 
@@ -1287,7 +1290,7 @@
         enddo
       endif
 
-!> -# Calculate effective ice cloud droplet radius.
+!> -# Compute effective ice cloud droplet radius.
 
       do k = 1, NLAY
         do i = 1, IX
@@ -1337,6 +1340,8 @@
 
 !> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions and
 !! clouds top/bottom layer indices for low, mid, and high clouds.
+!  ---  compute low, mid, high, total, and boundary layer cloud fractions
+!       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       The three cloud domain boundaries are defined by ptopc.  The cloud
 !       overlapping method is defined by control flag 'iovr', which may
 !       be different for lw and sw radiation programs.
@@ -1563,7 +1568,8 @@
         enddo
       endif
 
-!> -# Find top pressure (ptopc) for each cloud domain for given latitude.
+!> -# Find top pressure for each cloud domain for given latitude
+!  ---  find top pressure for each cloud domain for given latitude
 !       ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,l,m,h;
 !  ---  i=1,2 are low-lat (<45 degree) and pole regions)
 
@@ -1578,7 +1584,7 @@
         enddo
       enddo
 
-!> -# Calculate liquid/ice condensate path in \f$ g/m^2 \f$
+!> -# Compute liquid/ice condensate path in \f$ g/m^2 \f$
 
       if ( ivflip == 0 ) then          ! input data from toa to sfc
         do k = 1, nlay
@@ -1600,7 +1606,7 @@
         enddo
       endif                            ! end_if_ivflip
 
-!> -# Calculate effective liquid cloud droplet radius over land.
+!> -# Compute effective liquid cloud droplet radius over land.
 
       do i = 1, ix
         if (nint(slmsk(i)) == 1) then
@@ -1719,7 +1725,7 @@
         enddo
       endif
 
-!> -# Calculate effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
+!> -# Compute effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
 
       do k = 1, nlay
         do i = 1, ix
@@ -1764,6 +1770,8 @@
 
 !> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
 !! and clouds top/bottom layer indices for low, mid, and high clouds.
+!  ---  compute low, mid, high, total, and boundary layer cloud fractions
+!       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       the three cloud domain boundaries are defined by ptopc.  the cloud
 !       overlapping method is defined by control flag 'iovr', which may
 !       be different for lw and sw radiation programs.
@@ -1930,7 +1938,7 @@
 
         ireg = 4
 
-!> -# Get rh-cld relation for this lat.
+!> -# Get rh-cld relation for this lat
 
         lab_do_j : do j = 1, 3
           if (xlatdg > xlabdy(j)) then
@@ -1949,7 +1957,7 @@
           enddo
         enddo
 
-!> -# Linear transition between latitudinal regions.
+!> -# Linear transition betweeen latitudinal regions.
         do j = 1, 3
           xlnn = xlabdy(j) + xlim
           xlss = xlabdy(j) - xlim
@@ -2041,7 +2049,7 @@
         enddo
       enddo
 
-!> -# Calculate potential temperature and its lapse rate.
+!> -# Compute potential temperature and its lapse rate
 
       do k = 1, NLAY
         do i = 1, IX
@@ -2058,7 +2066,7 @@
         enddo
       enddo
 !
-!> -# Diagnostic method to find cloud amount cldtot, cldcnv.
+!> -# Diagnostic method to find cloud amount cldtot, cldcnv
 !
 
       if ( ivflip == 0 ) then                 ! input data from toa to sfc
@@ -2122,7 +2130,10 @@
         enddo                ! end_do_i_loop
 
 !>    - Calculate stratiform cloud and put into array 'cldtot' using the cld-rh relationship
-!!      from table look-up, where tables obtained using k.mitchell frequency distribution tuning.
+!!      from table look-up.where tables obtained using k.mitchell frequency distribution tuning
+!  ---  calculate stratiform cloud and put into array 'cldtot' using
+!       the cloud-rel.humidity relationship from table look-up..where
+!       tables obtained using k.mitchell frequency distribution tuning
 !bl       (observations are daily means from us af rtneph).....k.a.c.
 !bl       tables created without lowest 10 percent of atmos.....k.a.c.
 !      (observations are synoptic using -6,+3 window from rtneph)
@@ -2358,7 +2369,7 @@
 
       endif                                   ! end_if_ivflip
 
-!>    - Calculate diagnostic cloud optical depth.
+!>    - Compute diagnostic cloud optical depth
 
 !     cldtau = cldtau * taufac
 
@@ -2384,6 +2395,9 @@
 
 !> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions
 !! and cloud top/bottom layer indices for low, mid, and high clouds.
+!
+!===> ... compute low, mid, high, total, and boundary layer cloud fractions
+!         and clouds top/bottom layer indices for low, mid, and high clouds.
 !         the three cloud domain boundaries are defined by ptopc.  the cloud
 !         overlapping method is defined by control flag 'iovr', which may
 !         be different for lw and sw radiation programs.
@@ -2571,6 +2585,7 @@
 !       contains both bl and low clouds.
 
 !> -# Calculte high, mid, low cloud fractions and vertical indices of cloud tops/bases.
+
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
 
         do i = 1, IX
@@ -2743,6 +2758,7 @@
       end subroutine gethml
 !-----------------------------------
 !! @}
+
 
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !

@@ -110,7 +110,7 @@
 !                                                                          !
 !                                                                          !
 !                   a rapid radiative transfer model                       !
-!                       for the longwave region                            ! 
+!                       for the longwave region                            !
 !             for application to general circulation models                !
 !                                                                          !
 !                                                                          !
@@ -228,12 +228,11 @@
 !       apr 2012,  b. ferrier and y. hou -- added conversion factor to fu's!
 !                    cloud-snow optical property scheme.                   !
 !       nov 2012,  yu-tai hou        -- modified control parameters thru   !
-!                     module 'physparam'.                                  !  
+!                     module 'physparam'.                                  !
 !                                                                          !
 !!!!!  ==============================================================  !!!!!
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
-
 
 !> \defgroup module_radlw_main module_radlw_main
 !! \ingroup rad
@@ -715,11 +714,11 @@
       lhlwb  = present ( hlwb )
       lhlw0  = present ( hlw0 )
       lflxprf= present ( flxprf )
- 
 
       colamt(:,:) = f_zero
 
-!> -# Change random number seed value for each radiation invocation (isubclw =1 or 2).
+!> -# Change random number seed value for each radiation invocation (isubclw =1 or 2)
+!  --- ...  change random number seed value for each radiation invocation
 
       if     ( isubclw == 1 ) then     ! advance prescribed permutation seed
         do i = 1, npts
@@ -737,10 +736,10 @@
 !     endif
 
 !  --- ...  loop over horizontal npts profiles
- 
+
       lab_do_iplon : do iplon = 1, npts
 
-!> -# Read surface emissivity.
+!> -# Read surface emissivity
         if (sfemis(iplon) > eps .and. sfemis(iplon) <= 1.0) then  ! input surface emissivity
           do j = 1, nbands
             semiss(j) = sfemis(iplon)
@@ -752,8 +751,8 @@
         endif
 
         stemp = sfgtmp(iplon)          ! surface ground temp
-
-!> -# Prepare atmospheric profile for use in rrtm.
+!> -# Prepare atmospheric profile for use in rrtm
+!  --- ...  prepare atmospheric profile for use in rrtm
 !           the vertical index of internal array is from surface to top
 
 !  --- ...  molecular amounts are input or converted to volume mixing ratio
@@ -775,8 +774,8 @@
             tavel(k)= tlyr(iplon,k1)
             tz(k)   = tlvl(iplon,k1)
 
-!> -# Set absorber amount for h2o, co2, and o3.
-
+!> -# Set absorber amount for h2o, co2, and o3
+!  --- ...  set absorber amount
 !test use
 !           h2ovmr(k)= max(f_zero,qlyr(iplon,k1)*amdw)                  ! input mass mixing ratio
 !           h2ovmr(k)= max(f_zero,qlyr(iplon,k1))                       ! input vol mixing ratio
@@ -798,6 +797,8 @@
 
 !> -# Set up column amount for rare gases n2o,ch4,o2,co,ccl4,cf11,cf12,cf22, convert from
 !! volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20).
+!  --- ...  set up col amount for rare gases, convert from volume mixing ratio
+!           to molec/cm2 based on coldry (scaled to 1.0e-20)
 
           if (ilwrgas > 0) then
             do k = 1, nlay
@@ -826,7 +827,8 @@
             enddo
           endif
 
-!> -# Set aerosol optical properties.
+!> -# Set aerosol optical properties
+!  --- ...  set aerosol optical properties
 
           do k = 1, nlay
             k1 = nlp1 - k
@@ -861,7 +863,8 @@
           cldfrc(0)    = f_one       ! padding value only
           cldfrc(nlp1) = f_zero      ! padding value only
 
-!> -# Compute precipitable water vapor for diffusivity angle adjustments.
+!> -# Compute precipitable water vapor for diffusivity angle adjustments
+!  --- ...  compute precipitable water vapor for diffusivity angle adjustments
 
           tem1 = f_zero
           tem2 = f_zero
@@ -979,7 +982,8 @@
 
         endif                       ! if_ivflip
 
-!> -# Compute column amount for broadening gases.
+!> -# Compute column amount for broadening gases
+!  --- ...  compute column amount for broadening gases
 
         do k = 1, nlay
           summol = f_zero
@@ -989,7 +993,8 @@
           colbrd(k) = coldry(k) - summol
         enddo
 
-!> -# Compute diffusivity angle adjustments.
+!> -# Compute diffusivity angle adjustments
+!  --- ...  compute diffusivity angle adjustments
 
         tem1 = 1.80
         tem2 = 1.50
@@ -1017,7 +1022,8 @@
 !      print *,' o3vmr ',o3vmr
 !     endif
 
-!> -# For cloudy atmosphere, call cldprop() to set cloud optical properties.
+!> -# For cloudy atmosphere, call cldprop() to set cloud optical properties
+!  --- ...  for cloudy atmosphere, use cldprop to set cloud optical properties
 
         lcf1 = .false.
         lab_do_k0 : do k = 1, nlay
@@ -1087,8 +1093,9 @@
 !      print *,'indfor',indfor
 !     endif
 
-!> -# Call taumol() to calculte the gaseous optical depths and Plank 
-!! fractions for each longwave spectral band.
+!> -# Call taumol() to calculte the gaseous optical depths and Plank fractions for each longwave spectral band.
+!  --- ...  calculate the gaseous optical depths and Planck fractions for
+!           each longwave spectral band.
 
         call taumol                                                     &
 !  ---  inputs:
@@ -1114,12 +1121,12 @@
 !     enddo
 !     endif
 
-!> -# Call the radiative transfer routine based on cloud scheme selection. 
-!! compute the upward/downward radiative fluxes, and heating rates for both 
-!! clear or cloudy atmosphere.
+!> -# Call the radiative transfer routine based on cloud scheme selection. compute the upward/downward radiative fluxes, and heating rates for both clear or cloudy atmosphere.
 !!\n  - call rtrn(): clouds are assumed as randomly overlaping in a vertical column
 !!\n  - call rtrnmr(): clouds are assumed as in maximum-randomly overlaping in a vertical column;
 !!\n  - call rtrnmc(): clouds are treated with the mcica stochastic approach.
+!  --- ... call the radiative transfer routine based on cloud scheme
+!          selection. clear sky calculation is done at the same time.
 
         if (isubclw <= 0) then
 
@@ -1156,8 +1163,8 @@
      &     )
 
         endif   ! end if_isubclw_block
-
-!> -# Save outputs.
+!> -# Save outputs
+!  --- ...  output total-sky and clear-sky fluxes and heating rates
 
         topflx(iplon)%upfxc = totuflux(nlay)
         topflx(iplon)%upfx0 = totuclfl(nlay)
@@ -1243,8 +1250,6 @@
       end subroutine lwrad
 !-----------------------------------
 !> @}
-
-
 
 !> This subroutine performs calculations necessary for the initialization
 !! of the longwave model.  lookup tables are computed for use in the lw
@@ -1447,7 +1452,6 @@
       end subroutine rlwinit
 !-----------------------------------
 
-
 !> This subroutine computes the cloud optical depth(s) for each cloudy layer
 !! and g-point interval.
 !!\param cfrac           (0:nlp1), layer cloud fraction
@@ -1611,14 +1615,12 @@
           cldfmc(ig,k) = f_zero
         enddo
       enddo
-
-!> -# Compute cloud radiative properties for a cloudy column:
+!> -# Compute cloud radiative properties for a cloudy column
 !!\n  - Compute cloud radiative properties for rain and snow (tauran,tausnw)
 !!\n  - Calculation of absorption coefficients due to water clouds(tauliq)
 !!\n  - Calculation of absorption coefficients due to ice clouds (tauice).
 !!\n  - For prognostic cloud scheme: sum up the cloud optical property:
 !!\n    \f$ taucld=tauice+tauliq+tauran+tausnw \f$
-
 !  --- ...  compute cloud radiative properties for a cloudy column
 
       lab_if_ilwcliq : if (ilwcliq > 0) then
@@ -1739,8 +1741,8 @@
         enddo
 
       endif  lab_if_ilwcliq
-
 !> -# if physparam::isubclw > 0, call mcica_subcol() to distribute cloud properties to each g-point.
+!  ---  distribute cloud properties to each g-point
 
       if ( isubclw > 0 ) then      ! mcica sub-col clouds approx
         do k = 1, nlay
@@ -2229,7 +2231,6 @@
       end subroutine setcoef
 ! ----------------------------------
 
-
 !> This subroutine computes the upward/downward radiative fluxes, and heating rates for
 !! both clear or cloudy atmosphere. Clouds assumed as randomly overlaping in a vertical column.
 !!\brief Original Code Description: this program calculates the upward fluxes, downward fluxes, and
@@ -2431,11 +2432,13 @@
         radtotd = f_zero
         radclrd = f_zero
 
-!> -# Downward radiative transfer loop.
+!> -# Downward radiative transfer loop
+
+!  --- ...  downward radiative transfer loop.
 
         do k = nlay, 1, -1
-
 !!\n  - clear sky, gases contribution
+!  --- ...  clear sky, gases contribution
 
           odepth = max( f_zero, secdif(ib)*tautot(ig,k) )
           if (odepth <= 0.06) then
@@ -2461,12 +2464,13 @@
           gassrcd= bbdgas * atrgas
           gassrcu(k)= bbugas * atrgas
           trngas(k) = trng
-
 !!\n  - total sky, gases+clouds contribution
+!  --- ...  total sky, gases+clouds contribution
 
           clfr = cldfrc(k)
           if (clfr >= eps) then
 !!\n  - cloudy layer
+!  --- ...  cloudy layer
 
             odcld = secdif(ib) * taucld(ib,k)
             efclrfr(k) = f_one-(f_one - exp(-odcld))*clfr
@@ -2512,22 +2516,24 @@
 
 !> -# Compute spectral emissivity & reflectance, include the contribution of spectrally varying longwave
 !! emissivity and reflection from the surface to the upward radiative transfer.
-
+!  --- ...  spectral emissivity & reflectance
+!           include the contribution of spectrally varying longwave emissivity
+!           and reflection from the surface to the upward radiative transfer.
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
 
         reflct = f_one - semiss(ib)
         rad0 = semiss(ib) * fracs(ig,1) * pklay(ib,0)
-
-!> -# Compute total sky radiance.
+!> -# Compute total sky radiance
+!  --- ...  total sky radiance
         radtotu = rad0 + reflct*radtotd
         toturad(0,ib) = toturad(0,ib) + radtotu
-
 !> -# Compute clear sky radiance
+!  --- ...  clear sky radiance
         radclru = rad0 + reflct*radclrd
         clrurad(0,ib) = clrurad(0,ib) + radclru
-
-!> -# Upward radiative transfer loop.
+!> -# Upward radiative transfer loop
+!  --- ...  upward radiative transfer
 
         do k = 1, nlay
           clfr = cldfrc(k)
@@ -2565,6 +2571,8 @@
 
 !> -# Process longwave output from band for total and clear streams. Calculate
 !! upward, downward, and net flux.
+!  --- ...  process longwave output from band for total and clear streams.
+!           calculate upward, downward, and net flux.
 
       flxfac = wtdiff * fluxfac
 
@@ -2616,7 +2624,6 @@
 ! ..................................
       end subroutine rtrn
 ! ----------------------------------
-
 
 !> This subroutine computes the upward/downward radiative fluxes, and heating
 !! rates for both clear or cloudy atmosphere. Clouds are assumed as in maximum-randomly
@@ -2815,8 +2822,8 @@
         lstcldu(k+1) = cldfrc(k+1)>eps .and. cldfrc(k)<=eps
 
         if (cldfrc(k) > eps) then
-
-!> -# Setup maximum/random cloud overlap.
+!> -# Setup maximum/random cloud overlap
+!  --- ...  maximum/random cloud overlap
 
           if (cldfrc(k+1) >= cldfrc(k)) then
             if (lstcldu(k)) then
@@ -2959,8 +2966,8 @@
         endif
 
       enddo
-
 !> -# Initialize for radiative transfer
+!  --- ...  initialize for radiative transfer.
 
       do ib = 1, NBANDS
         do k = 0, NLAY
@@ -2985,8 +2992,8 @@
 
         radtotd = f_zero
         radclrd = f_zero
-
 !> -# Downward radiative transfer loop:
+!  --- ...  downward radiative transfer loop.
 
         do k = nlay, 1, -1
 
@@ -3028,6 +3035,7 @@
 
           if (clfr >= eps) then
 !>  - cloudy layer
+!  --- ...  cloudy layer
 
             odcld = secdif(ib) * taucld(ib,k)
             odtot = odepth + odcld
@@ -3051,12 +3059,12 @@
 
             totradd = totradd*trnt + clfr*totsrcd
             clrradd = clrradd*trng + (f_one - clfr)*gassrcd
-
 !>  - total sky radiance
+!  --- ...  total sky radiance
             radtotd = totradd + clrradd
             totdrad(k-1,ib) = totdrad(k-1,ib) + radtotd
-
 !>  - clear sky radiance
+!  --- ...  clear sky radiance
             radclrd = radclrd*trng + gassrcd
             clrdrad(k-1,ib) = clrdrad(k-1,ib) + radclrd
 
@@ -3082,25 +3090,26 @@
           endif   ! end if_clfr_block
 
         enddo   ! end do_k_loop
-
 !> -# Compute spectral emissivity & reflectance, include the contribution of spectrally
 !! varying longwave emissivity and reflection from the surface to the upward radiative transfer.
-
+!  --- ...  spectral emissivity & reflectance
+!           include the contribution of spectrally varying longwave emissivity
+!           and reflection from the surface to the upward radiative transfer.
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
 
         reflct = f_one - semiss(ib)
         rad0 = semiss(ib) * fracs(ig,1) * pklay(ib,0)
-
-!> -# Compute total sky radiance.
+!> -# Compute total sky radiance
+!  --- ...  total sky radiance
         radtotu = rad0 + reflct*radtotd
         toturad(0,ib) = toturad(0,ib) + radtotu
-
-!> -# Compute clear sky radiance.
+!> -# Compute clear sky radiance
+!  --- ...  clear sky radiance
         radclru = rad0 + reflct*radclrd
         clrurad(0,ib) = clrurad(0,ib) + radclru
-
 !> -# Upward radiative transfer loop:
+!  --- ...  upward radiative transfer loop.
 
         do k = 1, nlay
 
@@ -3116,17 +3125,18 @@
 
           if (clfr >= eps) then
 !>  - cloudy layer radiance
+!  --- ...  cloudy layer
 
             trnt = trntot(k)
             totu = totsrcu(k)
             totradu = totradu*trnt + clfr*totu
             clrradu = clrradu*trng + (f_one - clfr)*gasu
-
 !>  - total sky radiance
+!  --- ...  total sky radiance
             radtotu = totradu + clrradu
             toturad(k,ib) = toturad(k,ib) + radtotu
-
 !>  - clear sky radiance
+!  --- ...  clear sky radiance
             radclru = radclru*trng + gasu
             clrurad(k,ib) = clrurad(k,ib) + radclru
 
@@ -3153,9 +3163,10 @@
         enddo   ! end do_k_loop
 
       enddo   ! end do_ig_loop
-
 !> -# Process longwave output from band for total and clear streams.
 !! calculate upward, downward, and net flux.
+!  --- ...  process longwave output from band for total and clear streams.
+!           calculate upward, downward, and net flux.
 
       flxfac = wtdiff * fluxfac
 
@@ -3208,7 +3219,6 @@
       end subroutine rtrnmr
 ! ---------------------------------
 !> @}
-
 
 !> This subroutine computes the upward/downward radiative fluxes, and heating
 !! rates for both clear or cloudy atmosphere.Clouds are treated with the mcica stochastic
@@ -3411,6 +3421,7 @@
 !!\n  - Cloudy layer
 !!\n  - Total sky radiance
 !!\n  - Clear sky radiance
+!  --- ...  downward radiative transfer loop.
 
         do k = nlay, 1, -1
 
@@ -3492,25 +3503,26 @@
 !> -# Compute spectral emissivity & reflectance, include the contribution of
 !! spectrally varying longwave emissivity and reflection from the surface to the
 !! upward radiative transfer.
-
+!  --- ...  spectral emissivity & reflectance
+!           include the contribution of spectrally varying longwave emissivity
+!           and reflection from the surface to the upward radiative transfer.
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
 
         reflct = f_one - semiss(ib)
         rad0 = semiss(ib) * fracs(ig,1) * pklay(ib,0)
-
 !> -# Compute total sky radiance
+!  --- ... total sky radiance
         radtotu = rad0 + reflct*radtotd
         toturad(0,ib) = toturad(0,ib) + radtotu
-
 !> -# Compute clear sky radiance
+!  --- ... clear sky radiance
         radclru = rad0 + reflct*radclrd
         clrurad(0,ib) = clrurad(0,ib) + radclru
-
 !> -# Upward radiative transfer loop
 !!\n  - Compute total sky radiance
 !!\n  - Compute clear sky radiance
-
+!  --- ...  upward radiative transfer
 !          toturad holds summed radiance for total sky stream
 !          clrurad holds summed radiance for clear sky stream
 
@@ -3547,9 +3559,10 @@
         enddo   ! end do_k_loop
 
       enddo   ! end do_ig_loop
-
 !> -# Process longwave output from band for total and clear streams. Calculate
 !! upward, downward, and net flux.
+!  --- ...  process longwave output from band for total and clear streams.
+!           calculate upward, downward, and net flux.
 
       flxfac = wtdiff * fluxfac
 
@@ -3602,7 +3615,6 @@
       end subroutine rtrnmc
 ! ----------------------------------
 !> @}
-
 !> This subroutine contains optical depths developed for the rapid radiative
 !! transfer model.
 !!\brief This file contains the subroutines taugbn (where n goes from 1 to 16).
@@ -3876,7 +3888,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) -  forref(ig,indf))) 
+     &            * (forref(ig,indfp) -  forref(ig,indf)))
           taun2   = scalen2 * (ka_mn2(ig,indm) + minorfrac(k)           &
      &            * (ka_mn2(ig,indmp) - ka_mn2(ig,indm)))
 
@@ -3907,7 +3919,7 @@
 
         do ig = 1, ng01
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           taun2  = scalen2 * (kb_mn2(ig,indm) + minorfrac(k)            &
      &           * (kb_mn2(ig,indmp) - kb_mn2(ig,indm)))
 
@@ -3962,7 +3974,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns02+ig,k) = corradj * (colamt(k,1)                      &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -3986,7 +3998,7 @@
 
         do ig = 1, ng02
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns02+ig,k) = colamt(k,1)                                 &
      &           * (fac00(k)*absb(ig,ind0) + fac10(k)*absb(ig,ind0p)    &
@@ -4049,7 +4061,7 @@
         specparm = colamt(k,1) / speccomb
         specmult = 8.0 * min(specparm, oneminus)
         js = 1 + int(specmult)
-        fs = mod(specmult, f_one)        
+        fs = mod(specmult, f_one)
         ind0 = ((jp(k)-1)*5 + (jt(k)-1)) * nspa(3) + js
 
         speccomb1 = colamt(k,1) + rfrate(k,1,2)*colamt(k,2)
@@ -4282,7 +4294,7 @@
 
         do ig = 1, ng03
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           n2om1  = kb_mn2o(ig,jmn2o,indm) + fmn2o                       &
      &           * (kb_mn2o(ig,jmn2op,indm) - kb_mn2o(ig,jmn2o,indm))
           n2om2  = kb_mn2o(ig,jmn2o,indmp) + fmn2o                      &
@@ -4298,7 +4310,7 @@
      &              +  fac101*absb(ig,id101) + fac111*absb(ig,id111))
 
           taug(ns03+ig,k) = tau_major + tau_major1                      &
-     &                    + taufor + adjcoln2o*absn2o            
+     &                    + taufor + adjcoln2o*absn2o
 
           fracs(ns03+ig,k) = fracrefb(ig,jpl) + fpl                     &
      &                     * (fracrefb(ig,jplp) - fracrefb(ig,jpl))
@@ -4457,7 +4469,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           tau_major = speccomb                                          &
      &              * (fac000*absa(ig,id000) + fac010*absa(ig,id010)    &
@@ -4566,7 +4578,7 @@
 
       use module_radlw_kgb05
 
-!  ---  locals: 
+!  ---  locals:
       integer :: k, ind0, ind1, inds, indsp, indf, indfp, indm, indmp,  &
      &       id000, id010, id100, id110, id200, id210, jmo3, jmo3p,     &
      &       id001, id011, id101, id111, id201, id211, jpl, jplp,       &
@@ -4829,7 +4841,7 @@
 
       use module_radlw_kgb06
 
-!  ---  locals: 
+!  ---  locals:
       integer :: k, ind0, ind0p, ind1, ind1p, inds, indsp, indf, indfp, &
      &       indm, indmp, ig
 
@@ -5091,7 +5103,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           co2m1   = ka_mco2(ig,jmco2,indm) + fmco2                      &
      &            * (ka_mco2(ig,jmco2p,indm) - ka_mco2(ig,jmco2,indm))
           co2m2   = ka_mco2(ig,jmco2,indmp) + fmco2                     &
@@ -5476,7 +5488,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           n2om1   = ka_mn2o(ig,jmn2o,indm) + fmn2o                      &
      &            * (ka_mn2o(ig,jmn2op,indm) - ka_mn2o(ig,jmn2o,indm))
           n2om2   = ka_mn2o(ig,jmn2o,indmp) + fmn2o                     &
@@ -5491,7 +5503,7 @@
      &                * (fac001*absa(ig,id001) + fac011*absa(ig,id011)  &
      &                +  fac101*absa(ig,id101) + fac111*absa(ig,id111)  &
      &                +  fac201*absa(ig,id201) + fac211*absa(ig,id211)) &
-     &                + tauself + taufor + adjcoln2o*absn2o            
+     &                + tauself + taufor + adjcoln2o*absn2o
 
           fracs(ns09+ig,k) = fracrefa(ig,jpl) + fpl                     &
      &                     * (fracrefa(ig,jplp) - fracrefa(ig,jpl))
@@ -5575,7 +5587,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns10+ig,k) = colamt(k,1)                                 &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -5690,7 +5702,7 @@
 
         do ig = 1, ng11
           taufor = forfac(k) * (forref(ig,indf) + forfrac(k)            &
-     &           * (forref(ig,indfp) - forref(ig,indf))) 
+     &           * (forref(ig,indfp) - forref(ig,indf)))
           tauo2  = scaleo2 * (kb_mo2(ig,indm) + minorfrac(k)            &
      &           * (kb_mo2(ig,indmp) - kb_mo2(ig,indm)))
 
@@ -5862,7 +5874,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns12+ig,k) = speccomb                                    &
      &                * (fac000*absa(ig,id000) + fac010*absa(ig,id010)  &
@@ -6091,7 +6103,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           co2m1   = ka_mco2(ig,jmco2,indm) + fmco2                      &
      &            * (ka_mco2(ig,jmco2p,indm) - ka_mco2(ig,jmco2,indm))
           co2m2   = ka_mco2(ig,jmco2,indmp) + fmco2                     &
@@ -6175,7 +6187,7 @@
           tauself = selffac(k) * (selfref(ig,inds) + selffrac(k)        &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns14+ig,k) = colamt(k,2)                                 &
      &            * (fac00(k)*absa(ig,ind0) + fac10(k)*absa(ig,ind0p)   &
@@ -6287,7 +6299,6 @@
         indmp = indm + 1
         jplp  = jpl  + 1
         jmn2p = jmn2 + 1
-         
 
         if (specparm < 0.125 .and. specparm1 < 0.125) then
           p0 = fs - f_one
@@ -6383,7 +6394,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
           n2m1    = ka_mn2(ig,jmn2,indm) + fmn2                         &
      &            * (ka_mn2(ig,jmn2p,indm) - ka_mn2(ig,jmn2,indm))
           n2m2    = ka_mn2(ig,jmn2,indmp) + fmn2                        &
@@ -6573,7 +6584,7 @@
           tauself = selffac(k)* (selfref(ig,inds) + selffrac(k)         &
      &            * (selfref(ig,indsp) - selfref(ig,inds)))
           taufor  = forfac(k) * (forref(ig,indf) + forfrac(k)           &
-     &            * (forref(ig,indfp) - forref(ig,indf))) 
+     &            * (forref(ig,indfp) - forref(ig,indf)))
 
           taug(ns16+ig,k) = speccomb                                    &
      &                * (fac000*absa(ig,id000) + fac010*absa(ig,id010)  &
@@ -6621,5 +6632,4 @@
 !........................................!
       end module module_radlw_main       !
 !========================================!
-
 !! @}

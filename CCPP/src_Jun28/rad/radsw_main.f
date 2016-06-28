@@ -330,8 +330,8 @@
 !    &   VTAGSW='RRTM-SW 112v2.3 Mar 2005'
 !    &   VTAGSW='RRTM-SW 112v2.0 Jul 2004'
 
+!  ---  constant values
 !> \name constant values
-
       real (kind=kind_phys), parameter :: eps     = 1.0e-6
       real (kind=kind_phys), parameter :: oneminus= 1.0 - eps
 !> pade approx constant
@@ -376,7 +376,9 @@
 !    &         4800.0, 3150.0, 6650.0, 6350.0, 9000.0,12000.0, 1780.0 /
 
 !> uv-b band index
-      integer, parameter :: nuvb = 27      
+      integer, parameter :: nuvb = 27            !uv-b band index
+
+!! ---  logical flags for optional output fields
 
 !>\name logical flags for optional output fields
       logical :: lhswb  = .false.
@@ -384,17 +386,18 @@
       logical :: lflxprf= .false.
       logical :: lfdncmp= .false.
 
-
+!  ---  those data will be set up only once by "rswinit"
 !> those data will be set up only once by "rswinit"
       real (kind=kind_phys) :: exp_tbl(0:NTBMX)
 
-
+!  ...  heatfac is the factor for heating rates
+!       (in k/day, or k/sec set by subroutine 'rswinit')
 !> the factor for heating rates (in k/day, or k/sec set by subroutine 'rswinit')
       real (kind=kind_phys) :: heatfac
 
-
+!  ---  the following variables are used for sub-column cloud scheme
 !> initial permutation seed used for sub-column cloud scheme
-      integer, parameter :: ipsdsw0 = 1          
+      integer, parameter :: ipsdsw0 = 1          ! initial permutation seed
 
 !  ---  public accessable subprograms
 
@@ -742,12 +745,17 @@
       lfdncmp= present ( fdncmp )
 
 !> -# Compute solar constant adjustment factor (s0fac) according to solcon.
+!!\n      \f$ s0fac = solcon/s0 \f$
+!!\n  where s0, the solar constant at toa in \f$ w/m^2 \f$, is hard-coded with each
+!!    spectran band, the total flux is about 1368.22 \f$ w/m^2 \f$.
+!  --- ...  compute solar constant adjustment factor according to solcon.
 !      ***  s0, the solar constant at toa in w/m**2, is hard-coded with
 !           each spectra band, the total flux is about 1368.22 w/m**2.
 
       s0fac = solcon / s0
 
 !> -# Initial output arrays (and optional) as zero
+!  --- ...  initial output arrays
 
       hswc(:,:) = f_zero
       topflx = topfsw_type ( f_zero, f_zero, f_zero )
@@ -771,6 +779,7 @@
       endif
 
 !> -# Change random number seed value for each radiation invocation (isubcsw =1 or 2).
+!  --- ...  change random number seed value for each radiation invocation
 
       if     ( isubcsw == 1 ) then     ! advance prescribed permutation seed
         do i = 1, npts
@@ -797,13 +806,20 @@
         sntz1  = f_one / cosz(j1)
         ssolar = s0fac * cosz(j1)
 
-!> -# Prepare surface albedo: bm,df - dir,dif; 1,2 - nir,uvv.
+!> -# Prepare surface albedo: bm,df - dir,dif; 1,2 - nir,uvv
         albbm(1) = sfcalb(j1,1)
         albdf(1) = sfcalb(j1,2)
         albbm(2) = sfcalb(j1,3)
         albdf(2) = sfcalb(j1,4)
 
-!> -# Prepare atmospheric profile for use in rrtm.
+!> -# Prepare atmospheric profile for use in rrtm:
+!!    - pavel(nlay):layer pressure (mb)
+!!    - tavel(nlay):layer temperature (k)
+!!    - delp (nlay):layer pressure thickness (mb)
+!> -# Set absorber and gas column amount, convert from volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20)
+!!    - colamt(nlay,maxgas):column amounts of absorbing gases 1 to maxgas are for h2o,co2,o3,n2o,ch4,o2,co, respectively (\f$ mol/cm^2 \f$)
+
+!  --- ...  prepare atmospheric profile for use in rrtm
 !           the vertical index of internal array is from surface to top
 
         if (ivflip == 0) then       ! input from toa to sfc
@@ -816,9 +832,8 @@
             pavel(k) = plyr(j1,kk)
             tavel(k) = tlyr(j1,kk)
             delp (k) = plvl(j1,kk+1) - plvl(j1,kk)
-!> -# Set absorber and gas column amount, convert from volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20)
-!!    - colamt(nlay,maxgas):column amounts of absorbing gases 1 to maxgas are for h2o,co2,o3,n2o,ch4,o2,co, respectively (\f$ mol/cm^2 \f$)
 
+!  --- ...  set absorber amount
 !test use
 !           h2ovmr(k)= max(f_zero,qlyr(j1,kk)*amdw)                     ! input mass mixing ratio
 !           h2ovmr(k)= max(f_zero,qlyr(j1,kk))                          ! input vol mixing ratio
@@ -857,7 +872,8 @@
             enddo
           endif
 
-!> -# Read aerosol optical properties from 'aerosols'. 
+!> -# Read aerosol optical properties from 'aerosols' 
+!  --- ...  set aerosol optical properties
 
           do k = 1, nlay
             kk = nlp1 - k
@@ -868,7 +884,7 @@
             enddo
           enddo
 
-!> -# Read cloud optical properties from 'clouds'.
+!> -# Read cloud optical properties from 'clouds'
           if (iswcliq > 0) then    ! use prognostic cloud method
             do k = 1, nlay
               kk = nlp1 - k
@@ -984,10 +1000,11 @@
 
         endif                       ! if_ivflip
 
-!> -# Compute fractions of clear sky view:
+!> -# Compute fractions of clear sky view for different overlapping scenario:
 !!    - random overlapping
 !!    - max/ran overlapping
 !!    - maximum overlapping
+!  --- ...  compute fractions of clear sky view
 
         zcf0   = f_one
         zcf1   = f_one
@@ -1017,6 +1034,8 @@
 
 !> -# For cloudy sky column, call cldprop() to compute the cloud optical properties for each cloudy layer
 
+!  --- ...  compute cloud optical properties
+
         if (zcf1 > f_zero) then     ! cloudy sky column
 
           call cldprop                                                  &
@@ -1039,7 +1058,7 @@
           enddo
         endif   ! end if_zcf1_block
 
-!> -# Call setcoef() to compute various coefficients needed in radiative transfer calculations.
+!> -# Calling setcoef() to compute various coefficients needed in radiative transfer calculations.
         call setcoef                                                    &
 !  ---  inputs:
      &     ( pavel,tavel,h2ovmr, nlay,nlp1,                             &
@@ -1048,7 +1067,10 @@
      &       selffac,selffrac,indself,forfac,forfrac,indfor             &
      &     )
 
-!> -# Call taumol() to calculate optical depths for gaseous absorption and rayleigh scattering
+!> -# Calling taumol() to calculate optical depths for gaseous absorption and rayleigh scattering
+!  --- ...  calculate optical depths for gaseous absorption and Rayleigh
+!           scattering
+
         call taumol                                                     &
 !  ---  inputs:
      &     ( colamt,colmol,fac00,fac01,fac10,fac11,jp,jt,jt1,laytrop,   &
@@ -1057,9 +1079,10 @@
      &       sfluxzen, taug, taur                                       &
      &     )
 
-!> -# Call the 2-stream radiation transfer model:
+!> -# call the 2-stream radiation transfer model
 !!    - if physparam::isubcsw .le.0, using standard cloud scheme, call spcvrtc().
 !!    - if physparam::isubcsw .gt.0, using mcica cloud scheme, call spcvrtm().
+!  --- ...  call the 2-stream radiation transfer model
 
         if ( isubcsw <= 0 ) then     ! use standard cloud scheme
 
@@ -1088,7 +1111,6 @@
      &     )
 
         endif
-
 !> -# Save outputs.
 !  --- ...  sum up total spectral fluxes for total-sky
 
@@ -1250,7 +1272,6 @@
       end subroutine swrad
 !-----------------------------------
 !> @}
-
 
 !> This subroutine initializes non-varying module variables, conversion factors, and look-up tables
 !!\param me             print control for parallel process
@@ -1561,13 +1582,13 @@
       enddo
 
 !> -# Compute cloud radiative properties for a cloudy column.
+!  --- ...  compute cloud radiative properties for a cloudy column
 
       lab_if_iswcliq : if (iswcliq > 0) then
 
         lab_do_k : do k = 1, nlay
           lab_if_cld : if (cfrac(k) > ftiny) then
-
-!>    - Compute optical properties for rain and snow.
+!>    - Compute optical properties for rain and snow
 !!\n    For rain: tauran/ssaran/asyran
 !!\n    For snow: tausnw/ssasnw/asysnw
 !>    - Calculation of absorption coefficients due to water clouds
@@ -1578,7 +1599,7 @@
 !!\n     \f$ taucw=tauliq+tauice+tauran+tausnw \f$
 !!\n     \f$ ssacw=ssaliq+ssaice+ssaran+ssasnw \f$
 !!\n     \f$ asycw=asyliq+asyice+asyran+asysnw \f$
-
+!  --- ...  optical properties for rain and snow
             cldran = cdat1(k)
 !           refran = cdat2(k)
             cldsnw = cdat3(k)
@@ -1586,6 +1607,7 @@
             dgesnw = 1.0315 * refsnw        ! for fu's snow formula
 
             tauran = cldran * a0r
+
 
 !  ---  if use fu's formula it needs to be normalized by snow/ice density
 !       !not use snow density = 0.1 g/cm**3 = 0.1 g/(mu * m**2)
@@ -1749,8 +1771,8 @@
         enddo
 
       endif  lab_if_iswcliq
-
-!> -# if physparam::isubcsw > 0, call mcica_subcol() to distribute cloud properties to each g-point.
+!> -# if physparam::isubcsw > 0, call mcica_subcol() to distribute cloud properties to each g-point
+!  ---  distribute cloud properties to each g-point
 
       if ( isubcsw > 0 ) then      ! mcica sub-col clouds approx
 
@@ -1790,7 +1812,6 @@
       end subroutine cldprop
 !-----------------------------------
 !> @}
-
 
 !> This subroutine computes the sub-colum cloud profile flag array.
 !!\param cldf        layer cloud fraction
@@ -2309,8 +2330,9 @@
       integer :: ib, ibd, jb, jg, k, kp, itind
 !
 !===> ...  begin here
+!> -# Initialization of output fluxes
+!  --- ... initialization of output fluxes
 
-!> -# Initialize output fluxes.
       do ib = 1, nbdsw
         do k = 1, nlp1
           fxdnc(k,ib) = f_zero
@@ -2368,13 +2390,14 @@
         ztrab(1) = f_zero
         ztrad(1) = f_zero
 
-!> -# Compute clear-sky optical parameters, layer reflectance and transmittance.
+!> -# Compute clear-sky optical parameters, layer reflectance and transmittance
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for clear-sky condition
 !!    - General two-stream expressions for physparam::iswmode
 !!    - Compute homogeneous reflectance and transmittance for both conservative and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
+!  --- ...  compute clear-sky optical parameters, layer reflectance and transmittance
 
         do k = nlay, 1, -1
           kp = k + 1
@@ -2574,13 +2597,14 @@
 !       sfbm0(ibd) = sfbm0(ibd) + zsolar*ztdbt0
 !       sfdf0(ibd) = sfdf0(ibd) + zsolar*(zfd(1) - ztdbt0)
 
-!> -# Compute total sky optical parameters, layer reflectance and transmittance.
+!> -# Compute total sky optical parameters, layer reflectance and transmittance
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for total-sky condition
 !!    - General two-stream expressions for physparam::iswmode
 !!    - Compute homogeneous reflectance and transmittance for conservative scattering and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
+!  --- ...  compute total sky optical parameters, layer reflectance and transmittance
 
         if ( cf1 > eps ) then
 
@@ -2789,8 +2813,7 @@
             fxupc(k,ib) = fxupc(k,ib) + zsolar*zfu(k)
             fxdnc(k,ib) = fxdnc(k,ib) + zsolar*zfd(k)
           enddo
-
-!> -# Process and save outputs.
+!> -# Process and save outputs
 ! --- ...  surface downward beam/diffused flux components
           zb1 = zsolar*ztdbt0
           zb2 = zsolar*(zfd(1) - ztdbt0)
@@ -3064,7 +3087,8 @@
 !
 !===> ...  begin here
 !
-!> -# Initialize output fluxes.
+!> -# Initialization of output fluxes
+!  --- ... initialization of output fluxes
 
       do ib = 1, nbdsw
         do k = 1, nlp1
@@ -3122,14 +3146,14 @@
         endif
         ztrab(1) = f_zero
         ztrad(1) = f_zero
-
-!> -# Compute clear-sky optical parameters, layer reflectance and transmittance.
+!> -# Compute clear-sky optical parameters, layer reflectance andtransmittance
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for clear-sky condition
 !!    - General two-stream expressions for physparam::iswmode
 !!    - Compute homogeneous reflectance and transmittance for both conservative and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
+!  --- ...  compute clear-sky optical parameters, layer reflectance and transmittance
 
         do k = nlay, 1, -1
           kp = k + 1
@@ -3329,13 +3353,14 @@
 !       sfbm0(ibd) = sfbm0(ibd) + zsolar*ztdbt0
 !       sfdf0(ibd) = sfdf0(ibd) + zsolar*(zfd(1) - ztdbt0)
 
-!> -# Compute total sky optical parameters, layer reflectance and transmittance.
+!> -# Compute total sky optical parameters, layer reflectance and transmittance
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for total-sky condition
 !!    - General two-stream expressions for physparam::iswmode
 !!    - Compute homogeneous reflectance and transmittance for conservative scattering and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
+!  --- ...  compute total sky optical parameters, layer reflectance and transmittance
 
         if ( cf1 > eps ) then
 
@@ -3529,9 +3554,8 @@
             fxupc(k,ib) = fxupc(k,ib) + zsolar*zfu(k)
             fxdnc(k,ib) = fxdnc(k,ib) + zsolar*zfd(k)
           enddo
-
-!> -# Process and save outputs.
-! --- ...  surface downward beam/diffused flux components
+!> -# Process and save outputs
+!! --- ...  surface downward beam/diffused flux components
           zb1 = zsolar*ztdbt0
           zb2 = zsolar*(zfd(1) - ztdbt0)
 
@@ -3666,12 +3690,14 @@
 !
 !===> ... begin here
 !
+!> -# Link lowest layer with surface
+!  --- ...  link lowest layer with surface
 
-!> -# Link lowest layer with surface.
         zrupb(1) = zrefb(1)        ! direct beam
         zrupd(1) = zrefd(1)        ! diffused
+!> -# Pass from bottom to top
+!  --- ...  pass from bottom to top
 
-!> -# Pass from bottom to top.
         do k = 1, nlay
           kp = k + 1
 
@@ -3681,14 +3707,16 @@
      &                zldbt(kp)*zrupb(k)) ) * zden1
           zrupd(kp) = zrefd(kp) + ztrad(kp)*ztrad(kp)*zrupd(k)*zden1
         enddo
-
 !> -# Upper boundary conditions
+!  --- ...  upper boundary conditions
+
         ztdn (nlp1) = f_one
         zrdnd(nlp1) = f_zero
         ztdn (nlay) = ztrab(nlp1)
         zrdnd(nlay) = zrefd(nlp1)
-
 !> -# Pass from top to bottom
+!  --- ...  pass from top to bottom
+
         do k = nlay, 2, -1
           zden1 = f_one / (f_one - zrefd(k)*zrdnd(k))
           ztdn (k-1) = ztdbt(k)*ztrab(k) + ( ztrad(k) *                 &
@@ -3696,8 +3724,9 @@
      &                 zrefb(k)*zrdnd(k) )) * zden1
           zrdnd(k-1) = zrefd(k) + ztrad(k)*ztrad(k)*zrdnd(k)*zden1
         enddo
+!> -# Up and down-welling fluxes at levels
+!  --- ...  up and down-welling fluxes at levels
 
-!> -# Up and down-welling fluxes at levels.
         do k = 1, nlp1
           zden1 = f_one / (f_one - zrdnd(k)*zrupd(k))
           zfu(k) = ( ztdbt(k)*zrupb(k) +                                &
@@ -3952,35 +3981,22 @@
 
       enddo
 
-!> - Call taumol## (##: 16-29) to calculate layer optical depth.
-
-!>  - call taumol16()
+!  --- ...  call taumol## to calculate layer optical depth
+!> call taumol16
       call taumol16
-!>  - call taumol17()
+!> call taumol17
       call taumol17
-!>  - call taumol18()
       call taumol18
-!>  - call taumol19()
       call taumol19
-!>  - call taumol20()
       call taumol20
-!>  - call taumol21()
       call taumol21
-!>  - call taumol22()
       call taumol22
-!>  - call taumol23()
       call taumol23
-!>  - call taumol24()
       call taumol24
-!>  - call taumol25()
       call taumol25
-!>  - call taumol26()
       call taumol26
-!>  - call taumol27()
       call taumol27
-!>  - call taumol28()
       call taumol28
-!>  - call taumol29()
       call taumol29
 
 
@@ -4082,7 +4098,6 @@
 !...................................
       end subroutine taumol16
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 17:  3250-4000 cm-1 (low - h2o,co2; high - h2o,co2)
 !-----------------------------------
@@ -4204,7 +4219,6 @@
 !...................................
       end subroutine taumol17
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 18:  4000-4650 cm-1 (low - h2o,ch4; high - ch4)
 !-----------------------------------
@@ -4387,14 +4401,13 @@
         do j = 1, NG19
           taug(k,NS19+j) = colamt(k,2)                                  &
      &        * ( fac00(k)*absb(ind01,j) + fac10(k)*absb(ind02,j)       &
-     &        +   fac01(k)*absb(ind11,j) + fac11(k)*absb(ind12,j) ) 
+     &        +   fac01(k)*absb(ind11,j) + fac11(k)*absb(ind12,j) )
         enddo
       enddo
 
 !...................................
       end subroutine taumol19
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 20:  5150-6150 cm-1 (low - h2o; high - h2o)
 !-----------------------------------
@@ -4475,7 +4488,6 @@
 !...................................
       end subroutine taumol20
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 21:  6150-7700 cm-1 (low - h2o,co2; high - h2o,co2)
 !-----------------------------------
@@ -4597,7 +4609,6 @@
       end subroutine taumol21
 !-----------------------------------
 
-
 !> The subroutine computes the optical depth in band 22:  7700-8050 cm-1 (low - h2o,o2; high - o2)
 !-----------------------------------
       subroutine taumol22
@@ -4626,7 +4637,6 @@
 
       o2adj = 1.6
       o2tem = 4.35e-4 / (350.0*2.0)
-      
 
 !  --- ...  compute the optical depth by interpolating in ln(pressure),
 !           temperature, and appropriate species.  below laytrop, the water
@@ -4705,7 +4715,6 @@
       end subroutine taumol22
 !-----------------------------------
 
-
 !> The subroutine computes the optical depth in band 23:  8050-12850 cm-1 (low - h2o; high - nothing)
 !-----------------------------------
       subroutine taumol23
@@ -4766,7 +4775,6 @@
 !...................................
       end subroutine taumol23
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 24:  12850-16000 cm-1 (low - h2o,o2; high - o2)
 !-----------------------------------
@@ -4862,7 +4870,6 @@
       end subroutine taumol24
 !-----------------------------------
 
-
 !> The subroutine computes the optical depth in band 25:  16000-22650 cm-1 (low - h2o; high - nothing)
 !-----------------------------------
       subroutine taumol25
@@ -4902,13 +4909,13 @@
           taug(k,NS25+j) = colamt(k,1)                                  &
      &        * ( fac00(k)*absa(ind01,j) + fac10(k)*absa(ind02,j)       &
      &        +   fac01(k)*absa(ind11,j) + fac11(k)*absa(ind12,j) )     &
-     &        + colamt(k,3) * abso3a(j) 
+     &        + colamt(k,3) * abso3a(j)
         enddo
       enddo
 
       do k = laytrop+1, nlay
         do j = 1, NG25
-          taug(k,NS25+j) = colamt(k,3) * abso3b(j) 
+          taug(k,NS25+j) = colamt(k,3) * abso3b(j)
         enddo
       enddo
 
@@ -4916,7 +4923,6 @@
 !...................................
       end subroutine taumol25
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 26:  22650-29000 cm-1 (low - nothing; high - nothing)
 !-----------------------------------
@@ -4943,7 +4949,7 @@
       do k = 1, nlay
         do j = 1, NG26
           taug(k,NS26+j) = f_zero
-          taur(k,NS26+j) = colmol(k) * rayl(j) 
+          taur(k,NS26+j) = colmol(k) * rayl(j)
         enddo
       enddo
 
@@ -4951,7 +4957,6 @@
 !...................................
       end subroutine taumol26
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 27:  29000-38000 cm-1 (low - o3; high - o3)
 !-----------------------------------
@@ -5012,7 +5017,6 @@
 !...................................
       end subroutine taumol27
 !-----------------------------------
-
 
 !> The subroutine computes the optical depth in band 28:  38000-50000 cm-1 (low - o3,o2; high - o3,o2)
 !-----------------------------------
@@ -5121,7 +5125,6 @@
       end subroutine taumol28
 !-----------------------------------
 
-
 !> The subroutine computes the optical depth in band 29:  820-2600 cm-1 (low - h2o; high - co2)
 !-----------------------------------
       subroutine taumol29
@@ -5188,7 +5191,7 @@
           taug(k,NS29+j) = colamt(k,2)                                  &
      &        * ( fac00(k)*absb(ind01,j) + fac10(k)*absb(ind02,j)       &
      &        +   fac01(k)*absb(ind11,j) + fac11(k)*absb(ind12,j) )     &
-     &        + colamt(k,1) * absh2o(j) 
+     &        + colamt(k,1) * absh2o(j)
         enddo
       enddo
 

@@ -61,7 +61,6 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
-
 !> This module contains SW band parameters set up.
 !========================================!
       module module_radsw_parameters     !
@@ -73,6 +72,7 @@
 !
       public
 !
+!
 !> Define type construct for radiation fluxes at toa
       type :: topfsw_type
 !> total sky upward flux at toa
@@ -82,6 +82,7 @@
 !> clear sky upward flux at toa
         real (kind=kind_phys) :: upfx0   
       end type
+!
 !
 !> Define type construct for radiation fluxes at surface
       type :: sfcfsw_type
@@ -95,6 +96,7 @@
         real (kind=kind_phys) :: dnfx0 
       end type
 !
+!
 !> Define type construct for optional radiation flux profiles
       type :: profsw_type
 !> total sky level upward flux
@@ -106,6 +108,7 @@
 !> clear sky level downward flux
         real (kind=kind_phys) :: dnfx0 
       end type
+!
 !
 !> Define type construct for optional component downward fluxes at surface
       type :: cmpfsw_type
@@ -165,33 +168,33 @@
      &            NS28=NS27+NG27,  NS29=NS28+NG28  )
 
       integer, dimension(NBLOW:NBHGH) :: NGS
-      data  NGS / NS16, NS17, NS18, NS19, NS20, NS21, NS22,             &
+      data  NGS / NS16, NS17, NS18, NS19, NS20, NS21, NS22,            &
      &            NS23, NS24, NS25, NS26, NS27, NS28, NS29  /
 
 !> band index for each g-point
       integer, dimension(NGPTSW)      :: NGB
-      data NGB(:) / 16,16,16,16,16,16,                                  & ! band 16
-     &              17,17,17,17,17,17,17,17,17,17,17,17,                & ! band 17
-     &              18,18,18,18,18,18,18,18,                            & ! band 18
-     &              19,19,19,19,19,19,19,19,                            & ! band 19
-     &              20,20,20,20,20,20,20,20,20,20,                      & ! band 20
-     &              21,21,21,21,21,21,21,21,21,21,                      & ! band 21
-     &              22,22,                                              & ! band 22
-     &              23,23,23,23,23,23,23,23,23,23,                      & ! band 23
-     &              24,24,24,24,24,24,24,24,                            & ! band 24
-     &              25,25,25,25,25,25,                                  & ! band 25
-     &              26,26,26,26,26,26,                                  & ! band 26
-     &              27,27,27,27,27,27,27,27,                            & ! band 27
-     &              28,28,28,28,28,28,                                  & ! band 28
-     &              29,29,29,29,29,29,29,29,29,29,29,29 /                 ! band 29
+      data NGB(:) / 16,16,16,16,16,16,                              & ! band 16
+     &              17,17,17,17,17,17,17,17,17,17,17,17,            & ! band 17
+     &              18,18,18,18,18,18,18,18,                        & ! band 18
+     &              19,19,19,19,19,19,19,19,                        & ! band 19
+     &              20,20,20,20,20,20,20,20,20,20,                  & ! band 20
+     &              21,21,21,21,21,21,21,21,21,21,                  & ! band 21
+     &              22,22,                                          & ! band 22
+     &              23,23,23,23,23,23,23,23,23,23,                  & ! band 23
+     &              24,24,24,24,24,24,24,24,                        & ! band 24
+     &              25,25,25,25,25,25,                              & ! band 25
+     &              26,26,26,26,26,26,                              & ! band 26
+     &              27,27,27,27,27,27,27,27,                        & ! band 27
+     &              28,28,28,28,28,28,                              & ! band 28
+     &              29,29,29,29,29,29,29,29,29,29,29,29 /           ! band 29
 
 !> \name Band wavenumber intervals
       real (kind=kind_phys), dimension(NBANDS):: wvnum1, wvnum2
-      data wvnum1(:)    /                                               &
-     &         2600.0, 3251.0, 4001.0, 4651.0, 5151.0, 6151.0, 7701.0,  &
+      data wvnum1(:)    /                                              &
+     &         2600.0, 3251.0, 4001.0, 4651.0, 5151.0, 6151.0, 7701.0, &
      &         8051.0,12851.0,16001.0,22651.0,29001.0,38001.0,  820.0 /
-      data wvnum2(:)    /                                               &
-     &         3250.0, 4000.0, 4650.0, 5150.0, 6150.0, 7700.0, 8050.0,  &
+      data wvnum2(:)    /                                              &
+     &         3250.0, 4000.0, 4650.0, 5150.0, 6150.0, 7700.0, 8050.0, &
      &        12850.0,16000.0,22650.0,29000.0,38000.0,50000.0, 2600.0 /
 
 !

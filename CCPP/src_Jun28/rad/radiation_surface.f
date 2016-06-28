@@ -112,6 +112,7 @@
       real (kind=kind_phys), parameter :: f_one  = 1.0
       real (kind=kind_phys), parameter :: rad2dg= 180.0 / con_pi
 
+!  ---  global surface emissivity index array and control flag  set up in 'sfc_init'
 !> global surface emissivity index array
       integer, allocatable  ::  idxems(:,:)
 !> global surface emissivity contrl flag set up in 'sfc_init'
@@ -417,7 +418,7 @@
          fsea  = fsea0 * fsno1
          flnd  = flnd0 * fsno1
 
-!>    - Calculate diffused sea surface albedo
+!>    - Compute diffused sea surface albedo
 
          if (tsknf(i) >= 271.5) then
             asevd = 0.06
@@ -431,7 +432,7 @@
             asend = 0.65 - 3.6875*a1
          endif
 
-!>    - Calculate diffused snow albedo.
+!>    - Compute diffused snow albedo
 
          if (nint(slmsk(i)) == 2) then
             ffw   = f_one - fice(i)
@@ -452,7 +453,7 @@
             asnnd = 0.75
          endif
 
-!>    - Calculate direct snow albedo.
+!>    - Compute direct snow albedo
 
          if (coszf(i) < 0.5) then
             csnow = 0.5 * (3.0 / (f_one+4.0*coszf(i)) - f_one)
@@ -463,7 +464,7 @@
             asnnb = asnnd
          endif
 
-!>    - Calculate direct sea surface albedo.
+!>    - Compute direct sea surface albedo
 
          if (coszf(i) > 0.0001) then
 !           rfcs = 1.4 / (f_one + 0.8*coszf(i))
@@ -505,7 +506,7 @@
 
         do i = 1, IMAX
 
-!>    - Calculate snow cover input directly for land model, no conversion needed.
+!>    - Compute snow cover input directly for land model, no conversion needed.
 
          fsno0 = sncovr(i)
 
@@ -525,7 +526,7 @@
          fsea  = fsea0 * fsno1
          flnd  = flnd0 * fsno1
 
-!>    - Calculate diffused sea surface albedo.
+!>    - Compute diffused sea surface albedo
 
          if (tsknf(i) >= 271.5) then
             asevd = 0.06
@@ -539,7 +540,7 @@
             asend = 0.65 - 3.6875*a1
          endif
 
-!>    - Calculate diffused snow albedo, land area use input max snow albedo.
+!>    - Compute diffused snow albedo, land area use input max snow albedo
 
          if (nint(slmsk(i)) == 2) then
             ffw   = f_one - fice(i)
@@ -560,7 +561,7 @@
             asnnd = snoalb(i)
          endif
 
-!>    - Calculate direct snow albedo.
+!>    - Compute direct snow albedo
 
          if (nint(slmsk(i)) == 2) then
            if (coszf(i) < 0.5) then
@@ -576,7 +577,7 @@
            asnnb = snoalb(i)
          endif
 
-!>    - Calculate direct sea surface albedo, use fanglin's zenith angle treatment.
+!>    - Compute direct sea surface albedo, use fanglin's zenith angle treatment
 
          if (coszf(i) > 0.0001) then
 
@@ -714,7 +715,7 @@
         dltg = 360.0 / float(IMXEMS)
         hdlt = 0.5 * dltg
 
-!  --- ...  mapping input data onto model grid
+! Map input data onto model grid
 !           note: this is a simple mapping method, an upgrade is needed if
 !           the model grid is much corcer than the 1-deg data resolution
 
@@ -730,7 +731,7 @@
 
           else                                     ! land
 
-!  ---  map grid in longitude direction
+! grid in longitude direction
             i2 = 1
             j2 = 1
 
@@ -746,7 +747,7 @@
               endif
             enddo  lab_do_IMXEMS
 
-!  ---  map grid in latitude direction
+! Map grid in latitude direction
             tmp1 = xlat(i) * rad2dg           ! if xlat in pi/2 -> -pi/2 range
 !           tmp1 = 90.0 - xlat(i)*rad2dg      ! if xlat in 0 -> pi range
 

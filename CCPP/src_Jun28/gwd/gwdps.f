@@ -139,8 +139,8 @@
 !> @{
       SUBROUTINE GWDPS(IM,IX,IY,KM,A,B,C,U1,V1,T1,Q1,KPBL,
      &               PRSI,DEL,PRSL,PRSLK,PHII, PHIL,DELTIM,KDT,
-     &               HPRIME,OC,OA4,CLX4,THETA,SIGMA,GAMMA,ELVMAX, 
-     &               DUSFC,DVSFC,G, CP, RD, RV, IMX, 
+     &               HPRIME,OC,OA4,CLX4,THETA,SIGMA,GAMMA,ELVMAX,
+     &               DUSFC,DVSFC,G, CP, RD, RV, IMX,
      &               nmtvr, cdmbgwd, me, lprnt, ipr)
 !
 !   ********************************************************************
@@ -154,7 +154,7 @@
 !-----         ALSO INCLUDED IS RI  SMOOTH OVER A THICK LOWER LAYER
 !-----         ALSO INCLUDED IS DECREASE IN DE-ACC AT TOP BY 1/2
 !-----     THE NMC GWD INCORPORATING BOTH GLAS(P&S) AND GFDL(MIGWD)
-!-----        MOUNTAIN INDUCED GRAVITY WAVE DRAG 
+!-----        MOUNTAIN INDUCED GRAVITY WAVE DRAG
 !-----    CODE FROM .FR30(V3MONNX) FOR MONIN3
 !-----        THIS VERSION (06 MAR 1987)
 !-----        THIS VERSION (26 APR 1987)    3.G
@@ -230,12 +230,13 @@
 !                OTHER INPUT VARIABLES UNMODIFIED.
 !  revision log:
 !    May 2013  J. Wang change cleff back to opn setting
-!    Jan 2014  J. Wang merge Henry and Fangin's dissipation heat in gfs to nems 
-!     
+!    Jan 2014  J. Wang merge Henry and Fangin's dissipation heat in gfs to nems
+!
 !
 !   ********************************************************************
       USE MACHINE , ONLY : kind_phys
       implicit none
+!
       integer im, iy, ix, km, imx, kdt, ipr, me
       integer KPBL(IM)                 ! Index for the PBL top layer!
       real(kind=kind_phys) deltim, G, CP, RD, RV,      cdmbgwd(2)
@@ -270,8 +271,8 @@
       parameter (FRC=1.0, CE=0.8, CEOFRC=CE/FRC, frmax=100., CG=0.5)
       parameter (GMAX=1.0, VELEPS=1.0, FACTOP=0.5)
 !      parameter (GMAX=1.0, CRITAC=5.0E-4, VELEPS=1.0, FACTOP=0.5)
-      parameter (RLOLEV=50000.0) 
-!     parameter (RLOLEV=500.0) 
+      parameter (RLOLEV=50000.0)
+!     parameter (RLOLEV=500.0)
 !     parameter (RLOLEV=0.5)
 !
        real(kind=kind_phys) dpmin,hminmt,hncrit,minwnd,sigfac
@@ -290,6 +291,7 @@
       parameter (dpmin=5000.0)   ! Minimum thickness of the reference layer
                                  ! in Pa
 !
+
       real(kind=kind_phys) FDIR
       integer mdir
       parameter(mdir=8, FDIR=mdir/(PI+PI))
@@ -306,7 +308,7 @@
      &,                    ROLL(IM),  ULOI(IM),   DUSFC(IM), DVSFC(IM)
      &,                    DTFAC(IM), XLINV(IM),  DELKS(IM), DELKS1(IM)
 !
-      real(kind=kind_phys) BNV2(IM,KM),  TAUP(IM,KM+1), ri_n(IM,KM) 
+      real(kind=kind_phys) BNV2(IM,KM),  TAUP(IM,KM+1), ri_n(IM,KM)
      &,                    TAUD(IM,KM),  RO(IM,KM),     VTK(IM,KM)
      &,                    VTJ(IM,KM),   SCOR(IM),      VELCO(IM,KM-1)
      &,                    bnv2bar(im)
@@ -328,12 +330,14 @@
      &, kmll
 !    &, kmll,kmds,ihit,jhit
       logical lprnt
-!
+
+
 !     parameter (cdmb = 1.0)     ! non-dim sub grid mtn drag Amp (*j*)
 ! non-dim sub grid mtn drag Amp (*j*)
 !     cdmb = 1.0/float(IMX/192)
 !     cdmb = 192.0/float(IMX)
       cdmb = 4.0 * 192.0/float(IMX)
+
       if (cdmbgwd(1) >= 0.0) cdmb = cdmb * cdmbgwd(1)
 !
       npr = 0
@@ -363,12 +367,12 @@
       LCAPP1 = LCAP + 1
 !
 !
-      IF ( NMTVR .eq. 14) then 
+      IF ( NMTVR .eq. 14) then
 ! ----  for lm and gwd calculation points
         ipt = 0
         npt = 0
         DO I = 1,IM
-          IF ( (elvmax(i) .GT. HMINMT) 
+          IF ( (elvmax(i) .GT. HMINMT)
      &       .and. (hprime(i) .GT. hpmin) )  then
              npt      = npt + 1
              ipt(npt) = i
@@ -386,13 +390,14 @@
 !
         do i=1,npt
           iwklm(i)  = 2
-          IDXZB(i)  = 0 
+          IDXZB(i)  = 0
           kreflm(i) = 0
         enddo
-!       if (lprnt) 
+!       if (lprnt)
 !    &  print *,' in gwdps_lm.f npt,IM,IX,IY,km,me=',npt,IM,IX,IY,km,me
 !
 !
+! start lm mtn blocking (mb) section
 !> --- Subgrid Mountain Blocking Section
 !
 !..............................
@@ -402,7 +407,7 @@
 !      then do not need hncrit -- test with large hncrit first.
 !       KMLL  = km / 2 ! maximum mtnlm height : # of vertical levels / 2
         KMLL = kmm1
-! --- No mtn should be as high as KMLL (so we do not have to start at 
+! --- No mtn should be as high as KMLL (so we do not have to start at
 ! --- the top of the model but could do calc for all levels).
 !
           DO I = 1, npt
@@ -418,12 +423,12 @@
             pkp1log =  phil(j,k+1) / G
             pklog =  phil(j,k)   / G
 !!!-------     ELVMAX(J) = min (ELVMAX(J) + sigfac * hprime(j), hncrit)
-            if ( ( ELVMAX(j) .le.  pkp1log ) .and. 
+            if ( ( ELVMAX(j) .le.  pkp1log ) .and.
      &           ( ELVMAX(j) .ge.   pklog  ) ) THEN
 !     print *,' in gwdps_lm.f 1  =',k,ELVMAX(j),pklog,pkp1log,me
-! ---        wk for diags but can be saved and reused.  
+! ---        wk for diags but can be saved and reused.
                wk(i)  = G * ELVMAX(j) / ( phil(j,k+1) - phil(j,k) )
-               iwklm(I)  =  MAX(iwklm(I), k+1 ) 
+               iwklm(I)  =  MAX(iwklm(I), k+1 )
 !     print *,' in gwdps_lm.f 2 npt=',npt,i,j,wk(i),iwklm(i),me
             endif
 !
@@ -441,16 +446,16 @@
 !         jhit = 0
 !        do i = 1, npt
 !        j=ipt(i)
-!          if ( iwklm(i) .gt. ihit ) then 
+!          if ( iwklm(i) .gt. ihit ) then
 !            ihit = iwklm(i)
 !            jhit = j
 !          endif
 !        enddo
 !     print *, ' mb: kdt,max(iwklm),jhit,phil,me=',
 !    &          kdt,ihit,jhit,phil(jhit,ihit),me
-         
+
         klevm1 = KMLL - 1
-        DO K = 1, klevm1  
+        DO K = 1, klevm1
           DO I = 1, npt
            j   = ipt(i)
             RDZ  = g   / ( phil(j,k+1) - phil(j,k) )
@@ -475,7 +480,7 @@
           BNV2bar(I) = (PRSL(J,1)-PRSL(J,2)) * DELKS1(I) * BNV2LM(I,1)
         ENDDO
 
-! --- find the dividing stream line height 
+! --- find the dividing stream line height
 ! --- starting from the level above the max mtn downward
 ! --- iwklm(i) is the k-index of mtn elvmax elevation
 !> - Find the dividing streamline height starting from the level above the maximum
@@ -493,14 +498,14 @@
 ! ---  make averages, guess dividing stream (DS) line layer.
 ! ---  This is not used in the first cut except for testing and
 ! --- is the vert ave of quantities from the surface to mtn top.
-!   
+!
         DO I = 1, npt
           DO K = 1, Kreflm(I)
             J        = ipt(i)
             RDELKS     = DEL(J,K) * DELKS(I)
-            UBAR(I)    = UBAR(I)  + RDELKS * U1(J,K) ! trial Mean U below 
-            VBAR(I)    = VBAR(I)  + RDELKS * V1(J,K) ! trial Mean V below 
-            ROLL(I)    = ROLL(I)  + RDELKS * RO(I,K) ! trial Mean RO below 
+            UBAR(I)    = UBAR(I)  + RDELKS * U1(J,K) ! trial Mean U below
+            VBAR(I)    = VBAR(I)  + RDELKS * V1(J,K) ! trial Mean V below
+            ROLL(I)    = ROLL(I)  + RDELKS * RO(I,K) ! trial Mean RO below
             RDELKS     = (PRSL(J,K)-PRSL(J,K+1)) * DELKS1(I)
             BNV2bar(I) = BNV2bar(I) + BNV2lm(I,K) * RDELKS
 ! --- these vert ave are for diags, testing and GWD to follow (*j*).
@@ -509,7 +514,7 @@
 !     print *,' in gwdps_lm.f 5  =',i,kreflm(npt),BNV2bar(npt),me
 !
 ! --- integrate to get PE in the trial layer.
-! --- Need the first layer where PE>EK - as soon as 
+! --- Need the first layer where PE>EK - as soon as
 ! --- IDXZB is not 0 we have a hit and Zb is found.
 !
         DO I = 1, npt
@@ -530,15 +535,15 @@
      &          MAX(SQRT(U1(J,K)*U1(J,K) + V1(J,K)*V1(J,K)), minwnd)
 ! --- Test to see if we found Zb previously
             IF (IDXZB(I) .eq. 0 ) then
-              PE(I) = PE(I) + BNV2lm(I,K) * 
-     &           ( G * ELVMAX(J) - phil(J,K) ) * 
+              PE(I) = PE(I) + BNV2lm(I,K) *
+     &           ( G * ELVMAX(J) - phil(J,K) ) *
      &           ( PHII(J,K+1) - PHII(J,K) ) / (G*G)
 ! --- KE
 ! --- Wind projected on the line perpendicular to mtn range, U(Zb(K)).
 ! --- kenetic energy is at the layer Zb
 ! --- THETA ranges from -+90deg |_ to the mtn "largest topo variations"
               UP(I)  =  UDS(I,K) * cos(ANG(I,K))
-              EK(I)  = 0.5 *  UP(I) * UP(I) 
+              EK(I)  = 0.5 *  UP(I) * UP(I)
 
 ! --- Dividing Stream lime  is found when PE =exceeds EK.
               IF ( PE(I) .ge.  EK(I) ) IDXZB(I) = K
@@ -581,12 +586,12 @@
 !     endif
 !
 ! --- The drag for mtn blocked flow
-! 
+!
         DO I = 1, npt
           J = ipt(i)
           ZLEN = 0.
 !      print *,' in gwdps_lm.f 9  =',i,j,IDXZB(i),me
-          IF ( IDXZB(I) .gt. 0 ) then 
+          IF ( IDXZB(I) .gt. 0 ) then
             DO K = IDXZB(I), 1, -1
               IF ( PHIL(J,IDXZB(I)) .gt.  PHIL(J,K) ) then
 
@@ -620,10 +625,10 @@
                 DBTMP = 0.25 *  CDmb *
      &                  MAX( 2. - 1. / R, 0. ) * sigma(J) *
      &                  MAX(cos(ANG(I,K)), gamma(J)*sin(ANG(I,K))) *
-     &                  ZLEN / hprime(J) 
-                DB(I,K) =  DBTMP * UDS(I,K)    
+     &                  ZLEN / hprime(J)
+                DB(I,K) =  DBTMP * UDS(I,K)
 !
-!               if(lprnt .and. i .eq. npr) then 
+!               if(lprnt .and. i .eq. npr) then
 !                 print *,' in gwdps_lmi.f 10 npt=',npt,i,j,idxzb(i)
 !    &,           DBTMP,R' ang=',ang(i,k),' gamma=',gamma(j),' K=',K
 !                 print *,' in gwdps_lmi.f 11   K=',k,ZLEN,cos(ANG(I,K))
@@ -634,13 +639,13 @@
 !         if(lprnt) print *,' @K=1,ZLEN,DBTMP=',K,ZLEN,DBTMP
           endif
         ENDDO
-! 
+!
 !.............................
 !.............................
 ! end  mtn blocking section
 !
-      ELSEIF ( NMTVR .ne. 14) then 
-! ----  for mb not present and  gwd (nmtvr .ne .14) 
+      ELSEIF ( NMTVR .ne. 14) then
+! ----  for mb not present and  gwd (nmtvr .ne .14)
         ipt     = 0
         npt     = 0
         DO I = 1,IM
@@ -744,7 +749,7 @@
       KMPS = KM
       DO I=1,npt
         J         = ipt(i)
-        kref(I)   = MAX(IWK(I), KPBL(J)+1 ) ! reference level 
+        kref(I)   = MAX(IWK(I), KPBL(J)+1 ) ! reference level
         DELKS(I)  = 1.0 / (PRSI(J,1) - PRSI(J,kref(I)))
         DELKS1(I) = 1.0 / (PRSL(J,1) - PRSL(J,kref(I)))
         UBAR (I)  = 0.0
@@ -809,7 +814,7 @@
         ULOW (I)  = 0.0
         DTFAC(I)  = 1.0
         ICRILV(I) = .FALSE. ! INITIALIZE CRITICAL LEVEL CONTROL VECTOR
-        
+
 !
 !----COMPUTE THE "LOW LEVEL" WIND MAGNITUDE (M/S)
 !
@@ -828,7 +833,7 @@
 !         ENDIF
         ENDDO
       ENDDO
-!      
+!
 !
 !   find the interface level of the projected wind where
 !   low levels & upper levels meet above pbl
@@ -921,7 +926,7 @@
         SCOR(I)  = BNV2(I,K) / TEM  ! Scorer parameter below ref level
       ENDDO
 !     if(lprnt) print *,' taub=',taub
-!                                                                       
+!
 !----SET UP BOTTOM VALUES OF STRESS
 !
       DO K = 1, KBPS
@@ -965,7 +970,7 @@
                 SCORK   = BNV2(I,K) * TEMV * TEMV
                 RSCOR   = MIN(1.0, SCORK / SCOR(I))
                 SCOR(I) = SCORK
-              ELSE 
+              ELSE
                 RSCOR   = 1.
               ENDIF
 !
@@ -1024,7 +1029,7 @@
                  TEMC = 2.0 + 1.0 / TEM2
                  HD   = VELCO(I,K) * (2.*SQRT(TEMC)-TEMC) / BRVF
                  TAUP(I,KP1) = TEM1 * HD * HD
-              ELSE 
+              ELSE
                  TAUP(I,KP1) = TAUP(I,K) * RSCOR
               ENDIF
               taup(i,kp1) = min(taup(i,kp1), taup(i,k))
@@ -1099,7 +1104,7 @@
             A(J,K)  = - DBIM * V1(J,K) + A(J,K)
             B(J,K)  = - DBIM * U1(J,K) + B(J,K)
             ENG1    = ENG0*(1.0-DBIM*DELTIM)*(1.0-DBIM*DELTIM)
-!          if ( ABS(DBIM * U1(J,K)) .gt. .01 ) 
+!          if ( ABS(DBIM * U1(J,K)) .gt. .01 )
 !    & print *,' in gwdps_lmi.f KDT=',KDT,I,K,DB(I,K),
 !    &                      dbim,idxzb(I),U1(J,K),V1(J,K),me
             DUSFC(J)   = DUSFC(J) - DBIM * V1(J,K) * DEL(J,K)
@@ -1129,7 +1134,7 @@
         DUSFC(J) = TEM * DUSFC(J)
         DVSFC(J) = TEM * DVSFC(J)
       ENDDO
-!                                                                       
+!
 !    MONITOR FOR EXCESSIVE GRAVITY WAVE DRAG TENDENCIES IF NCNT>0
 !
 !     IF(NCNT.GT.0) THEN

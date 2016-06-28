@@ -73,7 +73,7 @@
       public
 !
 !
-!> Define type construct for radiation fluxes at toa.
+!> Define type construct for radiation fluxes at toa
       type :: topflw_type
 !> total sky upward flux at toa
         real (kind=kind_phys) :: upfxc     
@@ -82,7 +82,7 @@
       end type
 !
 !
-!> Define type construct for radiation fluxes at surface.
+!> Define type construct for radiation fluxes at surface
       type :: sfcflw_type
 !> total sky upward flux at sfc
         real (kind=kind_phys) :: upfxc      
@@ -95,7 +95,7 @@
       end type
 !
 !
-!> Define type construct for optional radiation flux profiles.
+!> Define type construct for optional radiation flux profiles
       type :: proflw_type
 !> level up flux for total sky
         real (kind=kind_phys) :: upfxc    

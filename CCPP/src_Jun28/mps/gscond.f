@@ -5,7 +5,7 @@
 !> \defgroup MPscheme Grid-scale Condensation, Evaporation and Precipitation
 !! @{
 !! \brief The GFS scheme for large-scale condensation and precipitation, based on Zhao and Carr (1997) \cite zhao_and_carr_1997
-!! and Sundqvist et al. (1989) \cite sundqvist_et_al_1989 .
+!! and Sundqvist et al. (1989) \cite sundqvist_et_al_1989.
 !! \details Figure 1 shows a  schematic illustration of this scheme.
 !! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
 !! There are two sources of prognostic cloud condensate, convective detrainment (see convection) and grid-sale
@@ -79,6 +79,8 @@
 !     *  references:                                                   *
 !     *                                                                *
 !     ******************************************************************
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
 !
       use machine , only : kind_phys
       use funcphys , only : fpvs
@@ -109,7 +111,7 @@
       real (kind=kind_phys)  qi(im), qint(im), u(im,km), ccrik, e0
      &,                      cond,   rdt, us, cclimit, climit
      &,                      tmt0, tmt15, qik, cwmik
-     &,                      ai, qw, u00ik, tik, pres, pp0, fi 
+     &,                      ai, qw, u00ik, tik, pres, pp0, fi
      &,                      at, aq, ap, fiw, elv, qc, rqik
      &,                      rqikk, tx1, tx2, tx3, es, qs
      &,                      tsq, delq, condi, cone0, us00, ccrik1
@@ -160,7 +162,7 @@
 !       vprs(:) = 0.001 * fpvs(t(:,k))       ! fpvs in pa
 !-----------------------------------------------------------------------
 !------------------qw, qi and qint--------------------------------------
-        do i = 1, im                                    
+        do i = 1, im
           tmt0  = t(i,k)-273.16
           tmt15 = min(tmt0,cons_m15)
           qik   = max(q(i,k),epsq)
@@ -202,8 +204,8 @@
 !-------------------ice-water id number iw------------------------------
           if(tmt0.lt.-15.0) then
             u00ik = u(i,k)
-            fi    = qik - u00ik*qi(i)    
-            if(fi > d00.or.cwmik > climit) then                    
+            fi    = qik - u00ik*qi(i)
+            if(fi > d00.or.cwmik > climit) then
                iw(i,k) = 1
             else
               iw(i,k) = 0
@@ -254,7 +256,7 @@
 !     if (lprnt) print *,' qc=',qc,' qint=',qint(i),' qi=',qi(i)
 !----------------the relative humidity----------------------------------
           if(qc.le.1.0e-10) then
-            rqik=d00 
+            rqik=d00
           else
             rqik = qik/qc
           endif
@@ -341,7 +343,7 @@
 !   if no cloud exists then evaporate any existing cloud condensate
 !----------------evaporation of cloud water-----------------------------
           e0 = d00
-          if (ccrik <= cclimit.and. cwmik > climit)  then 
+          if (ccrik <= cclimit.and. cwmik > climit)  then
 !
 !   first iteration - increment halved
 !
@@ -390,7 +392,7 @@
           cond = d00
 !         if (ccrik .gt. 0.20 .and. qc .gt. epsq) then
           if (ccrik .gt. cclimit .and. qc .gt. epsq) then
-             us00   = us  - u00ik 
+             us00   = us  - u00ik
              ccrik1 = 1.0 - ccrik
              aa     = eps*elv*pres*qik
              ab     = ccrik*ccrik1*qc*us00
@@ -432,8 +434,8 @@
 !> -# End of the condensation/evaporation loop (end of i-loop,k-loop)
 !*********************************************************************
 !
-
 !> -# Store \f$t\f$, \f$q\f$, \f$ps\f$ for next time step.
+!----------------store t, q, ps for next time step
 
       if (dt > dtf+0.001) then     ! three time level
         do k = 1, km

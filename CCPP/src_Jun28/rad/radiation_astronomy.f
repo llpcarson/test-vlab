@@ -1,5 +1,5 @@
 !>  \file radiation_astronomy.f
-!!  This file sets up astronomical quantities for solar radiation calculations.
+!!  This file sets up astronomical quantities for solar radiation calculations
 
 !  ==========================================================  !!!!!
 !          'module_radiation_astronomy'  description           !!!!!
@@ -72,8 +72,6 @@
 !!!!!                       end descriptions                       !!!!!
 !!!!!  ==========================================================  !!!!!
 
-
-
 !> \ingroup rad
 !! \defgroup module_radiation_astronomy module_radiation_astronomy
 !! @{
@@ -96,6 +94,7 @@
      &   VTAGAST='NCEP-Radiation_astronomy v5.2  Jan 2013 '
 !    &   VTAGAST='NCEP-Radiation_astronomy v5.1  Nov 2012 '
 
+!  ---  parameter constants
 !>\name Parameter constants
       real (kind=kind_phys), parameter :: degrad = 180.0/con_pi
       real (kind=kind_phys), parameter :: tpi    = 2.0 * con_pi
@@ -114,21 +113,20 @@
 !> \name Module variables (to be set in module_radiation_astronomy::sol_update)
 
 !> equation of time
-      real (kind=kind_phys) :: sollag=0.0   
+      real (kind=kind_phys) :: sollag=0.0   ! equation of time
 !> sine of the solar declination angle
-      real (kind=kind_phys) :: sindec=0.0   
+      real (kind=kind_phys) :: sindec=0.0   ! sineof the solar declination angle
 !> cosine of the solar declination angle
-      real (kind=kind_phys) :: cosdec=0.0   
+      real (kind=kind_phys) :: cosdec=0.0   ! cosine of the solar declination angle
 !> solar angle increment per interation of cosz calc
-      real (kind=kind_phys) :: anginc=0.0   
+      real (kind=kind_phys) :: anginc=0.0   ! solar angle incrmt per iteration for cosz calc
 !> saved monthly solar constants (isolflg=4 only)
-      real (kind=kind_phys) :: smon_sav(12) 
+      real (kind=kind_phys) :: smon_sav(12) ! saved monthly solar constants (isolflg=4 only)
       data smon_sav(1:12) / 12*con_solr /
-
 !> saved year  of data used
-      integer               :: iyr_sav =0  
+      integer               :: iyr_sav =0   ! saved year  of data used
 !> total number of zenith angle iterations
-      integer               :: nstp    =6  
+      integer               :: nstp    =6   ! total number of zenith angle iterations
 
       public  sol_init, sol_update, coszmn
 
@@ -295,7 +293,6 @@
 !...................................
       end subroutine sol_init
 !-----------------------------------
-
 
 !> This subroutine computes solar parameters at forecast time.
 !!\param jdate     ncep absolute date and time at fcst time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
@@ -562,7 +559,6 @@
 
       jd  = int(fjd1)
       fjd = fjd1 - jd
-
 !> -# Call solar()
       call solar                                                        &
 !  ---  inputs:
@@ -617,7 +613,6 @@
       end subroutine sol_update
 !-----------------------------------
 !! @}
-
 
 !> This subroutine computes radius vector, declination and right ascension of sun, and equation of time
 !-----------------------------------
@@ -776,7 +771,6 @@
       end subroutine solar
 !-----------------------------------
 
-
 !> This subroutine computes mean cos solar zenith angle over SW calling interval
 !!\param xlon       (IM), grids' longitudes in radians, work both on zonal, 0->2pi and -pi->+pi arrangements
 !!\param sinlat     (IM), sine of the corresponding latitudes
@@ -872,7 +866,6 @@
 !...................................
       end subroutine coszmn
 !-----------------------------------
-
 
 !> This subroutine prints out forecast date, time, and astronomy quantities.
 !-----------------------------------

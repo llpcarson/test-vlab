@@ -83,7 +83,7 @@
 !  dpmid    : midpoint delta p ( pi(k)-pi(k-1) )
 !  lat      : latitude index
 !  qmax     : deep convective heating
-!  kcldtop  : Vertical level index for cloud top    ( mid level ) 
+!  kcldtop  : Vertical level index for cloud top    ( mid level )
 !  kcldbot  : Vertical level index for cloud bottom ( mid level )
 !  kcnv     : (0,1) dependent on whether convection occur or not
 !
@@ -110,32 +110,30 @@
       logical lprnt
 
 !------------------------- Local workspace -----------------------------
-!
-!  i, k     : Loop index
-!  kk       : Loop index
-!  cldf     : Deep convective cloud fraction at the cloud top.
-!  ugwdc    : Zonal wind after GWDC paramterization
-!  vgwdc    : Meridional wind after GWDC parameterization
-!  plnmid   : Log(pmid) ( mid level )
-!  plnint   : Log(pint) ( interface level )
-!  dpint    : Delta pmid ( interface level )
-!  tauct    : Wave stress at the cloud top calculated using basic-wind
-!             parallel to the wind vector at the cloud top ( mid level )
-!  tauctx   : Wave stress at the cloud top projected in the east
-!  taucty   : Wave stress at the cloud top projected in the north
-!  qmax     : Maximum deep convective heating rate ( K s-1 ) in a  
-!             horizontal grid point calculated from cumulus para-
-!             meterization. ( mid level )
-!  wtgwc    : Wind tendency in direction to the wind vector at the cloud top level
-!             due to convectively generated gravity waves ( mid level )
-!  utgwcl   : Zonal wind tendency due to convectively generated 
-!             gravity waves ( mid level )
-!  vtgwcl   : Meridional wind tendency due to convectively generated
-!             gravity waves ( mid level )
-!  taugwci  : Profile of wave stress calculated using basic-wind
-!             parallel to the wind vector at the cloud top 
+! i, k, kk     : Loop index
+!  cldf        : Deep convective cloud fraction at the cloud top.
+!  ugwdc       : Zonal wind after GWDC paramterization
+!  vgwdc       : Meridional wind after GWDC parameterization
+!  plnmid      : Log(pmid) ( mid level )
+!  plnint      : Log(pint) ( interface level )
+!  dpint       : Delta pmid ( interface level )
+!  tauct       : Wave stress at the cloud top calculated using basic-wind
+!                       parallel to the wind vector at the cloud top ( mid level )
+!  tauctx      : Wave stress at the cloud top projected in the east
+!  taucty      : Wave stress at the cloud top projected in the north
+!  qmax        : Maximum deep convective heating rate ( K s-1 ) in a
+!                       horizontal grid point calculated from cumulus para-
+!                       meterization. ( mid level )
+!  wtgwc       : Wind tendency in direction to the wind vector at the cloud top level
+!                       due to convectively generated gravity waves ( mid level )
+!  utgwcl      : Zonal wind tendency due to convectively generated
+!                       gravity waves ( mid level )
+!  vtgwcl      : Meridional wind tendency due to convectively generated
+!                       gravity waves ( mid level )
+!  taugwci     : Profile of wave stress calculated using basic-wind
+!                       parallel to the wind vector at the cloud top
 !  taugwcxi : Profile of zonal component of gravity wave stress
-!  taugwcyi : Profile of meridional component of gravity wave stress 
+!  taugwcyi : Profile of meridional component of gravity wave stress
 !
 !  taugwci, taugwcxi, and taugwcyi are defined at the interface level
 !
@@ -145,7 +143,7 @@
 !  rhom     : Air density ( mid level )
 !  ti       : Temperature ( interface level )
 !  basicum  : Basic-wind profile. Basic-wind is parallel to the wind
-!             vector at the cloud top level. (mid level) 
+!             vector at the cloud top level. (mid level)
 !  basicui  : Basic-wind profile. Basic-wind is parallel to the wind
 !             vector at the cloud top level. ( interface level )
 !  riloc    : Local Richardson number ( interface level )
@@ -155,24 +153,26 @@
 !  break    : Horizontal location where wave breaking is occurred.
 !  critic   : Horizontal location where critical level filtering is
 !             occurred.
-!  dogwdc   : Logical flag whether the GWDC parameterization is           
+!  dogwdc   : Logical flag whether the GWDC parameterization is
 !             calculated at a grid point or not.
-!  
+!
 !  dogwdc is used in order to lessen CPU time for GWDC calculation.
 !
 !-----------------------------------------------------------------------
-
       integer i,ii,k,k1,kk,kb,ilev,npt,kcb,kcldm,npr
       integer, dimension(im) :: ipt
 
-      real(kind=kind_phys) tem, tem1,  tem2, qtem, wtgwc, tauct,
+      real(kind=kind_phys) tem,
+     &    tem1,  tem2, qtem, wtgwc, tauct,
      &                     windcltop,  shear, nonlinct, nonlin, nonlins,
      &                     n2,   dtdp,  crit1, crit2, pi, p1, p2,
      &                     gsqr,  onebg
 !    &                     taus, n2,   dtdp,  crit1, crit2, pi, p1, p2
 
       integer,              allocatable :: kcldtop(:),kcldbot(:)
+
       logical,              allocatable :: do_gwc(:)
+
       real(kind=kind_phys), allocatable :: tauctxl(:), tauctyl(:),
      &                                     gwdcloc(:), break(:),
      &                                     critic(:),
@@ -192,7 +192,7 @@
      &                                     ti(:,:),       riloc(:,:),
      &                                     rimin(:,:),    pint(:,:)
 !     real(kind=kind_phys), allocatable :: ugwdc(:,:),    vgwdc(:,:),
-      real(kind=kind_phys), allocatable :: 
+      real(kind=kind_phys), allocatable ::
 !    &                                     plnmid(:,:),   wtgwc(:,:),
      &                                     plnmid(:,:),
      &                                     utgwcl(:,:),   vtgwcl(:,:),
@@ -207,7 +207,7 @@
 !  ucltop    : Zonal wind at the cloud top ( mid level )
 !  vcltop    : Meridional wind at the cloud top ( mid level )
 !  windcltop : Wind speed at the cloud top ( mid level )
-!  shear     : Vertical shear of basic wind 
+!  shear     : Vertical shear of basic wind
 !  cosphi    : Cosine of angle of wind vector at the cloud top
 !  sinphi    : Sine   of angle of wind vector at the cloud top
 !  c1        : Tunable parameter
@@ -225,17 +225,17 @@
 !  crit2     : Variable 2 for checking critical level
 !
 !-----------------------------------------------------------------------
-
+! Define constants used in gwdc
       real(kind=kind_phys), parameter ::
      &                      c1=1.41,          c2=-0.38,     ricrit=0.25
      &,                     n2min=1.e-32,     zero=0.0,     one=1.0
-!    &,                     taumin=1.0e-20,   tauctmax=-20.
      &,                     taumin=1.0e-20,   tauctmax=-5.
      &,                     qmin=1.0e-10,     shmin=1.0e-20
      &,                     rimax=1.0e+20,    rimaxm=0.99e+20
      &,                     rimaxp=1.01e+20,  rilarge=0.9e+20
      &,                     riminx=-1.0e+20,  riminm=-1.01e+20
      &,                     riminp=-0.99e+20, rismall=-0.9e+20
+
 
 !
       npt = 0
@@ -265,6 +265,7 @@
 !  Begin GWDC
 !
 !***********************************************************************
+
 
 !-----------------------------------------------------------------------
 !        Write out incoming variables
@@ -327,7 +328,7 @@
      &          rimin(npt,km+1),    pint(npt,km+1))
 
 !     allocate (ugwdc(npt,km),   vgwdc(npt,km),
-      allocate 
+      allocate
 !    &         (plnmid(npt,km),  wtgwc(npt,km),
      &         (plnmid(npt,km),
      &          utgwcl(npt,km),  vtgwcl(npt,km),
@@ -436,7 +437,7 @@
 !            4 ======== pint(4)           dpint(4)
 !            4 --------          pmid(4)            dpmid(4)
 !              ........
-!           17 ======== pint(17)          dpint(17) 
+!           17 ======== pint(17)          dpint(17)
 !           17 --------          pmid(17)           dpmid(17)
 !           18 ======== pint(18)          dpint(18)
 !           18 --------          pmid(18)           dpmid(18)
@@ -498,11 +499,11 @@
           qtem       = spfh(i,k-1) * tem1 + spfh(i,k) * tem2
           rhoi(i,k)  = pint(i,k) / ( rd * ti(i,k)*(1.0+fv*qtem) )
           dtdp       = (t(i,k)-t(i,k-1)) / (pmid(i,k)-pmid(i,k-1))
-          n2         = gsqr / ti(i,k) * ( 1./cp - rhoi(i,k)*dtdp ) 
+          n2         = gsqr / ti(i,k) * ( 1./cp - rhoi(i,k)*dtdp )
           bruni(i,k) = sqrt (max (n2min, n2))
         enddo
       enddo
- 
+
       deallocate (spfh)
 !-----------------------------------------------------------------------
 !
@@ -513,7 +514,7 @@
       do k = 1, km
         do i = 1, npt
           dtdp       = (ti(i,k+1)-ti(i,k)) / (pint(i,k+1)-pint(i,k))
-          n2         = gsqr / t(i,k) * ( 1./cp - rhom(i,k)*dtdp ) 
+          n2         = gsqr / t(i,k) * ( 1./cp - rhom(i,k)*dtdp )
           brunm(i,k) = sqrt (max (n2min, n2))
         enddo
       enddo
@@ -575,9 +576,8 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate the cloud top wind components and speed. 
-!! Here, ucltop, vcltop, and windcltop are wind components and
-!!  wind speed at mid-level cloud top index
+!> -# Calculate the cloud top wind components and speed (ucltop/vcltop/windcltop).
+
 !
 !-----------------------------------------------------------------------
 
@@ -613,7 +613,6 @@
 !
 !  Basic state wind at interface level is also calculated
 !  based on linear interpolation in ln(Pressure)
-!
 !  In the top and bottom boundaries, basic-state wind at interface level
 !  is assumed to be vertically uniform.
 !
@@ -657,7 +656,7 @@
 !           18 -------- U(18)
 !           19 ========       UI(19)           rhoi(19) bruni(19) riloc(19)
 !
-!-----------------------------------------------------------------------     
+!-----------------------------------------------------------------------
 
       do k=2,km
         do i=1,npt
@@ -669,10 +668,10 @@
             tem = bruni(i,k) / shear
             riloc(i,k)  = tem * tem
             if (riloc(i,k) >= rimax ) riloc(i,k) = rilarge
-          end if 
+          end if
         enddo
       enddo
- 
+
       do i=1,npt
         riloc(i,1)    = riloc(i,2)
         riloc(i,km+1) = riloc(i,km)
@@ -701,48 +700,34 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate the gravity wave stress at the interface level cloud top.
+!> -# Calculate the gravity wave stress at the interface level cloud top
 !
 !  kcldtopi  : The interface level cloud top index
 !  kcldtop   : The midlevel cloud top index
 !  kcldbot   : The midlevel cloud bottom index
 !
-!  A : Find deep convective heating rate maximum
+!  - A : Find deep convective heating rate maximum
 !
 !      If kcldtop(i) is less than kcldbot(i) in a horizontal grid point,
 !      it can be thought that there is deep convective cloud. However,
 !      deep convective heating between kcldbot and kcldtop is sometimes
 !      zero in spite of kcldtop less than kcldbot. In this case,
-!      maximum deep convective heating is assumed to be 1.e-30. 
+!      maximum deep convective heating is assumed to be 1.e-30.
 !
-!  B : kk is the vertical index for interface level cloud top
+!  - B : kk is the vertical index for interface level cloud top
 !
-!  C : Total convective fractional cover (cldf) is used as the
-!      convective cloud cover for GWDC calculation instead of   
+!  - C : Total convective fractional cover (cldf) is used as the
+!      convective cloud cover for GWDC calculation instead of
 !      convective cloud cover in each layer (concld).
 !                       a1 = cldf*dlength
 !      You can see the difference between cldf(i) and concld(i)
-!      in (4.a.2) in Description of the NCAR Community Climate    
+!      in (4.a.2) in Description of the NCAR Community Climate
 !      Model (CCM3).
 !      In NCAR CCM3, cloud fractional cover in each layer in a deep
 !      cumulus convection is determined assuming total convective
-!      cloud cover is randomly overlapped in each layer in the 
+!      cloud cover is randomly overlapped in each layer in the
 !      cumulus convection.
 !
-!  D : Wave stress at cloud top is calculated when the atmosphere
-!      is dynamically stable at the cloud top
-!
-!  E : Cloud top wave stress and nonlinear parameter are calculated 
-!      using density, temperature, and wind that are defined at mid
-!      level just below the interface level in which cloud top wave
-!      stress is defined.
-!      Nonlinct is defined at the interface level.
-!  
-!  F : If the atmosphere is dynamically unstable at the cloud top,
-!      GWDC calculation in current horizontal grid is skipped.  
-!
-!  G : If mean wind at the cloud top is less than zero, GWDC
-
 !>  - Wave stress at cloud top is calculated when the atmosphere
 !!    is dynamically stable at the cloud top
 !!
@@ -777,7 +762,7 @@
 !  - If mean wind at the cloud top is less than zero, GWDC
 !      calculation in current horizontal grid is skipped.
 !
-
+! H : Maximum cloud top stress, tauctmax =  -20 N m^(-2),
 !>  - The stress is capped at tauctmax =  - 5\f$n/m^2\f$
 !!      in order to prevent numerical instability.
 !
@@ -802,10 +787,10 @@
           do_gwc(i)     = .true.
         else
 !F
-          tauctxl(i) = zero 
+          tauctxl(i) = zero
           tauctyl(i) = zero
           do_gwc(i) = .false.
-        end if 
+        end if
 !H
       enddo
 
@@ -832,11 +817,11 @@
 !
 !  Minimum RI is calculated for the following two cases
 !
-!  (1)   RIloc < 1.e+20  
+!  (1)   RIloc < 1.e+20
 !  (2)   Riloc = 1.e+20  ----> Vertically uniform basic-state wind
 !
 !  RIloc cannot be smaller than zero because N^2 becomes 1.E-32 in the
-!  case of N^2 < 0.. Thus the sign of RINUM is determined by 
+!  case of N^2 < 0.. Thus the sign of RINUM is determined by
 !  1 - nonlin*|c2|.
 !
 !-----------------------------------------------------------------------
@@ -845,6 +830,7 @@
 !!\f[
 !! Ri_{min}\approx\frac{Ri(1-\mu|c_{2}|)}{(1+\mu Ri^{1/2}|c_{2}|)^{2}}
 !!\f]
+
 
       do k=kcldm,1,-1
 
@@ -860,10 +846,10 @@
               crit2 = vcltop(i)*v(i,1)
             end if
 
-            if ( abs(basicui(i,k)) > zero .and. crit1 > zero 
+            if ( abs(basicui(i,k)) > zero .and. crit1 > zero
      &                                    .and. crit2 > zero ) then
               tem = basicui(i,k) * basicui(i,k)
-              nonlin   = gqmcldlen(i) / (bruni(i,k)*ti(i,k)*tem)        
+              nonlin   = gqmcldlen(i) / (bruni(i,k)*ti(i,k)*tem)
               tem  = nonlin*abs(c2)
               if ( riloc(i,k)  <  rimaxm ) then
                 tem1 = 1 + tem*sqrt(riloc(i,k))
@@ -900,20 +886,20 @@
 !            2 ========       - 0.001         -1.e20
 !            2 --------                               0.000
 !            3 ========       - 0.001         -1.e20
-!            3 --------                               -.xxx 
+!            3 --------                               -.xxx
 !            4 ========       - 0.001  2.600  2.000
 !            4 --------                               0.000
 !            5 ========       - 0.001  2.500  2.000
 !            5 --------                               0.000
 !            6 ========       - 0.001  1.500  0.110
-!            6 --------                               +.xxx 
+!            6 --------                               +.xxx
 !            7 ========       - 0.005  2.000  3.000
 !            7 --------                               0.000
 !            8 ========       - 0.005  1.000  0.222
 !            8 --------                               +.xxx
 !            9 ========       - 0.010  1.000  2.000
 !            9 --------                               0.000
-! kcldtopi  10 ========  $$$  - 0.010 
+! kcldtopi  10 ========  $$$  - 0.010
 ! kcldtop   10 --------  $$$                          yyyyy
 !           11 ========  $$$  0
 !           11 --------  $$$
@@ -928,16 +914,16 @@
 !           16 ========  $$$  0
 ! kcldbot   16 --------  $$$
 !           17 ========       0
-!           17 -------- 
+!           17 --------
 !           18 ========       0
-!           18 -------- 
+!           18 --------
 !           19 ========       0
 !
 !-----------------------------------------------------------------------
 !
 !   Even though the cloud top level obtained in deep convective para-
 !   meterization is defined in mid-level, the cloud top level for
-!   the GWDC calculation is assumed to be the interface level just 
+!   the GWDC calculation is assumed to be the interface level just
 !   above the mid-level cloud top vertical level index.
 !
 !-----------------------------------------------------------------------
@@ -959,20 +945,22 @@
                     taugwci(i,k) = taugwci(i,k+1)
                   elseif (rimin(i,k) > riminp) then
                     tem = 2.0 + 1.0 / sqrt(riloc(i,k))
-                    nonlins = (1.0/abs(c2)) * (2.*sqrt(tem) - tem) 
+                    nonlins = (1.0/abs(c2)) * (2.*sqrt(tem) - tem)
                     tem1 = basicui(i,k)
                     tem2 = c2*nonlins*tem1
                     taugwci(i,k) = - rhoi(i,k) * c1 * tem1 * tem2 * tem2
      &                           /  (bruni(i,k)*dlen(i))
                   elseif (rimin(i,k) > riminm) then
-                    taugwci(i,k) = zero 
+                    taugwci(i,k) = zero
                   end if                                              ! RImin
                 else
 
+! In the dynamically unstable environment, there is no gravity wave stress
 !>  - If the minimum \f$R_{i}\f$ at interface cloud top is less than or equal to 1/4,
 !!  the convective GWD calculation is skipped at that grid point.
 
-                  taugwci(i,k) = zero    
+
+                  taugwci(i,k) = zero
                 end if                                                ! RIloc
               else
                  taugwci(i,k) = zero
@@ -1081,8 +1069,8 @@
 
 !-----------------------------------------------------------------------
 !
-!  The GWDC should accelerate the zonal and meridional wind in the   
-!  opposite direction of the previous zonal and meridional wind, 
+!  The GWDC should accelerate the zonal and meridional wind in the
+!  opposite direction of the previous zonal and meridional wind,
 !  respectively
 !
 !-----------------------------------------------------------------------
@@ -1093,10 +1081,10 @@
 
 !-------------------- x-component-------------------
 
-!       write(6,'(a)')   
+!       write(6,'(a)')
 !    +  '(GWDC) WARNING: The GWDC should accelerate the zonal wind '
-!       write(6,'(a,a,i3,a,i3)')   
-!    +  'in the opposite direction of the previous zonal wind', 
+!       write(6,'(a,a,i3,a,i3)')
+!    +  'in the opposite direction of the previous zonal wind',
 !    +  ' at I = ',i,' and J = ',lat
 !       write(6,'(4(1x,e17.10))') u(i,kk),v(i,kk),u(i,k),v(i,k)
 !       write(6,'(a,1x,e17.10))') 'Vcld . V =',
@@ -1106,7 +1094,7 @@
 !       do k1=1,km
 !         write(6,'(i2,36x,2(1x,e17.10))')
 !    +             k1,taugwcxi(i,k1),taugwci(i,k1)
-!         write(6,'(i2,2(1x,e17.10))') k1,utgwcl(i,k1),u(i,k1) 
+!         write(6,'(i2,2(1x,e17.10))') k1,utgwcl(i,k1),u(i,k1)
 !       end do
 !       write(6,'(i2,36x,1x,e17.10)') (km+1),taugwcxi(i,km+1)
 !       end if
@@ -1116,7 +1104,7 @@
 !       do k1=1,km
 !         write(6,'(i2,36x,2(1x,e17.10))')
 !    +             k1,taugwci(i,k1)
-!         write(6,'(i2,2(1x,e17.10))') k1,wtgwc(i,k1),basicum(i,k1) 
+!         write(6,'(i2,2(1x,e17.10))') k1,wtgwc(i,k1),basicum(i,k1)
 !       end do
 !       write(6,'(i2,36x,1x,e17.10)') (km+1),taugwci(i,km+1)
 
@@ -1136,7 +1124,7 @@
 !       do k1=1,km
 !         write(6,'(i2,36x,2(1x,e17.10))')
 !    +                        k1,taugwcyi(i,k1),taugwci(i,k1)
-!         write(6,'(i2,2(1x,e17.10))') k1,vtgwc(i,k1),v(i,k1) 
+!         write(6,'(i2,2(1x,e17.10))') k1,vtgwc(i,k1),v(i,k1)
 !       end do
 !       write(6,'(i2,36x,1x,e17.10)') (km+1),taugwcyi(i,km+1)
 !       end if
@@ -1166,7 +1154,7 @@
 
 !-----------------------------------------------------------------------
 !
-!  For GWDC performance analysis        
+!  For GWDC performance analysis
 !
 !-----------------------------------------------------------------------
 
@@ -1182,7 +1170,7 @@
 !        if ( abs(taugwci(i,k)-taugwci(i,kk)) > taumin ) then
 !         break(i) = 1.0
 !         go to 2000
-!        endif 
+!        endif
 !       enddo
 !2000   continue
 

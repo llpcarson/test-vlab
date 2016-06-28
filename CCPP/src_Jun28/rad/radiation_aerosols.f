@@ -1,5 +1,5 @@
 !>  \file radiation_aerosols.f
-!!  This file contains climatological atmospheric aerosol schemes for
+!!  contains climatological atmospheric aerosol schemes for
 !!  radiation computations
 
 !  ==========================================================  !!!!!
@@ -303,7 +303,7 @@
       integer, parameter :: NCM2 = 4
       integer, parameter :: NCM  = NCM1+NCM2
 
-!> predefined relative humidity levels
+!> predefined rh levels
       real (kind=kind_phys), dimension(NRHLEV), save :: rhlev
       data  rhlev (:) / 0.0, 0.5, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99 /
 
@@ -480,6 +480,7 @@
 !> asymmetry parameter for sw+lw band
      real (kind=kind_phys),allocatable,save,dimension(:,:,:)::asyrhd_grt
 
+! section-5 : module variables for gocart aerosol clim data set
 !> \name module variables for gocart aerosol clim data set
 
 ! --------------------------------------------------------------------- !
@@ -528,10 +529,13 @@
 !> geos-gocart latitude arrays
      real (kind=kind_phys), allocatable, save, dimension(:) :: geos_rlat
 
+!   - control flag for gocart climo data set
+!     xxxx as default; ver3 for geos3; ver4 for geos4; 0000 for unknown data
 !> control flag for gocart climo data set: xxxx as default; ver3 for geos3;
 !! ver4 for geos4; 0000 for unknown data
       character*4, save  :: gocart_climo = 'xxxx'
 
+!   - molecular wght of gocart aerosol species
 !> molecular wght of gocart aerosol species
       real (kind=kind_io4), allocatable :: molwgt(:)
 
@@ -540,7 +544,6 @@
 !   section-6 : module variables for gocart aerosol scheme options
 !   !
 ! ---------------------------------------------------------------------
-! !
 
 !> logical parameter for gocart initialization control
       logical, save :: lgrtint = .true.
@@ -577,8 +580,7 @@
 !      OC (waso) and BC (soot)
 !
 
-!> index for rh dependent aerosol optical properties (2nd 
-!! dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
+!> index for rh dependent aerosol optical properties (2nd dimension for extrhd_grt, ssarhd_grt, and asyrhd_grt)
       integer, save :: isoot, iwaso, isuso, issam, isscm
 
 !   - index for rh independent aerosol optical properties (1st
@@ -624,6 +626,7 @@
 !> aerosol grid components
       character, allocatable , save  :: gridcomp(:)*2   
 
+!  --- default full-package setting
 !> default full-package setting
       integer, parameter          :: max_num_gridcomp = 5
 !> data max_gridcomp  /'DU', 'BC', 'OC', 'SU', 'SS'/
@@ -728,6 +731,7 @@
       kyrsav  = 1
       kmonsav = 1
 
+!  --- ...  write aerosol parameter configuration to output logs
 !> -# Call wrt_aerlog() to write aerosol parameter configuration to output logs.
 
       if ( me == 0 ) then
@@ -764,12 +768,14 @@
 
       if ( iaerflg /= 100 ) then
 
+!  --- ...  set up spectral one wavenumber solar/ir fluxes
 !> -# Call set_spectrum() to set up spectral one wavenumber solar/IR fluxes.
 
         call set_spectrum
 !  ---  inputs:   (module constants)
 !  ---  outputs:  (in-scope variables)
 
+!  --- ...  invoke tropospheric aerosol initialization
 !> -# Call clim_aerinit() to invoke tropospheric aerosol initialization.
 
         if ( iaermdl == 0 ) then                    ! opac-climatology scheme
@@ -799,6 +805,7 @@
 
       endif    ! end if_iaerflg_block
 
+!  --- ...  invoke stratosperic volcanic aerosol initialization
 !> -# Call set_volcaer() to invoke stratospheric volcanic aerosol initialization.
 
       if ( lavoflg ) then
@@ -1255,7 +1262,7 @@
         stop
       endif     ! end if_file_exist_block
 
-!  --- ...  skip monthly global distribution
+! - Skip monthly global distribution
 
       do m = 1, 12
         read (NIAERCM,12) cline
@@ -1283,56 +1290,56 @@
       endif
 
 !>  - ending wave num for 61 aerosol spectral bands
-      read(NIAERCM,21) cline   
+      read(NIAERCM,21) cline   ! ending wave num for 61 aeros spectral bands
   21  format(a80)
       read(NIAERCM,22) iendwv(:)
   22  format(13i6)
 
 !>  - atmos scale height for 5 domains, 7 profs
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! atmos scale height for 5 domains, 7 profs
       read(NIAERCM,24) haer(:,:)
   24  format(20f4.1)
 
 !>  - reference pressure for 5 domains, 7 profs
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! reference pressure for 5 domains, 7 profs
       read(NIAERCM,26) prsref(:,:)
   26  format(10f7.2)
 
 !>  - rh independent ext coef for 61 bands, 6 species
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! rh indep ext coef for 61 bands, 6 species
       read(NIAERCM,28) rhidext0(:,:)
   28  format(8e10.3)
 
 !>  - rh independent sca coef for 61 bands, 6 species
-      read(NIAERCM,21) cline   
+      read(NIAERCM,21) cline   ! rh indep sca coef for 61 bands, 6 species
       read(NIAERCM,28) rhidsca0(:,:)
 
 !>  - rh independent ssa coef for 61 bands, 6 species
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! rh indep ssa coef for 61 bands, 6 species
       read(NIAERCM,28) rhidssa0(:,:)
 
 !>  - rh independent asy coef for 61 bands, 6 species
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! rh indep asy coef for 61 bands, 6 species
       read(NIAERCM,28) rhidasy0(:,:)
 
 !>  - rh dependent ext coef for 61 bands, 8 rh lev, 4 species
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! rh dep ext coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpext0(:,:,:)
 
 !>  - rh dependent sca coef for 61 bands, 8 rh lev, 4 species
-      read(NIAERCM,21) cline   
+      read(NIAERCM,21) cline   ! rh dep sca coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpsca0(:,:,:)
 
 !>  - rh dependent ssa coef for 61 bands, 8 rh lev, 4 species
-      read(NIAERCM,21) cline   
+      read(NIAERCM,21) cline   ! rh dep ssa coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpssa0(:,:,:)
 
 !>  - rh dependent asy coef for 61 bands, 8 rh lev, 4 species
-      read(NIAERCM,21) cline   
+      read(NIAERCM,21) cline   ! rh dep asy coef for 61 bands, 8 rh lev, 4 species
       read(NIAERCM,28) rhdpasy0(:,:,:)
 
 !>  - stratospheric background aeros for 61 bands
-      read(NIAERCM,21) cline  
+      read(NIAERCM,21) cline   ! stratospheric background aeros for 61 bands
       read(NIAERCM,28) straext0(:)
 
       close (NIAERCM)
@@ -1451,6 +1458,7 @@
         enddo     ! end do_ib_block for lw
       endif    ! end if_lalwflg_block
 
+!  ---  compute spectral band mean properties for each species
 !> -# Call optavg() to compute spectral band mean properties for each species.
 
       call optavg
@@ -1821,12 +1829,12 @@
       endif
 
 !> -# Call trop_update() to update monthly tropospheric aerosol data.
-      if ( lalwflg .or. laswflg ) then 
+      if ( lalwflg .or. laswflg ) then ! update monthly tropspheric aerosol data
         call trop_update
       endif
 
 !> -# Call volc_update() to update yearly stratospheric volcanic aerosol data.
-      if ( lavoflg ) then             
+      if ( lavoflg ) then              ! update yearly stratospheric volcanic aerosol data
         call volc_update
       endif
 
@@ -2126,6 +2134,7 @@
 !! @}
 
 
+
 !> This subroutine computes aerosols optical properties.
 !>\param[in] prsi    (IMAX,NLP1), pressure at interface in mb
 !!\param[in] prsl    (IMAX,NLAY), layer mean pressure in mb
@@ -2343,11 +2352,13 @@
         enddo  lab_do_IMAX
 
 
-!> -# Calculate sw aerosol optical properties for the corresponding frequency bands:
+!> -# Calculate sw aerosol optical properties for the corresponding frequency bands
 !!    - if opac aerosol climatology is used, call aer_property(): this subroutine maps the 5 degree global climatological aerosol data
 !! set onto model grids, and compute aerosol optical properties for sw and lw radiations.
 !!    - if gocart aerosol scheme is used, call setgocartaer(): this subroutine computes sw + lw aerosol optical properties for gocart
-!!  aerosol species (merged from fcst and clim fields).
+!!  aerosol species (merged from fcst and clim fields)
+!  ---  ...  calculate sw aerosol optical properties for the corresponding
+!            frequency bands
 
 !SARAH
 !         if ( iaerflg == 1 ) then      ! use opac aerosol climatology
@@ -2416,7 +2427,7 @@
 
       endif   ! end if_laswflg_or_lalwflg_block
 
-!> -# Compute stratosphere volcanic forcing:
+!> -# Compute stratosphere volcanic forcing
 !!    - select data in 4 lat bands, interpolation at the boundaries
 !!    - Find lower boundary of stratosphere: polar, fixed at 25000pa (250mb); tropic, fixed at 15000pa (150mb); mid-lat, interpolation
 !!    - sw: add volcanic aerosol optical depth to the background value
@@ -2461,6 +2472,7 @@
 
         if ( ivflip == 0 ) then         ! input data from toa to sfc
 
+
 !  ---  find lower boundary of stratosphere
 
           do i = 1, IMAX
@@ -2493,6 +2505,7 @@
               endif
             enddo  lab_do_kcutl0
           enddo
+
 
 !  ---  sw: add volcanic aerosol optical depth to the background value
 
@@ -2845,6 +2858,7 @@
 !> -# Map aerosol data to model grids
 !!    - Map grid in longitude direction, lon from 0 to 355 deg resolution
 !!    - Map grid in latitude direction, lat from 90n to 90s in 5 deg resolution
+!  ---  map aerosol data to model grids
 
       i1 = 1
       i2 = 2
@@ -2927,8 +2941,7 @@
           endif
         enddo  lab_do_JMXAE
 
-!> -# Determin the type of aerosol profile (kp) and scale hight for domain 1 (h1) 
-!!    to be used at this grid point.
+!> -# Determin the type of aerosol profile (kp) and scale hight for domain 1 (h1) to be used at this grid point
 
         kp = kprfg(kpi,kpj)                     ! nearest typical aeros profile as default
         kpa = max( kprfg(i1,j1),kprfg(i1,j2),kprfg(i2,j1),kprfg(i2,j2) )
@@ -3010,8 +3023,8 @@
 !       print *,'   denn =',denn(:)
 !       print *,'   cmix =',cmix(:)
 
-!> -# Prepare to setup domain index array and effective layer thickness, also
-!! convert pressure level to sigma level to follow the terrain.
+!> -# Prepare to setup domain index array and effective layer thickness. also
+!! convert pressure level to sigma level to follow the terrain
 
         do k = 1, NLAY
           rh1(k) = rhlay(i,k)
@@ -4494,9 +4507,9 @@
 !--------------------------------
 !
 !> This subroutine:
-!! - 1. read in aerosol dry mass and surface pressure from GEOS3-GOCART C3.1 2000 monthly dataset
+!! 1. read in aerosol dry mass and surface pressure from GEOS3-GOCART C3.1 2000 monthly dataset
 !!    or aerosol mixing ratio and surface pressure from GEOS4-GOCART 2000-2007 averaged monthly data set.
-!! - 2. compute goes lat/lon array (for horizontal mapping)
+!! 2. compute goes lat/lon array (for horizontal mapping)
 !-----------------------------------
       subroutine rd_gocart_clim
 !...................................
@@ -4955,6 +4968,7 @@
       endif
 !
 !> -# Call map_aermr() to map input tracer array (trcly) to local tracer array (aermr).
+
       dmfcs(:,:,:) = f_zero
       lab_if_fcst : if ( get_fcst ) then
 
@@ -5023,7 +5037,7 @@
           enddo
         endif    lab_if_clim
 !
-!  ---  compute fcst/clim merged aerosol loading (dmanl) and the
+! Compute fcst/clim merged aerosol loading (dmanl) and the
 !       radiation optical properties (aerosw, aerolw)
 !
         do k = 1, NLAY

@@ -71,7 +71,7 @@
 !     ******************************************************************
 !     *                                                                *
 !     *  originally created by  q. zhao                jan. 1995       *
-!     *                         -------                                *    
+!     *                         -------                                *
 !     *  modified and rewritten by shrinivas moorthi   oct. 1998       *
 !     *                            -----------------                   *
 !     *  and                       hua-lu pan                          *
@@ -316,7 +316,7 @@
 !           rq(n) = max(1.0e-10, rq(n))           ! -- relative humidity---
 !
 !  the global qsat computation is done in pa
-            pres1   = pres(n) 
+            pres1   = pres(n)
 !           qw      = es(n)
             qw      = min(pres1, fpvs(tt(n)))
             qw      = eps * qw / (pres1 + epsm1 * qw)
@@ -437,6 +437,7 @@
                psaci     = min(cwmk, aa2*expf*precsl1(n)*cwmk)
 
                ww(n)     = ww(n) - psaci
+
                precsl(n) = precsl(n) + (wws - ww(n)) * condt(n)
             else                                    !  liquid water
 !
@@ -678,7 +679,7 @@
            sr(i) = 0.
         else
            sr(i) = precsl1(n)/rid
-        endif 
+        endif
       enddo
 !
       return
