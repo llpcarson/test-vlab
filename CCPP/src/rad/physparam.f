@@ -19,7 +19,8 @@
 !                                                                      !
 !!!!!  ==========================================================  !!!!!
 
-!! \ingroup rad
+!> \ingroup rad
+!> \defgroup physparam physparam
 !! @{
 !> This module defines commonly used control variables and parameters in physics related programs.
 !========================================!
