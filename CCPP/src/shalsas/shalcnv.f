@@ -45,8 +45,6 @@
 !!  \param[out] cnvw convective cloud water (units?)
 !!  \param[out] cnvc convective cloud cover (units?)
 !!
-!!  \todo arguments do not have intents
-!!
 !!  \section general General Algorithm
 !!  -# Compute preliminary quantities needed for the static and feedback control portions of the algorithm.
 !!  -# Perform calculations related to the updraft of the entraining/detraining cloud model ("static control").
