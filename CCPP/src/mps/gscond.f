@@ -7,7 +7,7 @@
 !! \brief The GFS scheme for large-scale condensation and precipitation, based on Zhao and Carr (1997) \cite zhao_and_carr_1997
 !! and Sundqvist et al. (1989) \cite sundqvist_et_al_1989 .
 !! \details Figure 1 shows a  schematic illustration of this scheme.
-!! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the new precipitation scheme" width=10cm
+!! \image  html  schematic_MPS.png "Figure 1: Schematic illustration of the precipitation scheme" width=10cm
 !! There are two sources of prognostic cloud condensate, convective detrainment (see convection) and grid-sale
 !! condensate. The sinks of cloud condensate are grid-scale precipitation and evaporation of the cloud condensate.
 !! Evaporation of rain in the unsaturated layers below the level of condensation is also taken into account.All

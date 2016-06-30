@@ -879,7 +879,7 @@
 !!\param f_ice   (IX,NLAY), fraction of layer cloud ice  (ferrier micro-phys)
 !!\param f_rain  (IX,NLAY), fraction of layer rain water (ferrier micro-phys)
 !!\param r_rime  (IX,NLAY), mass ratio of total ice to unrimed ice (>=1)
-!!\param flgmin  (IX), minimim large ice fraction
+!!\param flgmin  (IX), minimum large ice fraction
 !!\param xlat    (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
 !!\param xlon    (IX), grid longitude in radians  (not used)
 !!\param slmsk   (IX), sea/land mask array (sea:0,land:1,sea-ice:2)

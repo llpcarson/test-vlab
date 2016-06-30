@@ -7,21 +7,29 @@
 !!  \details Radiative processes are among the most complex and computationally intensive parts of all model physics.
 !!  As an essential component of modeling the atmosphere, radiation directly and indirectly connects all 
 !!  physics processes with model dynamics,
-!!  and it regulates the overall earth-atmosphere energy exchanges and transformations. The radiation package in GFS physics
-!!  has standardized component modules. The schematic radiation module structure is shown in Table 1. \image html
+!!  and it regulates the overall earth-atmosphere energy exchanges and transformations. 
+!!
+!! The radiation package in GFS physics has standardized component modules (Table 1). The radiation driver module (\ref module_radiation_driver)
+!! is the interface with the Interoperable Physics Driver (IPD) for NGGPS, and it has three subroutines called by IPD (Figure 1): 
+!! - radinit() is called in subroutine nuopc_phys_init to set up radiation related fixed parameters.
+!! - radupdate() is called in subroutine nuopc_rad_update to update values between timesteps.
+!! - grrad() is called in subroutine nuopc_rad_run, and it is the driver of radiation calculation.
+!! \image html ipd_rad.png "Figure 1: Schematic illustration of the communication between the GFS radiation package and IPD " width=10cm
+!!
+!! The schematic radiation module structure is shown in Table 1. \image html
 !!  schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 !!
-!!  Radiation parameterizations are intended to provide a fast and accurate method of determining the total radiative
-!!  flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
-!!  needed to establish the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the
-!!  radiative heating and cooling rates of a given atmospheric layer. The magnitude of the terms in the surface energy
-!!  budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition,
-!!  the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
+!> GFS radiation package is intended to provide a fast and accurate method of determining the total radiative
+!! flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
+!! needed to establish the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the
+!! radiative heating and cooling rates of a given atmospheric layer. The magnitude of the terms in the surface energy
+!! budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition,
+!! the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
 !!  have strong dynamical effects on cloud evolution.
 !!
-!!  RRTM uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth
-!!  to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed quadrature points (reduced
-!!  from the original set of 256) to integrate the cumulative probability distribution functions of absorption over 16 spectral bands.
+!! It uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth
+!! to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed quadrature points (reduced
+!! from the original set of 256) to integrate the cumulative probability distribution functions of absorption over 16 spectral bands.
 !!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and
 !!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992
@@ -58,13 +66,6 @@
 !! obtained from global network measurements, such as carbon dioxide (CO2), or taking the climatological constants, the
 !! actual CO2 value for the forecast time is an estimation based on the most recent five-year observations. In the lower
 !! atmosphere (<3km) a monthly mean CO2 distribution in 15 degree horizontal resolution is used, while a global mean monthly value is used in the upper atmosphere.
-!!
-!!  \section intra_grrad Intraphysics Communication
-!! In \ref module_radiation_driver there are three externally callable subroutines:
-!! - Routine RADINIT is called at the start of model run to set up radiation related fixed parameters
-!! (see "call rad_initialize" in gfs_physics_initialize_mod.f)
-!! - Routine RADUPDATE is called in GLOOPR to update time-varying data sets and module variables
-!! - Routine GRRAD is called in GLOOPR after call to RADUPDATE
 !!
 !> \defgroup module_radiation_driver module_radiation_driver
 !> @{
@@ -315,9 +316,9 @@
 !> control flag for lw sfc air/ground interface temp setting
       integer :: itsfc  =0
 
-!  ---  data input control variables set in subr radupdate:
+!> \name  input control variables (reset in radupdate):
       integer :: month0=0,   iyear0=0,   monthd=0
-!> first-time clim ozone data read flag
+!> first-time climatological  ozone data read flag
       logical :: loz1st =.true.
 
 !> optional extra top layer on top of low ceiling models
@@ -335,7 +336,7 @@
       contains
 ! =================
 
-!> This subroutine is the initialization of radiation calculations
+!> This subroutine is the initialization of radiation calculations.
 !> \param si       model vertical sigma interface
 !> \param nlay     number of model vertical layers
 !> \param me       print control flag
@@ -783,7 +784,7 @@
 !! \param fcice      fraction of cloud ice  (in ferrier scheme)
 !! \param frain      fraction of rain water (in ferrier scheme)
 !! \param rrime      mass ratio of total to unrimed ice ( >= 1 )
-!! \param flgmin     minimim large ice fraction
+!! \param flgmin     minimum large ice fraction
 !! \param icsdsw,icsdlw    auxiliary cloud control arrays passed to main radiations. if isubcsw/isubclw (input to init) are set to 2, the arrays contains provided random seeds for sub-column clouds generators
 !! \param ntcw       =0 no cloud condensate calculated; >0 array index location for cloud condensate
 !! \param ncld       only used when ntcw .gt. 0
