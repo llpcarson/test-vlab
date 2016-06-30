@@ -44,8 +44,6 @@
 !!  \param[out] cnvw convective cloud water (units?)
 !!  \param[out] cnvc convective cloud cover (units?)
 !!
-!!  \todo arguments do not have intents
-!!
 !!  \section general General Algorithm
 !!  -# Compute preliminary quantities needed for static, dynamic, and feedback control portions of the algorithm.
 !!  -# Perform calculations related to the updraft of the entraining/detraining cloud model ("static control").
@@ -1833,7 +1831,6 @@ c
               adw = 1.
               if(k.ge.jmin(i)) adw = 0.
               rain =  aup * pwo(i,k) + adw * edto(i) * pwdo(i,k)
-!> \todo What does the multiplication by 0.001 represent? Unit change?
               rntot(i) = rntot(i) + rain * xmb(i) * .001 * dt2
             endif
           endif

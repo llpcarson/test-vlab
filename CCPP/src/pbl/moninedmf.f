@@ -70,9 +70,6 @@
 !!  \param[in] lprnt flag to print some output
 !!  \param[in] ipr index of point to print
 !!
-!!  \todo arguments do not have intents
-!!  \todo line continuation characters should go at the end of a line for doxygen
-!!
 !!  \section general General Algorithm
 !!  -# Compute preliminary variables from input arguments.
 !!  -# Calculate the first estimate of the PBL height ("Predictor step").

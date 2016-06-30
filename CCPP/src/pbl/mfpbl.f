@@ -29,9 +29,6 @@
 !!  \param[in,out] ucko updraft u component of horizontal momentum (\f$ m s^{-1} \f$)
 !!  \param[in,out] vcko updraft v component of horizontal momentum (\f$ m s^{-1} \f$)
 !!
-!!  \todo arguments do not have intents
-!!  \todo line continuation characters should go at the end of a line for doxygen
-!!
 !!  \section general General Algorithm
 !!  -# Determine an updraft parcel's entrainment rate, buoyancy, and vertical velocity.
 !!  -# Recalculate the PBL height (previously calculated in moninedmf) and the parcel's entrainment rate.
