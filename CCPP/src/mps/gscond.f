@@ -62,7 +62,7 @@
 !! - \f$E_{c}\f$: evaporation rate of cloud (\f$s^{-1}\f$)
 !> \section gen_algorithm General Algorithm
 !> @{
-      subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t
+      subroutine gscond (im,ix,km,dt,dtf,prsl,ps,q,cwm,t      &
      &,                  tp, qp, psp, tp1, qp1, psp1, u, lprnt, ipr)
 !
 !     ******************************************************************
@@ -89,31 +89,31 @@
 !      use namelist_def, only: nsdfi,fhdfi
       implicit none
 !
-      real (kind=kind_phys) h1
-     &,                     d00,  elwv, eliv
-     &,                     epsq
+      real (kind=kind_phys) h1                 &
+     &,                     d00,  elwv, eliv   &
+     &,                     epsq               &
      &,                     r,     cpr,  rcp
-      parameter (h1=1.e0,       d00=0.e0
-     &,          elwv=hvap,     eliv=hvap+hfus
-     &,          epsq=2.e-12,   r=rd
+      parameter (h1=1.e0,       d00=0.e0           &
+     &,          elwv=hvap,     eliv=hvap+hfus     &
+     &,          epsq=2.e-12,   r=rd               &
      &,          cpr=cp*r,      rcp=h1/cp)
 !
       real(kind=kind_phys), parameter :: cons_0=0.0, cons_m15=-15.0
 !
       integer im, ix, km, ipr
-      real (kind=kind_phys) q(ix,km),    t(ix,km),    cwm(ix,km)
-     &,                     prsl(ix,km), ps(im), dt,  dtf
-     &,                     tp(ix,km),   qp(ix,km),   psp(im)
+      real (kind=kind_phys) q(ix,km),    t(ix,km),    cwm(ix,km) &
+     &,                     prsl(ix,km), ps(im), dt,  dtf        &
+     &,                     tp(ix,km),   qp(ix,km),   psp(im)    &
      &,                     tp1(ix,km),  qp1(ix,km),  psp1(im)
 !
-      real (kind=kind_phys)  qi(im), qint(im), u(im,km), ccrik, e0
-     &,                      cond,   rdt, us, cclimit, climit
-     &,                      tmt0, tmt15, qik, cwmik
-     &,                      ai, qw, u00ik, tik, pres, pp0, fi 
-     &,                      at, aq, ap, fiw, elv, qc, rqik
-     &,                      rqikk, tx1, tx2, tx3, es, qs
-     &,                      tsq, delq, condi, cone0, us00, ccrik1
-     &,                      aa, ab, ac, ad, ae, af, ag
+      real (kind=kind_phys)  qi(im), qint(im), u(im,km), ccrik, e0   &
+     &,                      cond,   rdt, us, cclimit, climit        &
+     &,                      tmt0, tmt15, qik, cwmik                 &
+     &,                      ai, qw, u00ik, tik, pres, pp0, fi       &
+     &,                      at, aq, ap, fiw, elv, qc, rqik          &
+     &,                      rqikk, tx1, tx2, tx3, es, qs            &
+     &,                      tsq, delq, condi, cone0, us00, ccrik1   &
+     &,                      aa, ab, ac, ad, ae, af, ag              &
      &,                      el2orc, albycp
 !     real (kind=kind_phys) vprs(im)
       integer iw(im,km), i, k, iwik

@@ -137,10 +137,10 @@
 !> \param[in] IPR      check print point for debugging
 !> \section gen_gwdps General Algorithm
 !> @{
-      SUBROUTINE GWDPS(IM,IX,IY,KM,A,B,C,U1,V1,T1,Q1,KPBL,
-     &               PRSI,DEL,PRSL,PRSLK,PHII, PHIL,DELTIM,KDT,
-     &               HPRIME,OC,OA4,CLX4,THETA,SIGMA,GAMMA,ELVMAX, 
-     &               DUSFC,DVSFC,G, CP, RD, RV, IMX, 
+      SUBROUTINE GWDPS(IM,IX,IY,KM,A,B,C,U1,V1,T1,Q1,KPBL,        &
+     &               PRSI,DEL,PRSL,PRSLK,PHII, PHIL,DELTIM,KDT,   &
+     &               HPRIME,OC,OA4,CLX4,THETA,SIGMA,GAMMA,ELVMAX, &
+     &               DUSFC,DVSFC,G, CP, RD, RV, IMX,              &
      &               nmtvr, cdmbgwd, me, lprnt, ipr)
 !
 !   ********************************************************************
@@ -239,12 +239,12 @@
       integer im, iy, ix, km, imx, kdt, ipr, me
       integer KPBL(IM)                 ! Index for the PBL top layer!
       real(kind=kind_phys) deltim, G, CP, RD, RV,      cdmbgwd(2)
-      real(kind=kind_phys) A(IY,KM),    B(IY,KM),      C(IY,KM),
-     &                     U1(IX,KM),   V1(IX,KM),     T1(IX,KM),
-     &                     Q1(IX,KM),   PRSI(IX,KM+1), DEL(IX,KM),
-     &                     PRSL(IX,KM), PRSLK(IX,KM),  PHIL(IX,KM),
+      real(kind=kind_phys) A(IY,KM),    B(IY,KM),      C(IY,KM),    &
+     &                     U1(IX,KM),   V1(IX,KM),     T1(IX,KM),   &
+     &                     Q1(IX,KM),   PRSI(IX,KM+1), DEL(IX,KM),  &
+     &                     PRSL(IX,KM), PRSLK(IX,KM),  PHIL(IX,KM), &
      &                     PHII(IX,KM+1)
-      real(kind=kind_phys) OC(IM),     OA4(IY,4), CLX4(IY,4)
+      real(kind=kind_phys) OC(IM),     OA4(IY,4), CLX4(IY,4)        &
      &,                    HPRIME(IM)
 ! for lm mtn blocking
       real(kind=kind_phys) ELVMAX(IM),THETA(IM),SIGMA(IM),GAMMA(IM)
@@ -256,7 +256,7 @@
 !
 !     Some constants
 !
-      real(kind=kind_phys) pi, dw2min, rimin, ric, bnv2min, efmin
+      real(kind=kind_phys) pi, dw2min, rimin, ric, bnv2min, efmin  &
      &,                    efmax,hpmax,hpmin, rad_to_deg, deg_to_rad
       PARAMETER (PI=3.1415926535897931)
       PARAMETER (RAD_TO_DEG=180.0/PI, DEG_TO_RAD=PI/180.0)
@@ -264,7 +264,7 @@
 !     PARAMETER (EFMIN=0.0, EFMAX=10.0, hpmax=200.0)
       PARAMETER (EFMIN=0.0, EFMAX=10.0, hpmax=2400.0, hpmin=1.0)
 !
-      real(kind=kind_phys) FRC,    CE,     CEOFRC, frmax, CG, GMAX
+      real(kind=kind_phys) FRC,    CE,     CEOFRC, frmax, CG, GMAX  &
      &,                    VELEPS, FACTOP, RLOLEV, RDI
 !     &,                    CRITAC, VELEPS, FACTOP, RLOLEV, RDI
       parameter (FRC=1.0, CE=0.8, CEOFRC=CE/FRC, frmax=100., CG=0.5)
@@ -301,14 +301,14 @@
 !
 !----   MOUNTAIN INDUCED GRAVITY WAVE DRAG
 !
-      real(kind=kind_phys) TAUB(IM),  XN(IM),     YN(IM),    UBAR(IM)
-     &,                    VBAR(IM),  ULOW(IM),   OA(IM),    CLX(IM)
-     &,                    ROLL(IM),  ULOI(IM),   DUSFC(IM), DVSFC(IM)
+      real(kind=kind_phys) TAUB(IM),  XN(IM),     YN(IM),    UBAR(IM)  &
+     &,                    VBAR(IM),  ULOW(IM),   OA(IM),    CLX(IM)   &
+     &,                    ROLL(IM),  ULOI(IM),   DUSFC(IM), DVSFC(IM) &
      &,                    DTFAC(IM), XLINV(IM),  DELKS(IM), DELKS1(IM)
 !
-      real(kind=kind_phys) BNV2(IM,KM),  TAUP(IM,KM+1), ri_n(IM,KM) 
-     &,                    TAUD(IM,KM),  RO(IM,KM),     VTK(IM,KM)
-     &,                    VTJ(IM,KM),   SCOR(IM),      VELCO(IM,KM-1)
+      real(kind=kind_phys) BNV2(IM,KM),  TAUP(IM,KM+1), ri_n(IM,KM)   &
+     &,                    TAUD(IM,KM),  RO(IM,KM),     VTK(IM,KM)    &
+     &,                    VTJ(IM,KM),   SCOR(IM),      VELCO(IM,KM-1) &
      &,                    bnv2bar(im)
 !
 !     real(kind=kind_phys) VELKO(KM-1)
@@ -317,14 +317,14 @@
       Integer   kreflm(IM), iwklm(im)
       Integer   idxzb(im), ktrial, klevm1, nmtvr
 !
-      real(kind=kind_phys) gor,    gocp,  fv,    gr2,  bnv,  fr
-     &,                    brvf,   cleff, tem,   tem1,  tem2, temc, temv
-     &,                    wdir,   ti,    rdz,   dw2,   shr2, bvf2
-     &,                    rdelks, efact, coefm, gfobnv
-     &,                    scork,  rscor, hd,    fro,   rim,  sira
+      real(kind=kind_phys) gor,    gocp,  fv,    gr2,  bnv,  fr     &
+     &,               brvf,   cleff, tem,   tem1,  tem2, temc, temv &
+     &,                    wdir,   ti,    rdz,   dw2,   shr2, bvf2  &
+     &,                    rdelks, efact, coefm, gfobnv &
+     &,                    scork,  rscor, hd,    fro,   rim,  sira  &
      &,                    dtaux,  dtauy, pkp1log, pklog
-      integer kmm1, kmm2, lcap, lcapp1, kbps, kbpsp1,kbpsm1
-     &, kmps, idir, nwd, i, j, k, klcap, kp1, kmpbl, npt, npr
+      integer kmm1, kmm2, lcap, lcapp1, kbps, kbpsp1,kbpsm1         &
+     &, kmps, idir, nwd, i, j, k, klcap, kp1, kmpbl, npt, npr       &
      &, kmll
 !    &, kmll,kmds,ihit,jhit
       logical lprnt

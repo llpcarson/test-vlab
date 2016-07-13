@@ -670,7 +670,7 @@
 !>\section gen_al General Algorithm
 !! @{
 !-----------------------------------
-      subroutine aer_init
+      subroutine aer_init   &
      &     ( NLAY, me ) !  ---  inputs
 !  ---  outputs: ( to module variables )
 
@@ -1057,9 +1057,9 @@
 !!\section gen_clim_aerinit General Algorithm
 !!@{
 !-----------------------------------
-      subroutine clim_aerinit
-     &     ( solfwv, eirfwv, me                                        ! ---  inputs
-     &     )!  ---  outputs
+      subroutine clim_aerinit                                &
+     &     ( solfwv, eirfwv, me                              &          ! ---  inputs
+     &     )                                                           !  ---  outputs
 
 !  ==================================================================  !
 !                                                                      !
@@ -1132,7 +1132,7 @@
 !
 !  --- ...  invoke tropospheric aerosol initialization
 
-!> - call set_aeroef() to invoke tropospheric aerosol initialization
+!> - call set_aercoef() to invoke tropospheric aerosol initialization.
       call set_aercoef
 !  ---  inputs:   (in-scope variables, module constants)
 !  ---  outputs:  (module variables)
@@ -1777,7 +1777,7 @@
 !>\section gen_aer_upd General Algorithm
 !! @{
 !-----------------------------------
-      subroutine aer_update
+      subroutine aer_update    &
      &     ( iyear, imon, me ) !  ---  inputs:
 !  ---  outputs: ( to module variables )
 
@@ -2127,35 +2127,35 @@
 
 
 !> This subroutine computes aerosols optical properties.
-!>\param[in] prsi    (IMAX,NLP1), pressure at interface in mb
-!!\param[in] prsl    (IMAX,NLAY), layer mean pressure in mb
-!!\param[in] prslk   (IMAX,NLAY), exner function = \f$(p/p0)^{rocp}\f$
-!!\param[in] tvly    (IMAX,NLAY), layer virtual temperature in K
-!!\param[in] rhlay   (IMAX,NLAY), layer mean relative humidity
-!!\param[in] slmsk   (IMAX), sea/land mask (sea:0,land:1,sea-ice:2)
-!!\param[in] tracer  (IMAX,NLAY,NTRAC), aerosol tracer concentration
-!!\param[in] xlon    (IMAX), longitude of given points in radiance, ok for both 0->2pi or -pi->+pi ranges
-!!\param[in] xlat    (IMAX), latitude of given points in radiance, default to pi/2 -> -pi/2, otherwise see in-line comment
-!!\param[in] IMAX           1, horizontal dimension of arrays
-!!\param[in] NLAY,NLP1      1, vertical dimensions of arrays
-!!\param[in] lsswr,lslwr    logical flags for sw/lw radiation calls
-!!\param[out] aerosw    (IMAX,NLAY,NBDSW,NF_AESW), aeros opt properties for sw
+!>\param prsi    (IMAX,NLP1), pressure at interface in mb
+!!\param prsl    (IMAX,NLAY), layer mean pressure in mb
+!!\param prslk   (IMAX,NLAY), exner function = \f$(p/p0)^{rocp}\f$
+!!\param tvly    (IMAX,NLAY), layer virtual temperature in K
+!!\param rhlay   (IMAX,NLAY), layer mean relative humidity
+!!\param slmsk   (IMAX), sea/land mask (sea:0,land:1,sea-ice:2)
+!!\param tracer  (IMAX,NLAY,NTRAC), aerosol tracer concentration
+!!\param xlon    (IMAX), longitude of given points in radiance, ok for both 0->2pi or -pi->+pi ranges
+!!\param xlat    (IMAX), latitude of given points in radiance, default to pi/2 -> -pi/2, otherwise see in-line comment
+!!\param IMAX           1, horizontal dimension of arrays
+!!\param NLAY,NLP1      1, vertical dimensions of arrays
+!!\param lsswr,lslwr    logical flags for sw/lw radiation calls
+!!\param aerosw    (IMAX,NLAY,NBDSW,NF_AESW), aeros opt properties for sw
 !!\n                    (:,:,:,1): optical depth
 !!\n                    (:,:,:,2): single scattering albedo
 !!\n                    (:,:,:,3): asymmetry parameter
-!!\param[out] aerolw    (IMAX,NLAY,NBDLW,NF_AELW), aeros opt properties for lw
+!!\param aerolw    (IMAX,NLAY,NBDLW,NF_AELW), aeros opt properties for lw
 !!\n                    (:,:,:,1): optical depth
 !!\n                    (:,:,:,2): single scattering albedo
 !!\n                    (:,:,:,3): asymmetry parameter
-!!\param[out] aerodp    (IMAX,NSPC1), vertically integrated optical depth
+!!\param aerodp    (IMAX,NSPC1), vertically integrated optical depth
 !>\section general_setaer General Algorithm
 !> @{
 !-----------------------------------
-      subroutine setaer
-     &     ( prsi,prsl,prslk,tvly,rhlay,slmsk,tracer,xlon,xlat,         !  ---  inputs
-     &       IMAX,NLAY,NLP1, lsswr,lslwr,
-     &       aerosw,aerolw                                              !  ---  outputs
-     &,      aerodp
+      subroutine setaer                                              &
+     &     ( prsi,prsl,prslk,tvly,rhlay,slmsk,tracer,xlon,xlat,      &   !  ---  inputs
+     &       IMAX,NLAY,NLP1, lsswr,lslwr,                            &
+     &       aerosw,aerolw                                           &   !  ---  outputs
+     &,      aerodp                                                  &
      &     )
 
 !  ==================================================================  !
@@ -2215,9 +2215,9 @@
 !  ---  inputs:
       integer, intent(in) :: IMAX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl, &
      &       prslk, tvly, rhlay
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlon, xlat,
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlon, xlat, &
      &       slmsk
       real (kind=kind_phys), dimension(:,:,:),intent(in):: tracer
 
@@ -2225,7 +2225,7 @@
 
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::   
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::  &
      &       aerosw, aerolw
 
       real (kind=kind_phys), dimension(:,:)    , intent(out) :: aerodp
@@ -2733,11 +2733,11 @@
 !!\section gel_aer_pro General Algorithm 
 !> @{
 !-----------------------------------
-      subroutine aer_property                                           
-     &     ( prsi,prsl,prslk,tvly,rhlay,dz,hz,tracer,                    !  ---  inputs:
-     &       alon,alat,slmsk, laersw,laerlw,                            
-     &       IMAX,NLAY,NLP1,                                           
-     &       aerosw,aerolw,aerodp                                        !  ---  outputs:
+      subroutine aer_property                                       &    
+     &     ( prsi,prsl,prslk,tvly,rhlay,dz,hz,tracer,               &     !  ---  inputs:
+     &       alon,alat,slmsk, laersw,laerlw,                        &    
+     &       IMAX,NLAY,NLP1,                                        &   
+     &       aerosw,aerolw,aerodp                                   &     !  ---  outputs:
      &     )
 
 !  ==================================================================  !
@@ -2806,14 +2806,14 @@
 !     integer, intent(in) :: IMAX, NLAY, NLP1, NSPC
       logical, intent(in) :: laersw, laerlw
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl,  
+      real (kind=kind_phys), dimension(:,:), intent(in) :: prsi, prsl, &
      &       prslk, tvly, rhlay, dz, hz
-      real (kind=kind_phys), dimension(:),   intent(in) :: alon, alat,  
+      real (kind=kind_phys), dimension(:),   intent(in) :: alon, alat, &
      &       slmsk
       real (kind=kind_phys), dimension(:,:,:),intent(in):: tracer
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::         
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::        &
      &       aerosw, aerolw
       real (kind=kind_phys), dimension(:,:)    , intent(out) :: aerodp
 
@@ -3489,9 +3489,9 @@
 !>\section gel_go_ini General Algorithm
 !! @{
 !-----------------------------------
-      subroutine gocart_init                                            
-     &     ( NWVTOT,solfwv,soltot,NWVTIR,eirfwv,                      !  ---  inputs:
-     &       NBDSW,NLWBND,NSWLWBD,imon,me,raddt,fdaer                 !  ---  outputs: ( none )
+      subroutine gocart_init                                       &     
+     &     ( NWVTOT,solfwv,soltot,NWVTIR,eirfwv,                   &   !  ---  inputs:
+     &       NBDSW,NLWBND,NSWLWBD,imon,me,raddt,fdaer              &   !  ---  outputs: ( none )
      &     )
 
 !  ==================================================================  !
@@ -4848,11 +4848,11 @@
 !>\section gen_setgo General Algorithm
 !!@{
 !-----------------------------------
-      subroutine setgocartaer                                           
-     &     ( alon,alat,prslk,rhlay,dz,hz,NSWLWBD,                   !  ---  inputs:
-     &       prsl,tvly,trcly,                              
-     &       IMAX,NLAY,NLP1, ivflip, lsswr,lslwr,         
-     &       aerosw,aerolw                                          !  ---  outputs:
+      subroutine setgocartaer                                &           
+     &     ( alon,alat,prslk,rhlay,dz,hz,NSWLWBD,            &       !  ---  inputs:
+     &       prsl,tvly,trcly,                                &
+     &       IMAX,NLAY,NLP1, ivflip, lsswr,lslwr,            &
+     &       aerosw,aerolw                                   &       !  ---  outputs:
      &     )
 
 
@@ -4911,19 +4911,19 @@
       integer, intent(in) :: IMAX,NLAY,NLP1,ivflip,NSWLWBD
       logical, intent(in) :: lsswr, lslwr
 
-      real (kind=kind_phys), dimension(:,:),   intent(in) :: prslk,    
+      real (kind=kind_phys), dimension(:,:),   intent(in) :: prslk,   &
      &       prsl, rhlay, tvly, dz, hz
       real (kind=kind_phys), dimension(:),     intent(in) :: alon, alat
       real (kind=kind_phys), dimension(:,:,:), intent(in) :: trcly
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::       
+      real (kind=kind_phys), dimension(:,:,:,:), intent(out) ::      &
      &       aerosw, aerolw
 
 !  ---  locals:
       real (kind=kind_phys), dimension(NLAY) :: rh1, dz1
       real (kind=kind_phys), dimension(NLAY,NSWLWBD)::tauae,ssaae,asyae
-      real (kind=kind_phys), dimension(NLAY,max_num_gridcomp) ::      
+      real (kind=kind_phys), dimension(NLAY,max_num_gridcomp) ::     & 
      &                       tauae_gocart
 
       real (kind=kind_phys) :: tmp1, tmp2
@@ -4934,8 +4934,8 @@
       real (kind=kind_phys), dimension(:,:,:),allocatable:: aermr,dmfcs
 
 ! aerosol (dry mass) on gfs grids/levels
-      real (kind=kind_phys), dimension(:,:), allocatable :: dmanl,dmclm,
-     &                                                      dmclmx
+      real (kind=kind_phys), dimension(:,:), allocatable :: &
+     &  dmanl,dmclm, dmclmx
       real (kind=kind_phys), dimension(KMXG)     :: pstmp, pkstr
       real (kind=kind_phys) :: ptop, psfc, tem, plv, tv, rho
 

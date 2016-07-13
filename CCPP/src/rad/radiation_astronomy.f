@@ -139,7 +139,7 @@
 
 !> This subroutine initializes astronomy process, and set up module constants.
 !!\param me         print message control flag
-      subroutine sol_init
+      subroutine sol_init     &
      &     ( me ) !  ---  inputs
 !  ---  outputs: ( none )
 
@@ -310,9 +310,9 @@
 !>\section gen_sol_update General Algorithm
 !! @{
 !-----------------------------------
-      subroutine sol_update
-     &     ( jdate,kyear,deltsw,deltim,lsol_chg, me,                    !  ---  inputs
-     &       slag, sdec, cdec, solcon                                   !  ---  outputs
+      subroutine sol_update                                        &
+     &     ( jdate,kyear,deltsw,deltim,lsol_chg, me,               &     !  ---  inputs
+     &       slag, sdec, cdec, solcon                              &     !  ---  outputs
      &      )
 
 !  ===================================================================  !
@@ -621,9 +621,9 @@
 
 !> This subroutine computes radius vector, declination and right ascension of sun, and equation of time
 !-----------------------------------
-      subroutine solar
-     &     ( jd, fjd,                                                   !  ---  inputs
-     &       r1, dlt, alp                                               !  ---  outputs
+      subroutine solar                                           &
+     &     ( jd, fjd,                                            &       !  ---  inputs
+     &       r1, dlt, alp                                        &       !  ---  outputs
      &     )
 
 !  ===================================================================  !
@@ -787,9 +787,9 @@
 !!\param coszen     (IM), average of cosz for daytime only in sw call interval
 !!\param coszdg     (IM), average of cosz over entire sw call interval
 !-----------------------------------
-      subroutine coszmn
-     &     ( xlon,sinlat,coslat,solhr, IM, me,                          !  ---  inputs
-     &       coszen, coszdg                                            !  ---  outputs
+      subroutine coszmn                                           &
+     &     ( xlon,sinlat,coslat,solhr, IM, me,                    &     !  ---  inputs
+     &       coszen, coszdg                                       &     !  ---  outputs
      &     )
 
 !  ===================================================================  !
@@ -827,7 +827,7 @@
 !  ---  inputs:
       integer, intent(in) :: IM, me
 
-      real (kind=kind_phys), intent(in) :: sinlat(:), coslat(:),
+      real (kind=kind_phys), intent(in) :: sinlat(:), coslat(:),&
      &       xlon(:), solhr
 
 !  ---  outputs:
@@ -876,9 +876,9 @@
 
 !> This subroutine prints out forecast date, time, and astronomy quantities.
 !-----------------------------------
-      subroutine prtime
-     &     ( jd, fjd, dlt, alp, r1, solc                                !  ---  inputs
-     &     )!  ---  outputs: ( none )
+      subroutine prtime                                            &
+     &     ( jd, fjd, dlt, alp, r1, solc                           &    !  ---  inputs
+     &     )                                                            !  ---  outputs: ( none )
 
 !  ===================================================================  !
 !                                                                       !

@@ -5,11 +5,6 @@
 !!    - module_radsw_sflux     (spectral solar flux distribution)
 !!    - module_radsw_kgbnn       (absorption coeffients for 14 bands, where nn = 16-29)
 
-!>  \addtogroup rad
-!!  @{
-!!  \addtogroup module_radsw_main
-!!  @{
-
 !  ==============================================================  !!!!!
 !              sw-rrtm3 radiation package description              !!!!!
 !  ==============================================================  !!!!!
@@ -66,6 +61,7 @@
 !!!!!  ==============================================================  !!!!!
 
 
+!> \ingroup module_radlw_main
 !> This module contains reference temperature and pressure.
 !!
 !! - These pressures are chosen such that the ln of the first pressure
@@ -138,7 +134,7 @@
       end module module_radsw_ref        !
 !========================================!
 
-
+!> \ingroup module_radlw_main
 !> This module contains coefficients of cloud optical properties for each of the spectral bands.
 !========================================!
       module module_radsw_cldprtb        !
@@ -1866,7 +1862,7 @@
       end module module_radsw_cldprtb    !
 !========================================!
 
-
+!> \ingroup module_radlw_main
 !> This module contains spectral distribution of solar radiation flux 
 !! used to obtain the incoming solar flux at toa.
 !========================================!
@@ -2184,6 +2180,9 @@
       end module module_radsw_sflux      !
 !========================================!
 
+!>\defgroup module_radsw_kgbnn module_radsw_kgbnn
+!>\ingroup  module_radsw_main
+!! @{
 
 !> This module sets up absorption coefficients for band 16: 2600-3250 cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
@@ -21982,5 +21981,4 @@
 !........................................!
       end module module_radsw_kgb29      !
 !========================================!
-!! @}
 !! @}

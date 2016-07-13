@@ -5,11 +5,6 @@
 !!    - module_radlw_cldprlw     (cloud property coefficients)
 !!    - module_radlw_kgbnn       (absorption coeffients for 16 bands, where nn = 01-16)
 
-!>  \addtogroup rad
-!!  @{
-!!  \addtogroup module_radlw_main
-!!  @{
-
 !  ==============================================================  !!!!!
 !             lw-rrtm3 radiation package description               !!!!!
 !  ==============================================================  !!!!!
@@ -65,6 +60,7 @@
 !!!!!                         end descriptions                         !!!!!
 !!!!!  ==============================================================  !!!!!
 
+!> \ingroup module_radlw_main
 !> This module contains plank flux data.
 !========================================!
       module module_radlw_avplank        !
@@ -741,6 +737,7 @@
       end module module_radlw_avplank    !
 !========================================!
 
+!> \ingroup  module_radlw_main
 !> This module contains reference temperature and pressure.
 !!
 !!  - These pressures are chosen such that the ln of the first one
@@ -924,6 +921,7 @@
       end module module_radlw_ref        !
 !========================================!
 
+!> \ingroup module_radlw_main
 !> This module contains cloud property coefficients.
 !========================================!
       module module_radlw_cldprlw        !
@@ -1583,6 +1581,9 @@
       end module module_radlw_cldprlw    !
 !========================================!
 
+!> \defgroup module_radlw_kgbnn module_radlw_kgbnn
+!! \ingroup module_radlw_main
+!! @{
 
 !*********************************************************************!
 !                descriptions for module_radlw_kgbnn                  !
@@ -32453,6 +32454,4 @@
 !........................................!
       end module module_radlw_kgb16      !
 !========================================!
-
-!! @}
 !! @}

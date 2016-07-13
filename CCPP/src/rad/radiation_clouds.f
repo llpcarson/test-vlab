@@ -312,7 +312,7 @@
 !!\section gen_cld_init General Algorithm
 !> @{
 !-----------------------------------
-      subroutine cld_init
+      subroutine cld_init  &
      &     ( si, NLAY, me ) !  ---  inputs
 !  ---  outputs:
 !          ( none )
@@ -458,11 +458,11 @@
 !>\section gen_progcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld1                                            
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                   !  ---  inputs:
-     &       xlat,xlon,slmsk, IX, NLAY, NLP1,                    
-     &       shoc_cld, lmfshal, lmfdeep2, cldcov,              
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld1                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,               &    !  ---  inputs:
+     &       xlat,xlon,slmsk, IX, NLAY, NLP1,                      &
+     &       shoc_cld, lmfshal, lmfdeep2, cldcov,                  &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -542,10 +542,10 @@
 
       logical, intent(in)  :: shoc_cld, lmfshal, lmfdeep2
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, tvly, qlyr, qstl, rhly, clw, cldcov
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, 
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk
 
 !  ---  outputs
@@ -902,11 +902,11 @@
 !>\section gen_progcld2 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld2                                             
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                   !  ---  inputs:
-     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,            
-     &       IX, NLAY, NLP1, lmfshal, lmfdeep2,                     
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld2                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,               &    !  ---  inputs:
+     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,          &
+     &       IX, NLAY, NLP1, lmfshal, lmfdeep2,                    &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -995,10 +995,10 @@
 
       logical, intent(in)  :: lmfshal, lmfdeep2
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, tvly, qlyr, qstl, rhly, clw, f_ice, f_rain, r_rime
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk
       real (kind=kind_phys), dimension(:), intent(in) :: flgmin
 
@@ -1391,12 +1391,12 @@
 !!\section gen_progcld3 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld3                                            
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,         !  ---  inputs:
-     &       xlat,xlon,slmsk,                                         
-     &       ix, nlay, nlp1,                                         
-     &       deltaq,sup,kdt,me,                                     
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld3                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,     &    !  ---  inputs:
+     &       xlat,xlon,slmsk,                                      &
+     &       ix, nlay, nlp1,                                       &
+     &       deltaq,sup,kdt,me,                                    &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1809,11 +1809,11 @@
 !!\section gen_diagcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine diagcld1                                             
-     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                    !  ---  inputs:
-     &       xlat,xlon,slmsk,                                      
-     &       IX, NLAY, NLP1,                                     
-     &       clouds,clds,mtop,mbot                                   !  ---  outputs:
+      subroutine diagcld1                                        &
+     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                &    !  ---  inputs:
+     &       xlat,xlon,slmsk,                                    &
+     &       IX, NLAY, NLP1,                                     &
+     &       clouds,clds,mtop,mbot                               &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1878,10 +1878,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, rhly, vvel
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk, cv, cvt, cvb
 
 !  ---  outputs
@@ -2423,10 +2423,10 @@
 !>\section detail Detailed Algorithm
 !! @{
 !-----------------------------------                                    !
-      subroutine gethml                                               
-     &     ( plyr, ptop1, cldtot, cldcnv,                        !  ---  inputs:
-     &       IX, NLAY,                                         
-     &       clds, mtop, mbot                                    !  ---  outputs:
+      subroutine gethml                                   &
+     &     ( plyr, ptop1, cldtot, cldcnv,                 &       !  ---  inputs:
+     &       IX, NLAY,                                    &
+     &       clds, mtop, mbot                             &       !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -2480,7 +2480,7 @@
 !  ---  inputs:
       integer, intent(in) :: IX, NLAY
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1,&
      &       cldtot, cldcnv
 
 !  ---  outputs
@@ -2746,9 +2746,9 @@
 
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !
-      subroutine rhtable                                                
-     &     ( me                                                   !  ---  inputs:
-     &,      ier )         !  ---  outputs:
+      subroutine rhtable                                 &
+     &     ( me                                          &         !  ---  inputs:
+     &,      ier )                                                 !  ---  outputs:
 
 !  ===================================================================  !
 !                                                                       !

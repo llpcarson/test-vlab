@@ -215,7 +215,7 @@
 !! read in monthly ozone data.
 !!\param me         print message control flag
 !-----------------------------------
-      subroutine gas_init
+      subroutine gas_init &
      &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
@@ -512,7 +512,7 @@
 !>\section gen_gas_update General Algorithm
 !! @{
 !-----------------------------------
-      subroutine gas_update
+      subroutine gas_update   &
      &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
 !  ---  outputs: ( none )
 
@@ -902,10 +902,10 @@
 !!\n                    (:,:,9)           - ccl4
 !!\n                    (:,:,10)          - cfc113
 !-----------------------------------
-      subroutine getgases         
-     &     ( plvl, xlon, xlat,   ! ---  inputs               
-     &       IMAX, LMAX,           
-     &       gasdat              ! ---  outputs    
+      subroutine getgases          &
+     &     ( plvl, xlon, xlat,     & ! ---  inputs               
+     &       IMAX, LMAX,           &
+     &       gasdat                & ! ---  outputs    
      &      )
 
 !  ===================================================================  !
@@ -1051,10 +1051,10 @@
 !!\param IMAX, LM    horizontal and vertical dimensions
 !!\param o3mmr      (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
 !-----------------------------------
-      subroutine getozn 
-     &     ( prslk,xlat,                                                !  ---  inputs
-     &       IMAX, LM,
-     &       o3mmr                                                      !  ---  outputs
+      subroutine getozn                             &
+     &     ( prslk,xlat,                            &                    !  ---  inputs
+     &       IMAX, LM,                              &
+     &       o3mmr                                  &                    !  ---  outputs
      &     )
 
 !  ===================================================================  !

@@ -58,8 +58,8 @@
 !! \param[in] jpr       check print point for debugging
 !> \section general General Algorithm
 !> @{
-       subroutine precpd (im,ix,km,dt,del,prsl,q,cwm,t,rn,sr
-     &,                   rainp,u00k,psautco,prautco,evpco,wminco
+       subroutine precpd (im,ix,km,dt,del,prsl,q,cwm,t,rn,sr        &
+     &,                   rainp,u00k,psautco,prautco,evpco,wminco   &
      &,                   lprnt,jpr)
 !
 !
@@ -113,38 +113,38 @@
       implicit none
 !     include 'constant.h'
 !
-      real (kind=kind_phys) g,      h1,    h1000
-     &,                     d00
-     &,                     elwv,   eliv,  row
-     &,                     epsq,   eliw
+      real (kind=kind_phys) g,      h1,    h1000  &
+     &,                     d00                   &
+     &,                     elwv,   eliv,  row    &
+     &,                     epsq,   eliw          &
      &,                     rcp,    rrow
-       parameter (g=grav,         h1=1.e0,     h1000=1000.0
-     &,           d00=0.e0
-     &,           elwv=hvap,      eliv=hvap+hfus,   row=1.e3
-     &,           epsq=2.e-12
+       parameter (g=grav,         h1=1.e0,     h1000=1000.0  &
+     &,           d00=0.e0                                   &
+     &,           elwv=hvap,      eliv=hvap+hfus,   row=1.e3 &
+     &,           epsq=2.e-12                                &
      &,           eliw=eliv-elwv, rcp=h1/cp,   rrow=h1/row)
 !
-      real(kind=kind_phys), parameter :: cons_0=0.0,     cons_p01=0.01
-     &,                                  cons_20=20.0
+      real(kind=kind_phys), parameter :: cons_0=0.0,     cons_p01=0.01 &
+     &,                                  cons_20=20.0                  &
      &,                                  cons_m30=-30.0, cons_50=50.0
 !
       integer im, ix, km, jpr
-      real (kind=kind_phys) q(ix,km),   t(ix,km),    cwm(ix,km)
-     &,                                 del(ix,km),  prsl(ix,km)   !    &, cll(im,km), del(ix,km),  prsl(ix,km)
-     &,                     rn(im),      sr(im)
-     &,                     dt   !hchuang code change [+1l] : add record to record information in vertical in addition to total column precrl
-     &,                     rainp(im,km), rnp(im),
+      real (kind=kind_phys) q(ix,km),   t(ix,km),    cwm(ix,km)  &
+     &,                                 del(ix,km),  prsl(ix,km) &  !    &, cll(im,km), del(ix,km),  prsl(ix,km)
+     &,                     rn(im),      sr(im)                  &
+     &,                     dt                                   &!hchuang code change [+1l] : add record to record information in vertical in addition to total column precrl
+     &,                     rainp(im,km), rnp(im),               &
      &                      psautco(im), prautco(im), evpco, wminco(2)
 !
 !
-      real (kind=kind_phys) err(im),      ers(im),     precrl(im)
-     &,                     precsl(im),   precrl1(im), precsl1(im)
-     &,                     rq(im),       condt(im)
-     &,                     conde(im),    rconde(im),  tmt0(im)
-     &,                     wmin(im,km),  wmink(im),   pres(im)
-     &,                     wmini(im,km), ccr(im)
-     &,                     tt(im),       qq(im),      ww(im)
-     &,                     u00k(im,km)
+      real (kind=kind_phys) err(im),      ers(im),     precrl(im)  &
+     &,                     precsl(im),   precrl1(im), precsl1(im) &
+     &,                     rq(im),       condt(im)                &
+     &,                     conde(im),    rconde(im),  tmt0(im)    &
+     &,                     wmin(im,km),  wmink(im),   pres(im)    &
+     &,                     wmini(im,km), ccr(im)                  &
+     &,                     tt(im),       qq(im),      ww(im)      &
+     &,                     u00k(im,km)                            &
      &,                     zaodt
        real (kind=kind_phys) cclim(km)
 !
@@ -153,15 +153,15 @@
        logical comput(im)
        logical lprnt
 !
-      real (kind=kind_phys) ke,   rdt,  us, climit, cws, csm1
-     &,                     crs1, crs2, cr, aa2,     dtcp,   c00, cmr
-     &,                     tem,  c1,   c2, wwn
+      real (kind=kind_phys) ke,   rdt,  us, climit, cws, csm1          &
+     &,                     crs1, crs2, cr, aa2,     dtcp,   c00, cmr  &
+     &,                     tem,  c1,   c2, wwn                        &
 !    &,                     tem,  c1,   c2, u00b,    u00t,   wwn
-     &,                     precrk, precsk, pres1,   qk,     qw,  qi
-     &,                     qint, fiw, wws, cwmk, expf
-     &,                     psaut, psaci, amaxcm, tem1, tem2
-     &,                     tmt0k, psm1, psm2, ppr
-     &,                     rprs,  erk,   pps, sid, rid, amaxps
+     &,                     precrk, precsk, pres1,   qk,     qw,  qi   &
+     &,                     qint, fiw, wws, cwmk, expf                 &
+     &,                     psaut, psaci, amaxcm, tem1, tem2           &
+     &,                     tmt0k, psm1, psm2, ppr                     &
+     &,                     rprs,  erk,   pps, sid, rid, amaxps        &
      &,                     praut, fi, qc, amaxrq, rqkll
       integer i, k, ihpr, n
 !

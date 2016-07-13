@@ -1,36 +1,43 @@
-!> \file grrad.f This file is the radiation driver module. It prepares the atmospheric profiles
-!! and invokes the main radiation calculation.
+!> \file grrad.f This file is the radiation driver module. It prepares the atmospheric
+!! profiles and invokes the main radiation calculation.
 
 !> \defgroup rad RRTMG Shortwave/Longwave Radiation Scheme
 !> @{
-!!  \brief The GFS radiation scheme  
-!!  \details Radiative processes are among the most complex and computationally intensive parts of all model physics.
-!!  As an essential component of modeling the atmosphere, radiation directly and indirectly connects all 
-!!  physics processes with model dynamics,
-!!  and it regulates the overall earth-atmosphere energy exchanges and transformations. 
+!!  \brief The GFS radiation scheme 
+!!  \details Radiative processes are among the most complex and computationally intensive
+!!  parts of all model physics.
+!!  As an essential component of modeling the atmosphere, radiation directly and indirectly
+!!  connects all physics processes with model dynamics,
+!!  and it regulates the overall earth-atmosphere energy exchanges and transformations.
 !!
-!! The radiation package in GFS physics has standardized component modules (Table 1). The radiation driver module (\ref module_radiation_driver)
-!! is the interface with the Interoperable Physics Driver (IPD) for NGGPS, and it has three subroutines called by IPD (Figure 1): 
+!! The radiation package in GFS physics has standardized component modules (Table 1).
+!! The radiation driver module (\ref module_radiation_driver)
+!! is the interface with the Interoperable Physics Driver (IPD) for NGGPS, and it has three
+!! subroutines called by IPD (Figure 1):
 !! - radinit() is called in subroutine nuopc_phys_init to set up radiation related fixed parameters.
 !! - radupdate() is called in subroutine nuopc_rad_update to update values between timesteps.
 !! - grrad() is called in subroutine nuopc_rad_run, and it is the driver of radiation calculation.
-!! \image html ipd_rad.png "Figure 1: Schematic illustration of the communication between the GFS radiation package and IPD " width=10cm
+!! \image html ipd_rad.png "Figure 1: Schematic illustration of the communication between the GFS
+!! radiation package and IPD " width=10cm
 !!
 !! The schematic radiation module structure is shown in Table 1. \image html
 !!  schematic_Rad_mod.png "Table 1: Schematic Radiation Module Structure" width=10cm
 !!
-!> GFS radiation package is intended to provide a fast and accurate method of determining the total radiative
-!! flux at any given location. These calculations provide both the total radiative flux at the ground surface, which is
-!! needed to establish the surface energy budget, and the vertical radiative flux divergence, which is used to calculate the
-!! radiative heating and cooling rates of a given atmospheric layer. The magnitude of the terms in the surface energy
-!! budget can set the stage for moist deep convection and are crucial to the formation of low-level clouds. In addition,
-!! the vertical radiative flux divergence can produce substantial cooling, particularly at the tops of clouds, which can
+!> GFS radiation package is intended to provide a fast and accurate method of determining the total
+!! radiative flux at any given location. These calculations provide both the total radiative flux
+!! at the ground surface, which is needed to establish the surface energy budget, and the vertical
+!! radiative flux divergence, which is used to calculate the
+!! radiative heating and cooling rates of a given atmospheric layer. The magnitude of the terms
+!! in the surface energy budget can set the stage for moist deep convection and are crucial to
+!! the formation of low-level clouds. In addition, the vertical radiative flux divergence can
+!! produce substantial cooling, particularly at the tops of clouds, which can
 !!  have strong dynamical effects on cloud evolution.
 !!
 !! It uses a correlated-k distribution method and a transmittance lookup table that is linearly scaled by optical depth
 !! to achieve high accuracy and efficiency. The algorithm contains 140 unevenly distributed quadrature points (reduced
-!! from the original set of 256) to integrate the cumulative probability distribution functions of absorption over 16 spectral bands.
-!!  It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992 \cite clough_et_al_1992) to compute absorption by water vapor
+!! from the original set of 256) to integrate the cumulative probability distribution functions of absorption over 16
+!! spectral bands. It employs the Clough-Kneizys-Davies (CKD_2.4) continuum model (Clough et al. 1992
+!! \cite clough_et_al_1992) to compute absorption by water vapor
 !!  at the continuum band. Longwave cloud radiative properties external to the RRTM depend on cloud liquid/ice water path and
 !!  the effective radius of ice particles and water droplets (Hu and Stamnes 1993 \cite hu_and_stamnes_1993; Ebert and Curry 1992
 !!  \cite ebert_and_curry_1992).
@@ -51,7 +58,7 @@
 !! LW and SW radiation calculations. Cloud condensate path and effective radius for water and ice are used
 !! for the calculation of cloud-radiative properties. Hu and Stamnes's method (1993) \cite hu_and_stamnes_1993
 !! is used to treat water clouds in both LW and SW parameterizations. For ice clouds. Fu's parameterizations
-!!(1996,1998) \cite fu_1996 fu_1998 are used in the SW and LW, respectively.
+!!(1996,1998) \cite fu_1996 \cite fu_et_al_1998 are used in the SW and LW, respectively.
 !!
 !! In the operational GFS, a climatological tropospheric aerosol with a 5-degree horizontal resolution is used in
 !! both LW and SW radiations. A generalized spectral mapping formulation was developed to compute radiative properties
@@ -65,7 +72,8 @@
 !! non-black-body surface emissivity is used for the LW radiation. Concentrations of atmospheric greenhouse gases are either
 !! obtained from global network measurements, such as carbon dioxide (CO2), or taking the climatological constants, the
 !! actual CO2 value for the forecast time is an estimation based on the most recent five-year observations. In the lower
-!! atmosphere (<3km) a monthly mean CO2 distribution in 15 degree horizontal resolution is used, while a global mean monthly value is used in the upper atmosphere.
+!! atmosphere (<3km) a monthly mean CO2 distribution in 15 degree horizontal resolution is used, while a global mean monthly
+!! value is used in the upper atmosphere.
 !!
 !> \defgroup module_radiation_driver module_radiation_driver
 !> @{
@@ -574,7 +582,7 @@
 !> \section gen_radupdate General Algorithm
 !> @{
 !-----------------------------------
-      subroutine radupdate( idate,jdate,deltsw,deltim,lsswr, me,
+      subroutine radupdate( idate,jdate,deltsw,deltim,lsswr, me,    &
      &       slag,sdec,cdec,solcon)
 !...................................
 
@@ -691,9 +699,8 @@
       else
         lmon_chg = .false.
       endif
-!> -# Call astronomy updata routine, yearly update, no time interpolation
-!!\n  - subroutine called: module_radiation_astronomy::sol_update()
 
+!> -# Call module_radiation_astronomy::sol_update(), yearly update, no time interpolation.
       if (lsswr) then
 
         if ( isolar == 0 .or. isolar == 10 ) then
@@ -714,16 +721,12 @@
 
       endif  ! end_if_lsswr_block
 
-!> -# Call aerosols update routine, monthly update, no time interpolation
-!!\n  - subroutine called: module_radiation_aerosols::aer_update()
-
+!> -# Call module_radiation_aerosols::aer_update(), monthly update, no time interpolation
       if ( lmon_chg ) then
         call aer_update ( iyear, imon, me )
       endif
 
-!> -# Call co2 and other gases update routine
-!!\n  - subroutine called: module_radiation_gases::gas_update()
-
+!> -# Call co2 and other gases update routine: module_radiation_gases::gas_update()
       if ( monthd /= kmon ) then
         monthd = kmon
         lco2_chg = .true.
@@ -886,19 +889,19 @@
 !> \section gen_grrad General Algorithm
 !> @{
 !-----------------------------------
-      subroutine grrad                                                 
-     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,                    !  ---  inputs
-     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,             
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,            
-     &       sinlat,coslat,solhr,jdate,solcon,                          
-     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,                       
-     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,                 
-     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,lmfshal,lmfdeep2,   
-     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,     
-     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,         !  ---  outputs:
-     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,                    
-     &       fluxr                                                          !  ---  input/output:
-     &,      htrlw0,htrsw0,htrswb,htrlwb                                    !! ---  optional outputs:
+      subroutine grrad                                                &                                            
+     &     ( prsi,prsl,prslk,tgrs,qgrs,tracer,vvl,slmsk,              &      !  ---  inputs
+     &       xlon,xlat,tsfc,snowd,sncovr,snoalb,zorl,hprim,           &  
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,          &  
+     &       sinlat,coslat,solhr,jdate,solcon,                        &  
+     &       cv,cvt,cvb,fcice,frain,rrime,flgmin,                     &  
+     &       icsdsw,icsdlw, ntcw,ncld,ntoz, NTRAC,NFXR,               &  
+     &       dtlw,dtsw, lsswr,lslwr,lssav, shoc_cld,lmfshal,lmfdeep2, &  
+     &       IX, IM, LM, me, lprnt, ipt, kdt, deltaq,sup,cnvw,cnvc,   &  
+     &       htrsw,topfsw,sfcfsw,dswcmp,uswcmp,sfalb,coszen,coszdg,   &      !  ---  outputs:
+     &       htrlw,topflw,sfcflw,tsflw,semis,cldcov,                  &  
+     &       fluxr                                                    &      !  ---  input/output:
+     &,      htrlw0,htrsw0,htrswb,htrlwb                              &      !! ---  optional outputs:
      &     )
 
 ! =================   subprogram documentation block   ================ !

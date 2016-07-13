@@ -130,7 +130,7 @@
 !>\section gen_sfc_init General Algorithm
 !! @{
 !-----------------------------------
-      subroutine sfc_init
+      subroutine sfc_init      &
      &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
@@ -305,11 +305,11 @@
 !!\section general General Algorithm
 !! @{
 !-----------------------------------
-      subroutine setalb                                                
-     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,   !  ---  inputs:
-     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,           
-     &       IMAX,                                                     
-     &       sfcalb                                                     !  ---  outputs:
+      subroutine setalb                                                &
+     &     ( slmsk,snowf,sncovr,snoalb,zorlf,coszf,tsknf,tairf,hprif,  & !  ---  inputs:
+     &       alvsf,alnsf,alvwf,alnwf,facsf,facwf,fice,tisfc,           &
+     &       IMAX,                                                     &
+     &       sfcalb                                                    & !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -374,13 +374,13 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::            
-     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,      
-     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,
+      real (kind=kind_phys), dimension(:), intent(in) ::             &
+     &       slmsk, snowf, zorlf, coszf, tsknf, tairf, hprif,        &
+     &       alvsf, alnsf, alvwf, alnwf, facsf, facwf, fice, tisfc,  &
      &       sncovr, snoalb
 
 !  ---  outputs
-      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) ::
+      real (kind=kind_phys), dimension(IMAX,NF_ALBD), intent(out) :: &
      &       sfcalb
 !     real (kind=kind_phys), dimension(:,:), intent(out) :: sfcalb
 
@@ -631,10 +631,10 @@
 !!\section general General Algorithm
 !> @{
 !-----------------------------------
-      subroutine setemis                                             
-     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,      !  ---  inputs:
-     &       IMAX,                                                     
-     &       sfcemis                                                    !  ---  outputs:
+      subroutine setemis                                               &
+     &     ( xlon,xlat,slmsk,snowf,sncovr,zorlf,tsknf,tairf,hprif,     &  !  ---  inputs:
+     &       IMAX,                                                     &
+     &       sfcemis                                                   &  !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -681,7 +681,7 @@
 !  ---  inputs
       integer, intent(in) :: IMAX
 
-      real (kind=kind_phys), dimension(:), intent(in) ::              
+      real (kind=kind_phys), dimension(:), intent(in) ::             & 
      &       xlon,xlat, slmsk, snowf,sncovr, zorlf, tsknf, tairf, hprif
 
 !  ---  outputs

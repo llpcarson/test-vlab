@@ -476,13 +476,13 @@
 !> \section General_swrad General Algorithm
 !> @{
 !-----------------------------------
-      subroutine swrad
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,              !  ---  inputs
-     &       clouds,icseed,aerosols,sfcalb,
-     &       cosz,solcon,NDAY,idxday,
-     &       npts, nlay, nlp1, lprnt,
-     &       hswc,topflx,sfcflx,                                !  ---  outputs
-     &       HSW0,HSWB,FLXPRF,FDNCMP                            ! ---  optional
+      subroutine swrad                                       &
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,           &    !  ---  inputs
+     &       clouds,icseed,aerosols,sfcalb,                  &
+     &       cosz,solcon,NDAY,idxday,                        &
+     &       npts, nlay, nlp1, lprnt,                        &
+     &       hswc,topflx,sfcflx,                             &   !  ---  outputs
+     &       HSW0,HSWB,FLXPRF,FDNCMP                         &   ! ---  optional
      &     )
 
 !  ====================  defination of variables  ====================  !
@@ -667,15 +667,15 @@
 
       logical, intent(in) :: lprnt
 
-      real (kind=kind_phys), dimension(npts,nlp1), intent(in) ::
+      real (kind=kind_phys), dimension(npts,nlp1), intent(in) :: &
      &       plvl, tlvl
-      real (kind=kind_phys), dimension(npts,nlay), intent(in) ::
+      real (kind=kind_phys), dimension(npts,nlay), intent(in) :: &
      &       plyr, tlyr, qlyr, olyr
       real (kind=kind_phys), dimension(npts,4),    intent(in) :: sfcalb
 
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: gasvmr
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: clouds
-      real (kind=kind_phys), dimension(npts,nlay,nbdsw,3),intent(in)::
+      real (kind=kind_phys), dimension(npts,nlay,nbdsw,3),intent(in):: &
      &       aerosols
 
       real (kind=kind_phys), intent(in) :: cosz(npts), solcon
@@ -687,14 +687,14 @@
       type (sfcfsw_type),    dimension(npts), intent(out) :: sfcflx
 
 !! ---  optional outputs:
-      real (kind=kind_phys), dimension(npts,nlay,nbdsw), optional,      &
+      real (kind=kind_phys), dimension(npts,nlay,nbdsw), optional,     &
      &       intent(out) :: hswb
 
-      real (kind=kind_phys), dimension(npts,nlay),       optional,      &
+      real (kind=kind_phys), dimension(npts,nlay),       optional,     &
      &       intent(out) :: hsw0
-      type (profsw_type),    dimension(npts,nlp1),       optional,      &
+      type (profsw_type),    dimension(npts,nlp1),       optional,     &
      &       intent(out) :: flxprf
-      type (cmpfsw_type),    dimension(npts),            optional,      &
+      type (cmpfsw_type),    dimension(npts),            optional,     &
      &       intent(out) :: fdncmp
 
 !  ---  locals:
@@ -1255,7 +1255,7 @@
 !> This subroutine initializes non-varying module variables, conversion factors, and look-up tables
 !!\param me             print control for parallel process
 !-----------------------------------
-      subroutine rswinit
+      subroutine rswinit  &
      &     ( me ) !  ---  inputs:
 !  ---  outputs: (none)
 
@@ -1438,10 +1438,10 @@
 !!\section General_cldprop General Algorithm
 !> @{
 !-----------------------------------
-      subroutine cldprop
-     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4,     !  ---  inputs
-     &       cf1, nlay, ipseed,
-     &       taucw, ssacw, asycw, cldfrc, cldfmc                        !  ---  output
+      subroutine cldprop                                            &
+     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4, &   !  ---  inputs
+     &       cf1, nlay, ipseed,                                     &
+     &       taucw, ssacw, asycw, cldfrc, cldfmc                    &   !  ---  output
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -1525,13 +1525,13 @@
       integer, intent(in) :: nlay, ipseed
       real (kind=kind_phys), intent(in) :: cf1
 
-      real (kind=kind_phys), dimension(nlay), intent(in) :: cliqp,
+      real (kind=kind_phys), dimension(nlay), intent(in) :: cliqp, &
      &       reliq, cicep, reice, cdat1, cdat2, cdat3, cdat4, cfrac
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(nlay,ngptsw), intent(out) ::
+      real (kind=kind_phys), dimension(nlay,ngptsw), intent(out) :: &
      &       cldfmc
-      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(out) ::
+      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(out) :: &
      &       taucw, ssacw, asycw
       real (kind=kind_phys), dimension(nlay), intent(out) :: cldfrc
 
@@ -1798,9 +1798,9 @@
 !!\param ipseed      permute seed for random num generator
 !!\param lcloudy     sub-colum cloud profile flag array
 ! ----------------------------------
-      subroutine mcica_subcol
-     &    ( cldf, nlay, ipseed,                                         !  ---  inputs
-     &      lcloudy                                                     !  ---  outputs
+      subroutine mcica_subcol                                   &
+     &    ( cldf, nlay, ipseed,                                 &       !  ---  inputs
+     &      lcloudy                                             &       !  ---  outputs
      &    )
 
 !  ====================  defination of variables  ====================  !
@@ -1972,10 +1972,10 @@
 !!\param forfrac         factor for temperature interpolation of reference w.v. foreign-continuum data
 !!\param indfor          index of lower ref temp for forfac
 ! ----------------------------------
-      subroutine setcoef
-     &     ( pavel,tavel,h2ovmr, nlay,nlp1,                             !  ---  inputs
-     &       laytrop,jp,jt,jt1,fac00,fac01,fac10,fac11,                 !  ---  outputs
-     &       selffac,selffrac,indself,forfac,forfrac,indfor
+      subroutine setcoef                                         &
+     &     ( pavel,tavel,h2ovmr, nlay,nlp1,                      &    !  ---  inputs
+     &       laytrop,jp,jt,jt1,fac00,fac01,fac10,fac11,          &    !  ---  outputs
+     &       selffac,selffrac,indself,forfac,forfrac,indfor      &
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2017,15 +2017,15 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, nlp1
 
-      real (kind=kind_phys), dimension(:), intent(in) :: pavel, tavel,
+      real (kind=kind_phys), dimension(:), intent(in) :: pavel, tavel,&
      &       h2ovmr
 
 !  ---  outputs:
-      integer, dimension(nlay), intent(out) :: indself, indfor,
+      integer, dimension(nlay), intent(out) :: indself, indfor, &
      &       jp, jt, jt1
       integer, intent(out) :: laytrop
 
-      real (kind=kind_phys), dimension(nlay), intent(out) :: fac00,
+      real (kind=kind_phys), dimension(nlay), intent(out) :: fac00, &
      &       fac01, fac10, fac11, selffac, selffrac, forfac, forfrac
 
 !  ---  locals:
@@ -2161,13 +2161,13 @@
 !!\section General_spcvrtc General Algorithm
 !> @{
 !-----------------------------------
-      subroutine spcvrtc
-     &     ( ssolar,cosz,sntz,albbm,albdf,sfluxzen,cldfrc,              !  ---  inputs
-     &       cf1,cf0,taug,taur,tauae,ssaae,asyae,taucw,ssacw,asycw,
-     &       nlay, nlp1,
-     &       fxupc,fxdnc,fxup0,fxdn0,                                   !  ---  outputs
-     &       ftoauc,ftoau0,ftoadc,fsfcuc,fsfcu0,fsfcdc,fsfcd0,
-     &       sfbmc,sfdfc,sfbm0,sfdf0,suvbfc,suvbf0
+      subroutine spcvrtc                                             &
+     &     ( ssolar,cosz,sntz,albbm,albdf,sfluxzen,cldfrc,           &  !  ---  inputs
+     &       cf1,cf0,taug,taur,tauae,ssaae,asyae,taucw,ssacw,asycw,  &
+     &       nlay, nlp1,                                             &
+     &       fxupc,fxdnc,fxup0,fxdn0,                                &  !  ---  outputs
+     &       ftoauc,ftoau0,ftoadc,fsfcuc,fsfcu0,fsfcdc,fsfcd0,       &
+     &       sfbmc,sfdfc,sfbm0,sfdf0,suvbfc,suvbf0                   &
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2269,9 +2269,9 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, nlp1
 
-      real (kind=kind_phys), dimension(nlay,ngptsw), intent(in) ::
+      real (kind=kind_phys), dimension(nlay,ngptsw), intent(in) :: &
      &       taug, taur
-      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(in) ::
+      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(in) :: &
      &       taucw, ssacw, asycw, tauae, ssaae, asyae
 
       real (kind=kind_phys), dimension(ngptsw), intent(in) :: sfluxzen
@@ -2282,13 +2282,13 @@
       real (kind=kind_phys), intent(in) :: cosz, sntz, cf1, cf0, ssolar
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::
+      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::  &
      &       fxupc, fxdnc, fxup0, fxdn0
 
-      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,
+      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,&
      &       sfbm0, sfdf0
 
-      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,
+      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,&
      &       ftoauc, ftoau0, fsfcuc, fsfcu0, fsfcdc, fsfcd0
 
 !  ---  locals:
@@ -2915,13 +2915,13 @@
 !!\param suvbfc        tot sky sfc dnwd uv-b flux
 !!\param suvbf0        clr sky sfc dnwd uv-b flux
 !-----------------------------------
-      subroutine spcvrtm
-     &     ( ssolar,cosz,sntz,albbm,albdf,sfluxzen,cldfmc,              !  ---  inputs
-     &       cf1,cf0,taug,taur,tauae,ssaae,asyae,taucw,ssacw,asycw,
-     &       nlay, nlp1,
-     &       fxupc,fxdnc,fxup0,fxdn0,                                   !  ---  outputs
-     &       ftoauc,ftoau0,ftoadc,fsfcuc,fsfcu0,fsfcdc,fsfcd0,
-     &       sfbmc,sfdfc,sfbm0,sfdf0,suvbfc,suvbf0
+      subroutine spcvrtm                                            &
+     &     ( ssolar,cosz,sntz,albbm,albdf,sfluxzen,cldfmc,          &   !  ---  inputs
+     &       cf1,cf0,taug,taur,tauae,ssaae,asyae,taucw,ssacw,asycw, &
+     &       nlay, nlp1,                                            &
+     &       fxupc,fxdnc,fxup0,fxdn0,                               &   !  ---  outputs
+     &       ftoauc,ftoau0,ftoadc,fsfcuc,fsfcu0,fsfcdc,fsfcd0,      &
+     &       sfbmc,sfdfc,sfbm0,sfdf0,suvbfc,suvbf0                  &
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -3025,9 +3025,9 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, nlp1
 
-      real (kind=kind_phys), dimension(nlay,ngptsw), intent(in) ::
+      real (kind=kind_phys), dimension(nlay,ngptsw), intent(in) :: &
      &       taug, taur, cldfmc
-      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(in) ::
+      real (kind=kind_phys), dimension(nlay,nbdsw),  intent(in) :: &
      &       taucw, ssacw, asycw, tauae, ssaae, asyae
 
       real (kind=kind_phys), dimension(ngptsw), intent(in) :: sfluxzen
@@ -3037,13 +3037,13 @@
       real (kind=kind_phys), intent(in) :: cosz, sntz, cf1, cf0, ssolar
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::
+      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) :: &
      &       fxupc, fxdnc, fxup0, fxdn0
 
-      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,
+      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,&
      &       sfbm0, sfdf0
 
-      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,
+      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc, &
      &       ftoauc, ftoau0, fsfcuc, fsfcu0, fsfcdc, fsfcd0
 
 !  ---  locals:
@@ -3616,10 +3616,10 @@
 !!\section General_swflux General Algorithm
 !> @{
 !-----------------------------------
-      subroutine swflux
-     &     ( zrefb,zrefd,ztrab,ztrad,zldbt,ztdbt,                       !  ---  inputs:
-     &       NLAY, NLP1,
-     &       zfu, zfd                                                   !  ---  outputs:
+      subroutine swflux                                         &
+     &     ( zrefb,zrefd,ztrab,ztrad,zldbt,ztdbt,               &     !  ---  inputs:
+     &       NLAY, NLP1,                                        &
+     &       zfu, zfd                                           &     !  ---  outputs:
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -3735,10 +3735,10 @@
 !!\param taug             spectral optical depth for gases
 !!\param taur             opt depth for rayleigh scattering
 !-----------------------------------
-      subroutine taumol
-     &     ( colamt,colmol,fac00,fac01,fac10,fac11,jp,jt,jt1,laytrop,   !  ---  inputs
-     &       forfac,forfrac,indfor,selffac,selffrac,indself, nlay,
-     &       sfluxzen, taug, taur                                       !  ---  outputs
+      subroutine taumol                                               &
+     &     ( colamt,colmol,fac00,fac01,fac10,fac11,jp,jt,jt1,laytrop, & !  ---  inputs
+     &       forfac,forfrac,indfor,selffac,selffrac,indself, nlay,    &
+     &       sfluxzen, taug, taur                                     &  !  ---  outputs
      &     )
 
 !  ==================   program usage description   ==================  !
@@ -3840,11 +3840,11 @@
 !  ---  inputs:
       integer,               intent(in) :: nlay, laytrop
 
-      integer, dimension(nlay), intent(in) :: indfor, indself,
+      integer, dimension(nlay), intent(in) :: indfor, indself,   &
      &       jp, jt, jt1
 
-      real (kind=kind_phys), dimension(nlay),  intent(in) :: colmol,
-     &       fac00, fac01, fac10, fac11, forfac, forfrac, selffac,
+      real (kind=kind_phys), dimension(nlay),  intent(in) :: colmol, &
+     &       fac00, fac01, fac10, fac11, forfac, forfrac, selffac,   &
      &       selffrac
 
       real (kind=kind_phys), dimension(nlay,maxgas),intent(in) :: colamt
@@ -3852,7 +3852,7 @@
 !  ---  outputs:
       real (kind=kind_phys), dimension(ngptsw), intent(out) :: sfluxzen
 
-      real (kind=kind_phys), dimension(nlay,ngptsw), intent(out) ::
+      real (kind=kind_phys), dimension(nlay,ngptsw), intent(out) :: &
      &       taug, taur
 
 !  ---  locals:
@@ -5205,4 +5205,4 @@
 !........................................!
       end module module_radsw_main       !
 !========================================!
-!> @}
+!! @}

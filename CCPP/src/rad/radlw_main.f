@@ -389,7 +389,7 @@
       contains
 ! ================
 
-!> This subroutine is the main lw radiation routine.
+!> This subroutine is the main LW radiation routine.
 !!\param plyr           model layer mean pressure in mb
 !!\param plvl           model interface pressure in mb
 !!\param tlyr           model layer mean temperature in K
@@ -451,12 +451,12 @@
 !> \section gen_lwrad General Algorithm
 !> @{
 ! --------------------------------
-      subroutine lwrad
-     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                      !  ---  inputs
-     &       clouds,icseed,aerosols,sfemis,sfgtmp,
-     &       npts, nlay, nlp1, lprnt,
-     &       hlwc,topflx,sfcflx,                                         !  ---  outputs
-     &       HLW0,HLWB,FLXPRF                                           !! ---  optional
+      subroutine lwrad                                                 &
+     &     ( plyr,plvl,tlyr,tlvl,qlyr,olyr,gasvmr,                     &   !  ---  inputs
+     &       clouds,icseed,aerosols,sfemis,sfgtmp,                     &
+     &       npts, nlay, nlp1, lprnt,                                  &
+     &       hlwc,topflx,sfcflx,                                       &    !  ---  outputs
+     &       HLW0,HLWB,FLXPRF                                          &   !! ---  optional
      &     )
 
 !  ====================  defination of variables  ====================  !
@@ -636,18 +636,18 @@
 
       logical,  intent(in) :: lprnt
 
-      real (kind=kind_phys), dimension(npts,nlp1), intent(in) :: plvl,
+      real (kind=kind_phys), dimension(npts,nlp1), intent(in) :: plvl, &
      &       tlvl
-      real (kind=kind_phys), dimension(npts,nlay), intent(in) :: plyr,
+      real (kind=kind_phys), dimension(npts,nlay), intent(in) :: plyr, &
      &       tlyr, qlyr, olyr
 
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: gasvmr
       real (kind=kind_phys), dimension(npts,nlay,9),intent(in):: clouds
 
-      real (kind=kind_phys), dimension(npts), intent(in) :: sfemis,
+      real (kind=kind_phys), dimension(npts), intent(in) :: sfemis,    &
      &       sfgtmp
 
-      real (kind=kind_phys), dimension(npts,nlay,nbands,3),intent(in)::
+      real (kind=kind_phys), dimension(npts,nlay,nbands,3),intent(in)::&
      &       aerosols
 
 !  ---  outputs:
@@ -657,11 +657,11 @@
       type (sfcflw_type),    dimension(npts), intent(out) :: sfcflx
 
 !! ---  optional outputs:
-      real (kind=kind_phys), dimension(npts,nlay,nbands),optional,
+      real (kind=kind_phys), dimension(npts,nlay,nbands),optional,      &
      &       intent(out) :: hlwb
-      real (kind=kind_phys), dimension(npts,nlay),       optional,
+      real (kind=kind_phys), dimension(npts,nlay),       optional,      &
      &       intent(out) :: hlw0
-      type (proflw_type),    dimension(npts,nlp1),       optional,
+      type (proflw_type),    dimension(npts,nlp1),       optional,      &
      &       intent(out) :: flxprf
 
 !  ---  locals:
@@ -1252,7 +1252,7 @@
 !! spectral band are reduced from 256 g-point intervals to 140.
 !!\param me        print control for parallel process
 !-----------------------------------
-      subroutine rlwinit
+      subroutine rlwinit                                               &
      &     ( me ) !  ---  inputs
 !  ---  outputs: (none)
 
@@ -1450,37 +1450,37 @@
 
 !> This subroutine computes the cloud optical depth(s) for each cloudy layer
 !! and g-point interval.
-!!\param cfrac           (0:nlp1), layer cloud fraction
+!!\param cfrac           layer cloud fraction
 !!\n     ---  for  ilwcliq > 0 (prognostic cloud scheme)  - - -
-!!\param cliqp           (nlay), layer in-cloud liq water path (\f$g/m^2\f$)
-!!\param reliq           (nlay), mean eff radius for liq cloud (micron)
-!!\param cicep           (nlay), layer in-cloud ice water path (\f$g/m^2\f$)
-!!\param reice           (nlay), mean eff radius for ice cloud (micron)
-!!\param cdat1           (nlay), layer rain drop water path (\f$g/m^2\f$)
-!!\param cdat2           (nlay), effective radius for rain drop (micron)
-!!\param cdat3           (nlay), layer snow flake water path(\f$g/m^2\f$)
-!!\param cdat4           (nlay), mean eff radius for snow flake(micron)
+!!\param cliqp           layer in-cloud liq water path (\f$g/m^2\f$)
+!!\param reliq           mean eff radius for liq cloud (micron)
+!!\param cicep           layer in-cloud ice water path (\f$g/m^2\f$)
+!!\param reice           mean eff radius for ice cloud (micron)
+!!\param cdat1           layer rain drop water path (\f$g/m^2\f$)
+!!\param cdat2           effective radius for rain drop (micron)
+!!\param cdat3           layer snow flake water path(\f$g/m^2\f$)
+!!\param cdat4           mean effective radius for snow flake(micron)
 !!\n     ---  for ilwcliq = 0  (diagnostic cloud scheme)  - - -
-!!\param cliqp           (nlay), not used
-!!\param cicep           (nlay), not used
-!!\param reliq           (nlay), not used
-!!\param reice           (nlay), not used
-!!\param cdat1           (nlay), layer cloud optical depth
-!!\param cdat2           (nlay), layer cloud single scattering albedo
-!!\param cdat3           (nlay), layer cloud asymmetry factor
-!!\param cdat4           (nlay), optional use
+!!\param cliqp           not used
+!!\param cicep           not used
+!!\param reliq           not used
+!!\param reice           not used
+!!\param cdat1           layer cloud optical depth
+!!\param cdat2           layer cloud single scattering albedo
+!!\param cdat3           layer cloud asymmetry factor
+!!\param cdat4           optional use
 !!\param nlay            number of layer number
 !!\param nlp1            number of veritcal levels
 !!\param ipseed          permutation seed for generating random numbers (isubclw>0)
-!!\param cldfmc          (ngptlw,nlay), cloud fraction for each sub-column
-!!\param taucld          (nbands,nlay), cloud optical depth for bands (non-mcica)
+!!\param cldfmc          cloud fraction for each sub-column
+!!\param taucld          cloud optical depth for bands (non-mcica)
 !!\section gen_cldprop General Algorithm
 !> @{
 ! ----------------------------
-      subroutine cldprop
-     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4,     !  ---  inputs
-     &       nlay, nlp1, ipseed,
-     &       cldfmc, taucld                                             !  ---  outputs
+      subroutine cldprop                                               &
+     &     ( cfrac,cliqp,reliq,cicep,reice,cdat1,cdat2,cdat3,cdat4,    & !  ---  inputs
+     &       nlay, nlp1, ipseed,                                       &
+     &       cldfmc, taucld                                            & !  ---  outputs
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -1580,7 +1580,7 @@
       integer, intent(in) :: nlay, nlp1, ipseed
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cfrac
-      real (kind=kind_phys), dimension(nlay),   intent(in) :: cliqp,
+      real (kind=kind_phys), dimension(nlay),   intent(in) :: cliqp,   &
      &       reliq, cicep, reice, cdat1, cdat2, cdat3, cdat4
 
 !  ---  outputs:
@@ -1784,9 +1784,9 @@
 !!\param ipseed      permute seed for random num generator
 !!\param lcloudy     sub-colum cloud profile flag array
 ! ----------------------------------
-      subroutine mcica_subcol
-     &    ( cldf, nlay, ipseed,                                        !  ---  inputs
-     &      lcloudy                                                     !  ---  outputs
+      subroutine mcica_subcol                                         &
+     &    ( cldf, nlay, ipseed,                                       &!  ---  inputs
+     &      lcloudy                                                   & !  ---  outputs
      &    )
 
 !  ====================  defination of variables  ====================  !
@@ -1971,13 +1971,13 @@
 !!\param scaleminor,scaleminorn2         scale factors for minor gases
 !!\param indminor        index of lower ref temp for minor gases
 ! ----------------------------------
-      subroutine setcoef
-     &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,         !  ---  inputs:
-     &       nlay, nlp1,
-     &       laytrop,pklay,pklev,jp,jt,jt1,                             !  ---  outputs:
-     &       rfrate,fac00,fac01,fac10,fac11,
-     &       selffac,selffrac,indself,forfac,forfrac,indfor,
-     &       minorfrac,scaleminor,scaleminorn2,indminor
+      subroutine setcoef                                               &
+     &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,         & !  ---  inputs:
+     &       nlay, nlp1,                                               &
+     &       laytrop,pklay,pklev,jp,jt,jt1,                            & !  ---  outputs:
+     &       rfrate,fac00,fac01,fac10,fac11,                           &
+     &       selffac,selffrac,indself,forfac,forfrac,indfor,           &
+     &       minorfrac,scaleminor,scaleminorn2,indminor                &
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2038,24 +2038,24 @@
       real (kind=kind_phys), dimension(nlay,maxgas),intent(in):: colamt
       real (kind=kind_phys), dimension(0:nlay),     intent(in):: tz
 
-      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,
+      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,     &
      &       tavel, h2ovmr, coldry, colbrd
 
       real (kind=kind_phys), intent(in) :: stemp
 
 !  ---  outputs:
-      integer, dimension(nlay), intent(out) :: jp, jt, jt1, indself,
+      integer, dimension(nlay), intent(out) :: jp, jt, jt1, indself,   &
      &       indfor, indminor
 
       integer, intent(out) :: laytrop
 
-      real (kind=kind_phys), dimension(nlay,nrates,2), intent(out) ::
+      real (kind=kind_phys), dimension(nlay,nrates,2), intent(out) ::  &
      &       rfrate
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(out) ::
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(out) ::  &
      &       pklev, pklay
 
-      real (kind=kind_phys), dimension(nlay),          intent(out) ::
-     &       fac00, fac01, fac10, fac11, selffac, selffrac, forfac,
+      real (kind=kind_phys), dimension(nlay),          intent(out) ::  &
+     &       fac00, fac01, fac10, fac11, selffac, selffrac, forfac,    &
      &       forfrac, minorfrac, scaleminor, scaleminorn2
 
 !  ---  locals:
@@ -2260,10 +2260,10 @@
 !!\param htrb        spectral band lw heating rate (k/day)
 !!\section gen_rtrn General Algorithm
 ! ----------------------------------
-      subroutine rtrn
-     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,              !  ---  inputs
-     &       fracs,secdif, nlay,nlp1,
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs
+      subroutine rtrn                                                  &
+     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,             & !  ---  inputs
+     &       fracs,secdif, nlay,nlp1,                                  &
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb      & !  ---  outputs
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2368,15 +2368,15 @@
       integer, intent(in) :: nlay, nlp1
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cldfrc
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,  &
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,&
      &       tautot
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::   &
      &       pklev, pklay
 
 !  ---  outputs:
@@ -2384,7 +2384,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::         &
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -2642,10 +2642,10 @@
 !!\section gen_rtrnmr General Algorithm
 !> @{
 ! ----------------------------------
-      subroutine rtrnmr
-     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,             !  ---  inputs
-     &       fracs,secdif, nlay,nlp1,
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs:
+      subroutine rtrnmr                                                &
+     &     ( semiss,delp,cldfrc,taucld,tautot,pklay,pklev,             &!  ---  inputs
+     &       fracs,secdif, nlay,nlp1,                                  &
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb      &  !  ---  outputs:
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -2749,15 +2749,15 @@
       integer, intent(in) :: nlay, nlp1
 
       real (kind=kind_phys), dimension(0:nlp1), intent(in) :: cldfrc
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,  &
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,&
      &       tautot
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::   &
      &       pklev, pklay
 
 !  ---  outputs:
@@ -2765,7 +2765,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::         &
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -3234,10 +3234,10 @@
 !!\section gen_rtrnmc General Algorithm
 !> @{
 ! ---------------------------------
-      subroutine rtrnmc
-     &     ( semiss,delp,cldfmc,taucld,tautot,pklay,pklev,              !  ---  inputs:
-     &       fracs,secdif, nlay,nlp1,
-     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb       !  ---  outputs:
+      subroutine rtrnmc                                                &
+     &     ( semiss,delp,cldfmc,taucld,tautot,pklay,pklev,             & !  ---  inputs:
+     &       fracs,secdif, nlay,nlp1,                                  &
+     &       totuflux,totdflux,htr, totuclfl,totdclfl,htrcl, htrb      & !  ---  outputs:
      &     )
 
 !  ===================  program usage description  ===================  !
@@ -3342,15 +3342,15 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, nlp1
 
-      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,
+      real (kind=kind_phys), dimension(nbands), intent(in) :: semiss,  &
      &       secdif
       real (kind=kind_phys), dimension(nlay),   intent(in) :: delp
 
       real (kind=kind_phys), dimension(nbands,nlay),intent(in):: taucld
-      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,
+      real (kind=kind_phys), dimension(ngptlw,nlay),intent(in):: fracs,&
      &       tautot, cldfmc
 
-      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::
+      real (kind=kind_phys), dimension(nbands,0:nlay), intent(in) ::   &
      &       pklev, pklay
 
 !  ---  outputs:
@@ -3358,7 +3358,7 @@
 
       real (kind=kind_phys), dimension(nlay,nbands),intent(out) :: htrb
 
-      real (kind=kind_phys), dimension(0:nlay), intent(out) ::
+      real (kind=kind_phys), dimension(0:nlay), intent(out) ::         &
      &       totuflux, totdflux, totuclfl, totdclfl
 
 !  ---  locals:
@@ -3634,13 +3634,13 @@
 !!\param fracs            planck fractions
 !!\param tautot           total optical depth (gas+aerosols)
 ! ----------------------------------
-      subroutine taumol
-     &     ( laytrop,pavel,coldry,colamt,colbrd,wx,tauaer,              !  ---  inputs
-     &       rfrate,fac00,fac01,fac10,fac11,jp,jt,jt1,
-     &       selffac,selffrac,indself,forfac,forfrac,indfor,
-     &       minorfrac,scaleminor,scaleminorn2,indminor,
-     &       nlay,
-     &       fracs, tautot                                              !  ---  outputs
+      subroutine taumol                                                &
+     &     ( laytrop,pavel,coldry,colamt,colbrd,wx,tauaer,             & !  ---  inputs
+     &       rfrate,fac00,fac01,fac10,fac11,jp,jt,jt1,                 &
+     &       selffac,selffrac,indself,forfac,forfrac,indfor,           &
+     &       minorfrac,scaleminor,scaleminorn2,indminor,               &
+     &       nlay,                                                     &
+     &       fracs, tautot                                             & !  ---  outputs
      &     )
 
 !  ************    original subprogram description    ***************   !
@@ -3759,12 +3759,12 @@
 !  ---  inputs:
       integer, intent(in) :: nlay, laytrop
 
-      integer, dimension(nlay), intent(in) :: jp, jt, jt1, indself,
+      integer, dimension(nlay), intent(in) :: jp, jt, jt1, indself,    &
      &       indfor, indminor
 
-      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,
-     &       coldry, colbrd, fac00, fac01, fac10, fac11, selffac,
-     &       selffrac, forfac, forfrac, minorfrac, scaleminor,
+      real (kind=kind_phys), dimension(nlay), intent(in) :: pavel,     &
+     &       coldry, colbrd, fac00, fac01, fac10, fac11, selffac,      &
+     &       selffrac, forfac, forfrac, minorfrac, scaleminor,         &
      &       scaleminorn2
 
       real (kind=kind_phys), dimension(nlay,maxgas), intent(in):: colamt
@@ -3772,11 +3772,11 @@
 
       real (kind=kind_phys), dimension(nbands,nlay), intent(in):: tauaer
 
-      real (kind=kind_phys), dimension(nlay,nrates,2), intent(in) ::
+      real (kind=kind_phys), dimension(nlay,nrates,2), intent(in) ::   &
      &       rfrate
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(ngptlw,nlay), intent(out) ::     
+      real (kind=kind_phys), dimension(ngptlw,nlay), intent(out) ::    &
      &       fracs, tautot
 
 !  ---  locals
