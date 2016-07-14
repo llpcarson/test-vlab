@@ -312,7 +312,7 @@
 !!\section gen_cld_init General Algorithm
 !> @{
 !-----------------------------------
-      subroutine cld_init  &
+      subroutine cld_init                                        &
      &     ( si, NLAY, me ) !  ---  inputs
 !  ---  outputs:
 !          ( none )

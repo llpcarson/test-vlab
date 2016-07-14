@@ -80,7 +80,7 @@
       public
 
 !> Reference pressure and temperature
-     real (kind=kind_phys), dimension(59) :: preflog, tref
+      real (kind=kind_phys), dimension(59) :: preflog, tref
 
 !  ...  these pressures are chosen such that the ln of the first pressure
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -15688,6 +15688,8 @@
 !
       private
 !
+!> msa22=585
+      integer,  public :: MSA22
 !> msb22=235
       integer,  public :: MSB22
 !> msf22=10

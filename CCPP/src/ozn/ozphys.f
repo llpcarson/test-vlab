@@ -11,6 +11,7 @@
 !!
 !! \section intra_oz Intraphysics Cummunication
 !! - Routine OZPHYS is called from GBPHYS after call to RAYLEIGH_DAMP
+!! @{
 !!
 !! \param[in] ix,im     integer, horizontal dimension and num of used pts
 !! \param[in] levs      integer, vertical layer dimension
@@ -29,8 +30,8 @@
 !! \param[in] me        integer, pe number - used for debug prints
 !! \section gen_al General Algorithm
 !> @{
-      subroutine ozphys (ix, im, levs, ko3, dt, ozi, ozo, tin, po3,    &
-     &                   prsl, prdout, pl_coeff, delp, ldiag3d,        &
+      subroutine ozphys (ix, im, levs, ko3, dt, ozi, ozo, tin, po3,
+     &                   prsl, prdout, pl_coeff, delp, ldiag3d,
      &                   ozp,me)
 !
 !     this code assumes that both prsl and po3 are from bottom to top
@@ -42,16 +43,15 @@
 !
       real, parameter :: gravi=1.0/grav
       integer im, ix, levs, ko3, pl_coeff,me
-      real(kind=kind_phys) ozi(ix,levs),   ozo(ix,levs), po3(ko3),     &
-     &                     prsl(ix,levs),  tin(ix,levs), delp(ix,levs),&
-     &                     prdout(ix,ko3,pl_coeff),                    &
+      real(kind=kind_phys) ozi(ix,levs),   ozo(ix,levs), po3(ko3),
+     &                     prsl(ix,levs),  tin(ix,levs), delp(ix,levs),
+     &                     prdout(ix,ko3,pl_coeff),
      &                     ozp(ix,levs,pl_coeff),  dt
 !
       integer k,kmax,kmin,l,i,j
       logical              ldiag3d, flg(im)
       real(kind=kind_phys) pmax, pmin, tem, temp
-      real(kind=kind_phys) wk1(im), wk2(im), wk3(im), &
-     &     prod(im,pl_coeff), &
+      real(kind=kind_phys) wk1(im), wk2(im), wk3(im), prod(im,pl_coeff),
      &                     ozib(im),  colo3(im,levs+1)
 !
       if (pl_coeff > 2) then
@@ -145,4 +145,5 @@
 !
       return
       end
+!! @}
 !> @}

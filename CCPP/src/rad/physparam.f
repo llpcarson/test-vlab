@@ -80,7 +80,7 @@
       integer,parameter :: iswmode = 2 
 
 ! ............................................. !
-> \name  -1.2- Control flags for LW radiation  
+!> \name  -1.2- Control flags for LW radiation  
 ! ............................................. !
 
 !> LW heating rate unit (1:k/day; 2:k/second): =1:k/day; =2:k/second.

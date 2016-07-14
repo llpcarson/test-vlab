@@ -447,11 +447,11 @@
 !! species : soot, suso, waso, ssam, sscm
 
 !> extinction coefficient
-     real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpext0_grt
+      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpext0_grt
 !> single scattering albedo
-     real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpssa0_grt
+      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpssa0_grt
 !> asymmetry parameter
-     real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpasy0_grt
+      real (kind=kind_phys),allocatable,dimension(:,:,:) :: rhdpasy0_grt
 
 !   - relative humidity independent aerosol optical properties:
 !      extrhi_grt(KCM1,NSWLWBD) - extinction coefficient for sw+lw spectral band
@@ -464,21 +464,27 @@
 
 !>\name relative humidity independent aerosol optical properties
 
-!> extinction coefficient for sw+lw spectral band
-     real (kind=kind_phys),allocatable,save,dimension(:,:) :: extrhi_grt
-!> single scattering albedo for sw+lw spectral band
-     real (kind=kind_phys),allocatable,save,dimension(:,:) :: ssarhi_grt
-!> asymmetry parameter for sw+lw spectral band
-     real (kind=kind_phys),allocatable,save,dimension(:,:) :: asyrhi_grt
+!> extinction coefficient for SW+LW spectral band
+      real (kind=kind_phys),allocatable,save,dimension(:,:) ::  &
+     &      extrhi_grt
+!> single scattering albedo for SW+LW spectral band
+      real (kind=kind_phys),allocatable,save,dimension(:,:) ::  &
+     &      ssarhi_grt
+!> asymmetry parameter for SW+LW spectral band
+      real (kind=kind_phys),allocatable,save,dimension(:,:) ::  &
+     &      asyrhi_grt
 
 !> \name relative humidity dependent aerosol optical properties
 
-!> extinction coefficient for sw+lw spectral band
-     real (kind=kind_phys),allocatable,save,dimension(:,:,:)::extrhd_grt
-!> single scattering albedo for sw+lw band
-     real (kind=kind_phys),allocatable,save,dimension(:,:,:)::ssarhd_grt
-!> asymmetry parameter for sw+lw band
-     real (kind=kind_phys),allocatable,save,dimension(:,:,:)::asyrhd_grt
+!> extinction coefficient for SW+LW spectral band
+      real (kind=kind_phys),allocatable,save,dimension(:,:,:) :: &
+     &      extrhd_grt
+!> single scattering albedo for SW+LW band
+      real (kind=kind_phys),allocatable,save,dimension(:,:,:) :: &
+     &      ssarhd_grt
+!> asymmetry parameter for SW+LW band
+      real (kind=kind_phys),allocatable,save,dimension(:,:,:) :: &
+     &      asyrhd_grt
 
 !> \name module variables for gocart aerosol clim data set
 
@@ -524,9 +530,9 @@
 
 !   - geos-gocart lat/lon arrays
 !> geos-gocart longitude arrays
-     real (kind=kind_phys), allocatable, save, dimension(:) :: geos_rlon
+      real (kind=kind_phys), allocatable, save, dimension(:):: geos_rlon
 !> geos-gocart latitude arrays
-     real (kind=kind_phys), allocatable, save, dimension(:) :: geos_rlat
+      real (kind=kind_phys), allocatable, save, dimension(:):: geos_rlat
 
 !> control flag for gocart climo data set: xxxx as default; ver3 for geos3;
 !! ver4 for geos4; 0000 for unknown data
@@ -670,7 +676,7 @@
 !>\section gen_al General Algorithm
 !! @{
 !-----------------------------------
-      subroutine aer_init   &
+      subroutine aer_init                                      &
      &     ( NLAY, me ) !  ---  inputs
 !  ---  outputs: ( to module variables )
 
@@ -1777,7 +1783,7 @@
 !>\section gen_aer_upd General Algorithm
 !! @{
 !-----------------------------------
-      subroutine aer_update    &
+      subroutine aer_update                                           &
      &     ( iyear, imon, me ) !  ---  inputs:
 !  ---  outputs: ( to module variables )
 

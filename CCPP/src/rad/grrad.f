@@ -586,12 +586,6 @@
      &       slag,sdec,cdec,solcon)
 !...................................
 
-!  ---  inputs:
-!     &     ( idate,jdate,deltsw,deltim,lsswr, me,                       &
-!  ---  outputs:
-!     &       slag,sdec,cdec,solcon                                      &
-!     &     )
-
 ! =================   subprogram documentation block   ================ !
 !                                                                       !
 ! subprogram:   radupdate   calls many update subroutines to check and  !
@@ -1730,7 +1724,7 @@
 
       if (lsswr) then
 
-!> -# calling module_radiation_surface::setalb(),setup surface albedo
+!> -# Call module_radiation_surface::setalb() to setup surface albedo.
 !!  for SW radiation, include xw (nov04) sea-ice.
 
 

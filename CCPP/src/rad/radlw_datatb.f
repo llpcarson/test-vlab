@@ -1630,11 +1630,6 @@
       integer, public :: MMN01
       parameter (MSA01=65, MSB01=235, MSF01=10, MFR01=4, MMN01=19)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG01,MSA01), absb(NG01,MSB01), selfref(NG01,MSF01),   &
-     &       forref(NG01,MFR01), fracrefa(NG01), fracrefb(NG01),        &
-     &       ka_mn2(NG01,MMN01), kb_mn2(NG01,MMN01)
-
 !>  the array absa(NG01,65) = ka(NG01,5,13) contains absorption coefs
 !!  at the NG01=10 chosen g-values for a range of pressure levels>~100mb
 !!  and temperatures.  the first index in the array, jt, which runs from
@@ -31405,9 +31400,6 @@
       integer, public :: MFR14
       parameter (MSA14=65, MSB14=235, MSF14=10, MFR14=4)
 
-      real (kind=kind_phys), public ::                                  &
-     &       absa(NG14,MSA14), absb(NG14,MSB14), selfref(NG14,MSF14),   &
-     &       forref(NG14,MFR14), fracrefa(NG14), fracrefb(NG14)
 
 !>  the array absa(NG14,65) = ka(NG14,5,13) contains absorption coefs
 !!  at the NG14=2 chosen g-values for a range of pressure levels>~100mb
@@ -32038,11 +32030,6 @@
 !> MAF16=9
       integer, public :: MAF16
       parameter (MSA16=585, MSB16=235, MSF16=10, MFR16=4, MAF16=9)
-
-
-      real (kind=kind_phys), public ::          forref(NG16,MFR16),    &
-     &      absa(NG16,MSA16), absb(NG16,MSB16), selfref(NG16,MSF16),   &
-     &      fracrefa(NG16,MAF16), fracrefb(NG16)
 
 !>  the array forref contains the coefficient of the water vapor
 !!  foreign-continuum (including the energy term).  the first

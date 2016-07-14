@@ -55,9 +55,9 @@
 !!
 !> \section al_gwdc General Algorithm
 !> @{
-      subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,                 &
-     &                pmid1,pint1,dpmid1,qmax,ktop,kbot,kcnv,cldf, &
-     &                grav,cp,rd,fv,dlength,lprnt,ipr,fhour,       &
+      subroutine gwdc(im,ix,iy,km,lat,u1,v1,t1,q1,
+     &                pmid1,pint1,dpmid1,qmax,ktop,kbot,kcnv,cldf,
+     &                grav,cp,rd,fv,dlength,lprnt,ipr,fhour,
      &                utgwc,vtgwc,tauctx,taucty)
 
 !***********************************************************************
@@ -98,10 +98,10 @@
       integer ktop(im),kbot(im),kcnv(im)
 
       real(kind=kind_phys) grav,cp,rd,fv,fhour,fhourpr
-      real(kind=kind_phys), dimension(ix)      :: qmax       &
+      real(kind=kind_phys), dimension(ix)      :: qmax
      &,                                           tauctx, taucty
       real(kind=kind_phys), dimension(im)      :: cldf,dlength
-      real(kind=kind_phys), dimension(ix,km)   :: u1,v1,t1,q1, &
+      real(kind=kind_phys), dimension(ix,km)   :: u1,v1,t1,q1,
      &                                            pmid1,dpmid1
 !    &,                                           cumchr1
       real(kind=kind_phys), dimension(iy,km)   :: utgwc,vtgwc

@@ -687,14 +687,14 @@
       type (sfcfsw_type),    dimension(npts), intent(out) :: sfcflx
 
 !! ---  optional outputs:
-      real (kind=kind_phys), dimension(npts,nlay,nbdsw), optional,     &
+      real (kind=kind_phys), dimension(npts,nlay,nbdsw), optional,      &
      &       intent(out) :: hswb
 
-      real (kind=kind_phys), dimension(npts,nlay),       optional,     &
+      real (kind=kind_phys), dimension(npts,nlay),       optional,      &
      &       intent(out) :: hsw0
-      type (profsw_type),    dimension(npts,nlp1),       optional,     &
+      type (profsw_type),    dimension(npts,nlp1),       optional,      &
      &       intent(out) :: flxprf
-      type (cmpfsw_type),    dimension(npts),            optional,     &
+      type (cmpfsw_type),    dimension(npts),            optional,      &
      &       intent(out) :: fdncmp
 
 !  ---  locals:
@@ -1255,7 +1255,7 @@
 !> This subroutine initializes non-varying module variables, conversion factors, and look-up tables
 !!\param me             print control for parallel process
 !-----------------------------------
-      subroutine rswinit  &
+      subroutine rswinit                                           &
      &     ( me ) !  ---  inputs:
 !  ---  outputs: (none)
 
@@ -3037,13 +3037,13 @@
       real (kind=kind_phys), intent(in) :: cosz, sntz, cf1, cf0, ssolar
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) :: &
+      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::      &
      &       fxupc, fxdnc, fxup0, fxdn0
 
-      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,&
+      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc, &
      &       sfbm0, sfdf0
 
-      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc, &
+      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,     &
      &       ftoauc, ftoau0, fsfcuc, fsfcu0, fsfcdc, fsfcd0
 
 !  ---  locals:

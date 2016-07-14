@@ -139,7 +139,7 @@
 
 !> This subroutine initializes astronomy process, and set up module constants.
 !!\param me         print message control flag
-      subroutine sol_init     &
+      subroutine sol_init                                 &
      &     ( me ) !  ---  inputs
 !  ---  outputs: ( none )
 
@@ -827,7 +827,7 @@
 !  ---  inputs:
       integer, intent(in) :: IM, me
 
-      real (kind=kind_phys), intent(in) :: sinlat(:), coslat(:),&
+      real (kind=kind_phys), intent(in) :: sinlat(:), coslat(:),     &
      &       xlon(:), solhr
 
 !  ---  outputs:

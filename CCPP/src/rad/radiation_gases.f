@@ -215,7 +215,7 @@
 !! read in monthly ozone data.
 !!\param me         print message control flag
 !-----------------------------------
-      subroutine gas_init &
+      subroutine gas_init                      &
      &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
@@ -512,7 +512,7 @@
 !>\section gen_gas_update General Algorithm
 !! @{
 !-----------------------------------
-      subroutine gas_update   &
+      subroutine gas_update                      &
      &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
 !  ---  outputs: ( none )
 
