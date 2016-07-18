@@ -3068,13 +3068,13 @@
       real (kind=kind_phys), intent(in) :: cosz, sntz, cf1, cf0, ssolar
 
 !  ---  outputs:
-      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::      &
+      real (kind=kind_phys), dimension(nlp1,nbdsw), intent(out) ::     &
      &       fxupc, fxdnc, fxup0, fxdn0
 
-      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc, &
+      real (kind=kind_phys), dimension(2), intent(out) :: sfbmc, sfdfc,&
      &       sfbm0, sfdf0
 
-      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,     &
+      real (kind=kind_phys), intent(out) :: suvbfc, suvbf0, ftoadc,    &
      &       ftoauc, ftoau0, fsfcuc, fsfcu0, fsfcdc, fsfcd0
 
 !  ---  locals:
@@ -3784,6 +3784,8 @@
 !!\param sfluxzen         spectral distribution of incoming solar flux
 !!\param taug             spectral optical depth for gases
 !!\param taur             opt depth for rayleigh scattering
+!>\section gen_al General Algorithm
+!! @{
 !-----------------------------------
       subroutine taumol                                               &
      &     ( colamt,colmol,fac00,fac01,fac10,fac11,jp,jt,jt1,laytrop, & !  ---  inputs
@@ -5264,6 +5266,7 @@
 !...................................
       end subroutine taumol
 !-----------------------------------
+!! @}
 
 !
 !........................................!
