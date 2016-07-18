@@ -1,5 +1,6 @@
 !>  \file radiation_astronomy.f
-!!  This file sets up astronomical quantities for solar radiation calculations.
+!!  This file sets up astronomical quantities for solar radiation 
+!!  calculations.
 
 !  ==========================================================  !!!!!
 !          'module_radiation_astronomy'  description           !!!!!
@@ -77,7 +78,8 @@
 !> \ingroup rad
 !! \defgroup module_radiation_astronomy module_radiation_astronomy
 !! @{
-!> This module sets up astronomical quantities for solar radiation calculations.
+!> This module sets up astronomical quantities for solar radiation
+!!  calculations.
 !! \version NCEP-Radiation_astronomy v5.2  Jan 2013
 !========================================!
       module module_radiation_astronomy  !
@@ -137,7 +139,8 @@
       contains
 ! =================
 
-!> This subroutine initializes astronomy process, and set up module constants.
+!> This subroutine initializes astronomy process, and set up module
+!! constants.
 !!\param me         print message control flag
       subroutine sol_init                                 &
      &     ( me ) !  ---  inputs
@@ -298,15 +301,19 @@
 
 
 !> This subroutine computes solar parameters at forecast time.
-!!\param jdate     ncep absolute date and time at fcst time (yr, mon, day, t-zone, hr, min, sec, mil-sec)
-!!\param kyear     usually kyear=jdate(1). if not, it is for hindcast mode, and it is usually the init cond time and serves as the upper limit of data can be used.
+!!\param jdate     ncep absolute date and time at fcst time 
+!!                 (yr, mon, day, t-zone, hr, min, sec, mil-sec)
+!!\param kyear     usually kyear=jdate(1). if not, it is for hindcast
+!!                 mode, and it is usually the init cond time and
+!!                 serves as the upper limit of data can be used.
 !!\param deltsw    time duration in seconds per sw calculation
 !!\param deltim    timestep in seconds
 !!\param lsol_chg  logical flags for change solar constant
 !!\param me        print message control flag
 !!\param slag               equation of time in radians
 !!\param sdec, cdec         sin and cos of the solar declination angle
-!!\param solcon             sun-earth distance adjusted solar constant \f$(w/m^2)\f$
+!!\param solcon             sun-earth distance adjusted solar constant
+!!                           \f$(w/m^2)\f$
 !>\section gen_sol_update General Algorithm
 !! @{
 !-----------------------------------
@@ -619,7 +626,8 @@
 !! @}
 
 
-!> This subroutine computes radius vector, declination and right ascension of sun, and equation of time
+!> This subroutine computes radius vector, declination and right
+!! ascension of sun, and equation of time
 !-----------------------------------
       subroutine solar                                           &
      &     ( jd, fjd,                                            &       !  ---  inputs
@@ -777,14 +785,17 @@
 !-----------------------------------
 
 
-!> This subroutine computes mean cos solar zenith angle over SW calling interval
-!!\param xlon       (IM), grids' longitudes in radians, work both on zonal, 0->2pi and -pi->+pi arrangements
+!> This subroutine computes mean cos solar zenith angle over SW calling
+!! interval.
+!!\param xlon       (IM), grids' longitudes in radians, work both on
+!!                  zonal, 0->2pi and -pi->+pi arrangements
 !!\param sinlat     (IM), sine of the corresponding latitudes
 !!\param coslat     (IM), cosine of the corresponding latitudes
 !!\param solhr      time after 00z in hours
 !!\param IM         num of grids in horizontal dimension
 !!\param me         print message control flag
-!!\param coszen     (IM), average of cosz for daytime only in sw call interval
+!!\param coszen     (IM), average of cosz for daytime only in sw call
+!!                  interval
 !!\param coszdg     (IM), average of cosz over entire sw call interval
 !-----------------------------------
       subroutine coszmn                                           &
@@ -874,7 +885,8 @@
 !-----------------------------------
 
 
-!> This subroutine prints out forecast date, time, and astronomy quantities.
+!> This subroutine prints out forecast date, time, and astronomy
+!! quantities.
 !-----------------------------------
       subroutine prtime                                            &
      &     ( jd, fjd, dlt, alp, r1, solc                           &    !  ---  inputs

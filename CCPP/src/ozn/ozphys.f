@@ -2,11 +2,13 @@
 !! This file is ozone sources and sinks.
 
 !> \defgroup ozn Ozone Sources and Sinks
-!! - Current operational version based on Naval Research Laboratory's CHEM2D model (McCormack et al. 2006
-!!   \cite mccormack_et_al_2006)
-!! - Monthly and zonal mean ozone production rate and ozone dustruction rate per unit ozone
-!!   mixing ratio were provided by NRL based on CHEM2D model
-!! - Original version of these terms were provided by NASA/DAO based on NASA 2D Chemistry model
+!! - Current operational version based on Naval Research Laboratory's
+!! CHEM2D model (McCormack et al. 2006 \cite mccormack_et_al_2006)
+!! - Monthly and zonal mean ozone production rate and ozone destruction
+!! rate per unit ozone mixing ratio were provided by NRL based on
+!! CHEM2D model
+!! - Original version of these terms were provided by NASA/DAO based on
+!! NASA 2D Chemistry model
 !! - GSM is capable of running both versions 
 !!
 !! \section intra_oz Intraphysics Cummunication
@@ -20,7 +22,8 @@
 !! \param[in] ozi       real, updated ozone
 !! \param[in] ozo       real, updated ozone
 !! \param[in] tin       real, updated temperature
-!! \param[in] po3       real, (ko3), ozone forcing data level pressure (ln(Pa))
+!! \param[in] po3       real, (ko3), ozone forcing data level pressure
+!!                      (ln(Pa))
 !! \param[in] prsl      real, (ix,levs),mean layer pressure
 !! \param[in] prdout    real, (ix,ko3,pl_coeff),ozone forcing data
 !! \param[in] pl_coeff  integer, number coefficients in ozone forcing 

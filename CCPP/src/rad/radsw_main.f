@@ -271,16 +271,17 @@
 !!  - module_radsw_ref: reference temperature and pressure
 !!  - module_radsw_cldprtb: cloud property coefficients table
 !!  - module_radsw_sflux: spectral distribution of solar flux
-!!  - module_radsw_kgbnn: absorption coefficents for 14 bands, where nn = 16-29
+!!  - module_radsw_kgbnn: absorption coefficents for 14 bands, where 
+!!    nn = 16-29
 !! - radsw_main.f, which contains: 
-!!  - module_radsw_main: the main SW radiation trnsfer, which contains two
-!! externally callable subroutines:
+!!  - module_radsw_main: the main SW radiation trnsfer, which contains
+!!    two externally callable subroutines:
 !!   - swrad(): the main radiation routine
 !!   - rswinit(): the initialization routine
 !!
-!! All the SW radiation subprograms become contained subprograms in module 
-!! 'module_radsw_main' and many of them are not directly accessable from places
-!! outside the module.
+!! All the SW radiation subprograms become contained subprograms in
+!! module 'module_radsw_main' and many of them are not directly 
+!! accessable from places outside the module.
 !!
 !!\author   Eli J. Mlawer, emlawer@aer.com
 !!\author   Jennifer S. Delamere, jdelamer@aer.com
@@ -389,7 +390,8 @@
       real (kind=kind_phys) :: exp_tbl(0:NTBMX)
 
 
-!> the factor for heating rates (in k/day, or k/sec set by subroutine 'rswinit')
+!> the factor for heating rates (in k/day, or k/sec set by subroutine
+!!  'rswinit')
       real (kind=kind_phys) :: heatfac
 
 
@@ -409,39 +411,39 @@
 !!\param plyr           model layer mean pressure in mb
 !!\param plvl           model level pressure in mb
 !!\param tlyr           model layer mean temperature in K
-!!\param tlvl           model level temperature in K    (not in use)
+!!\param tlvl           model level temperature in K (not in use)
 !!\param qlyr           layer specific humidity in gm/gm   
 !!\param olyr           layer ozone concentration in gm/gm
 !!\param gasvmr         atmospheric constent gases
-!!\n                        (:,:,1)  - co2 volume mixing ratio
-!!\n                        (:,:,2)  - n2o volume mixing ratio
-!!\n                        (:,:,3)  - ch4 volume mixing ratio
-!!\n                        (:,:,4)  - o2  volume mixing ratio
-!!\n                        (:,:,5)  - co  volume mixing ratio        (not used)
-!!\n                        (:,:,6)  - cfc11 volume mixing ratio      (not used)
-!!\n                        (:,:,7)  - cfc12 volume mixing ratio      (not used)
-!!\n                        (:,:,8)  - cfc22 volume mixing ratio      (not used)
-!!\n                        (:,:,9)  - ccl4  volume mixing ratio      (not used)
+!!\n                    (:,:,1)  - co2 volume mixing ratio
+!!\n                    (:,:,2)  - n2o volume mixing ratio
+!!\n                    (:,:,3)  - ch4 volume mixing ratio
+!!\n                    (:,:,4)  - o2  volume mixing ratio
+!!\n                    (:,:,5)  - co  volume mixing ratio (not used)
+!!\n                    (:,:,6)  - cfc11 volume mixing ratio (not used)
+!!\n                    (:,:,7)  - cfc12 volume mixing ratio (not used)
+!!\n                    (:,:,8)  - cfc22 volume mixing ratio (not used)
+!!\n                    (:,:,9)  - ccl4  volume mixing ratio (not used)
 !!\param clouds         cloud profile
-!!\n                        (:,:,1)  - layer total cloud fraction
-!!\n                        (:,:,2)  - layer in-cloud liq water path   (\f$g/m^2\f$)
-!!\n                        (:,:,3)  - mean eff radius for liq cloud   (micron)
-!!\n                        (:,:,4)  - layer in-cloud ice water path   (\f$g/m^2\f$)
-!!\n                        (:,:,5)  - mean eff radius for ice cloud   (micron)
-!!\n                        (:,:,6)  - layer rain drop water path      (\f$g/m^2\f$)
-!!\n                        (:,:,7)  - mean eff radius for rain drop   (micron)
-!!\n                        (:,:,8)  - layer snow flake water path     (\f$g/m^2\f$)
-!!\n                        (:,:,9)  - mean eff radius for snow flake  (micron)
+!!\n                    (:,:,1)  - layer total cloud fraction
+!!\n                    (:,:,2)  - layer in-cloud liq water path (\f$g/m^2\f$)
+!!\n                    (:,:,3)  - mean eff radius for liq cloud (micron)
+!!\n                    (:,:,4)  - layer in-cloud ice water path (\f$g/m^2\f$)
+!!\n                    (:,:,5)  - mean eff radius for ice cloud (micron)
+!!\n                    (:,:,6)  - layer rain drop water path (\f$g/m^2\f$)
+!!\n                    (:,:,7)  - mean eff radius for rain drop (micron)
+!!\n                    (:,:,8)  - layer snow flake water path (\f$g/m^2\f$)
+!!\n                    (:,:,9)  - mean eff radius for snow flake (micron)
 !!\param icseed         auxiliary special cloud related array.
 !!\param aerosols       aerosol optical properties 
-!!\n                        (:,:,:,1) - optical depth
-!!\n                        (:,:,:,2) - single scattering albedo
-!!\n                        (:,:,:,3) - asymmetry parameter
+!!\n                    (:,:,:,1) - optical depth
+!!\n                    (:,:,:,2) - single scattering albedo
+!!\n                    (:,:,:,3) - asymmetry parameter
 !!\param sfcalb         surface albedo in fraction
-!!\n                        (:,1) - near ir direct beam albedo
-!!\n                        (:,2) - near ir diffused albedo
-!!\n                        (:,3) - uv+vis direct beam albedo
-!!\n                        (:,4) - uv+vis diffused albedo
+!!\n                    (:,1) - near ir direct beam albedo
+!!\n                    (:,2) - near ir diffused albedo
+!!\n                    (:,3) - uv+vis direct beam albedo
+!!\n                    (:,4) - uv+vis diffused albedo
 !!\param cosz           cosine of solar zenith angle
 !!\param solcon         solar constant (\f$W/m^2\f$)
 !!\param NDAY           num of daytime points
@@ -451,28 +453,28 @@
 !!\param lprnt          logical check print flag
 !!\param hswc           total sky heating rates (k/sec or k/day)
 !!\param topflx         radiation fluxes at toa (\f$W/m^2\f$), components: 
-!!\n                          upfxc - total sky upward flux at toa
-!!\n                          dnflx - total sky downward flux at toa
-!!\n                          upfx0 - clear sky upward flux at toa
+!!\n                    upfxc - total sky upward flux at toa
+!!\n                    dnflx - total sky downward flux at toa
+!!\n                    upfx0 - clear sky upward flux at toa
 !!\param sfcflx         radiation fluxes at sfc (\f$W/m^2\f$), components:
-!!\n                          upfxc - total sky upward flux at sfc
-!!\n                          dnfxc - total sky downward flux at sfc
-!!\n                          upfx0 - clear sky upward flux at sfc
-!!\n                          dnfx0 - clear sky downward flux at sfc
+!!\n                    upfxc - total sky upward flux at sfc
+!!\n                    dnfxc - total sky downward flux at sfc
+!!\n                    upfx0 - clear sky upward flux at sfc
+!!\n                    dnfx0 - clear sky downward flux at sfc
 !!\param hswb           spectral band total sky heating rates
 !!\param hsw0           clear sky heating rates (k/sec or k/day)
 !!\param flxprf         level radiation fluxes (\f$ W/m^2 \f$), components:
-!!\n                          dnfxc - total sky downward flux at interface
-!!\n                          upfxc - total sky upward flux at interface
-!!\n                          dnfx0 - clear sky downward flux at interface
-!!\n                          upfx0 - clear sky upward flux at interface
+!!\n                    dnfxc - total sky downward flux at interface
+!!\n                    upfxc - total sky upward flux at interface
+!!\n                    dnfx0 - clear sky downward flux at interface
+!!\n                    upfx0 - clear sky upward flux at interface
 !!\param fdncmp         surface downward fluxes (\f$W/m^2\f$), components:  
-!!\n                          uvbfc - total sky downward uv-b flux at sfc
-!!\n                          uvbf0 - clear sky downward uv-b flux at sfc
-!!\n                          nirbm - downward surface nir direct beam flux
-!!\n                          nirdf - downward surface nir diffused flux
-!!\n                          visbm - downward surface uv+vis direct beam flux
-!!\n                          visdf - downward surface uv+vis diffused flux
+!!\n                    uvbfc - total sky downward uv-b flux at sfc
+!!\n                    uvbf0 - clear sky downward uv-b flux at sfc
+!!\n                    nirbm - downward surface nir direct beam flux
+!!\n                    nirdf - downward surface nir diffused flux
+!!\n                    visbm - downward surface uv+vis direct beam flux
+!!\n                    visdf - downward surface uv+vis diffused flux
 !> \section General_swrad General Algorithm
 !> @{
 !-----------------------------------
@@ -747,7 +749,7 @@
 
       s0fac = solcon / s0
 
-!> -# Initial output arrays (and optional) as zero
+!> -# Initial output arrays (and optional) as zero.
 
       hswc(:,:) = f_zero
       topflx = topfsw_type ( f_zero, f_zero, f_zero )
@@ -770,7 +772,8 @@
         hswb(:,:,:) = f_zero
       endif
 
-!> -# Change random number seed value for each radiation invocation (isubcsw =1 or 2).
+!> -# Change random number seed value for each radiation invocation
+!!    (isubcsw =1 or 2).
 
       if     ( isubcsw == 1 ) then     ! advance prescribed permutation seed
         do i = 1, npts
@@ -816,8 +819,11 @@
             pavel(k) = plyr(j1,kk)
             tavel(k) = tlyr(j1,kk)
             delp (k) = plvl(j1,kk+1) - plvl(j1,kk)
-!> -# Set absorber and gas column amount, convert from volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20)
-!!    - colamt(nlay,maxgas):column amounts of absorbing gases 1 to maxgas are for h2o,co2,o3,n2o,ch4,o2,co, respectively (\f$ mol/cm^2 \f$)
+!> -# Set absorber and gas column amount, convert from volume mixing
+!!    ratio to molec/cm2 based on coldry (scaled to 1.0e-20)
+!!    - colamt(nlay,maxgas):column amounts of absorbing gases 1 to 
+!!      maxgas are for h2o,co2,o3,n2o,ch4,o2,co, respectively 
+!!      (\f$ mol/cm^2 \f$)
 
 !test use
 !           h2ovmr(k)= max(f_zero,qlyr(j1,kk)*amdw)                     ! input mass mixing ratio
@@ -1015,7 +1021,8 @@
         if (zcf0 > oneminus) zcf0 = f_one
         zcf1 = f_one - zcf0
 
-!> -# For cloudy sky column, call cldprop() to compute the cloud optical properties for each cloudy layer
+!> -# For cloudy sky column, call cldprop() to compute the cloud 
+!!    optical properties for each cloudy layer.
 
         if (zcf1 > f_zero) then     ! cloudy sky column
 
@@ -1039,7 +1046,8 @@
           enddo
         endif   ! end if_zcf1_block
 
-!> -# Call setcoef() to compute various coefficients needed in radiative transfer calculations.
+!> -# Call setcoef() to compute various coefficients needed in 
+!!    radiative transfer calculations.
         call setcoef                                                    &
 !  ---  inputs:
      &     ( pavel,tavel,h2ovmr, nlay,nlp1,                             &
@@ -1048,7 +1056,8 @@
      &       selffac,selffrac,indself,forfac,forfrac,indfor             &
      &     )
 
-!> -# Call taumol() to calculate optical depths for gaseous absorption and rayleigh scattering
+!> -# Call taumol() to calculate optical depths for gaseous absorption 
+!!    and rayleigh scattering
         call taumol                                                     &
 !  ---  inputs:
      &     ( colamt,colmol,fac00,fac01,fac10,fac11,jp,jt,jt1,laytrop,   &
@@ -1058,8 +1067,10 @@
      &     )
 
 !> -# Call the 2-stream radiation transfer model:
-!!    - if physparam::isubcsw .le.0, using standard cloud scheme, call spcvrtc().
-!!    - if physparam::isubcsw .gt.0, using mcica cloud scheme, call spcvrtm().
+!!    - if physparam::isubcsw .le.0, using standard cloud scheme, 
+!!      call spcvrtc().
+!!    - if physparam::isubcsw .gt.0, using mcica cloud scheme, 
+!!      call spcvrtm().
 
         if ( isubcsw <= 0 ) then     ! use standard cloud scheme
 
@@ -1252,7 +1263,8 @@
 !> @}
 
 
-!> This subroutine initializes non-varying module variables, conversion factors, and look-up tables
+!> This subroutine initializes non-varying module variables, conversion
+!! factors, and look-up tables.
 !!\param me             print control for parallel process
 !-----------------------------------
       subroutine rswinit                                           &
@@ -1406,10 +1418,10 @@
       end subroutine rswinit
 !-----------------------------------
 
-!> This subroutine computes the cloud optical properties for each cloudy layer
-!! and g-point interval.
+!> This subroutine computes the cloud optical properties for each 
+!! cloudy layer and g-point interval.
 !!\param cfrac          layer cloud fraction
-!!\n    ---   for  physparam::iswcliq > 0 (prognostic cloud scheme)  - - -
+!!\n for  physparam::iswcliq > 0 (prognostic cloud scheme)  - - -
 !!\param cliqp          layer in-cloud liq water path (\f$g/m^2\f$)
 !!\param reliq          mean eff radius for liq cloud (micron)
 !!\param cicep          layer in-cloud ice water path (\f$g/m^2\f$)
@@ -1418,7 +1430,7 @@
 !!\param cdat2          effective radius for rain drop (micron)
 !!\param cdat3          layer snow flake water path(\f$g/m^2\f$)
 !!\param cdat4          mean eff radius for snow flake(micron)
-!!\n    ---  for physparam::iswcliq = 0  (diagnostic cloud scheme)  - - -
+!!\n for physparam::iswcliq = 0  (diagnostic cloud scheme)  - - -
 !!\param cliqp          not used
 !!\param cicep          not used
 !!\param reliq          not used
@@ -1429,10 +1441,13 @@
 !!\param cdat4          optional use
 !!\param cf1            effective total cloud cover at surface
 !!\param nlay           vertical layer number
-!!\param ipseed         permutation seed for generating random numbers (isubcsw>0)
+!!\param ipseed         permutation seed for generating random numbers 
+!!                      (isubcsw>0)
 !!\param taucw          cloud optical depth, w/o delta scaled
-!!\param ssacw          weighted cloud single scattering albedo (ssa = ssacw / taucw)
-!!\param asycw          weighted cloud asymmetry factor (asy = asycw / ssacw)
+!!\param ssacw          weighted cloud single scattering albedo 
+!!                      (ssa = ssacw / taucw)
+!!\param asycw          weighted cloud asymmetry factor 
+!!                      (asy = asycw / ssacw)
 !!\param cldfrc         cloud fraction of grid mean value
 !!\param cldfmc         cloud fraction for each sub-column
 !!\section General_cldprop General Algorithm
@@ -1750,7 +1765,8 @@
 
       endif  lab_if_iswcliq
 
-!> -# if physparam::isubcsw > 0, call mcica_subcol() to distribute cloud properties to each g-point.
+!> -# if physparam::isubcsw > 0, call mcica_subcol() to distribute 
+!!    cloud properties to each g-point.
 
       if ( isubcsw > 0 ) then      ! mcica sub-col clouds approx
 
@@ -1955,7 +1971,8 @@
       end subroutine mcica_subcol
 ! ----------------------------------
 
-!> This subroutine computes various coefficients needed in radiative transfer calculation.
+!> This subroutine computes various coefficients needed in radiative 
+!! transfer calculation.
 !!\param pavel           layer pressure (mb)
 !!\param tavel           layer temperature (k)
 !!\param h2ovmr          layer w.v. volumn mixing ratio (kg/kg)
@@ -1963,13 +1980,20 @@
 !!\param nlp1            total number of vertical levels
 !!\param laytrop         tropopause layer index (unitless)
 !!\param jp              indices of lower reference pressure
-!!\param jt,jt1          indices of lower reference temperatures at levels of jp and jp+1
-!!\param facij           factors mltiply the reference ks,i,j=0/1 for lower/higher of the 2 appropriate temperature and altitudes.
-!!\param selffac         scale factor for w. v. self-continuum equals (w.v. density)/(atmospheric density at 296k and 1013 mb)
-!!\param seffrac         factor for temperature interpolation of reference w.v. self-continuum data
+!!\param jt,jt1          indices of lower reference temperatures at 
+!!                       levels of jp and jp+1
+!!\param facij           factors mltiply the reference ks,i,j=0/1 for 
+!!                       lower/higher of the 2 appropriate temperature 
+!!                       and altitudes.
+!!\param selffac         scale factor for w. v. self-continuum equals 
+!!                       (w.v. density)/(atmospheric density at 296k 
+!!                       and 1013 mb)
+!!\param seffrac         factor for temperature interpolation of 
+!!                       reference w.v. self-continuum data
 !!\param indself         index of lower ref temp for selffac
 !!\param forfac          scale factor for w. v. foreign-continuum
-!!\param forfrac         factor for temperature interpolation of reference w.v. foreign-continuum data
+!!\param forfrac         factor for temperature interpolation of 
+!!                       reference w.v. foreign-continuum data
 !!\param indfor          index of lower ref temp for forfac
 ! ----------------------------------
       subroutine setcoef                                         &
@@ -2122,7 +2146,8 @@
       end subroutine setcoef
 ! ----------------------------------
 
-!> This subroutine computes the shortwave radiative fluxes using two-stream method.
+!> This subroutine computes the shortwave radiative fluxes using 
+!! two-stream method.
 !!\param ssolar           incoming solar flux at top
 !!\param cosz             cosine solar zenith angle
 !!\param sntz             secant solar zenith angle
@@ -2368,13 +2393,16 @@
         ztrab(1) = f_zero
         ztrad(1) = f_zero
 
-!> -# Compute clear-sky optical parameters, layer reflectance and transmittance.
+!> -# Compute clear-sky optical parameters, layer reflectance and 
+!!    transmittance.
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for clear-sky condition
 !!    - General two-stream expressions for physparam::iswmode
-!!    - Compute homogeneous reflectance and transmittance for both conservative and non-conservative scattering
+!!    - Compute homogeneous reflectance and transmittance for both 
+!!      conservative and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
-!!    - Call swflux() to compute the upward and downward radiation fluxes
+!!    - Call swflux() to compute the upward and downward radiation 
+!!      fluxes
 
         do k = nlay, 1, -1
           kp = k + 1
@@ -2574,11 +2602,13 @@
 !       sfbm0(ibd) = sfbm0(ibd) + zsolar*ztdbt0
 !       sfdf0(ibd) = sfdf0(ibd) + zsolar*(zfd(1) - ztdbt0)
 
-!> -# Compute total sky optical parameters, layer reflectance and transmittance.
+!> -# Compute total sky optical parameters, layer reflectance and 
+!!    transmittance.
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for total-sky condition
 !!    - General two-stream expressions for physparam::iswmode
-!!    - Compute homogeneous reflectance and transmittance for conservative scattering and non-conservative scattering
+!!    - Compute homogeneous reflectance and transmittance for 
+!!      conservative scattering and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
 
@@ -2876,9 +2906,10 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine computes the shortwave radiative fluxes using two-stream
-!! method of h. barder and mcica,the monte-carlo independent column approximation,
-!! for the representation of sub-grid cloud variability (i.e. cloud overlap).
+!> This subroutine computes the shortwave radiative fluxes using 
+!! two-stream method of h. barder and mcica,the monte-carlo independent
+!! column approximation, for the representation of sub-grid cloud 
+!! variability (i.e. cloud overlap).
 !!\param ssolar        incoming solar flux at top
 !!\param cosz          cosine solar zenith angle
 !!\param sntz          secant solar zenith angle
@@ -3123,11 +3154,13 @@
         ztrab(1) = f_zero
         ztrad(1) = f_zero
 
-!> -# Compute clear-sky optical parameters, layer reflectance and transmittance.
+!> -# Compute clear-sky optical parameters, layer reflectance and 
+!!    transmittance.
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for clear-sky condition
 !!    - General two-stream expressions for physparam::iswmode
-!!    - Compute homogeneous reflectance and transmittance for both conservative and non-conservative scattering
+!!    - Compute homogeneous reflectance and transmittance for both 
+!!      conservative and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
 
@@ -3329,11 +3362,13 @@
 !       sfbm0(ibd) = sfbm0(ibd) + zsolar*ztdbt0
 !       sfdf0(ibd) = sfdf0(ibd) + zsolar*(zfd(1) - ztdbt0)
 
-!> -# Compute total sky optical parameters, layer reflectance and transmittance.
+!> -# Compute total sky optical parameters, layer reflectance and 
+!!    transmittance.
 !!    - Set up toa direct beam and surface values (beam and diff)
 !!    - Delta scaling for total-sky condition
 !!    - General two-stream expressions for physparam::iswmode
-!!    - Compute homogeneous reflectance and transmittance for conservative scattering and non-conservative scattering
+!!    - Compute homogeneous reflectance and transmittance for 
+!!      conservative scattering and non-conservative scattering
 !!    - Pre-delta-scaling clear and cloudy direct beam transmittance
 !!    - Call swflux() to compute the upward and downward radiation fluxes
 
@@ -3712,24 +3747,39 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine calculates optical depths for gaseous absorption and rayleigh scattering
+!> This subroutine calculates optical depths for gaseous absorption and
+!! rayleigh scattering
 !!\n subroutine called taumol## (## = 16-29)
-!!\param colamt           column amounts of absorbing gases the index are for h2o, co2, o3, n2o, ch4, and o2,respectively \f$(mol/cm^2)\f$
+!!\param colamt           column amounts of absorbing gases the index
+!!                        are for h2o, co2, o3, n2o, ch4, and o2, 
+!!                        respectively \f$(mol/cm^2)\f$
 !!\param colmol           total column amount (dry air+water vapor)
-!!\param facij            for each layer, these are factors that are needed to compute the interpolation factors
-!!                                  that multiply the appropriate reference k-values.  a value of 0/1 for i,j indicates
-!!                                  that the corresponding factor multiplies reference k-value for the lower/higher of the
-!!                                  two appropriate temperatures, and altitudes, respectively.
-!!\param jp               the index of the lower (in altitude) of the two appropriate ref pressure levels needed for interpolation.
-!!\param jt, jt1          the indices of the lower of the two approp ref temperatures needed for interpolation (for
-!!                                 pressure levels jp and jp+1, respectively)
+!!\param facij            for each layer, these are factors that are 
+!!                        needed to compute the interpolation factors
+!!                        that multiply the appropriate reference 
+!!                        k-values.  a value of 0/1 for i,j indicates
+!!                        that the corresponding factor multiplies 
+!!                        reference k-value for the lower/higher of the
+!!                        two appropriate temperatures, and altitudes, 
+!!                        respectively.
+!!\param jp               the index of the lower (in altitude) of the 
+!!                        two appropriate ref pressure levels needed 
+!!                        for interpolation.
+!!\param jt, jt1          the indices of the lower of the two approp 
+!!                        ref temperatures needed for interpolation 
+!!                        (for pressure levels jp and jp+1, respectively)
 !!\param laytrop          tropopause layer index
 !!\param forfac           scale factor needed to foreign-continuum.
 !!\param forfrac          factor needed for temperature interpolation
-!!\param indfor           index of the lower of the two appropriate reference temperatures needed for foreign-continuum interpolation
+!!\param indfor           index of the lower of the two appropriate 
+!!                        reference temperatures needed for 
+!!                        foreign-continuum interpolation
 !!\param selffac          scale factor needed to h2o self-continuum.
-!!\param selffrac         factor needed for temperature interpolation of reference h2o self-continuum data
-!!\param indself          index of the lower of the two appropriate reference temperatures needed for the self-continuum interpolation
+!!\param selffrac         factor needed for temperature interpolation 
+!!                        of reference h2o self-continuum data
+!!\param indself          index of the lower of the two appropriate 
+!!                        reference temperatures needed for the 
+!!                        self-continuum interpolation
 !!\param nlay             number of vertical layers
 !!\param sfluxzen         spectral distribution of incoming solar flux
 !!\param taug             spectral optical depth for gases
@@ -3988,7 +4038,8 @@
       contains
 ! =================
 
-!> The subroutine computes the optical depth in band 16:  2600-3250 cm-1 (low - h2o,ch4; high - ch4)
+!> The subroutine computes the optical depth in band 16:  2600-3250 
+!! cm-1 (low - h2o,ch4; high - ch4)
 !-----------------------------------
       subroutine taumol16
 !...................................
@@ -4084,7 +4135,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 17:  3250-4000 cm-1 (low - h2o,co2; high - h2o,co2)
+!> The subroutine computes the optical depth in band 17:  3250-4000 
+!! cm-1 (low - h2o,co2; high - h2o,co2)
 !-----------------------------------
       subroutine taumol17
 !...................................
@@ -4206,7 +4258,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 18:  4000-4650 cm-1 (low - h2o,ch4; high - ch4)
+!> The subroutine computes the optical depth in band 18:  4000-4650 
+!! cm-1 (low - h2o,ch4; high - ch4)
 !-----------------------------------
       subroutine taumol18
 !...................................
@@ -4301,7 +4354,8 @@
       end subroutine taumol18
 !-----------------------------------
 
-!> The subroutine computes the optical depth in band 19:  4650-5150 cm-1 (low - h2o,co2; high - co2)
+!> The subroutine computes the optical depth in band 19:  4650-5150 
+!! cm-1 (low - h2o,co2; high - co2)
 !-----------------------------------
       subroutine taumol19
 !...................................
@@ -4396,7 +4450,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 20:  5150-6150 cm-1 (low - h2o; high - h2o)
+!> The subroutine computes the optical depth in band 20:  5150-6150 
+!! cm-1 (low - h2o; high - h2o)
 !-----------------------------------
       subroutine taumol20
 !...................................
@@ -4477,7 +4532,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 21:  6150-7700 cm-1 (low - h2o,co2; high - h2o,co2)
+!> The subroutine computes the optical depth in band 21:  6150-7700 
+!! cm-1 (low - h2o,co2; high - h2o,co2)
 !-----------------------------------
       subroutine taumol21
 !...................................
@@ -4598,7 +4654,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 22:  7700-8050 cm-1 (low - h2o,o2; high - o2)
+!> The subroutine computes the optical depth in band 22:  7700-8050 
+!! cm-1 (low - h2o,o2; high - o2)
 !-----------------------------------
       subroutine taumol22
 !...................................
@@ -4706,7 +4763,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 23:  8050-12850 cm-1 (low - h2o; high - nothing)
+!> The subroutine computes the optical depth in band 23:  8050-12850 
+!! cm-1 (low - h2o; high - nothing)
 !-----------------------------------
       subroutine taumol23
 !...................................
@@ -4768,7 +4826,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 24:  12850-16000 cm-1 (low - h2o,o2; high - o2)
+!> The subroutine computes the optical depth in band 24:  12850-16000 
+!! cm-1 (low - h2o,o2; high - o2)
 !-----------------------------------
       subroutine taumol24
 !...................................
@@ -4863,7 +4922,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 25:  16000-22650 cm-1 (low - h2o; high - nothing)
+!> The subroutine computes the optical depth in band 25:  16000-22650 
+!! cm-1 (low - h2o; high - nothing)
 !-----------------------------------
       subroutine taumol25
 !...................................
@@ -4918,7 +4978,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 26:  22650-29000 cm-1 (low - nothing; high - nothing)
+!> The subroutine computes the optical depth in band 26:  22650-29000 
+!! cm-1 (low - nothing; high - nothing)
 !-----------------------------------
       subroutine taumol26
 !...................................
@@ -4953,7 +5014,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 27:  29000-38000 cm-1 (low - o3; high - o3)
+!> The subroutine computes the optical depth in band 27:  29000-38000 
+!! cm-1 (low - o3; high - o3)
 !-----------------------------------
       subroutine taumol27
 !...................................
@@ -5014,7 +5076,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 28:  38000-50000 cm-1 (low - o3,o2; high - o3,o2)
+!> The subroutine computes the optical depth in band 28:  38000-50000 
+!! cm-1 (low - o3,o2; high - o3,o2)
 !-----------------------------------
       subroutine taumol28
 !...................................
@@ -5122,7 +5185,8 @@
 !-----------------------------------
 
 
-!> The subroutine computes the optical depth in band 29:  820-2600 cm-1 (low - h2o; high - co2)
+!> The subroutine computes the optical depth in band 29:  820-2600 
+!! cm-1 (low - h2o; high - co2)
 !-----------------------------------
       subroutine taumol29
 !...................................

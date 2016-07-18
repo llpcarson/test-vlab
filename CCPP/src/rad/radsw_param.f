@@ -105,7 +105,8 @@
         real (kind=kind_phys) :: dnfx0 
       end type
 !
-!> Define type construct for optional component downward fluxes at surface
+!> Define type construct for optional component downward fluxes at 
+!! surface
       type :: cmpfsw_type
 !> total sky downward uv-b flux at sfc
         real (kind=kind_phys) :: uvbfc   

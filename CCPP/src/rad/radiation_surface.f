@@ -1,6 +1,6 @@
 !>  \file radiation_surface.f
-!!  This file contains routines that set up surface albedo for sw radiation and surface
-!!    emissivity for lw radiation.
+!!  This file contains routines that set up surface albedo for SW 
+!!  radiation and surface emissivity for LW radiation.
 
 !  ==========================================================  !!!!!
 !            'module_radiation_surface' description            !!!!!
@@ -124,8 +124,8 @@
 ! =================
 
 
-!> This subroutine is the initialization program for surface radiation related quantities
-!! (albedo, emissivity, etc.)
+!> This subroutine is the initialization program for surface radiation
+!! related quantities (albedo, emissivity, etc.)
 !!\param me       print control flag
 !>\section gen_sfc_init General Algorithm
 !! @{
@@ -269,8 +269,8 @@
 !! @}
 
 
-!> This subroutine computes four components of surface albedos (i.e., vis-nir,
-!! direct-diffused) according to control flag ialbflg.
+!> This subroutine computes four components of surface albedos (i.e.,
+!! vis-nir, direct-diffused) according to control flag ialbflg.
 !! \n 1) climatological surface albedo scheme (Briegleb 1992 \cite briegleb_1992)
 !! \n 2) MODIS retrieval based scheme from Boston univ.
 !!\param slmsk      (IMAX), sea(0),land(1),ice(2) mask on fcst model grid
@@ -403,7 +403,8 @@
 
         do i = 1, IMAX
 
-!>    - Modified snow albedo scheme - units convert to m (originally snowf in mm; zorlf in cm)
+!>    - Modified snow albedo scheme - units convert to m (originally
+!!      snowf in mm; zorlf in cm)
 
          asnow = 0.02*snowf(i)
          argh  = min(0.50, max(.025, 0.01*zorlf(i)))
@@ -505,7 +506,8 @@
 
         do i = 1, IMAX
 
-!>    - Calculate snow cover input directly for land model, no conversion needed.
+!>    - Calculate snow cover input directly for land model, no 
+!!      conversion needed.
 
          fsno0 = sncovr(i)
 
@@ -539,7 +541,8 @@
             asend = 0.65 - 3.6875*a1
          endif
 
-!>    - Calculate diffused snow albedo, land area use input max snow albedo.
+!>    - Calculate diffused snow albedo, land area use input max snow 
+!!      albedo.
 
          if (nint(slmsk(i)) == 2) then
             ffw   = f_one - fice(i)
@@ -576,7 +579,8 @@
            asnnb = snoalb(i)
          endif
 
-!>    - Calculate direct sea surface albedo, use fanglin's zenith angle treatment.
+!>    - Calculate direct sea surface albedo, use fanglin's zenith angle
+!!      treatment.
 
          if (coszf(i) > 0.0001) then
 
@@ -617,8 +621,10 @@
 !! @}
 
 !> This subroutine computes surface emissivity for LW radiation.
-!!\param xlon      (IMAX), longitude in radiance, ok for both 0->2pi or -pi -> +pi ranges
-!!\param xlat      (IMAX), latitude  in radiance, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param xlon      (IMAX), longitude in radiance, ok for both 0->2pi
+!!                  or -pi -> +pi ranges
+!!\param xlat      (IMAX), latitude  in radiance, default to pi/2 ->
+!!                  -pi/2 range, otherwise see in-line comment
 !!\param slmsk     (IMAX), sea(0),land(1),ice(2) mask on fcst model grid
 !!\param snowf     (IMAX), snow depth water equivalent in mm
 !!\param sncovr    (IMAX), snow cover over land 

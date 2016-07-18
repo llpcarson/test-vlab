@@ -3,7 +3,8 @@
 !!    - module_radlw_avplank     (plank flux data)
 !!    - module_radlw_ref         (reference temperature and pressure)
 !!    - module_radlw_cldprlw     (cloud property coefficients)
-!!    - module_radlw_kgbnn       (absorption coeffients for 16 bands, where nn = 01-16)
+!!    - module_radlw_kgbnn       (absorption coeffients for 16 bands,
+!!                                where nn = 01-16)
 
 !  ==============================================================  !!!!!
 !             lw-rrtm3 radiation package description               !!!!!
@@ -959,8 +960,9 @@
 !     real (kind=kind_phys), parameter :: absliqb = 0.0903614
 
 ! --- for iflagliq = 1
-!> Hu and Stamnes method \cite hu_and_stamnes_1993 . the liquid water absorption coefficients are listed for a
-!! range of effective radii from 2.5 to 59.5 microns in increments of 1.0 micron.
+!> Hu and Stamnes method \cite hu_and_stamnes_1993 . the liquid water
+!! absorption coefficients are listed for a range of effective radii
+!! from 2.5 to 59.5 microns in increments of 1.0 micron.
       real (kind=kind_phys), dimension(58,NBANDS) :: absliq1
 
 ! band  1
@@ -1606,7 +1608,8 @@
 !                                                                     !
 ! *********    *********    end description    *********    ********* !
 
-!> This module sets up absorption coefficients for band 01: 10-250 cm-1 (low - h2o; high - h2o)
+!> This module sets up absorption coefficients for band 01: 10-250
+!! cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb01          !
 !........................................!
@@ -2419,7 +2422,8 @@
       end module module_radlw_kgb01      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 02: 250-500 cm-1 (low - h2o; high - h2o)
+!> This module sets up absorption coefficients for band 02: 250-500
+!! cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb02          !
 !........................................!
@@ -3276,7 +3280,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 03: 500-630 cm-1 (low - h2o, co2; high - h2o, co2)
+!> This module sets up absorption coefficients for band 03: 500-630
+!! cm-1 (low - h2o, co2; high - h2o, co2)
 !========================================!
       module module_radlw_kgb03          !
 !........................................!
@@ -10150,7 +10155,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 04: 630-700 cm-1 (low - h2o, co2; high - co2, o3)
+!> This module sets up absorption coefficients for band 04: 630-700
+!! cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb04          !
 !........................................!
@@ -15350,7 +15356,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 05: 700-820 cm-1 (low - h2o, co2; high - co2, o3)
+!> This module sets up absorption coefficients for band 05: 700-820
+!! cm-1 (low - h2o, co2; high - co2, o3)
 !========================================!
       module module_radlw_kgb05          !
 !........................................!
@@ -21847,7 +21854,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 06: 820-980 cm-1 (low - h2o; high - /)
+!> This module sets up absorption coefficients for band 06: 820-980
+!! cm-1 (low - h2o; high - /)
 !========================================!
       module module_radlw_kgb06          !
 !........................................!
@@ -22107,7 +22115,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 07: 980-1080 cm-1 (low - h2o, o3; high - o3)
+!> This module sets up absorption coefficients for band 07: 980-1080
+!! cm-1 (low - h2o, o3; high - o3)
 !========================================!
       module module_radlw_kgb07          !
 !........................................!
@@ -24754,7 +24763,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 08: 1080-1180 cm-1 (low - h2o; high - o3)
+!> This module sets up absorption coefficients for band 08: 1080-1180
+!! cm-1 (low - h2o; high - o3)
 !========================================!
       module module_radlw_kgb08          !
 !........................................!
@@ -25550,7 +25560,8 @@
       end module module_radlw_kgb08      !
 !========================================!
 
-!> This module sets up absorption coefficients for band 09: 1180-1390 cm-1 (low - h2o, ch4; high - ch4)
+!> This module sets up absorption coefficients for band 09: 1180-1390
+!! cm-1 (low - h2o, ch4; high - ch4)
 !========================================!
       module module_radlw_kgb09          !
 !........................................!
@@ -28228,7 +28239,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 10: 1390-1480 cm-1 (low - h2o; high - h2o)
+!> This module sets up absorption coefficients for band 10: 1390-1480
+!! cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb10          !
 !........................................!
@@ -28702,7 +28714,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 11: 1480-1800 cm-1 (low - h2o; high - h2o)
+!> This module sets up absorption coefficients for band 11: 1480-1800
+!! cm-1 (low - h2o; high - h2o)
 !========================================!
       module module_radlw_kgb11          !
 !........................................!
@@ -29401,7 +29414,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 12: 1800-2080 cm-1 (low - h2o, co2; high - /)
+!> This module sets up absorption coefficients for band 12: 1800-2080
+!! cm-1 (low - h2o, co2; high - /)
 !========================================!
       module module_radlw_kgb12          !
 !........................................!
@@ -30472,7 +30486,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 13: 2080-2250 cm-1 (low - h2o, n2o; high - /)
+!> This module sets up absorption coefficients for band 13: 2080-2250
+!! cm-1 (low - h2o, n2o; high - /)
 !========================================!
       module module_radlw_kgb13          !
 !........................................!
@@ -31378,7 +31393,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 14: 2250-2380 cm-1 (low - co2; high - co2)
+!> This module sets up absorption coefficients for band 14: 2250-2380
+!! cm-1 (low - co2; high - co2)
 !========================================!
       module module_radlw_kgb14          !
 !........................................!
@@ -31602,7 +31618,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 15: 2380-2600 cm-1 (low - n2o, co2; high - /)
+!> This module sets up absorption coefficients for band 15: 2380-2600
+!! cm-1 (low - n2o, co2; high - /)
 !========================================!
       module module_radlw_kgb15          !
 !........................................!
@@ -32007,7 +32024,8 @@
 !========================================!
 
 
-!> This module sets up absorption coefficients for band 16: 2600-3000 cm-1 (low - h2o, ch4; high - /)
+!> This module sets up absorption coefficients for band 16: 2600-3000
+!! cm-1 (low - h2o, ch4; high - /)
 !========================================!
       module module_radlw_kgb16          !
 !........................................!

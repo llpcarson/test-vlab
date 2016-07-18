@@ -249,14 +249,14 @@
 !!  - module_radlw_cldprlw: cloud property coefficients
 !!  - module_radlw_kgbnn: absorption coeffients for 16 bands, where nn = 01-16
 !! - radlw_main.f, which contains:
-!!  - module_radlw_main, which is the main LW radiation transfer program and contains two 
-!! externally callable subroutines:
+!!  - module_radlw_main, which is the main LW radiation transfer
+!!    program and contains two externally callable subroutines:
 !!   - lwrad(): the main LW radiation routine
 !!   - rlwinit(): the initialization routine
 !!
-!! All the LW radiation subprograms become contained subprograms in module
-!! 'module_radlw_main' and many of them are not directly accessable from places
-!! outside the module.
+!! All the LW radiation subprograms become contained subprograms in
+!! module 'module_radlw_main' and many of them are not directly
+!! accessable from places outside the module.
 !!
 !!\author   Eli J. Mlawer, emlawer@aer.com 
 !!\author   Jennifer S. Delamere, jdelamer@aer.com                    
@@ -394,60 +394,60 @@
 !!\param plvl           model interface pressure in mb
 !!\param tlyr           model layer mean temperature in K
 !!\param tlvl           model interface temperature in K
-!!\param qlyr           layer specific humidity in gm/gm   *see inside
-!!\param olyr           layer ozone concentration in gm/gm   *see inside
-!!\param gasvmr         atmospheric gases amount:(check module_radiation_gases for definition)
-!!\n                        (:,:,1)  - co2 volume mixing ratio
-!!\n                        (:,:,2)  - n2o volume mixing ratio
-!!\n                        (:,:,3)  - ch4 volume mixing ratio
-!!\n                        (:,:,4)  - o2  volume mixing ratio
-!!\n                        (:,:,5)  - co  volume mixing ratio
-!!\n                        (:,:,6)  - cfc11 volume mixing ratio
-!!\n                        (:,:,7)  - cfc12 volume mixing ratio
-!!\n                        (:,:,8)  - cfc22 volume mixing ratio
-!!\n                        (:,:,9)  - ccl4  volume mixing ratio
-!!\param clouds         layer cloud profile(check module_radiation_clouds for definition)
-!!\n                ---  for  ilwcliq > 0  ---
-!!\n                        (:,:,1)  - layer total cloud fraction
-!!\n                        (:,:,2)  - layer in-cloud liq water path   (\f$ g/m^2 \f$)
-!!\n                        (:,:,3)  - mean eff radius for liq cloud   (micron)
-!!\n                        (:,:,4)  - layer in-cloud ice water path   (\f$ g/m^2 \f$)
-!!\n                        (:,:,5)  - mean eff radius for ice cloud   (micron)
-!!\n                        (:,:,6)  - layer rain drop water path      (\f$ g/m^2 \f$)
-!!\n                        (:,:,7)  - mean eff radius for rain drop   (micron)
-!!\n                        (:,:,8)  - layer snow flake water path     (\f$ g/m^2 \f$)
-!!\n                        (:,:,9)  - mean eff radius for snow flake  (micron)
-!!\n                ---  for  ilwcliq = 0  ---
-!!\n                        (:,:,1)  - layer total cloud fraction
-!!\n                        (:,:,2)  - layer cloud optical depth
-!!\n                        (:,:,3)  - layer cloud single scattering albedo
-!!\n                        (:,:,4)  - layer cloud asymmetry factor
+!!\param qlyr           layer specific humidity in gm/gm  
+!!\param olyr           layer ozone concentration in gm/gm 
+!!\param gasvmr         atmospheric gases amount:
+!!\n                    (:,:,1)  - co2 volume mixing ratio
+!!\n                    (:,:,2)  - n2o volume mixing ratio
+!!\n                    (:,:,3)  - ch4 volume mixing ratio
+!!\n                    (:,:,4)  - o2  volume mixing ratio
+!!\n                    (:,:,5)  - co  volume mixing ratio
+!!\n                    (:,:,6)  - cfc11 volume mixing ratio
+!!\n                    (:,:,7)  - cfc12 volume mixing ratio
+!!\n                    (:,:,8)  - cfc22 volume mixing ratio
+!!\n                    (:,:,9)  - ccl4  volume mixing ratio
+!!\param clouds         layer cloud profile
+!!\n   for  ilwcliq > 0  ---
+!!\n                    (:,:,1)  - layer total cloud fraction
+!!\n                    (:,:,2)  - layer in-cloud liq water path (\f$ g/m^2 \f$)
+!!\n                    (:,:,3)  - mean eff radius for liq cloud (micron)
+!!\n                    (:,:,4)  - layer in-cloud ice water path (\f$ g/m^2 \f$)
+!!\n                    (:,:,5)  - mean eff radius for ice cloud (micron)
+!!\n                    (:,:,6)  - layer rain drop water path    (\f$ g/m^2 \f$)
+!!\n                    (:,:,7)  - mean eff radius for rain drop (micron)
+!!\n                    (:,:,8)  - layer snow flake water path   (\f$ g/m^2 \f$)
+!!\n                    (:,:,9)  - mean eff radius for snow flake(micron)
+!!\n   for  ilwcliq = 0  ---
+!!\n                    (:,:,1)  - layer total cloud fraction
+!!\n                    (:,:,2)  - layer cloud optical depth
+!!\n                    (:,:,3)  - layer cloud single scattering albedo
+!!\n                    (:,:,4)  - layer cloud asymmetry factor
 !!\param icseed         auxiliary special cloud related array.
-!!\param aerosols       aerosol optical properties (check module_radiation_aerosols for definition)
-!!\n                        (:,:,:,1) - optical depth
-!!\n                        (:,:,:,2) - single scattering albedo
-!!\n                        (:,:,:,3) - asymmetry parameter
+!!\param aerosols       aerosol optical properties 
+!!\n                    (:,:,:,1) - optical depth
+!!\n                    (:,:,:,2) - single scattering albedo
+!!\n                    (:,:,:,3) - asymmetry parameter
 !!\param sfemis         surface emissivity
 !!\param sfgtmp         surface ground temperature in K
 !!\param npts           total number of horizontal points
 !!\param nlay, nlp1     total number of vertical layers, levels
 !!\param lprnt          cntl flag for diagnostic print out
 !!\param hlwc           total sky heating rate in k/day or k/sec
-!!\param topflx         radiation fluxes at top, components (check module_radlw_parameters for definition)
-!!\n                          upfxc - total sky upward flux at top (\f$ w/m^2 \f$)
-!!\n                          upfx0 - clear sky upward flux at top (\f$ w/m^2 \f$)
-!!\param sfcflx         radiation fluxes at sfc, components (check module_radlw_parameters for definition)
-!!\n                          upfxc - total sky upward flux at sfc (\f$ w/m^2 \f$)
-!!\n                          dnfxc - total sky downward flux at sfc (\f$ w/m^2 \f$)
-!!\n                          upfx0 - clear sky upward flux at sfc (\f$ w/m^2 \f$)
-!!\n                          dnfx0 - clear sky downward flux at sfc (\f$ w/m^2 \f$)
+!!\param topflx         radiation fluxes at top, components
+!!\n                    upfxc - total sky upward flux at top (\f$ w/m^2 \f$)
+!!\n                    upfx0 - clear sky upward flux at top (\f$ w/m^2 \f$)
+!!\param sfcflx         radiation fluxes at sfc, components
+!!\n                    upfxc - total sky upward flux at sfc (\f$ w/m^2 \f$)
+!!\n                    dnfxc - total sky downward flux at sfc (\f$ w/m^2 \f$)
+!!\n                    upfx0 - clear sky upward flux at sfc (\f$ w/m^2 \f$)
+!!\n                    dnfx0 - clear sky downward flux at sfc (\f$ w/m^2 \f$)
 !!\param hlwb           spectral band total sky heating rates
 !!\param hlw0           clear sky heating rates (k/sec or k/day)
-!!\param flxprf         level radiation fluxes (\f$ w/m^2 \f$), components (check module_radlw_parameters for definition)
-!!\n                          dnfxc - total sky downward flux
-!!\n                          upfxc - total sky upward flux
-!!\n                          dnfx0 - clear sky downward flux
-!!\n                          upfx0 - clear sky upward flux
+!!\param flxprf         level radiation fluxes (\f$ w/m^2 \f$), components
+!!\n                    dnfxc - total sky downward flux
+!!\n                    upfxc - total sky upward flux
+!!\n                    dnfx0 - clear sky downward flux
+!!\n                    upfx0 - clear sky upward flux
 !> \section gen_lwrad General Algorithm
 !> @{
 ! --------------------------------
@@ -719,7 +719,8 @@
 
       colamt(:,:) = f_zero
 
-!> -# Change random number seed value for each radiation invocation (isubclw =1 or 2).
+!> -# Change random number seed value for each radiation invocation
+!!    (isubclw =1 or 2).
 
       if     ( isubclw == 1 ) then     ! advance prescribed permutation seed
         do i = 1, npts
@@ -796,8 +797,9 @@
             colamt(k,3) = max(temcol(k), coldry(k)*o3vmr(k))           ! o3
           enddo
 
-!> -# Set up column amount for rare gases n2o,ch4,o2,co,ccl4,cf11,cf12,cf22, convert from
-!! volume mixing ratio to molec/cm2 based on coldry (scaled to 1.0e-20).
+!> -# Set up column amount for rare gases n2o,ch4,o2,co,ccl4,cf11,cf12,
+!!    cf22, convert from volume mixing ratio to molec/cm2 based on
+!!    coldry (scaled to 1.0e-20).
 
           if (ilwrgas > 0) then
             do k = 1, nlay
@@ -1017,7 +1019,8 @@
 !      print *,' o3vmr ',o3vmr
 !     endif
 
-!> -# For cloudy atmosphere, call cldprop() to set cloud optical properties.
+!> -# For cloudy atmosphere, call cldprop() to set cloud optical
+!!    properties.
 
         lcf1 = .false.
         lab_do_k0 : do k = 1, nlay
@@ -1052,8 +1055,8 @@
 !      print *,' cldfrac',cldfrc
 !     endif
 
-!> -# Calling setcoef() to compute various coefficients needed in radiative
-!! transfer calculations.
+!> -# Calling setcoef() to compute various coefficients needed in
+!!    radiative transfer calculations.
         call setcoef                                                    &
 !  ---  inputs:
      &     ( pavel,tavel,tz,stemp,h2ovmr,colamt,coldry,colbrd,          &
@@ -1114,12 +1117,15 @@
 !     enddo
 !     endif
 
-!> -# Call the radiative transfer routine based on cloud scheme selection. 
-!! compute the upward/downward radiative fluxes, and heating rates for both 
-!! clear or cloudy atmosphere.
-!!\n  - call rtrn(): clouds are assumed as randomly overlaping in a vertical column
-!!\n  - call rtrnmr(): clouds are assumed as in maximum-randomly overlaping in a vertical column;
-!!\n  - call rtrnmc(): clouds are treated with the mcica stochastic approach.
+!> -# Call the radiative transfer routine based on cloud scheme
+!!    selection. Compute the upward/downward radiative fluxes, and
+!!    heating rates for both clear or cloudy atmosphere.
+!!\n  - call rtrn(): clouds are assumed as randomly overlaping in a
+!!                   vertical column
+!!\n  - call rtrnmr(): clouds are assumed as in maximum-randomly
+!!                     overlaping in a vertical column;
+!!\n  - call rtrnmc(): clouds are treated with the mcica stochastic
+!!                     approach.
 
         if (isubclw <= 0) then
 
@@ -1448,8 +1454,8 @@
 !-----------------------------------
 
 
-!> This subroutine computes the cloud optical depth(s) for each cloudy layer
-!! and g-point interval.
+!> This subroutine computes the cloud optical depth(s) for each cloudy
+!! layer and g-point interval.
 !!\param cfrac           layer cloud fraction
 !!\n     ---  for  ilwcliq > 0 (prognostic cloud scheme)  - - -
 !!\param cliqp           layer in-cloud liq water path (\f$g/m^2\f$)
@@ -1740,7 +1746,8 @@
 
       endif  lab_if_ilwcliq
 
-!> -# if physparam::isubclw > 0, call mcica_subcol() to distribute cloud properties to each g-point.
+!> -# if physparam::isubclw > 0, call mcica_subcol() to distribute
+!!    cloud properties to each g-point.
 
       if ( isubclw > 0 ) then      ! mcica sub-col clouds approx
         do k = 1, nlay
@@ -1940,14 +1947,16 @@
       end subroutine mcica_subcol
 ! ----------------------------------
 
-!> This subroutine computes various coefficients needed in radiative transfer calculations.
+!> This subroutine computes various coefficients needed in radiative
+!! transfer calculations.
 !!\param pavel           layer pressure (mb)
 !!\param tavel           layer temperature (K)
 !!\param tz              level(interface) temperatures (K)
 !!\param stemp           surface ground temperature (K)
 !!\param h2ovmr          layer w.v. volumn mixing ratio (kg/kg)
 !!\param colamt           column amounts of absorbing gases.
-!! 2nd indices range: 1-maxgas, for watervapor,carbon dioxide, ozone, nitrous oxide, methane,oxigen, carbon monoxide,etc. \f$(mol/cm^2)\f$
+!! 2nd indices range: 1-maxgas, for watervapor,carbon dioxide, ozone,
+!! nitrous oxide, methane,oxigen, carbon monoxide,etc. \f$(mol/cm^2)\f$
 !!\param coldry          dry air column amount
 !!\param colbrd          column amount of broadening gases
 !!\param nlay            total number of vertical layers
@@ -1958,14 +1967,21 @@
 !!\param jp              indices of lower reference pressure
 !!\param jt, jt1         indices of lower reference temperatures
 !!\param rfrate          ref ratios of binary species param
-!!\n                        (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
-!!\n                        (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
-!!\param facij           factors multiply the reference ks, i,j=0/1 for lower/higher of the 2 appropriate temperatures and altitudes.
-!!\param selffac         scale factor for w. v. self-continuum equals (w. v. density)/(atmospheric density at 296k and 1013 mb)
-!!\param selffrac        factor for temperature interpolation of reference w. v. self-continuum data
+!!\n                     (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,
+!!                                4-h2o/ch4,5-n2o/co2,6-o3/co2
+!!\n                     (:,:,n)n=1,2: the rates of ref press at 
+!!                                the 2 sides of the layer
+!!\param facij           factors multiply the reference ks, i,j=0/1 for
+!!                       lower/higher of the 2 appropriate temperatures
+!!                       and altitudes.
+!!\param selffac         scale factor for w. v. self-continuum equals
+!!                       (w. v. density)/(atmospheric density at 296k and 1013 mb)
+!!\param selffrac        factor for temperature interpolation of 
+!!                       reference w. v. self-continuum data
 !!\param indself         index of lower ref temp for selffac
 !!\param forfac          scale factor for w. v. foreign-continuum
-!!\param forfrac         factor for temperature interpolation of reference w.v. foreign-continuum data
+!!\param forfrac         factor for temperature interpolation of 
+!!                       reference w.v. foreign-continuum data
 !!\param indfor          index of lower ref temp for forfac
 !!\param minorfrac       factor for minor gases
 !!\param scaleminor,scaleminorn2         scale factors for minor gases
@@ -2230,16 +2246,21 @@
 ! ----------------------------------
 
 
-!> This subroutine computes the upward/downward radiative fluxes, and heating rates for
-!! both clear or cloudy atmosphere. Clouds assumed as randomly overlaping in a vertical column.
-!!\brief Original Code Description: this program calculates the upward fluxes, downward fluxes, and
-!! heating rates for an arbitrary clear or cloudy atmosphere. The input to this program is the
-!! atmospheric profile, all Planck function information, and the cloud fraction by layer. A variable
-!! diffusivity angle (secdif) is used for the angle integration. Bands 2-3 and 5-9 use a value for
-!! secdif that varies from 1.50 to 1.80 as a function of the column water vapor, and other bands use
-!! a value of 1.66. The gaussian weight appropriate to this angle (wtdiff =0.5) is applied here. Note
-!! that use of the emissivity angle for the flux integration can cause errors of 1 to 4 \f$W/m^2\f$ within
-!! cloudy layers. Clouds are treated with a random cloud overlap method.
+!> This subroutine computes the upward/downward radiative fluxes, and
+!! heating rates for both clear or cloudy atmosphere. Clouds assumed as
+!! randomly overlaping in a vertical column.
+!!\brief Original Code Description: this program calculates the upward
+!! fluxes, downward fluxes, and heating rates for an arbitrary clear or
+!! cloudy atmosphere. The input to this program is the atmospheric 
+!! profile, all Planck function information, and the cloud fraction by
+!! layer. A variable diffusivity angle (secdif) is used for the angle
+!! integration. Bands 2-3 and 5-9 use a value for secdif that varies
+!! from 1.50 to 1.80 as a function of the column water vapor, and other
+!! bands use a value of 1.66. The gaussian weight appropriate to this
+!! angle (wtdiff =0.5) is applied here. Note that use of the emissivity
+!! angle for the flux integration can cause errors of 1 to 4 \f$W/m^2\f$
+!! within cloudy layers. Clouds are treated with a random cloud overlap
+!! method.
 !!\param semiss      lw surface emissivity
 !!\param delp        layer pressure thickness (mb)
 !!\param cldfrc      layer cloud fraction
@@ -2510,8 +2531,9 @@
 
         enddo   ! end do_k_loop
 
-!> -# Compute spectral emissivity & reflectance, include the contribution of spectrally varying longwave
-!! emissivity and reflection from the surface to the upward radiative transfer.
+!> -# Compute spectral emissivity & reflectance, include the
+!!    contribution of spectrally varying longwave emissivity and
+!!     reflection from the surface to the upward radiative transfer.
 
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
@@ -2563,8 +2585,8 @@
 
       enddo   ! end do_ig_loop
 
-!> -# Process longwave output from band for total and clear streams. Calculate
-!! upward, downward, and net flux.
+!> -# Process longwave output from band for total and clear streams. 
+!!    Calculate upward, downward, and net flux.
 
       flxfac = wtdiff * fluxfac
 
@@ -2618,9 +2640,9 @@
 ! ----------------------------------
 
 
-!> This subroutine computes the upward/downward radiative fluxes, and heating
-!! rates for both clear or cloudy atmosphere. Clouds are assumed as in maximum-randomly
-!! overlaping in a vertical column.
+!> This subroutine computes the upward/downward radiative fluxes, and
+!! heating rates for both clear or cloudy atmosphere. Clouds are 
+!! assumed as in maximum-randomly overlaping in a vertical column.
 !!\param semiss        lw surface emissivity
 !!\param delp          layer pressure thickness (mb)
 !!\param cldfrc        layer cloud fraction
@@ -3083,8 +3105,9 @@
 
         enddo   ! end do_k_loop
 
-!> -# Compute spectral emissivity & reflectance, include the contribution of spectrally
-!! varying longwave emissivity and reflection from the surface to the upward radiative transfer.
+!> -# Compute spectral emissivity & reflectance, include the
+!!    contribution of spectrally varying longwave emissivity and
+!!    reflection from the surface to the upward radiative transfer.
 
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
@@ -3210,9 +3233,9 @@
 !> @}
 
 
-!> This subroutine computes the upward/downward radiative fluxes, and heating
-!! rates for both clear or cloudy atmosphere.Clouds are treated with the mcica stochastic
-!! approach.
+!> This subroutine computes the upward/downward radiative fluxes, and
+!! heating rates for both clear or cloudy atmosphere.Clouds are treated
+!! with the mcica stochastic approach.
 !!\param semiss       lw surface emissivity
 !!\param delp         layer pressure thickness (mb)
 !!\param cldfmc       layer cloud fraction (sub-column)
@@ -3489,9 +3512,9 @@
 
         enddo   ! end do_k_loop
 
-!> -# Compute spectral emissivity & reflectance, include the contribution of
-!! spectrally varying longwave emissivity and reflection from the surface to the
-!! upward radiative transfer.
+!> -# Compute spectral emissivity & reflectance, include the
+!!    contribution of spectrally varying longwave emissivity and
+!!    reflection from the surface to the upward radiative transfer.
 
 !     note: spectral and Lambertian reflection are identical for the
 !           diffusivity angle flux integration used here.
@@ -3548,8 +3571,8 @@
 
       enddo   ! end do_ig_loop
 
-!> -# Process longwave output from band for total and clear streams. Calculate
-!! upward, downward, and net flux.
+!> -# Process longwave output from band for total and clear streams.
+!!    Calculate upward, downward, and net flux.
 
       flxfac = wtdiff * fluxfac
 
@@ -3603,33 +3626,47 @@
 ! ----------------------------------
 !> @}
 
-!> This subroutine contains optical depths developed for the rapid radiative
-!! transfer model.
-!!\brief This file contains the subroutines taugbn (where n goes from 1 to 16).
-!! taugbn calculates the optical depths and planck fractions per g-value and layer
-!! for band n.
-!!\param laytrop          tropopause layer index (unitless) layer at which switch is made for key species
+!> This subroutine contains optical depths developed for the rapid
+!! radiative transfer model.
+!!\brief This file contains the subroutines taugbn (where n goes from
+!! 1 to 16). taugbn calculates the optical depths and planck fractions 
+!! per g-value and layer for band n.
+!!\param laytrop          tropopause layer index (unitless) layer at 
+!!                        which switch is made for key species
 !!\param pavel            layer pressures (mb)
 !!\param coldry           column amount for dry air \f$(mol/cm^2)\f$
-!!\param colamt           column amounts of h2o, co2, o3, n2o, ch4,o2, co \f$(mol/cm^2)\f$
+!!\param colamt           column amounts of h2o, co2, o3, n2o, ch4,o2, 
+!!                        co \f$(mol/cm^2)\f$
 !!\param colbrd           column amount of broadening gases
 !!\param wx               cross-section amounts \f$(mol/cm^2)\f$
 !!\param tauaer           aerosol optical depth
 !!\param rfrate           reference ratios of binary species parameter
-!!\n                          (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,5-n2o/co2,6-o3/co2
-!!\n                          (:,:,n)n=1,2: the rates of ref press at the 2 sides of the layer
-!!\param facij            factors multiply the reference ks, i,j of 0/1 for lower/higher of the 2 appropriate temperatures and altitudes
+!!\n                      (:,m,:)m=1-h2o/co2,2-h2o/o3,3-h2o/n2o,4-h2o/ch4,
+!!                                 5-n2o/co2,6-o3/co2
+!!\n                      (:,:,n)n=1,2: the rates of ref press at the 2
+!!                                 sides of the layer
+!!\param facij            factors multiply the reference ks, i,j of 0/1
+!!                        for lower/higher of the 2 appropriate 
+!!                        temperatures and altitudes
 !!\param jp               index of lower reference pressure
-!!\param jt, jt1          indices of lower reference temperatures for pressure levels jp and jp+1, respectively
-!!\param selffac          scale factor for water vapor self-continuum equals (water vapor density)/(atmospheric density at 296k and 1013 mb)
-!!\param selffrac         factor for temperature interpolation of reference water vapor self-continuum data
-!!\param indself          index of lower reference temperature for the self-continuum interpolation
+!!\param jt, jt1          indices of lower reference temperatures for
+!!                        pressure levels jp and jp+1, respectively
+!!\param selffac          scale factor for water vapor self-continuum
+!!                        equals (water vapor density)/(atmospheric
+!!                        density at 296k and 1013 mb)
+!!\param selffrac         factor for temperature interpolation of
+!!                        reference water vapor self-continuum data
+!!\param indself          index of lower reference temperature for the
+!!                        self-continuum interpolation
 !!\param forfac           scale factor for w. v. foreign-continuum
-!!\param forfrac          factor for temperature interpolation of reference w.v. foreign-continuum data
-!!\param indfor           index of lower reference temperature for the foreign-continuum interpolation
+!!\param forfrac          factor for temperature interpolation of
+!!                        reference w.v. foreign-continuum data
+!!\param indfor           index of lower reference temperature for the
+!!                        foreign-continuum interpolation
 !!\param minorfrac        factor for minor gases
-!!\param scaleminor,scaleminorn2            scale factors for minor gases
-!!\param indminor         index of lower reference temperature for minor gases
+!!\param scaleminor,scaleminorn2       scale factors for minor gases
+!!\param indminor         index of lower reference temperature for
+!!                        minor gases
 !!\param nlay             total number of layers
 !!\param fracs            planck fractions
 !!\param tautot           total optical depth (gas+aerosols)
@@ -3817,7 +3854,8 @@
       contains
 ! =================
 
-!> band 1:  10-350 cm-1 (low key - h2o; low minor - n2);  (high key - h2o; high minor - n2)         
+!> band 1:  10-350 cm-1 (low key - h2o; low minor - n2);
+!!  (high key - h2o; high minor - n2)         
 ! ----------------------------------
       subroutine taugb01
 ! ..................................

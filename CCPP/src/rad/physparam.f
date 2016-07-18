@@ -22,7 +22,8 @@
 !> \ingroup rad
 !> \defgroup physparam physparam
 !! @{
-!> This module defines commonly used control variables and parameters in physics related programs.
+!> This module defines commonly used control variables and parameters
+!! in physics related programs.
 !========================================!
       module physparam                   !
 !........................................!
@@ -62,21 +63,28 @@
                                        
 !> SW optical property for liquid clouds
 !!\n =0:input cld opt depth, ignoring iswcice setting
-!!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite hu_and_stamnes_1993 method
+!!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite 
+!!      hu_and_stamnes_1993 method
 !!\n =2:not defined yet
       integer,save      :: iswcliq = 1  
                                        
 !> SW optical property for ice clouds (only iswcliq>0)
 !!\n =0:not defined yet
-!!\n =1:input cip,rei, use Ebert and Curry (1992) \cite ebert_and_curry_1992 method
-!!\n =2:input cip,rei, use Streamer v3.0 (2001) \cite key_2001 method
-!!\n =3:input cip,rei, use Fu's method (1996) \cite fu_1996 method
+!!\n =1:input cip,rei, use Ebert and Curry (1992) 
+!!      \cite ebert_and_curry_1992 method
+!!\n =2:input cip,rei, use Streamer v3.0 (2001) 
+!!      \cite key_2001 method
+!!\n =3:input cip,rei, use Fu's method (1996) 
+!!      \cite fu_1996 method
       integer,save      :: iswcice = 3  
                                        
 !> SW control flag for 2-stream transfer scheme
-!!\n =1:delta-eddington    (Joseph et al. 1976 \cite joseph_et_al_1976)
-!!\n =2:pifm               (Zdunkowski et al. 1980 \cite zdunkowski_et_al_1980)
-!!\n =3:discrete ordinates (Liou, 1973 \cite liou_1973)
+!!\n =1:delta-eddington    (Joseph et al. 1976 
+!!                         \cite joseph_et_al_1976)
+!!\n =2:pifm               (Zdunkowski et al. 1980 
+!!                         \cite zdunkowski_et_al_1980)
+!!\n =3:discrete ordinates (Liou, 1973 
+!!                         \cite liou_1973)
       integer,parameter :: iswmode = 2 
 
 ! ............................................. !
@@ -91,15 +99,18 @@
 
 !> LW optical property for liquid clouds
 !!\n =0:input cld opt depth, ignoring ilwcice setting
-!!\n =1:input cwp,rew, use Hu and Stamnes(1993) \cite hu_and_stamnes_1993 method
+!!\n =1:input cwp,rew, use Hu and Stamnes(1993) 
+!!      \cite hu_and_stamnes_1993 method
 !!\n =2:not defined yet
       integer,save      :: ilwcliq = 1 
 
 !> LW optical property for ice clouds (only ilwcliq>0)
 !!\n =0:not defined yet
-!!\n =1:input cip,rei, use Ebert and Curry (1992) \cite ebert_and_curry_1992 method
+!!\n =1:input cip,rei, use Ebert and Curry (1992) 
+!!      \cite ebert_and_curry_1992 method
 !!\n =2:input cip,rei, use Streamer (1996) method
-!!\n =3:input cip,rei, use Fu's method (1998) \cite fu_et_al_1998 method
+!!\n =3:input cip,rei, use Fu's method (1998) 
+!!      \cite fu_et_al_1998 method
       integer,save      :: ilwcice = 3  
 
 ! ............................................. !
