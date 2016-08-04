@@ -23,7 +23,15 @@
 !> \defgroup physparam physparam
 !! @{
 !> This module defines commonly used control variables and parameters
-!! in physics related programs.
+!! in physics related programs. 
+!! Those variables are grouped  together in accordance with functionaity
+!! and are given brief descriptions and value specifications. There are 
+!! two types of attributes (parameters vs. save) designated for the
+!! control variables. Those with a "parameter" attribute are prescribed 
+!! with a preferred option value, while the ones with a "save" attribute
+!! are given a default value but could be changed at the model's 
+!! execution-time (usually through an input of name-list file or through
+!! run scripts).
 !========================================!
       module physparam                   !
 !........................................!
@@ -91,25 +99,26 @@
 !> \name  -1.2- Control flags for LW radiation  
 ! ............................................. !
 
-!> LW heating rate unit (1:k/day; 2:k/second): =1:k/day; =2:k/second.
+!> LW heating rate unit: =1:k/day; =2:k/second.
       integer,parameter :: ilwrate = 2  
 
-!> LW rare gases effect control flag (ch4,n2o,o2,cfcs...): =0:no; =1:yes.
+!> LW minor gases effect control flag (CH4,N2O,O2,and some CFCs):
+!!\n =0: minor gases' effects are not included in calculations
+!!\n =1: minor gases' effects are included in calculations
       integer,parameter :: ilwrgas = 1  
 
-!> LW optical property for liquid clouds
-!!\n =0:input cld opt depth, ignoring ilwcice setting
+!> LW optical property scheme for liquid clouds
+!!\n =0:input cloud optical properties directly, not computed within
 !!\n =1:input cwp,rew, use Hu and Stamnes(1993) 
 !!      \cite hu_and_stamnes_1993 method
-!!\n =2:not defined yet
       integer,save      :: ilwcliq = 1 
 
-!> LW optical property for ice clouds (only ilwcliq>0)
-!!\n =0:not defined yet
-!!\n =1:input cip,rei, use Ebert and Curry (1992) 
+!> LW optical property scheme for ice clouds (only ilwcliq>0)
+!!\n =1:optical property scheme based on Ebert and Curry (1992) 
 !!      \cite ebert_and_curry_1992 method
-!!\n =2:input cip,rei, use Streamer (1996) method
-!!\n =3:input cip,rei, use Fu's method (1998) 
+!!\n =2:optical property scheme based on Streamer v3 
+!!      \cite key_2002 method
+!!\n =3:optical property scheme use Fu's method (1998) 
 !!      \cite fu_et_al_1998 method
       integer,save      :: ilwcice = 3  
 

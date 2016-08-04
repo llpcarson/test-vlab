@@ -1,0 +1,6 @@
+in physparam.f:
+isubclw =0,
+
+changed in run_script 
+ISUBC_LW=2
+ISUBC_SW=2
