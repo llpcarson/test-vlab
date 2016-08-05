@@ -111,13 +111,22 @@
 !! \details module_radiation_driver prepares the atmospheric profile, 
 !! invokes the main radiation calculations, and computes radiative 
 !! fluxes and heating rates for some arbitrary number of vertical
-!! columns. There are three externally accessible subroutines: 
-!! - radinit(): the initialization subroutine of radiation calculations.
+!! columns. This module also regulates the logistic running flow of
+!! the computations, such as data initialization and update accordance
+!! with forecast timing progress, the sequential order of subroutine
+!! calls, and sorting results for final output.
+!! There are three externally accessible subroutines: 
+!! - radinit(): the initialization subroutine of radiation calculations
+!! It is invoked by the model's initialization process and is independent
+!! with forecat time progress.
 !! - radupdate(): calls many update subroutines to check and update 
 !! radiation required but time varying data sets and module variables.
+!! It is placed inside a model's time advancing loop.
 !! - grrad(): the driver of radiation calculation subroutines. It sets 
 !! up profile variables for radiation input, including clouds, surface 
-!! albedos, atmospheric aerosols, ozone, etc.
+!! albedos, atmospheric aerosols, ozone, etc. It is located inside the
+!! timing loop, and control the sequence of the radiative process 
+!! calculations.
 !! \version NCEP-Radiation_driver    v5.2  Jan 2013
 ! ==========================================================  !!!!!
 !             'module_radiation_driver' descriptions           !!!!!
@@ -337,11 +346,11 @@
 
 !>\name Constant values
 
-!> QMIN=1.0e-10
+!> lower limit of saturation vapor pressure (=1.0e-10)
       real (kind=kind_phys) :: QMIN
-!> QME5=1.0e-7
+!> lower limit of specific humidity (=1.0e-7)
       real (kind=kind_phys) :: QME5
-!> QME6=1.0e-7
+!> lower limit of specific humidity (=1.0e-7)
       real (kind=kind_phys) :: QME6
 !> EPSQ=1.0e-12
       real (kind=kind_phys) :: EPSQ
@@ -349,21 +358,27 @@
       parameter (QMIN=1.0e-10, QME5=1.0e-7,  QME6=1.0e-7,  EPSQ=1.0e-12)
 !     parameter (QMIN=1.0e-10, QME5=1.0e-20, QME6=1.0e-20, EPSQ=1.0e-12)
 
-!> toa pressure minimum value in mb (hPa)
+!> lower limit of toa pressure value in mb 
       real, parameter :: prsmin = 1.0e-6
 
-!> control flag for lw sfc air/ground interface temp setting
+!> control flag for LW surface temperature at air/ground interface
+!! (default=0, the value will be set in subroutine radinit)
       integer :: itsfc  =0
 
-!> \name  input control variables (reset in radupdate):
+!> new data input control variables (set/reset in subroutines radinit/radupdate):
       integer :: month0=0,   iyear0=0,   monthd=0
-!> first-time climatological  ozone data read flag
+
+!> control flag for the first time of reading climatological ozone data 
+!! (set/reset in subroutines radinit/radupdate, it is used only if the
+!! control parameter ioznflg=0)
       logical :: loz1st =.true.
 
 !> optional extra top layer on top of low ceiling models
 !!\n LTP=0: no extra top layer
       integer, parameter :: LTP = 0   ! no extra top layer
 !     integer, parameter :: LTP = 1   ! add an extra top layer
+
+!> control flag for extra top layer
       logical, parameter :: lextop = (LTP > 0)
 
 !  ---  publicly accessible module programs:
@@ -375,7 +390,12 @@
       contains
 ! =================
 
-!> This subroutine is the initialization of radiation calculations.
+!> This subroutine initialize a model's radiation process through 
+!! calling of specific initialization subprograms that directly
+!! related to radiation calculations. This subroutine needs to be
+!! invoked only once at the start stage of a model's run, and the
+!! call is placed outside of both the time advancement loop and 
+!! horizontal grid loop.
 !> \param si       model vertical sigma interface
 !> \param nlay     number of model vertical layers
 !> \param me       print control flag
@@ -504,8 +524,8 @@
 !
 !===> ...  begin here
 !
-!> -# Set up control variables and external module variables in module
-!!    physparam
+!> -# Set up control variables and external module variables in 
+!!    module physparam
       itsfc  = iemsflg / 10             ! sfc air/ground temp control
       loz1st = (ioznflg == 0)           ! first-time clim ozone data read flag
       month0 = 0
@@ -570,19 +590,19 @@
       endif
 
 !> -# Initialization
-!!    - astronomy initialization routine:
+!! - astronomy initialization routine:
 !! call module_radiation_astronomy::sol_init()
-!!    - aerosols initialization routine:
+!! - aerosols initialization routine:
 !! call module_radiation_aerosols::aer_init()
-!!    - co2 and other gases intialization routine:
+!! - CO2 and other gases intialization routine:
 !! call module_radiation_gases::gas_init()
-!!    - surface intialization routine:
+!! - surface intialization routine:
 !! call module_radiation_surface::sfc_init()
-!!    - cloud initialization routine:
+!! - cloud initialization routine:
 !! call module_radiation_clouds::cld_init()
-!!    - lw radiation initialization routine:
+!! - LW radiation initialization routine:
 !! call module_radlw_main::rlwinit()
-!!    - sw radiation initialization routine:
+!! - SW radiation initialization routine:
 !! call module_radsw_main::rswinit()
 !     Initialization
 
@@ -606,19 +626,24 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine calls many update subroutines to check and update
-!! radiation required but time varying data sets and module variables.
+!> This subroutine checks and updates time sensitive data used by 
+!! radiation computations. This subroutine needs to be placed inside
+!! the time advancement loop but outside of the horizontal grid loop.
+!! It is invoked at radiation calling frequncy but before any actual
+!! radiative transfer computations.
 !! \param idate          NCEP absolute date and time of intial condition 
-!!                       (yr,mon,day,t-zone,hr,min,sec,mil-sec)
-!! \param jdate          NCEP absolute date and time at fcst time
-!!                       (yr,mon,day,t-zone,hr,min,sec,mil-sec)
-!! \param deltsw         SW radiation calling frequency in seconds
-!! \param deltim         model timestep in seconds
-!! \param lsswr          logical flags for sw radiation calculations
+!!                       (year,month,day,time-zone,hour,minute,second,
+!!                        mil-second)
+!! \param jdate          NCEP absolute date and time at forecast time
+!!                       (year,month,day,time-zone,hour,minute,second,
+!!                        mil-second)
+!! \param deltsw         SW radiation calling time interval in seconds
+!! \param deltim         model advancing time-step duration in seconds
+!! \param lsswr          logical control flag for SW radiation calculations
 !! \param me             print control flag
 !! \param slag           equation of time in radians
-!! \param sdec,cdec      sin and cos of the solar declination angle
-!! \param solcon         sun-earth distance adjusted solar constant (w/m2)
+!! \param sdec,cdec      sine and cosine of the solar declination angle
+!! \param solcon         solar constant adjusted by sun-earth distance \f$(W/m^2)\f$
 !> \section gen_radupdate General Algorithm
 !> @{
 !-----------------------------------
@@ -788,57 +813,80 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine is the driver of radiation calculation subroutines.
-!! It sets up profile variables for radiation input, including clouds,
-!! surface albedos, atmospheric aerosols, ozone, etc.
+!> This subroutine is the driver of main radiation calculations. It
+!! sets up column profiles, such as pressure, temperature, moisture,
+!! gases, clouds, aerosols, etc., as well as surface radiative 
+!! characteristics, such as surface albedo, and emissivity. The call
+!! of this subroutine is placed inside both the time advancing loop
+!! and the horizontal grid loop.
 !! \param prsi       model level pressure in Pa
 !! \param prsl       model layer mean pressure in Pa
 !! \param prslk      exner function = \f$ (p/p0)^{rocp} \f$
 !! \param tgrs       model layer mean temperature in K
 !! \param qgrs       layer specific humidity in gm/gm
-!! \param tracer     layer prognostic tracer amount/mixing-ration; 
-!!                   include: oz,cwc,aeros,etc
+!! \param tracer     layer prognostic tracer amount mixing-ratio, 
+!!                   including: ozone,cloud condensate,aerosols,etc
 !! \param vvl        layer mean vertical velocity in pa/sec
+!!                   (used only for the legacy diagnostic style of 
+!!                    cloud scheme)
 !! \param slmsk      sea/land mask array (sea:0,land:1,sea-ice:2)
 !! \param xlon       grid longitude in radians,ok for both 0->2pi or 
 !!                   -pi->+pi ranges
 !! \param xlat       grid latitude in radians, default to pi/2->-pi/2
-!!                   range, otherwise adj in subr called
+!!                   range, otherwise need to adjust in the called
+!!                   subroutine
 !! \param tsfc       surface temperature in K
-!! \param snowd      snow depth water equivalent in mm
-!! \param sncovr     snow cover in fraction
-!! \param snoalb     maximum snow albedo in fraction
+!! \param snowd      snow depth water equivalent in mm (used when
+!!                   control flag ialbflg=1)
+!! \param sncovr     snow cover in fraction (used when contrl flag
+!!                   ialbflg=1)
+!! \param snoalb     maximum snow albedo in fraction (used when control
+!!                   flag ialbflg=1)
 !! \param zorl       surface roughness in cm
 !! \param hprim      topographic standard deviation in m
-!! \param alvsf      mean vis albedo with strong cosz dependency
-!! \param alnsf      mean nir albedo with strong cosz dependency
-!! \param alvwf      mean vis albedo with weak cosz dependency
-!! \param alnwf      mean nir albedo with weak cosz dependency
+!! \param alvsf      ialbflg=0: uv+visible albedo with strong cosz 
+!!                              dependency (z=60)
+!!\n                 ialbflg=1: uv+visible black sky albedo (z=60 degree)
+!! \param alnsf      ialbflg=0: near IR albedo with strong cosz 
+!!                              dependency (z=60)
+!!\n                 ialbflg=1: near IR black sky albedo (z=60 degree)
+!! \param alvwf      ialbflg=0: uv+visible albedo with weak cosz 
+!!                              dependency (z=60)
+!!\n                 ialbflg=1: uv+visible white sky albedo
+!! \param alnwf      ialbflg=0: near IR albedo with weak cosz
+!!                              dependency (z=60)
+!!\n                 ialbflg=1: near IR white sky albedo
 !! \param facsf      fractional coverage with strong cosz dependency
 !! \param facwf      fractional coverage with weak cosz dependency
-!! \param fice       ice fraction over open water grid
-!! \param tisfc      surface temperature over ice fraction
-!! \param sinlat     sine of the grids' corresponding latitudes
-!! \param coslat     cosine of the grids' corresponding latitudes
-!! \param solhr      hour time after 00z at the t-stepe
-!! \param jdate      current forecast date and time (yr, mon, day,
-!!                   t-zone, hr, min, sec, mil-sec)
-!! \param solcon     solar constant (sun-earth distant adjusted)
-!! \param cv         fraction of convective cloud
+!! \param fice       fraction ice cover over open water grid
+!! \param tisfc      surface temperature over ice cover in K
+!! \param sinlat     sine of latitude for the model grid
+!! \param coslat     cosine of latitude for the model grid
+!! \param solhr      hour time after 00z at the current time-step
+!! \param jdate      current forecast date and time (year, month, 
+!!                   day,time-zone,hour, minute, second, mil-second)
+!! \param solcon     solar constant (sun-earth distant adjusted) in \f$W/m^2\f$
+!! \param cv         fraction of convective cloud cover 
+!!                   (for diagnostic clouds only)
 !! \param cvt,cvb    convective cloud top/bottom pressure in pa
-!! \param fcice      fraction of cloud ice  (in ferrier scheme)
-!! \param frain      fraction of rain water (in ferrier scheme)
-!! \param rrime      mass ratio of total to unrimed ice ( >= 1 )
-!! \param flgmin     minimum large ice fraction
-!! \param icsdsw,icsdlw    auxiliary cloud control arrays passed to
-!!   main radiations. if isubcsw/isubclw (input to init) are set to 2,
-!!   the arrays contains provided random seeds for sub-column clouds
-!!   generators
-!! \param ntcw       =0 no cloud condensate calculated; >0 array index
-!!                   location for cloud condensate
-!! \param ncld       only used when ntcw .gt. 0
-!! \param ntoz       =0 climatological ozone profile; >0 interactive
-!!                   ozone profile
+!!                   (for diagnostic clouds only)
+!! \param fcice      fraction of cloud ice content 
+!!                   (for Ferrier microphysics scheme only)
+!! \param frain      fraction of rain water 
+!!                   (for Ferrier microphysics scheme only)
+!! \param rrime      mass ratio of total to unrimed ice content 
+!!                   (>= 1, for Ferrier microphysics scheme only)
+!! \param flgmin     minimum large ice fraction 
+!!                   (for Ferrier microphysics scheme only)
+!! \param icsdsw,icsdlw    auxiliary cloud control arrays for radiations 
+!!                   if isubcsw/isubclw (\ref physparam) are set to 2,
+!!                   the arrays contains random seeds for the sub-column 
+!!                   cloud overlap scheme, McICA, used in SW/LW radiations
+!! \param ntcw       =0: no cloud condensate calculated; 
+!!\n                 >0: tracer array location index for cloud condensate
+!! \param ncld       only used when ntcw>0
+!! \param ntoz       =0: use climatological ozone profile 
+!!\n                 >0: use interactive ozone profile
 !! \param NTRAC      dimension veriable for array oz
 !! \param NFXR       second dimension of input/output array fluxr
 !! \param dtlw,dtsw   time duration for lw/sw radiation call in sec
