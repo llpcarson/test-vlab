@@ -264,24 +264,132 @@
 !! This module includes NCEP's modifications of the rrtmg-sw radiation
 !! code from AER.
 !!
+!! The SW radiation model in the current NOAA Environmental Modeling 
+!! System (NEMS) was adapted from the RRTM radiation model developed by 
+!! AER Inc. (Clough et al., 2005 \cite clough_et_al_2005; 
+!! Mlawer et al., 1977 \cite mlawer_et_al_1977). It contains 14
+!! spectral bands spanning a spectral wavenumber range of 
+!! \f$50000-820 cm^{-1}\f$ (corresponding to a wavelength range 
+!! \f$0.2-12.2\mu m\f$), each spectral band focuses on a specific set of 
+!! atmospheric absorbing species as shown in Table 1. To achieve great
+!! computation efficiency while at the same time to maintain a high 
+!! degree of accuracy, the RRTM radiation model employs a corrected-k 
+!! distribution method (i.e. mapping the highly spectral changing 
+!! absorption coefficient, k, into a monotonic and smooth varying 
+!! cumulative probability function, g). In the RRTM-SW, there are 16
+!! unevenly distributed g points for each of the 14 bands for a total 
+!! of 224 g points. The GCM version of the code (RRTMG-SW) uses a reduced
+!! number (various between 2 to 16) of g points for each of the bands
+!! that totals to 112 instead of the full set of 224. To get high 
+!! quality for the scheme, many advanced techniques are used in RRTM
+!! such as carefully selecting the band structure to handle various
+!! major (key-species) and minor absorbers; deriving a binary parameter 
+!! for a paired key molecular species in the same domain; and using two
+!! pressure regions (dividing level is at about 96mb) for optimal 
+!! treatment of various species, etc.
+!!\tableofcontents 
+!! Table 1. RRTMG-SW spectral bands and the corresponding absorbing species
+!! |Band #| Wavenumber Range | Lower Atm (Key)| Lower Atm (Minor)| Mid/Up Atm (Key)| Mid/Up Atm (Minor)|
+!! |------|------------------|----------------|------------------|-----------------|-------------------|
+!! |  16  |     2600-3250    |H2O,CH4         |                  |CH4              |                   |
+!! |  17  |     3250-4000    |H2O,CO2         |                  |H2O,CO2          |                   |
+!! |  18  |     4000-4650    |H2O,CH4         |                  |CH4              |                   |
+!! |  19  |     4650-5150    |H2O,CO2         |                  |CO2              |                   |
+!! |  20  |     5150-6150    |H2O             |CH4               |H2O              |CH4                |
+!! |  21  |     6150-7700    |H2O,CO2         |                  |H2O,CO2          |                   |
+!! |  22  |     7700-8050    |H2O,O2          |                  |O2               |                   |
+!! |  23  |     8050-12850   |H2O             |                  |---              |                   |
+!! |  24  |    12850-16000   |H2O,O2          |O3                |O2               |O3                 |
+!! |  25  |    16000-22650   |H2O             |O3                |---              |O3                 |
+!! |  26  |    22650-29000   |---             |                  |---              |                   |
+!! |  27  |    29000-38000   |O3              |                  |O3               |                   |
+!! |  28  |    38000-50000   |O3,O2           |                  |O3,O2            |                   |
+!! |  29  |      820-2600    |H2O             |CO2               |CO2              |H2O                |
+!!\tableofcontents 
+!!\n scattering due to clouds greatly complicate the SW radiative 
+!! transfer computations. To balance the trade-off between computation
+!! and speed, RRTMG-SW uses a two-stream approximation method with a
+!! delta-function adjustment. Several variations of the delta-two 
+!! method are included in the radiation transfer code; each holds its
+!! own strength and shortcomings (King and Harshvadhan, 1986 
+!! \cite king_and_harshvadhan_1986 ; 
+!! \f$R\ddot{a}is\ddot{a}nen\f$,2002 \cite raisanen_2002 ;
+!! Barker et al., 2015 \cite barker_et_al_2015). The default (the same
+!! in operation runs) selection (iswmode=2) activates the Practical 
+!! Improved Flux Method (PIFM) by Zdunkowski et al.(1980) 
+!! \cite zdunkowski_et_al_1980 . In dealing with a column of cloudy 
+!! atmosphere, two approaches are included in the RRTMG-SW. One is the 
+!! commonly used treatment that sees each of the cloud contaminated 
+!! layers as independent, partially and uniformly filled slabs. Cloud 
+!! inhomogeneity within and the nature coherence among adjacent cloud 
+!! layers are largely ignored to reduce the overwhelm complexities 
+!! associated with scattering process. The effective layer reflectance 
+!! and transmittance are weighted mean according to cloud fraction. The
+!! approach may overestimate cloud effect, especially for multi-layered
+!! cloud system associated with deep convection. In NEMS radiation code,
+!! to mitigate this shortcoming without increase computation cost, the
+!! cloud contaminated column is divided into two parts based on the 
+!! column's total cloud coverage (a maximum-random overlapping is used
+!! in the operational models) to form a cloud free part and an overcast
+!! part. Layered clouds are then normalized by the total cloud amount 
+!! before going through radiative transfer calculations. Fluxes from the
+!! cloud-free part and cloudy part are combined together to obtain the
+!! final result.
+!!\n On the other hand, the Monte-Carlo Independent Column Approximation
+!! (McICA) (Pincus et al.,2003 \cite pincus_et_al_2002;
+!! \f$R\ddot{a}is\ddot{a}nen\f$ and Barker, 2004 
+!! \cite raisanen_and_barker_2004), provides a simple and effective way
+!! to solve cloud overlapping issue without increasing computational 
+!! burden. The method is based on the concept of an ICA scheme that 
+!! divides each grid column into a large number of sub-columns, and 
+!! statistically redistributes layered clouds (under an assumed overlapping
+!! condition, such as the maximum-random method) into the sub-columns
+!! (i.e. at any layer it will be either clear or overcast). Thus the 
+!! grid domain averaged flux under ICA scheme can be expressed as:
+!! \f[
+!! \overline{F}=\frac{1}{N}\sum_{n=1}^N F_{n}
+!! =\frac{1}{N}\sum_{n=1}^N\sum_{k=1}^K F_{n,k}
+!! \f]
+!! Where \f$N\f$ is the number of total sub-columns, and \f$K\f$ is the 
+!! number of spectral terms in integration.\f$F_{n}\f$ is flux obtained
+!! in the \f$n^{th}\f$ sub-column, that is the summation of total of 
+!! \f$K\f$ spectral corresponding fluxes, \f$F_{n,k}\f$ . The double 
+!! integrations (summations) make ICA impractical for GCM applications.
+!! The McICA method is to divide a model grid into \f$K\f$ sub-columns 
+!! and randomly to pair a sub-column's cloud profile with one of the 
+!! radiative spectral intervals (e.g. the g-point in RRTM). The double
+!! summations will then be reduced to only one:
+!! \f[
+!! \overline{F}=\frac{1}{N}\sum_{n=1}^N\sum_{k=1}^K F_{n,k}
+!! \approx\overline{F}=\sum_{k=1}^K F_{S_{k},k}
+!! \f]
+!! McICA method is very efficient due to its complete separation of
+!! cloud radiative characters from the radiative transfer, and it has
+!! been proved to be complete unbiased against the ICA method in model 
+!! applications (Barker et al. 2002 \cite barker_et_al_2002, 
+!! Barker and \f$R\ddot{a}is\ddot{a}nen\f$, 2005 
+!! \cite barker_and_raisanen_2005).
+!!
 !! The RRTM-SW package includes three files:
 !! - radsw_param.f, which contains:
-!!  - module_radsw_parameters: band parameters set up
+!!  - module_radsw_parameters: specifies major parameters of the spectral
+!!    bands and defines the construct structures of derived-type variables 
+!!    for holding the output results.
 !! - radsw_datatb.f, which contains: 
 !!  - module_radsw_ref: reference temperature and pressure
 !!  - module_radsw_cldprtb: cloud property coefficients table
-!!  - module_radsw_sflux: spectral distribution of solar flux
+!!  - module_radsw_sflux: indexes and coefficients for spectral 
+!!                        distribution of solar flux
 !!  - module_radsw_kgbnn: absorption coefficents for 14 bands, where 
 !!    nn = 16-29
+!! -  mersenne_twister.f, which contains:
+!!  - mersenne_twister: program of random number generators using the
+!!    Mersenne-Twister algorithm
 !! - radsw_main.f, which contains: 
-!!  - module_radsw_main: the main SW radiation trnsfer, which contains
-!!    two externally callable subroutines:
+!!  - module_radsw_main: the main SW radiation computation programming 
+!!    source codes, which contains two externally callable subroutines:
 !!   - swrad(): the main radiation routine
 !!   - rswinit(): the initialization routine
-!!
-!! All the SW radiation subprograms become contained subprograms in
-!! module 'module_radsw_main' and many of them are not directly 
-!! accessable from places outside the module.
 !!
 !!\author   Eli J. Mlawer, emlawer@aer.com
 !!\author   Jennifer S. Delamere, jdelamer@aer.com

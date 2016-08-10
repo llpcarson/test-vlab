@@ -887,103 +887,109 @@
 !! \param ncld       only used when ntcw>0
 !! \param ntoz       =0: use climatological ozone profile 
 !!\n                 >0: use interactive ozone profile
-!! \param NTRAC      dimension veriable for array oz
-!! \param NFXR       second dimension of input/output array fluxr
-!! \param dtlw,dtsw   time duration for lw/sw radiation call in sec
-!! \param lsswr,lslwr    logical flags for sw/lw radiation calls
-!! \param lssav      logical flag for store 3-d cloud field
-!! \param IX,IM      horizontal dimention and num of used points
+!! \param NTRAC      number of tracers
+!! \param NFXR       number of fields (second dimension) of I/O array fluxr
+!! \param dtlw,dtsw  time durations for LW/SW radiation calls in second
+!! \param lsswr,lslwr    logical control flags for SW/LW radiation calls
+!! \param lssav      logical control flag for storing 3-d cloud field
+!! \param IX,IM      horizontal dimension and number of used points
 !! \param LM         vertical layer dimension
 !! \param me         control flag for parallel process
-!! \param lprnt      control flag for diagnostic print out
-!! \param ipt        index for diagnostic printout point
-!! \param kdt        time-step number
-!! \param deltaq     half width of uniform total water distribution
+!! \param lprnt      control flag for diagnostic printout
+!! \param ipt        grid-point index for diagnostic printout (debugging)
+!! \param kdt        time-step sequential number
+!! \param deltaq     half width of pdf cloud uniform total water distribution
+!!                   (for pdf cloud cover scheme)
 !! \param sup        supersaturation in pdf cloud when t is very low
-!! \param cnvw       layer convective cloud water
+!!                   (for pdf cloud cover scheme)
+!! \param cnvw       layer convective cloud water content
+!!                   (for pdf cloud scheme)
 !! \param cnvc       layer convective cloud cover
-!! \param htrsw      total sky sw heating rate in k/sec
-!! \param topfsw     SW radiation fluxes at toa, components:
+!!                   (for pdf cloud scheme)
+!! \param htrsw      total sky SW heating rate in k/sec
+!! \param topfsw     derived type, SW radiation fluxes at TOA, components:
 !!                   (check module_radsw_parameters for definition)
-!! \n          %upfxc   - total sky upward sw flux at toa (\f$W/m^2\f$)
-!! \n          %dnflx   - total sky downward sw flux at toa (\f$W/m^2\f$)
-!! \n          %upfx0   - clear sky upward sw flux at toa (\f$W/m^2\f$)
-!! \param sfcfsw     SW radiation fluxes at sfc, components: 
+!! \n          %upfxc   - total-sky upward SW flux at toa (\f$W/m^2\f$)
+!! \n          %dnflx   - total-sky downward SW flux at toa (\f$W/m^2\f$)
+!! \n          %upfx0   - clear-sky upward SW flux at toa (\f$W/m^2\f$)
+!! \param sfcfsw     derived type, SW radiation fluxes at surface, components: 
 !!                   (check module_radsw_parameters for definition)
-!! \n          %upfxc   - total sky upward sw flux at sfc (\f$W/m^2\f$)
-!! \n          %dnfxc   - total sky downward sw flux at sfc (\f$W/m^2\f$)
-!! \n          %upfx0   - clear sky upward sw flux at sfc (\f$W/m^2\f$)
-!! \n          %dnfx0   - clear sky downward sw flux at sfc (\f$W/m^2\f$)
-!! \param dswcmp     down sfc SW spectral components:
-!! \n          (:, 1)   - total sky sfc downward nir direct flux
-!! \n          (:, 2)   - total sky sfc downward nir diffused flux
-!! \n          (:, 3)   - total sky sfc downward uv+vis direct flux
-!! \n          (:, 4)   - total sky sfc downward uv+vis diff flux
-!! \param uswcmp     up sfc SW spectral components:
-!! \n          (:, 1)   - total sky sfc upward nir direct flux
-!! \n          (:, 2)   - total sky sfc upward nir diffused flux
-!! \n          (:, 3)   - total sky sfc upward uv+vis direct flux
-!! \n          (:, 4)   - total sky sfc upward uv+vis diff flux
-!! \param sfalb      mean surface diffused sw albedo
-!! \param coszen     mean cos of zenith angle over rad call period
-!! \param coszdg     daytime mean cosz over rad call period
-!! \param htrlw      total sky LW heating rate in k/sec
-!! \param topflw     LW radiation fluxes at top, component:
+!! \n          %upfxc   - total-sky upward SW flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfxc   - total-sky downward SW flux at sfc (\f$W/m^2\f$)
+!! \n          %upfx0   - clear-sky upward SW flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfx0   - clear-sky downward SW flux at sfc (\f$W/m^2\f$)
+!! \param dswcmp     downward surface SW spectral components:
+!! \n          (:, 1)   - total-sky sfc downward nir direct flux
+!! \n          (:, 2)   - total-sky sfc downward nir diffused flux
+!! \n          (:, 3)   - total-sky sfc downward uv+vis direct flux
+!! \n          (:, 4)   - total-sky sfc downward uv+vis diffused flux
+!! \param uswcmp     upward surface SW spectral components:
+!! \n          (:, 1)   - total-sky sfc upward nir direct flux
+!! \n          (:, 2)   - total-sky sfc upward nir diffused flux
+!! \n          (:, 3)   - total-sky sfc upward uv+vis direct flux
+!! \n          (:, 4)   - total-sky sfc upward uv+vis diffused flux
+!! \param sfalb      mean surface diffused albedo for SW radiation
+!! \param coszen     mean cosine of solar zenith angle over radiation calling period
+!! \param coszdg     daytime mean cosine of zenith angle over the radiation 
+!!                   calling period
+!! \param htrlw      total-sky LW heating rate in k/sec
+!! \param topflw     derived type, LW radiation fluxes at TOA, component:
 !!                   (check module_radlw_paramters for definition)
-!! \n          %upfxc   - total sky upward LW flux at toa (\f$W/m^2\f$)
-!! \n          %upfx0   - clear sky upward LW flux at toa (\f$W/m^2\f$)
-!! \param sfcflw     LW radiation fluxes at sfc, component:
+!! \n          %upfxc   - total-sky upward LW flux at toa (\f$W/m^2\f$)
+!! \n          %upfx0   - clear-sky upward LW flux at toa (\f$W/m^2\f$)
+!! \param sfcflw     derived type, LW radiation fluxes at surface, component:
 !!                   (check module_radlw_paramters for definition)
-!! \n          %upfxc   - total sky upward LW flux at sfc (\f$W/m^2\f$)
-!! \n          %upfx0   - clear sky upward LW flux at sfc (\f$W/m^2\f$)
-!! \n          %dnfxc   - total sky downward LW flux at sfc (\f$W/m^2\f$)
-!! \n          %dnfx0   - clear sky downward LW flux at sfc (\f$W/m^2\f$)
-!! \param semis      surface LW emissivity in fraction
+!! \n          %upfxc   - total-sky upward LW flux at sfc (\f$W/m^2\f$)
+!! \n          %upfx0   - clear-sky upward LW flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfxc   - total-sky downward LW flux at sfc (\f$W/m^2\f$)
+!! \n          %dnfx0   - clear-sky downward LW flux at sfc (\f$W/m^2\f$)
+!! \param tsflw      surface air temp during LW calculation call in K
+!! \param semis      surface emissivity in fraction for LW radiation
 !! \param cldcov     3-d cloud fraction
-!! \param tsflw      surface air temp during LW calculation in K
-!! \param fluxr      time accumulated 2-d fields defined as:
-!! \n            1      - toa total sky upwd LW radiation flux
-!! \n            2      - toa total sky upwd SW radiation flux
-!! \n            3      - sfc total sky upwd SW radiation flux
-!! \n            4      - sfc total sky dnwd SW radiation flux
-!! \n            5      - high domain cloud fraction
-!! \n            6      - mid  domain cloud fraction
-!! \n            7      - low  domain cloud fraction
-!! \n            8      - high domain mean cloud top pressure
-!! \n            9      - mid  domain mean cloud top pressure
-!! \n           10      - low  domain mean cloud top pressure
-!! \n           11      - high domain mean cloud base pressure
-!! \n           12      - mid  domain mean cloud base pressure
-!! \n           13      - low  domain mean cloud base pressure
-!! \n           14      - high domain mean cloud top temperature
-!! \n           15      - mid  domain mean cloud top temperature
-!! \n           16      - low  domain mean cloud top temperature
-!! \n           17      - total cloud fraction
-!! \n           18      - boundary layer domain cloud fraction
-!! \n           19      - sfc total sky dnwd LW radiation flux
-!! \n           20      - sfc total sky upwd LW radiation flux
-!! \n           21      - sfc total sky dnwd SW uv-b radiation flux
-!! \n           22      - sfc clear sky dnwd SW uv-b radiation flux
-!! \n           23      - toa incoming solar radiation flux
-!! \n           24      - sfc vis beam dnwd SW radiation flux
-!! \n           25      - sfc vis diff dnwd SW radiation flux
-!! \n           26      - sfc nir beam dnwd SW radiation flux
-!! \n           27      - sfc nir diff dnwd SW radiation flux
-!! \n           28      - toa clear sky upwd LW radiation flux
-!! \n           29      - toa clear sky upwd SW radiation flux
-!! \n           30      - sfc clear sky dnwd LW radiation flux
-!! \n           31      - sfc clear sky upwd SW radiation flux
-!! \n           32      - sfc clear sky dnwd SW radiation flux
-!! \n           33      - sfc clear sky upwd LW radiation flux
+!! \param fluxr      array for saving time accumulated 2-d fields that are 
+!!                   defined as:
+!! \n          (:, 1)   - toa total-sky upward LW radiation flux
+!! \n          (:, 2)   - toa total-sky upward SW radiation flux
+!! \n          (:, 3)   - sfc total-sky upward SW radiation flux
+!! \n          (:, 4)   - sfc total-sky downward SW radiation flux
+!! \n          (:, 5)   - high domain cloud fraction
+!! \n          (:, 6)   - mid  domain cloud fraction
+!! \n          (:, 7)   - low  domain cloud fraction
+!! \n          (:, 8)   - high domain mean cloud top pressure
+!! \n          (:, 9)   - mid  domain mean cloud top pressure
+!! \n          (:,10)   - low  domain mean cloud top pressure
+!! \n          (:,11)   - high domain mean cloud base pressure
+!! \n          (:,12)   - mid  domain mean cloud base pressure
+!! \n          (:,13)   - low  domain mean cloud base pressure
+!! \n          (:,14)   - high domain mean cloud top temperature
+!! \n          (:,15)   - mid  domain mean cloud top temperature
+!! \n          (:,16)   - low  domain mean cloud top temperature
+!! \n          (:,17)   - total cloud fraction
+!! \n          (:,18)   - boundary layer domain cloud fraction
+!! \n          (:,19)   - sfc total-sky downward LW radiation flux
+!! \n          (:,20)   - sfc total-sky upward LW radiation flux
+!! \n          (:,21)   - sfc total-sky downward SW UV-B radiation flux
+!! \n          (:,22)   - sfc clear-sky downward SW UV-B radiation flux
+!! \n          (:,23)   - TOA incoming solar radiation flux
+!! \n          (:,24)   - sfc UV+visible beam downward SW radiation flux
+!! \n          (:,25)   - sfc UV+visible diffused downward SW radiation flux
+!! \n          (:,26)   - sfc near-IR beam downward SW radiation flux
+!! \n          (:,27)   - sfc near-IR diffused downward SW radiation flux
+!! \n          (:,28)   - toa clear-sky upward LW radiation flux
+!! \n          (:,29)   - toa clear-sky upward SW radiation flux
+!! \n          (:,30)   - sfc clear-sky downward LW radiation flux
+!! \n          (:,31)   - sfc clear-sky upward SW radiation flux
+!! \n          (:,32)   - sfc clear-sky downward SW radiation flux
+!! \n          (:,33)   - sfc clear-sky upward LW radiation flux
 !! \n optional:
-!! \n           34      - aeros opt depth at 550nm (all components)
-!! \n           35      - aeros opt depth at 550nm for du component
-!! \n           36      - aeros opt depth at 550nm for bc component
-!! \n           37      - aeros opt depth at 550nm for oc component
-!! \n           38      - aeros opt depth at 550nm for su component
-!! \n           39      - aeros opt depth at 550nm for ss component
-!! \param htrswb     spectral band total sky sw heating rate
-!! \param htrlwb     spectral band total sky lw heating rate
+!! \n          (:,34)   - aerosol AOD at 550nm (all components)
+!! \n          (:,35)   - aerosol AOD at 550nm for du component
+!! \n          (:,36)   - aerosol AOD at 550nm for bc component
+!! \n          (:,37)   - aerosol AOD at 550nm for oc component
+!! \n          (:,38)   - aerosol AOD at 550nm for su component
+!! \n          (:,39)   - aerosol AOD at 550nm for ss component
+!! \param htrswb     spectral bands distributed total sky SW heating rate in k/sec
+!! \param htrlwb     spectral bands distributed total sky LW heating rate in k/sec
 !!
 !> \section gen_grrad General Algorithm
 !> @{
@@ -1446,9 +1452,6 @@
 
 !     print *,' in grrad : raddt=',raddt
 
-!> -# Setup surface ground temperature and ground/air skin temperature
-!! if required. 
-
       if ( itsfc == 0 ) then            ! use same sfc skin-air/ground temp
         do i = 1, IM
           tskn(i) = tsfc(i)
@@ -1476,7 +1479,7 @@
           tlyr(i,k1)   = tgrs(i,k)
           prslk1(i,k1) = prslk(i,k)
 
-!> -# Compute relative humidity.
+!>  - Compute relative humidity.
 !         es  = min( prsl(i,k), 0.001 * fpvs( tgrs(i,k) ) )   ! fpvs in pa
           es  = min( prsl(i,k),  fpvs( tgrs(i,k) ) )  ! fpvs and prsl in pa
           qs  = max( QMIN, eps * es / (prsl(i,k) + epsm1*es) )
@@ -1519,7 +1522,7 @@
         enddo
       endif
 
-!  --- ...  extra variables needed for ferrier's microphysics
+!>  - Compute extra variables needed for Ferrier's microphysics
 
       if (icmphys == 2) then
         do k = 1, LM
@@ -1541,7 +1544,8 @@
         endif
       endif   ! if_icmphys
 
-!> -# Get layer ozone mass mixing ratio (olyr)
+!>  - Get layer ozone mass mixing ratio (if use ozone climatology data, 
+!!    call getozn()).
 
       if (ntoz > 0) then            ! interactive ozone generation
 
@@ -1564,7 +1568,7 @@
 
       endif                            ! end_if_ntoz
 
-!> -# Call coszmn(), to compute cosin of zenith angle (coszen, coszdg).
+!>  - Call coszmn(), to compute cosine of zenith angle.
 
       call coszmn                                                       &
 !  ---  inputs:
@@ -1573,17 +1577,17 @@
      &       coszen, coszdg                                             &
      &      )
 
-!> -# Call getgases(), to set up non-prognostic gas volume mixing
-!!  ratioes (gasvmr).
-!!\n  - gasvmr(:,:,1)  -  co2 volume mixing ratio
-!!\n  - gasvmr(:,:,2)  -  n2o volume mixing ratio
-!!\n  - gasvmr(:,:,3)  -  ch4 volume mixing ratio
-!!\n  - gasvmr(:,:,4)  -  o2  volume mixing ratio
-!!\n  - gasvmr(:,:,5)  -  co  volume mixing ratio
-!!\n  - gasvmr(:,:,6)  -  cf11 volume mixing ratio
-!!\n  - gasvmr(:,:,7)  -  cf12 volume mixing ratio
-!!\n  - gasvmr(:,:,8)  -  cf22 volume mixing ratio
-!!\n  - gasvmr(:,:,9)  -  ccl4 volume mixing ratio
+!>  - Call getgases(), to set up non-prognostic gas volume mixing
+!!    ratioes (gasvmr).
+!  - gasvmr(:,:,1)  -  co2 volume mixing ratio
+!  - gasvmr(:,:,2)  -  n2o volume mixing ratio
+!  - gasvmr(:,:,3)  -  ch4 volume mixing ratio
+!  - gasvmr(:,:,4)  -  o2  volume mixing ratio
+!  - gasvmr(:,:,5)  -  co  volume mixing ratio
+!  - gasvmr(:,:,6)  -  cf11 volume mixing ratio
+!  - gasvmr(:,:,7)  -  cf12 volume mixing ratio
+!  - gasvmr(:,:,8)  -  cf22 volume mixing ratio
+!  - gasvmr(:,:,9)  -  ccl4 volume mixing ratio
 
 !  --- ...  set up non-prognostic gas volume mixing ratioes
 
@@ -1595,7 +1599,7 @@
      &      gasvmr                                                      &
      &     )
 
-!> -# Get temperature at layer interface, and layer moisture.
+!>  - Get temperature at layer interface, and layer moisture.
 
       do k = 2, LMK
         do i = 1, IM
@@ -1676,7 +1680,7 @@
 
       endif                              ! end_if_ivflip
 
-!> -# Check for daytime points(ndate, idxday).
+!>  - Check for daytime points for SW radiation.
 
       nday = 0
       do i = 1, IM
@@ -1692,7 +1696,7 @@
 !      write(0,*)' tlvl=',tlvl(ipt,1:65)
 !      write(0,*)' qlyr=',qlyr(ipt,1:10)*1000
 
-!> -# Call module_radiation_aerosols::setaer(),to setup aerosols
+!>  - Call module_radiation_aerosols::setaer(),to setup aerosols
 !! property profile for radiation.
 
 !check  print *,' in grrad : calling setaer '
@@ -1705,17 +1709,18 @@
      &       faersw,faerlw,aerodp                                       &
      &     )
 
-!> -# Obtain cloud information for radiation calculations
-!! (clouds,cldsa,mtopa,mbota)
+!>  - Obtain cloud information for radiation calculations
+!!    (clouds,cldsa,mtopa,mbota)
 !!\n   for  prognostic cloud:
-!!    - For zhao/moorthi's prognostic cloud scheme,
+!!    - For Zhao/Moorthi's prognostic cloud scheme,
 !!      call module_radiation_clouds::progcld1()
-!!    - For ferrier's microphysics,
+!!    - For Ferrier's microphysics,
 !!      call module_radiation_clouds::progcld2()
-!!    - For zhao/moorthi's prognostic cloud+pdfcld,
+!!    - For Zhao/Moorthi's prognostic cloud+pdfcld,
 !!      call module_radiation_clouds::progcld3()
-!!\n   for  diagnostic cloud:
-!!    - call module_radiation_clouds::diagcld1()
+!>  - If cloud condensate is not computed (ntcw=0), using the legacy 
+!!   cloud scheme, compute cloud information based on Slingo's 
+!!   diagnostic cloud scheme (call module_radiation_clouds::diagcld1())
 
 !  --- ...  obtain cloud information for radiation calculations
 
@@ -1832,11 +1837,11 @@
 
 !  --- ...  start radiation calculations 
 !           remember to set heating rate unit to k/sec!
-
+!> -# Start SW radiation calculations
       if (lsswr) then
 
-!> -# Call module_radiation_surface::setalb() to setup surface albedo.
-!!  for SW radiation, include xw (nov04) sea-ice.
+!>  - Call module_radiation_surface::setalb() to setup surface albedo.
+!!  for SW radiation.
 
 
         call setalb                                                     &
@@ -1848,7 +1853,6 @@
      &       sfcalb                                                     &
      &     )
 
-!> -# Approximate mean surface albedo from vis- and nir-  diffuse values.
 
         do i = 1, IM
           sfalb(i) = max(0.01, 0.5 * (sfcalb(i,2) + sfcalb(i,4)))
@@ -1856,7 +1860,8 @@
 
         if (nday > 0) then
 
-!> -# Call module_radsw_main::swrad().
+!>  - Call module_radsw_main::swrad(), to compute SW heating rates and 
+!!   fluxes.
 !     print *,' in grrad : calling swrad'
 
           if ( present(htrswb) .and. present(htrsw0)) then
@@ -1957,6 +1962,8 @@
           endif
 
 !  --- surface down and up spectral component fluxes
+!>  - Save two spectral bands' surface downward and upward fluxes for 
+!!    output.
 
           do i = 1, IM
             dswcmp(i,1) = scmpsw(i)%nirbm
@@ -2014,10 +2021,11 @@
       endif                                ! end_if_lsswr
 
 !      write(0,*)' htrsw=',htrsw(ipt,1:64)*86400
+!> -# Start LW radiation calculations
       if (lslwr) then
 
-!> -# Call module_radiation_surface::setemis(),to setup surface
-!! emissivity (sfcemis) for LW radiation.
+!>  - Call module_radiation_surface::setemis(),to setup surface
+!! emissivity for LW radiation.
 
         call setemis                                                    &
 !  ---  inputs:
@@ -2027,7 +2035,8 @@
      &       sfcemis                                                    &
      &     )
 
-!> -# Call module_radlw_main::lwrad().
+!>  - Call module_radlw_main::lwrad(), to compute LW heating rates and 
+!!    fluxes.
 !     print *,' in grrad : calling lwrad'
 
         if ( present(htrlwb) .and. present(htrlw0) ) then
@@ -2108,9 +2117,10 @@
 
         endif
 
+!> -# Save calculation results
         do i = 1, IM
           semis (i) = sfcemis(i)
-!  ---  save surface air temp for diurnal adjustment at model t-steps
+!>  - Save surface air temp for diurnal adjustment at model t-steps
           tsflw (i) = tsfa(i)
         enddo
 
@@ -2133,7 +2143,12 @@
 
       endif                                ! end_if_lslwr
 
-!> -# Save outputs.
+!>  - For time averaged output quantities (including total-sky and 
+!!    clear-sky SW and LW fluxes at TOA and surface; conventional 
+!!    3-domain cloud amount, cloud top and base pressure, and cloud top 
+!!    temperature; aerosols AOD, etc.), store computed results in 
+!!    corresponding slots of array fluxr with appropriate time weights.
+
 !  --- ...  collect the fluxr data for wrtsfc
 
       if (lssav) then

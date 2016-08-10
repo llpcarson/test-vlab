@@ -1,5 +1,6 @@
 !>  \file radsw_datatb.f
-!!  This file contains the following:
+!!  This file contains many individual data modules with specifically
+!!  precalculated data tables:
 !!    - module_radsw_ref         (reference temperature and pressure)
 !!    - module_radsw_cldprtb     (cloud property coefficients table)
 !!    - module_radsw_sflux       (spectral solar flux distribution)
@@ -63,13 +64,11 @@
 
 
 !> \ingroup module_radlw_main
-!> This module contains reference temperature and pressure.
+!> This module contains the reference pressures (in logarithm form) at
+!! 59 vertical levels (TOA is omitted), and the mid-latitude summer
+!! (MLS) standard temperature profile for the 59 pressure layers that 
+!! are used to establish pre calculated transmission tables.
 !!
-!! - These pressures are chosen such that the ln of the first pressure
-!!   has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
-!!   each subsequent ln(pressure) differs from the previous one by 0.2.
-!! - These temperatures are associated with the respective
-!!   pressures for the MLS standard atmosphere.
 !========================================!
       module module_radsw_ref            !
 !........................................!
@@ -80,8 +79,10 @@
 !
       public
 
-!> Reference pressure and temperature
-      real (kind=kind_phys), dimension(59) :: preflog, tref
+!> logarithm,ln(p), of a 59-level standard pressure profile
+      real (kind=kind_phys), dimension(59) :: preflog
+!> MLS standard atmosphere temperature at the standard pressure levels
+      real (kind=kind_phys), dimension(59) :: tref
 
 !  ...  these pressures are chosen such that the ln of the first pressure
 !       has only a few non-zero digits (i.e. ln(pref(1)) = 6.96000) and
@@ -136,8 +137,41 @@
 !========================================!
 
 !> \ingroup module_radlw_main
-!> This module contains coefficients of cloud optical properties for
-!! each of the spectral bands.
+!> This module contains cloud radiative property coefficients.
+!!
+!! For liquid water clouds, cloud radiative property coefficients are
+!! derived from Hu and Stamnes method (1993)\cite hu_and_stamnes_1993.
+!! For ice clouds, there are various choices for model applications, 
+!! including data tables derived from Ebert and Curry (1992) 
+!! \cite ebert_and_curry_1992, from the Streamer scheme (Key,2002
+!! \cite key_2002), or from Fu (1996) \cite fu_1996 . Components of 
+!! snow particles and rain droplets are not parameterized in the 
+!! operational NEMS/GSM cloud microphysics scheme, and their radiative
+!! properties are neither well established yet. Coefficients for those
+!! components listed in the module are more experimental oriented that
+!! include the entries for snow from Fu (2001, personal communications),
+!! and for rain from Chou and Suarez (1999) \cite chou_and_suarez_1999.
+!!\n In common practices, the cloud radiative properties (optical depth,
+!! single scattering albedo, and asymmetry factor) are usually parametized
+!! in the form of a truncated Laurent series (generalized Taylor series)
+!!\f[
+!! f(x)=\sum_{n=-N}^Na_{n}(x-c)^n
+!!\f]
+!! Where \f$x\f$ represents the cloud particle's effective radius (in
+!! Fu's scheme, it is called as generalized size parameter) in unites of
+!! micro-meters, \f$a_{n}\f$ represents the corresponding coefficients, 
+!! and the constant \f$c\f$ will be zero. The number of terms, \f$n\f$,
+!! are usually kept small, such as \f$n=0,-1\f$ for the extinction 
+!! coefficients and \f$n=0,1,2\f$ (or a bit larger) for the coefficients
+!! of single scattering albedo and asymmetry factor. When using the 
+!! Ebert and Curry cloud optical property scheme, cloud optical properties
+!! are computed 'on the fly' by using the power series in five broad
+!! spectral bands (similar expressions are used for Fu's snow and Chou's
+!! rain schemes). While for other schemes, optical properties are 
+!! precomputed for each of the 14 RRTMG-SW bands in corresponding to 
+!! evenly distributed particle effective radius (e.g. 1 or 3 micro-meter
+!! intervals for water or ice clouds, respectively). Simple linear 
+!! interpolations will be used during radiative transfer calculations.
 !========================================!
       module module_radsw_cldprtb        !
 !........................................!
@@ -192,44 +226,60 @@
 !     cloud optical properties are external inputs to the main program
 
 ! === everything below is for iflagliq >= 1.
-!> extinction coefficient from hu and stamnes
+
+!>\name Hu and Stamnes (1993) coefficients for cloud liquid condensate (used if iswcliq=1)
+
+!> extinction coefficients
       real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
      &       extliq1
-!> single scattering albedo from hu and stamnes
+!> single scattering albedo coefficients
       real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
      &       ssaliq1
-!> asymmetry parameter from hu and stamnes
+!> asymmetry coefficients
       real (kind=kind_phys), dimension(58,nblow:nbhgh), public ::      &
      &       asyliq1
-!> spherical ice particle parameterization from streamer v3,
-!! extinction units (ext coef/iwc): \f$\frac{m^{-1}}{gm^{-3}}\f$
+
+!>\name Streamer V3 (Key 2002) coefficients for cloud ice condensate (used if iswcice=2)
+
+!> extinction coefficients
       real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
      &       extice2
-!> single-scattering albedo from streamer v3, unitless
+!> single scattering albedo coefficients
       real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
      &       ssaice2
-!> asymmetry factor from streamer v3, unitless
+!> asymmetry coefficients
       real (kind=kind_phys), dimension(43,nblow:nbhgh), public ::      &
      &       asyice2   
-!> hexagonal ice particle parameterization from fu,
-!! extinction units (ext coef/iwc): \f$\frac{m^{-1}}{gm^{-3}}\f$
+
+!>\name Fu(1996) coefficients for cloud ice condensate (used if iswcice=3)
+
+!> extinction coefficients
       real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
      &       extice3
-!> single-scattering albedo from fu, unitless
+!> single scattering albedo coefficients
       real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
      &       ssaice3
-!> asymmetry factor from fu, unitless
+!> asymmetry coefficients
       real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
      &       asyice3
 !> fdelta from fu, unitless
       real (kind=kind_phys), dimension(46,nblow:nbhgh), public ::      &
      &       fdlice3
 
-!> \name coefficients from ebert and curry method
-!!@{
-      real (kind=kind_phys), dimension(5), public ::                   &
-     &       abari, bbari, cbari, dbari, ebari, fbari
-!!@}
+!> \name Ebert and Curry (1992) coefficients for cloud ice condensate (used if iswcice=1)
+
+!> extinction coefficients
+      real (kind=kind_phys), dimension(5), public ::  abari
+!> extinction coefficients
+      real (kind=kind_phys), dimension(5), public ::  bbari
+!> single scattering albedo coefficients
+      real (kind=kind_phys), dimension(5), public ::  cbari
+!> single scattering albedo coefficients
+      real (kind=kind_phys), dimension(5), public ::  dbari
+!> asymmetry coefficients
+      real (kind=kind_phys), dimension(5), public ::  ebari
+!> asymmetry coefficients
+      real (kind=kind_phys), dimension(5), public ::  fbari
 
 !  --- ...  coefficients from ebert and curry method
       data abari(:)/ 3.448e-03,3.448e-03,3.448e-03,3.448e-03,3.448e-03 /
@@ -1843,13 +1893,26 @@
      & 1.603020e-02,1.490925e-02,1.372635e-02,1.247363e-02,1.114319e-02,&
      & 9.727157e-03 /
 
-!> \name coefficients to compute tau, ssa, asy for rain drop and snowflake 
-!!@{
-      real (kind=kind_phys), public  :: a0r, a1r, a0s, a1s
+!> \name Fu (2001, personal communications) coefficients for cloud snow particles 
+
+!> optical depth coefficients
+      real (kind=kind_phys), public  :: a0s, a1s
+!> single scattering albedo coefficients
+      real (kind=kind_phys), dimension(nblow:nbhgh), public :: b0s, b1s
+!> asymmetry coefficients
+      real (kind=kind_phys), dimension(nblow:nbhgh), public :: c0s  
+
+!> \name Chou(1999) coefficients for cloud rain particles
+
+!> optical depth coefficients
+      real (kind=kind_phys), public  :: a0r, a1r
+!> single scattering albedo coefficients
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::  b0r 
+!> asymmetry coefficients
+      real (kind=kind_phys), dimension(nblow:nbhgh), public ::  c0r 
+
       data a0r,a1r / 3.07e-3, 0.0 /,    a0s,a1s / 0.0,     1.5 /  ! fu's coeff
 
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
-     &       b0r, b0s, b1s, c0r, c0s
       data b0r  / 0.466, 0.437, 0.416, 0.391, 0.374, 0.352, 0.183,      &
      &            0.048, 0.012, 0.000, 0.000, 0.000, 0.000, 0.496 /
       data c0r  / 0.975, 0.965, 0.960, 0.955, 0.952, 0.950, 0.944,      &
@@ -1857,7 +1920,6 @@
       data b0s  / 7*0.460, 2*0.000,   4*0.000, 0.460 /
       data b1s  / 7*0.000, 2*1.62e-5, 4*0.000, 0.000 /
       data c0s  / 7*0.970, 2*0.970,   4*0.700, 0.970 /
-!!@}
 
 
 !........................................!
@@ -1865,8 +1927,11 @@
 !========================================!
 
 !> \ingroup module_radlw_main
-!> This module contains spectral distribution of solar radiation flux 
-!! used to obtain the incoming solar flux at toa.
+!> This module contains various indexes and coefficients for SW spectral
+!! bands, as well as the spectral distribution of solar flux. The values
+!! of spectral solar flux are derived based on a prescribed solar 
+!! constant (\f$1368.22 W/m^2\f$). Scaling will be applied for the 
+!! actual inputted solar constant value.
 !========================================!
       module module_radsw_sflux          !
 !........................................!
@@ -1901,8 +1966,11 @@
       integer, parameter :: MFB02 = 2      !
       integer, parameter :: MFB03 = 5      !
 !
-      real (kind=kind_phys), dimension(nblow:nbhgh), public ::          &
-     &       strrat, specwt
+!> coefficients for computing binary absorbing species
+      real (kind=kind_phys), dimension(nblow:nbhgh), public :: strrat  
+
+!> weighting parameters for major absorbers in each band
+      real (kind=kind_phys), dimension(nblow:nbhgh), public :: specwt
 
 !  ---  original strrat
 !     data  strrat  / 2.52131e+2, 3.64641e-1, 3.89589e+1, 5.49281e+0,   &
@@ -1915,7 +1983,19 @@
 
       data  specwt  / 8.,4.,8.,8.,0.,8.,8.,0.,8.,0.,0.,0.,4.,0. /
 !
-      integer, dimension(nblow:nbhgh), public :: layreffr, ix1, ix2, ibx
+!> reference pressure level for each of the spectral bands
+      integer, dimension(nblow:nbhgh), public :: layreffr
+ 
+!> indexes for 1st entries of the two key species for each of
+!! the spectral bands
+      integer, dimension(nblow:nbhgh), public :: ix1
+
+!> indexes for 2nd entries of the two key species for each of
+!! the spectral bands
+      integer, dimension(nblow:nbhgh), public :: ix2
+
+!> band index (3rd index in array sfluxref described below)
+      integer, dimension(nblow:nbhgh), public :: ibx
 
       data  layreffr/ 18,30, 6, 3, 3, 8, 2, 6, 1, 2, 0,32,58,49 /
       data  ix1     /  1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 3, 0 /
@@ -1923,11 +2003,16 @@
       data  ibx     /  1, 1, 1, 2, 2, 3, 4, 3, 5, 4, 5, 6, 2, 7 /
 
       real (kind=kind_phys), parameter, public :: scalekur=50.15/48.37
-!
-      real (kind=kind_phys), target, public ::                          &
-     &       sfluxref01(NGMAX,MFS01,MFB01),                             &
-     &       sfluxref02(NGMAX,MFS02,MFB02),                             &
+!> spectral solar fluxes, j=1,2,...,7 for SW band number of 16,20,23,25,26,27,29
+      real (kind=kind_phys), target, public ::                      &
+     &       sfluxref01(NGMAX,MFS01,MFB01)                             
+!> spectral solar fluxes, j=1,2 for SW band number of 17 and 28
+      real (kind=kind_phys), target, public ::                      &
+     &       sfluxref02(NGMAX,MFS02,MFB02)                             
+!> spectral solar fluxes, j=1,2,...,5 for SW band number of 18,19,21,22,24
+      real (kind=kind_phys), target, public ::                      &
      &       sfluxref03(NGMAX,MFS03,MFB03)
+
 
 !  ---  setup solar sfluxref01
 !  ...  band 16, NG16=6
