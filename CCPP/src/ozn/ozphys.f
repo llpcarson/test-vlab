@@ -2,14 +2,13 @@
 !! This file is ozone sources and sinks.
 
 !> \defgroup ozn Ozone Sources and Sinks
-!! - Current operational version based on Naval Research Laboratory's
-!! CHEM2D model (McCormack et al. 2006 \cite mccormack_et_al_2006)
-!! - Monthly and zonal mean ozone production rate and ozone destruction
+!! The operational GFS currently parameterizes ozone production and 
+!! destruction based on monthly mean coefficients provided by Naval
+!! Research Laboratory through CHEM2D chemistry model
+!! (McCormack et al. 2006 \cite mccormack_et_al_2006).
+!! Monthly and zonal mean ozone production rate and ozone destruction
 !! rate per unit ozone mixing ratio were provided by NRL based on
-!! CHEM2D model
-!! - Original version of these terms were provided by NASA/DAO based on
-!! NASA 2D Chemistry model
-!! - GSM is capable of running both versions 
+!! CHEM2D model.
 !!
 !! \section intra_oz Intraphysics Cummunication
 !! - Routine OZPHYS is called from GBPHYS after call to RAYLEIGH_DAMP
