@@ -53,11 +53,10 @@
 !!  \section detailed Detailed Algorithm
 !!  @{
       subroutine shalcnv(im,ix,km,jcap,delt,delp,prslp,psp,phil,ql,
-     &                   q1,t1,u1,v1,rn,kbot,ktop,kcnv,islimsk,
-     &                   dot,ncloud,hpbl,heat,evap,ud_mf,dt_mf,
-     &                   cnvw,cnvc)
-!    &                   q1,t1,u1,v1,rcs,rn,kbot,ktop,kcnv,islimsk,
-!    &                   dot,ncloud,hpbl,heat,evap,ud_mf,dt_mf,me)
+     &     q1,t1,u1,v1,rn,kbot,ktop,kcnv,islimsk,
+     &     dot,ncloud,hpbl,heat,evap,ud_mf,dt_mf,cnvw,cnvc)
+!    &     q1,t1,u1,v1,rcs,rn,kbot,ktop,kcnv,islimsk,
+!    &     dot,ncloud,hpbl,heat,evap,ud_mf,dt_mf,me)
 !
       use machine  , only : kind_phys
       use funcphys , only : fpvs

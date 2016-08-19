@@ -74,7 +74,7 @@
       real(kind=kind_phys) psp(im),    delp(ix,km), prslp(ix,km)
       real(kind=kind_phys) ps(im),     del(ix,km),  prsl(ix,km),
      &                     ql(ix,km,2),q1(ix,km),   t1(ix,km),
-     &                     u1(ix,km),  v1(ix,km),
+     &                     u1(ix,km),  v1(ix,km), !rcs(im),
      &                     cldwrk(im), rn(im),
      &                     dot(ix,km), phil(ix,km),
      &                     cnvw(ix,km), cnvc(ix,km),
@@ -928,7 +928,6 @@ c  compute cloud moisture property, detraining cloud water
 c    and precipitation in overshooting layers
 c
 !> - For the overshooting convection, calculate the moisture content of the entraining/detraining parcel as before. Partition convective cloud water and precipitation and detrain convective cloud water above the mimimum in moist static energy.
-      do k = 2, km1
       do k = 2, km1
         do i = 1, im
           if (cnvflg(i)) then
