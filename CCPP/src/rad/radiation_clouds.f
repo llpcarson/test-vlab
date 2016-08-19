@@ -140,13 +140,15 @@
 !> \ingroup rad
 !! \defgroup module_radiation_clouds module_radiation_clouds
 !! @{
-!> This module computes cloud related quantities for radiation computations.
+!> This module computes cloud related quantities for radiation
+!! computations.
 !!
-!! Knowledge of cloud properties and their vertical structure is important for
-!! meteorological studies due to their impact on both the Earth's radiation
-!! budget and adiabatic heating within the atmosphere. Cloud properties in the
-!! US National Oceanic and Atmospheric Administration National Centers for Environmental
-!! Prediction Global Forecast System (GFS) include (i) cloud liquid/ice water path; (ii)
+!! Knowledge of cloud properties and their vertical structure is
+!! important for meteorological studies due to their impact on both the
+!! Earth's radiation budget and adiabatic heating within the atmosphere.
+!! Cloud properties in the US National Oceanic and Atmospheric
+!! Administration National Centers for Environmental Prediction Global
+!! Forecast System (GFS) include (i) cloud liquid/ice water path; (ii)
 !! the fraction of clouds; (iii) effective radius of water/ice droplet:
 !!\version NCEP-Radiation_clouds    v5.1  Nov 2012
 !!
@@ -170,33 +172,46 @@
 !!\n IWP = total clod condensate path X F 
 !!
 !! -# GFS Cloud Fraction
-!! \n The cloud fraction in a given grid box of the GFS model is computed using the parameterization
-!! scheme of Xu and Randall(1996) \cite xu_and_randall_1996 :
+!! \n The cloud fraction in a given grid box of the GFS model is
+!! computed using the parameterization scheme of Xu and Randall(1996)
+!! \cite xu_and_randall_1996 :
 !!  \f[
 !!  \sigma =RH^{k_{1}}\left[1-exp\left(-\frac{k_{2}q_{l}}{\left[\left(1-RH\right)q_{s}\right]^{k_{3}}}\right)\right]
 !!  \f]
-!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud condensate, \f$q_{s}\f$ is saturation specific humidity,
-!!  \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the empirical parameters. The cloud condensate is partitioned into
-!!  cloud water and ice in radiation based on temperature. Cloud drop effective radius ranges 5-10 microns over land depending on
-!!  temperature. Ice crystal radius is function of ice water content (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996).
-!!  Maximum-randomly cloud overlapping is used in both long-wave radiation and short-wave radiation. Convective clouds are not considered in radiation.
+!!  Where \f$RH\f$ is relative humidity, \f$q_{l}\f$ is the cloud
+!!  condensate, \f$q_{s}\f$ is saturation specific humidity,
+!! \f$k_{1}(=0.25)\f$, \f$k_{2}(=100)\f$, \f$k_{3}(=0.49)\f$ are the
+!! empirical parameters. The cloud condensate is partitioned into
+!!  cloud water and ice in radiation based on temperature. Cloud drop
+!! effective radius ranges 5-10 microns over land depending on
+!!  temperature. Ice crystal radius is function of ice water content
+!! (Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996).
+!!  Maximum-randomly cloud overlapping is used in both long-wave
+!! radiation and short-wave radiation. Convective clouds are not
+!! considered in radiation.
 !!\n
-!! -# The parameterization of effective radius of water/ice droplet (\f$r_{e}\f$)
-!>\n Two methods has been used to parameterize cloud properties in the GFS model. The first method
-!! makes use of a diagnostic cloud scheme, in which cloud properties are determined based on 
-!! model-predicted temperature, pressure, and boundary layer circulation from Harshvardhan et al.
-!! (1989) \cite harshvardhan_et_al_1989 . The diagnostic scheme is now replaced with a prognostic 
-!! scheme that uses cloud condensate information instead (NCEP Office Note 441).
-!! \n For the parameterization of effective radius,\f$r_{ew}\f$, of water droplet, we fix \f$r_{ew}\f$ to 
-!! a value of \f$10\mu m\f$ over the oceans. Over the land, \f$\f$ is defined as:
+!! -# The parameterization of effective radius of water/ice droplet
+!!    (\f$r_{e}\f$)
+!>\n Two methods has been used to parameterize cloud properties in the
+!! GFS model. The first method makes use of a diagnostic cloud scheme,
+!! in which cloud properties are determined based on model-predicted 
+!! temperature, pressure, and boundary layer circulation from
+!! Harshvardhan et al. (1989) \cite harshvardhan_et_al_1989 . The
+!! diagnostic scheme is now replaced with a prognostic scheme that uses
+!! cloud condensate information instead (NCEP Office Note 441).
+!! \n For the parameterization of effective radius,\f$r_{ew}\f$, of
+!! water droplet, we fix \f$r_{ew}\f$ to a value of \f$10\mu m\f$ over
+!! the oceans. Over the land, \f$\f$ is defined as:
 !!\f[
 !! r_{ew} = 5+5\times F
 !!\f]
-!! Thus, the effective radius of cloud water droplets will reach to a minimum values of \f$5\mu m\f$ when
-!! F=0, and to a maximum value of \f$10\mu m\f$ when the ice fraction is increasing.
-!! \n For ice clouds, following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996,
-!! we have made the effective ice droplet radius to be an empirical function of ice water concentration
-!! (IWC) and environmental temperature as:
+!! Thus, the effective radius of cloud water droplets will reach to a
+!! minimum values of \f$5\mu m\f$ when F=0, and to a maximum value of 
+!! \f$10\mu m\f$ when the ice fraction is increasing.
+!! \n For ice clouds, following Heymsfield and McFarquhar (1996)
+!!  \cite heymsfield_and_mcfarquhar_1996,
+!! we have made the effective ice droplet radius to be an empirical
+!! function of ice water concentration (IWC) and environmental temperature as:
 !! \f[
 !! r_{ei}=\begin{cases}(1250/9.917)IWC^{0.109} & T <-50^0C \\(1250/9.337)IWC^{0.080} & -50^0C \leq T<-40^0C\\(1250/9.208)IWC^{0.055} & -40^0C\leq T <-30^0C\\(1250/9.387)IWC^{0.031} & -30^0C \leq T\end{cases}
 !! \f]
@@ -305,14 +320,15 @@
 ! =================
 
 
-!> This subroutine is an initialization program for cloud-radiation calculations and sets up boundary layer cloud top.
+!> This subroutine is an initialization program for cloud-radiation
+!! calculations and sets up boundary layer cloud top.
 !!\param si              model vertical sigma layer interface
 !!\param NLAY            vertical layer number
 !!\param me              print control flag
 !!\section gen_cld_init General Algorithm
 !> @{
 !-----------------------------------
-      subroutine cld_init
+      subroutine cld_init                                        &
      &     ( si, NLAY, me ) !  ---  inputs
 !  ---  outputs:
 !          ( none )
@@ -402,7 +418,9 @@
         endif
       endif
 
-!> -# Compute the top of BL cld (llyr), which is the topmost non cld(low) layer for stratiform (at or above lowest 0.1 of the atmosphere)
+!> -# Compute the top of BL cld (llyr), which is the topmost non 
+!!    cld(low) layer for stratiform (at or above lowest 0.1 of the
+!!     atmosphere).
 
       if ( ivflip == 0 ) then    ! data from toa to sfc
         lab_do_k0 : do k = NLAY, 2, -1
@@ -427,7 +445,8 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme.
+!> This subroutine computes cloud related quantities using 
+!! zhao/moorthi's prognostic cloud microphysics scheme.
 !!\param plyr    (IX,NLAY), model layer mean pressure in mb (100Pa)
 !!\param plvl    (IX,NLP1), model level pressure in mb (100Pa)
 !!\param tlyr    (IX,NLAY), model layer mean temperature in K
@@ -436,21 +455,22 @@
 !!\param qstl    (IX,NLAY), layer saturate humidity in gm/gm
 !!\param rhly    (IX,NLAY), layer relative humidity \f$ (=qlyr/qstl) \f$
 !!\param clw     (IX,NLAY), layer cloud condensate amount
-!!\param xlat    (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param xlat    (IX), grid latitude in radians, default to pi/2 -> 
+!!               -pi/2 range, otherwise see in-line comment
 !!\param xlon    (IX), grid longitude in radians  (not used)
 !!\param slmsk   (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
 !!\param IX           horizontal dimention
 !!\param NLAY,NLP1    vertical layer/level dimensions
 !!\param clouds      (IX,NLAY,NF_CLDS), cloud profiles
-!!\n                     (:,:,1) - layer total cloud fraction
-!!\n                     (:,:,2) - layer cloud liq water path \f$(g/m^2)\f$
-!!\n                     (:,:,3) - mean eff radius for liq cloud (micron)
-!!\n                     (:,:,4) - layer cloud ice water path \f$(g/m^2)\f$
-!!\n                     (:,:,5) - mean eff radius for ice cloud (micron)
-!!\n                     (:,:,6) - layer rain drop water path (not assigned)
-!!\n                     (:,:,7) - mean eff radius for rain drop (micron)
-!!\n                     (:,:,8) - layer snow flake water path (not assigned)
-!!\n                     (:,:,9) - mean eff radius for snow flake (micron)
+!!\n                 (:,:,1) - layer total cloud fraction
+!!\n                 (:,:,2) - layer cloud liq water path \f$(g/m^2)\f$
+!!\n                 (:,:,3) - mean eff radius for liq cloud (micron)
+!!\n                 (:,:,4) - layer cloud ice water path \f$(g/m^2)\f$
+!!\n                 (:,:,5) - mean eff radius for ice cloud (micron)
+!!\n                 (:,:,6) - layer rain drop water path (not assigned)
+!!\n                 (:,:,7) - mean eff radius for rain drop (micron)
+!!\n                 (:,:,8) - layer snow flake water path (not assigned)
+!!\n                 (:,:,9) - mean eff radius for snow flake (micron)
 !!\n  *** fu's scheme need to be normalized by snow density \f$ (g/m^3/1.0e6)\f$
 !!\param clds       (IX,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param mtop       (IX,3), vertical indices for low, mid, hi cloud tops
@@ -458,11 +478,11 @@
 !>\section gen_progcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld1                                            
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                   !  ---  inputs:
-     &       xlat,xlon,slmsk, IX, NLAY, NLP1,                    
-     &       shoc_cld, lmfshal, lmfdeep2, cldcov,              
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld1                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,               &    !  ---  inputs:
+     &       xlat,xlon,slmsk, IX, NLAY, NLP1,                      &
+     &       shoc_cld, lmfshal, lmfdeep2, cldcov,                  &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -542,10 +562,10 @@
 
       logical, intent(in)  :: shoc_cld, lmfshal, lmfdeep2
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,  
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, tvly, qlyr, qstl, rhly, clw, cldcov
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, 
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk
 
 !  ---  outputs
@@ -614,7 +634,7 @@
       endif
 
 !> -# Find top pressure for each cloud domain for given latitude.
-!       ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,L,m,h;
+!     ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,L,m,h;
 !  ---  i=1,2 are low-lat (<45 degree) and pole regions)
 
       do id = 1, 4
@@ -801,7 +821,8 @@
         enddo
       endif
 
-!> -# Compute effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
+!> -# Compute effective ice cloud droplet radius following Heymsfield 
+!!    and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
 
       do k = 1, NLAY
         do i = 1, IX
@@ -843,8 +864,9 @@
       enddo
 
 
-!> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
-!! and clouds top/bottom layer indices for low, mid, and high clouds.
+!> -# Call gethml() to compute low,mid,high,total, and boundary layer
+!!    cloud fractions and clouds top/bottom layer indices for low, mid,
+!!    and high clouds.
 !  ---  compute low, mid, high, total, and boundary layer cloud fractions
 !       and clouds top/bottom layer indices for low, mid, and high clouds.
 !       The three cloud domain boundaries are defined by ptopc.  The cloud
@@ -867,7 +889,8 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine computes cloud related quantities using ferrier's prognostic cloud microphysics scheme.
+!> This subroutine computes cloud related quantities using ferrier's
+!! prognostic cloud microphysics scheme.
 !!\param plyr    (IX,NLAY), model layer mean pressure in mb (100Pa)
 !!\param plvl    (IX,NLP1), model level pressure in mb (100Pa)
 !!\param tlyr    (IX,NLAY), model layer mean temperature in K
@@ -880,21 +903,22 @@
 !!\param f_rain  (IX,NLAY), fraction of layer rain water (ferrier micro-phys)
 !!\param r_rime  (IX,NLAY), mass ratio of total ice to unrimed ice (>=1)
 !!\param flgmin  (IX), minimum large ice fraction
-!!\param xlat    (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param xlat    (IX), grid latitude in radians, default to pi/2 -> 
+!!               -pi/2 range, otherwise see in-line comment
 !!\param xlon    (IX), grid longitude in radians  (not used)
 !!\param slmsk   (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
 !!\param IX      horizontal dimention
 !!\param NLAY,NLP1    vertical layer/level dimensions
 !!\param clouds      (IX,NLAY,NF_CLDS), cloud profiles
-!!\n                      (:,:,1) - layer total cloud fraction
-!!\n                      (:,:,2) - layer cloud liq water path  \f$(g/m^2)\f$
-!!\n                      (:,:,3) - mean eff radius for liq cloud (micron)
-!!\n                      (:,:,4) - layer cloud ice water path  \f$(g/m^2)\f$
-!!\n                      (:,:,5) - mean eff radius for ice cloud (micron)
-!!\n                      (:,:,6) - layer rain drop water path  \f$(g/m^2)\f$
-!!\n                      (:,:,7) - mean eff radius for rain drop (micron)
-!!\n                      (:,:,8) - layer snow flake water path \f$(g/m^2)\f$
-!!\n                      (:,:,9) - mean eff radius for snow flake (micron)
+!!\n                 (:,:,1) - layer total cloud fraction
+!!\n                 (:,:,2) - layer cloud liq water path  \f$(g/m^2)\f$
+!!\n                 (:,:,3) - mean eff radius for liq cloud (micron)
+!!\n                 (:,:,4) - layer cloud ice water path  \f$(g/m^2)\f$
+!!\n                 (:,:,5) - mean eff radius for ice cloud (micron)
+!!\n                 (:,:,6) - layer rain drop water path  \f$(g/m^2)\f$
+!!\n                 (:,:,7) - mean eff radius for rain drop (micron)
+!!\n                 (:,:,8) - layer snow flake water path \f$(g/m^2)\f$
+!!\n                 (:,:,9) - mean eff radius for snow flake (micron)
 !!\n  *** fu's scheme need to be normalized by snow density (g/m**3/1.0e6)
 !!\param clds  (IX,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param mtop  (IX,3), vertical indices for low, mid, hi cloud tops
@@ -902,11 +926,11 @@
 !>\section gen_progcld2 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld2                                             
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,                   !  ---  inputs:
-     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,            
-     &       IX, NLAY, NLP1, lmfshal, lmfdeep2,                     
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld2                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,               &    !  ---  inputs:
+     &       xlat,xlon,slmsk, f_ice,f_rain,r_rime,flgmin,          &
+     &       IX, NLAY, NLP1, lmfshal, lmfdeep2,                    &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -995,10 +1019,10 @@
 
       logical, intent(in)  :: lmfshal, lmfdeep2
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr,
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, tvly, qlyr, qstl, rhly, clw, f_ice, f_rain, r_rime
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk
       real (kind=kind_phys), dimension(:), intent(in) :: flgmin
 
@@ -1064,7 +1088,8 @@
       endif
 
 !> -# Find top pressure (ptopc) for each cloud domain for given latitude.
-!    - ptopc(k,i): top pressure of each cld domain (k=1-4 are sfc,l,m,h; i=1,2 are low-lat (<45 degree) and pole regions)
+!    - ptopc(k,i): top pressure of each cld domain (k=1-4 are sfc,l,m,
+!!     h; i=1,2 are low-lat (<45 degree) and pole regions)
 
       do id = 1, 4
         tem1 = ptopc(id,2) - ptopc(id,1)
@@ -1077,8 +1102,9 @@
         enddo
       enddo
 
-!> -# Seperate cloud condensate into liquid, ice, and rain types, and save the liquid+ice condensate
-!! in array clw2 for later calculation of cloud fraction.
+!> -# Seperate cloud condensate into liquid, ice, and rain types, and
+!! save the liquid+ice condensate in array clw2 for later calculation
+!!  of cloud fraction.
 
       do k = 1, NLAY
         do i = 1, IX
@@ -1097,9 +1123,10 @@
         enddo
       enddo
 
-!> -# Call module_microphysics::rsipath2(), in Ferrier's scheme,to compute layer's cloud liquid, ice,
-!! rain, and snow water condensate path and the partical effective radius for liquid droplet, rain
-!! drop, and snow flake.
+!> -# Call module_microphysics::rsipath2(), in Ferrier's scheme, to
+!! compute layer's cloud liquid, ice, rain, and snow water condensate
+!! path and the partical effective radius for liquid droplet, rain drop, 
+!! and snow flake.
       call  rsipath2                                                    &
 !  ---  inputs:
      &     ( plyr, plvl, tlyr, qlyr, qcwat, qcice, qrain, rrime,        &
@@ -1335,8 +1362,9 @@
       enddo
 
 
-!> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions and
-!! clouds top/bottom layer indices for low, mid, and high clouds.
+!> -# Call gethml(), to compute low, mid, high, total, and boundary
+!! layer cloud fractions and clouds top/bottom layer indices for low,
+!! mid, and high clouds.
 !       The three cloud domain boundaries are defined by ptopc.  The cloud
 !       overlapping method is defined by control flag 'iovr', which may
 !       be different for lw and sw radiation programs.
@@ -1357,7 +1385,8 @@
 !-----------------------------------
 !> @}
 
-!> This subroutine computes cloud related quantities using zhao/moorthi's prognostic cloud microphysics scheme + pdfcld.
+!> This subroutine computes cloud related quantities using 
+!! zhao/moorthi's prognostic cloud microphysics scheme + pdfcld.
 !!\param plyr       (ix,nlay), model layer mean pressure in mb (100pa)
 !!\param plvl       (ix,nlp1), model level pressure in mb (100pa)
 !!\param tlyr       (ix,nlay), model layer mean temperature in K
@@ -1366,7 +1395,8 @@
 !!\param qstl       (ix,nlay), layer saturate humidity in gm/gm
 !!\param rhly       (ix,nlay), layer relative humidity (=qlyr/qstl)
 !!\param clw        (ix,nlay), layer cloud condensate amount
-!!\param xlat       (ix), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param xlat       (ix), grid latitude in radians, default to pi/2 ->
+!!                  -pi/2 range, otherwise see in-line comment
 !!\param xlon       (ix), grid longitude in radians  (not used)
 !!\param slmsk      (ix), sea/land mask array (sea:0,land:1,sea-ice:2)
 !!\param ix         horizontal dimention
@@ -1376,27 +1406,27 @@
 !!\param kdt           
 !!\param me         print control flag
 !!\param clouds    (ix,nlay,nf_clds), cloud profiles
-!!\n                    (:,:,1) - layer total cloud fraction
-!!\n                    (:,:,2) - layer cloud liq water path (g/m**2)
-!!\n                    (:,:,3) - mean eff radius for liq cloud (micron)
-!!\n                    (:,:,4) - layer cloud ice water path (g/m**2)
-!!\n                    (:,:,5) - mean eff radius for ice cloud (micron)
-!!\n                    (:,:,6) - layer rain drop water path         not assigned
-!!\n                    (:,:,7) - mean eff radius for rain drop (micron)
-!!\n                    (:,:,8) - layer snow flake water path        not assigned
-!!\n                    (:,:,9) - mean eff radius for snow flake(micron)
+!!\n               (:,:,1) - layer total cloud fraction
+!!\n               (:,:,2) - layer cloud liq water path (g/m**2)
+!!\n               (:,:,3) - mean eff radius for liq cloud (micron)
+!!\n               (:,:,4) - layer cloud ice water path (g/m**2)
+!!\n               (:,:,5) - mean eff radius for ice cloud (micron)
+!!\n               (:,:,6) - layer rain drop water path         not assigned
+!!\n               (:,:,7) - mean eff radius for rain drop (micron)
+!!\n               (:,:,8) - layer snow flake water path        not assigned
+!!\n               (:,:,9) - mean eff radius for snow flake(micron)
 !!\param clds      (ix,5), fraction of clouds for low, mid, hi, tot, bl
 !!\param mtop      (ix,3), vertical indices for low, mid, hi cloud tops
 !!\param mbot      (ix,3), vertical indices for low, mid, hi cloud bases
 !!\section gen_progcld3 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine progcld3                                            
-     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,         !  ---  inputs:
-     &       xlat,xlon,slmsk,                                         
-     &       ix, nlay, nlp1,                                         
-     &       deltaq,sup,kdt,me,                                     
-     &       clouds,clds,mtop,mbot                                     !  ---  outputs:
+      subroutine progcld3                                          &
+     &     ( plyr,plvl,tlyr,tvly,qlyr,qstl,rhly,clw,cnvw,cnvc,     &    !  ---  inputs:
+     &       xlat,xlon,slmsk,                                      &
+     &       ix, nlay, nlp1,                                       &
+     &       deltaq,sup,kdt,me,                                    &
+     &       clouds,clds,mtop,mbot                                 &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1564,7 +1594,7 @@
       endif
 
 !> -# Find top pressure (ptopc) for each cloud domain for given latitude.
-!       ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,l,m,h;
+!     ptopc(k,i): top presure of each cld domain (k=1-4 are sfc,l,m,h;
 !  ---  i=1,2 are low-lat (<45 degree) and pole regions)
 
       do id = 1, 4
@@ -1719,7 +1749,8 @@
         enddo
       endif
 
-!> -# Calculate effective ice cloud droplet radius following Heymsfield and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
+!> -# Calculate effective ice cloud droplet radius following Heymsfield
+!!    and McFarquhar (1996) \cite heymsfield_and_mcfarquhar_1996.
 
       do k = 1, nlay
         do i = 1, ix
@@ -1762,8 +1793,9 @@
       enddo
 
 
-!> -# Call gethml() to compute low,mid,high,total, and boundary layer cloud fractions
-!! and clouds top/bottom layer indices for low, mid, and high clouds.
+!> -# Call gethml() to compute low,mid,high,total, and boundary layer
+!! cloud fractions and clouds top/bottom layer indices for low, mid,
+!! and high clouds.
 !       the three cloud domain boundaries are defined by ptopc.  the cloud
 !       overlapping method is defined by control flag 'iovr', which may
 !       be different for lw and sw radiation programs.
@@ -1793,27 +1825,29 @@
 !!\param vvel      (IX,NLAY), layer mean vertical velocity in mb/sec
 !!\param cv        (IX), fraction of convective cloud
 !!\param cvt, cvb  (IX), conv cloud top/bottom pressure in mb
-!!\param xlat      (IX), grid latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
-!!\param xlon      (IX), grid longitude in radians, ok for both 0->2pi or -pi -> +pi ranges
+!!\param xlat      (IX), grid latitude in radians, default to pi/2 ->
+!!                 -pi/2 range, otherwise see in-line comment
+!!\param xlon      (IX), grid longitude in radians, ok for both 0->2pi
+!!                 or -pi -> +pi ranges
 !!\param slmsk     (IX), sea/land mask array (sea:0,land:1,sea-ice:2)
 !!\param IX        horizontal dimention
 !!\param NLAY,NLP1       vertical layer/level dimensions
-!!\param clouds         (IX,NLAY,NF_CLDS), cloud profiles
-!!\n                         (:,:,1) - layer total cloud fraction
-!!\n                         (:,:,2) - layer cloud optical depth
-!!\n                         (:,:,3) - layer cloud single scattering albedo
-!!\n                         (:,:,4) - layer cloud asymmetry factor
-!!\param clds           (IX,5), fraction of clouds for low, mid, hi, tot, bl
-!!\param mtop           (IX,3), vertical indices for low, mid, hi cloud tops
-!!\param mbot           (IX,3), vertical indices for low, mid, hi cloud bases
+!!\param clouds    (IX,NLAY,NF_CLDS), cloud profiles
+!!\n               (:,:,1) - layer total cloud fraction
+!!\n               (:,:,2) - layer cloud optical depth
+!!\n               (:,:,3) - layer cloud single scattering albedo
+!!\n               (:,:,4) - layer cloud asymmetry factor
+!!\param clds      (IX,5), fraction of clouds for low, mid, hi, tot, bl
+!!\param mtop      (IX,3), vertical indices for low, mid, hi cloud tops
+!!\param mbot      (IX,3), vertical indices for low, mid, hi cloud bases
 !!\section gen_diagcld1 General Algorithm
 !> @{
 !-----------------------------------
-      subroutine diagcld1                                             
-     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                    !  ---  inputs:
-     &       xlat,xlon,slmsk,                                      
-     &       IX, NLAY, NLP1,                                     
-     &       clouds,clds,mtop,mbot                                   !  ---  outputs:
+      subroutine diagcld1                                        &
+     &     ( plyr,plvl,tlyr,rhly,vvel,cv,cvt,cvb,                &    !  ---  inputs:
+     &       xlat,xlon,slmsk,                                    &
+     &       IX, NLAY, NLP1,                                     &
+     &       clouds,clds,mtop,mbot                               &    !  ---  outputs:
      &      )
 
 ! =================   subprogram documentation block   ================ !
@@ -1878,10 +1912,10 @@
 !  ---  inputs
       integer,  intent(in) :: IX, NLAY, NLP1
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plvl, plyr, &
      &       tlyr, rhly, vvel
 
-      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon,
+      real (kind=kind_phys), dimension(:),   intent(in) :: xlat, xlon, &
      &       slmsk, cv, cvt, cvb
 
 !  ---  outputs
@@ -1970,7 +2004,8 @@
 
         enddo        ! end_j_loop
 
-!> -# Get rh-cld relationship for each grid point, interpolating longitudinally between regions if necessary.
+!> -# Get rh-cld relationship for each grid point, interpolating
+!!    longitudinally between regions if necessary.
 
         if (slmsk(i) < 1.0) then
           is = 2
@@ -2063,8 +2098,8 @@
 
       if ( ivflip == 0 ) then                 ! input data from toa to sfc
 
-!>    - Find the lowest low cloud top sigma level, computed for each lat cause
-!!      domain definition changes with latitude.
+!>    - Find the lowest low cloud top sigma level, computed for each
+!!      lat cause domain definition changes with latitude.
 
 !       klowb = 1
         klowt = 1
@@ -2078,9 +2113,9 @@
 
         do i = 1, IX
 
-!>    - Find the stratosphere cut off layer for high cloud (about 250mb).
-!!      It is assumed to be above the layerwith dthdp less than -0.25 in
-!!      the high cloud domain.
+!>    - Find the stratosphere cut off layer for high cloud (about 
+!!      250mb). It is assumed to be above the layerwith dthdp less than
+!!      -0.25 in the high cloud domain.
 
           kcut(i) = 2
           lab_do_kcut0 : do k = klowt-1, 2, -1
@@ -2121,8 +2156,9 @@
 
         enddo                ! end_do_i_loop
 
-!>    - Calculate stratiform cloud and put into array 'cldtot' using the cld-rh relationship
-!!      from table look-up, where tables obtained using k.mitchell frequency distribution tuning.
+!>    - Calculate stratiform cloud and put into array 'cldtot' using
+!!      the cld-rh relationship from table look-up, where tables
+!!      obtained using k.mitchell frequency distribution tuning.
 !bl       (observations are daily means from us af rtneph).....k.a.c.
 !bl       tables created without lowest 10 percent of atmos.....k.a.c.
 !      (observations are synoptic using -6,+3 window from rtneph)
@@ -2382,8 +2418,9 @@
         enddo
       enddo
 
-!> -# Call gethml(), to compute low, mid, high, total, and boundary layer cloud fractions
-!! and cloud top/bottom layer indices for low, mid, and high clouds.
+!> -# Call gethml(), to compute low, mid, high, total, and boundary
+!!    layer cloud fractions and cloud top/bottom layer indices for low,
+!!    mid, and high clouds.
 !         the three cloud domain boundaries are defined by ptopc.  the cloud
 !         overlapping method is defined by control flag 'iovr', which may
 !         be different for lw and sw radiation programs.
@@ -2404,11 +2441,11 @@
 !> @}
 
 
-!> This subroutine computes high, mid, low, total, and boundary cloud fractions
-!! and cloud top/bottom layer indices for model diagnostic output.
-!! The three cloud domain boundaries are defined by ptopc. The cloud 
-!! overlapping method is defined by control flag 'iovr', which is also 
-!!   used by L/W and S/W radiation programs.                          
+!> This subroutine computes high, mid, low, total, and boundary cloud
+!! fractions and cloud top/bottom layer indices for model diagnostic
+!! output. The three cloud domain boundaries are defined by ptopc. The
+!! cloud overlapping method is defined by control flag 'iovr', which is
+!! also used by LW and SW radiation programs.                          
 !> \param plyr    (IX,NLAY), model layer mean pressure in mb (100Pa)
 !> \param ptop1   (IX,4), pressure limits of cloud domain interfaces
 !!                    (sfc,low,mid,high) in mb (100Pa)
@@ -2423,10 +2460,10 @@
 !>\section detail Detailed Algorithm
 !! @{
 !-----------------------------------                                    !
-      subroutine gethml                                               
-     &     ( plyr, ptop1, cldtot, cldcnv,                        !  ---  inputs:
-     &       IX, NLAY,                                         
-     &       clds, mtop, mbot                                    !  ---  outputs:
+      subroutine gethml                                   &
+     &     ( plyr, ptop1, cldtot, cldcnv,                 &       !  ---  inputs:
+     &       IX, NLAY,                                    &
+     &       clds, mtop, mbot                             &       !  ---  outputs:
      &     )
 
 !  ===================================================================  !
@@ -2480,7 +2517,7 @@
 !  ---  inputs:
       integer, intent(in) :: IX, NLAY
 
-      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1, 
+      real (kind=kind_phys), dimension(:,:), intent(in) :: plyr, ptop1,&
      &       cldtot, cldcnv
 
 !  ---  outputs
@@ -2508,7 +2545,8 @@
 !  ---  total and bl clouds, where cl1, cl2 are fractions of clear-sky view
 !       layer processed from surface and up
 
-!> -# Calculate total and BL cloud fractions (maximum-random cloud overlapping is operational).
+!> -# Calculate total and BL cloud fractions (maximum-random cloud
+!!    overlapping is operational).
 
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
         kstr = NLAY
@@ -2570,7 +2608,8 @@
 !  ---  change! layer processed from surface to top, so low clouds will
 !       contains both bl and low clouds.
 
-!> -# Calculte high, mid, low cloud fractions and vertical indices of cloud tops/bases.
+!> -# Calculte high, mid, low cloud fractions and vertical indices of
+!!    cloud tops/bases.
       if ( ivflip == 0 ) then                   ! input data from toa to sfc
 
         do i = 1, IX
@@ -2746,9 +2785,9 @@
 
 !> cld-rh relations obtained from mitchell-hahn procedure.
 !-----------------------------------                                    !
-      subroutine rhtable                                                
-     &     ( me                                                   !  ---  inputs:
-     &,      ier )         !  ---  outputs:
+      subroutine rhtable                                 &
+     &     ( me                                          &         !  ---  inputs:
+     &,      ier )                                                 !  ---  outputs:
 
 !  ===================================================================  !
 !                                                                       !

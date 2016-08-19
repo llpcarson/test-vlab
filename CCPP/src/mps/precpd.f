@@ -1,26 +1,39 @@
 !> \file precpd.f
-!! This file contains the subroutine that calculates precipitation processes from suspended cloud water/ice
+!! This file contains the subroutine that calculates precipitation 
+!! processes from suspended cloud water/ice
 
 !> \ingroup MPscheme
 !> \defgroup precip Precipitation (snow or rain) Production
-!! This subroutine computes the conversion from condensation to precipitation (snow or rain) or evaporation of rain.
+!! This subroutine computes the conversion from condensation to
+!! precipitation (snow or rain) or evaporation of rain.
 !!
-!> The parameterization of precipitation is required in order to remove water from the atmosphere
-!! and transport it to the ground. In the scheme discussed here, simplifications in the precipitation parameterization
-!! are used due to computational limitations required by operational NWP models. First, consideration of particle
-!! size and shape can be avoided by using the bulk
-!! parameterization method introduced by Kessler (1969) \cite kessler_1969. Second, only two types of precipitation
-!! , rain and snow, are considered in this scheme. Third, only the most important microphysical
-!! processes associated with the formation of rain and snow are included. 
-!! Figure 2 presents the microphysical processes considered in the precipitation parameterization.
-!! \image html precpd-micop.png "Figure 2: Microphysical processes simulated in the precipitation scheme " width=5cm
-!! Basically, there are four types of microphysical processes considered here:
-!! - production of rain from cloud water (\f$P_{racw}\f$, \f$P_{raut}\f$, \f$P_{sacw}\f$)
-!! - production of snow from cloud ice (\f$P_{saut}\f$, \f$P_{saci}\f$)
-!! - melting of snow to form rain below the freezing level (\f$P_{sm1}\f$, \f$P_{sm2}\f$)
-!! - the evaporation of precipitation (\f$E_{rr}\f$, \f$E_{rs}\f$)
+!> The parameterization of precipitation is required in order to remove
+!! water from the atmosphere and transport it to the ground. In the 
+!! scheme discussed here, simplifications in the precipitation
+!! parameterization are used due to computational limitations required 
+!! by operational NWP models. First, consideration of particle size and
+!! shape can be avoided by using the bulk parameterization method 
+!! introduced by Kessler (1969) \cite kessler_1969. Second, only two
+!! types of precipitation, rain and snow, are considered in this 
+!! scheme. Third, only the most important microphysical processes
+!! associated with the formation of rain and snow are included. 
+!! Figure 2 presents the microphysical processes considered in the 
+!! precipitation parameterization. \image html precpd-micop.png 
+!! "Figure 2: Microphysical processes simulated in the precipitation
+!! scheme " width=5cm
+!! Basically, there are four types of microphysical processes 
+!! considered here:
+!! - production of rain from cloud water
+!! (\f$P_{racw}\f$, \f$P_{raut}\f$, \f$P_{sacw}\f$)
+!! - production of snow from cloud ice
+!! (\f$P_{saut}\f$, \f$P_{saci}\f$)
+!! - melting of snow to form rain below the freezing level
+!! (\f$P_{sm1}\f$, \f$P_{sm2}\f$)
+!! - the evaporation of precipitation
+!! (\f$E_{rr}\f$, \f$E_{rs}\f$)
 !! 
-!! The following two equations can be used to calculate the precipitation rates of rain and snow at each module level:
+!! The following two equations can be used to calculate the 
+!! precipitation rates of rain and snow at each module level:
 !!\f[
 !! P_{r}(\eta)=\frac{p_{s}-p_{t}}{g\eta_{s}}\int_{\eta}^{\eta_{t}}(P_{raut}+P_{racw}+P_{sacw}+P_{sm1}+P_{sm2}-E_{rr})d\eta 
 !!\f]
@@ -28,8 +41,10 @@
 !!\f[
 !! P_{s}(\eta)=\frac{p_{s}-p_{t}}{g\eta_{s}}\int_{\eta}^{\eta_{t}}(P_{saut}+P_{saci}-P_{sm1}-P_{sm2}-E_{rs})d\eta 
 !!\f]
-!! where \f$p_{s}\f$ and\f$p_{t}\f$ are the surface pressure and the pressure at the top of model domain, respectively,
-!! and \f$g\f$ is gravity. The implementation of the precipitation scheme also includes a simplified procedure of computing \f$P_{r}\f$ 
+!! where \f$p_{s}\f$ and\f$p_{t}\f$ are the surface pressure and the 
+!! pressure at the top of model domain, respectively, and \f$g\f$ is 
+!! gravity. The implementation of the precipitation scheme also 
+!! includes a simplified procedure of computing \f$P_{r}\f$ 
 !! and \f$P_{s}\f$ (Zhao and Carr(1997) \cite zhao_and_carr_1997).  
 !! @{
 
@@ -45,14 +60,16 @@
 !! \param[out] rn        precipitation over one time-step dt (m/dt)
 !! \param[out] sr        "snow ratio", ratio of snow to total precipitation
 !! \param[out] rainp    rainwater path
-!! \param[in] u00k      the critical value of relative humidity for large-scale condensation
+!! \param[in] u00k      the critical value of relative humidity for 
+!!                      large-scale condensation
 !! \param[in] psautco   auto conversion coeff from ice to snow
 !! \n                   = 4.0E-4; defined in module_MP_GFS.F90
 !! \param[in] prautco   auto conversion coeff from cloud to rain
 !! \n                   = 1.0E-4; defined in module_MP_GFS.F90
 !! \param[in] evpco     coeff for evaporation of largescale rain
 !! \n                   = 2.0E-5; defined in module_MP_GFS.F90
-!! \param[in] wminco    coeff for water and ice minimum threshold to conversion from condensate to precipitation
+!! \param[in] wminco    coeff for water and ice minimum threshold to 
+!!                      conversion from condensate to precipitation
 !! \n                   = \1.0E-5, 1.0E-5\; defined in module_MP_GFS.F90
 !! \param[in] lprnt     logical print flag
 !! \param[in] jpr       check print point for debugging
@@ -130,9 +147,9 @@
 !
       integer im, ix, km, jpr
       real (kind=kind_phys) q(ix,km),   t(ix,km),    cwm(ix,km)
-     &,                                 del(ix,km),  prsl(ix,km)   !    &, cll(im,km), del(ix,km),  prsl(ix,km)
+     &,                                 del(ix,km),  prsl(ix,km)   
      &,                     rn(im),      sr(im)
-     &,                     dt   !hchuang code change [+1l] : add record to record information in vertical in addition to total column precrl
+     &,                     dt   
      &,                     rainp(im,km), rnp(im),
      &                      psautco(im), prautco(im), evpco, wminco(2)
 !
@@ -337,7 +354,8 @@
 !           if (tmt0(n).le.-40.) qint = qi
 !
 !-------------------ice-water id number iw------------------------------
-!> -# Compute ice-water identification number IW (see algorithm in \ref condense).
+!> -# Compute ice-water identification number IW (see algorithm in 
+!! \ref condense).
             if(tmt0(n) < -15.) then
                fi = qk - u00k(i,k)*qi
                if(fi > d00 .or. wwn > climit) then
@@ -397,22 +415,25 @@
 !!\f[
 !!   P_{saut}=a_{1}(cwm-wmini)
 !!\f]
-!! Since snow production in this process is caused by the increase in size of cloud ice particles due
-!! to depositional growth and aggregation of small ice particles, \f$P_{saut}\f$ is
-!! a function of temperature as determined by coefficient \f$a_{1}\f$, given by
+!! Since snow production in this process is caused by the increase in 
+!! size of cloud ice particles due to depositional growth and 
+!! aggregation of small ice particles, \f$P_{saut}\f$ is a function of 
+!! temperature as determined by coefficient \f$a_{1}\f$, given by
 !! \f[
 !!   a_{1}=psautco \times dt \times exp\left[ 0.025\left(T-273.15\right)\right]
 !! \f]
 !!
-!!  - The accretion of cloud ice by snow (\f$P_{saci}\f$) in the regions where  cloud ice
-!! exists is simulated by
+!!  - The accretion of cloud ice by snow (\f$P_{saci}\f$) in the
+!! regions where  cloud ice exists is simulated by
 !!\f[
 !!  P_{saci}=C_{s}cwm P_{s}
 !!\f]
-!! where \f$P_{s}\f$ is the precipitation rate of snow. The collection coefficient \f$C_{s}\f$
-!! is a function of temperature since the open structures of ice crystals at relative warm
-!! temperatures are more likely to stick, given a collision, than crystals of other shapes
-!! (Rogers 1979 \cite rogers_1979). Above the freezing level, \f$C_{s}\f$ is expressed by
+!! where \f$P_{s}\f$ is the precipitation rate of snow. The collection
+!! coefficient \f$C_{s}\f$ is a function of temperature since the open 
+!! structures of ice crystals at relative warm temperatures are more 
+!! likely to stick, given a collision, than crystals of other shapes
+!! (Rogers 1979 \cite rogers_1979). Above the freezing level, 
+!! \f$C_{s}\f$ is expressed by
 !!\f[
 !!   C_{s}=c_{1}exp\left[ 0.025\left(T-273.15\right)\right]
 !!\f]
@@ -440,8 +461,9 @@
                precsl(n) = precsl(n) + (wws - ww(n)) * condt(n)
             else                                    !  liquid water
 !
-!>  - Following Sundqvist et al. (1989) \cite sundqvist_et_al_1989, the autoconversion of cloud water to rain
-!! (\f$P_{raut}\f$) can be parameterized from the cloud water mixing ratio \f$m\f$ and cloud
+!>  - Following Sundqvist et al. (1989) \cite sundqvist_et_al_1989,
+!! the autoconversion of cloud water to rain (\f$P_{raut}\f$) can be 
+!! parameterized from the cloud water mixing ratio \f$m\f$ and cloud
 !! coverage \f$b\f$, that is,
 !!\f[
 !!  P_{raut}=(prautco \times dt )\times (cwm-wmin)\left\{1-exp[-(\frac{cwm-wmin}{m_{r}b})^{2}]\right\}
@@ -463,13 +485,15 @@
                praut     = min(praut, cwmk)
                ww(n)     = ww(n) - praut
 !
-!>  - Calculate the accretion of cloud water by rain \f$P_{racw}\f$, can be expressed
-!! using the cloud mixing ratio \f$cwm\f$ and rainfall rate \f$P_{r}\f$:
+!>  - Calculate the accretion of cloud water by rain \f$P_{racw}\f$, 
+!! can be expressed using the cloud mixing ratio \f$cwm\f$ and rainfall
+!! rate \f$P_{r}\f$:
 !!\f[
 !!  P_{saci}=C_{s}cwmP_{r}
 !!\f]
-!! where \f$C_{r}=5.0\times10^{-4}m^{2}kg^{-1}s{-1}\f$ is the collection coeffiecient.
-!! Note that this process is not included in current operational physcics.
+!! where \f$C_{r}=5.0\times10^{-4}m^{2}kg^{-1}s{-1}\f$ is the 
+!! collection coeffiecient. Note that this process is not included in 
+!! current operational physcics.
 !          below is for zhao's precip formulation (water)
 !
 !              amaxcm    = max(cons_0, cwmk - wmink(n))
@@ -490,23 +514,27 @@
           endif
         enddo
 !> -# Evaporation of precipitation (\f$E_{rr}\f$ and \f$E_{rs}\f$)
-!!\n Evaporation of precipitation is an important process that  moistens the layers below
-!! cloud base. Through this process, some of the precipitating water is evaporated
-!! back to the atmosphere and the precipitation efficiency is reduced.
-!!  - Evaporation of rain is calculated using the equation (Sundqvist 1988 \cite sundqvist_1988):
+!!\n Evaporation of precipitation is an important process that moistens
+!! the layers below cloud base. Through this process, some of the 
+!! precipitating water is evaporated back to the atmosphere and the 
+!! precipitation efficiency is reduced.
+!!  - Evaporation of rain is calculated using the equation (Sundqvist
+!! 1988 \cite sundqvist_1988):
 !!\f[
 !!   E_{rr}= evpco \times (u-f)(P_{r})^{\beta}
 !!\f]
-!! where \f$u\f$ is u00k, \f$f\f$ is the relative humidity. \f$\beta = 0.5\f$ are empirical parameter. 
+!! where \f$u\f$ is u00k, \f$f\f$ is the relative humidity. 
+!! \f$\beta = 0.5\f$ are empirical parameter. 
 !!  - Evaporation of snow is calculated using the equation:
 !!\f[
 !!  E_{rs}=[C_{rs1}+C_{rs2}(T-273.15)](\frac{u-f}{u})P_{s}
 !!\f]
 !! where \f$C_{rs1}=5\times 10^{-6}m^{2}kg^{-1}s^{-1}\f$ and
-!! \f$C_{rs2}=6.67\times 10^{-10}m^{2}kg^{-1}K^{-1}s^{-1}\f$. The evaporation of melting snow
-!! below the freezing level is ignored in this scheme because of the difficulty in the latent
-!! heat treatment since the surface of a melting snowflake is usually covered by a thin layer
-!! of liquid water.
+!! \f$C_{rs2}=6.67\times 10^{-10}m^{2}kg^{-1}K^{-1}s^{-1}\f$. The 
+!! evaporation of melting snow below the freezing level is ignored in 
+!! this scheme because of the difficulty in the latent heat treatment 
+!! since the surface of a melting snowflake is usually covered by a 
+!! thin layer of liquid water.
 !
 !-----evaporation of precipitation-------------------------
 !**** err & ers positive--->evaporation-- negtive--->condensation
@@ -551,28 +579,32 @@
           endif
         enddo
 !> -# Melting of snow (\f$P_{sm1}\f$ and \f$P_{sm2}\f$)
-!!\n In this scheme, we allow snow melting to take place in certain temperature regions
-!! below the freezing level in two ways. In both cases, the melted snow is assumed to become
-!! raindrops.
-!!  - One is the continuous melting of snow due to the increase in temperature as it falls
-!! down through the freezing level. This process is parameterized as a function of temperature
-!! and snow precipitation rate, that is,
+!!\n In this scheme, we allow snow melting to take place in certain
+!! temperature regions below the freezing level in two ways. In both 
+!! cases, the melted snow is assumed to become raindrops.
+!!  - One is the continuous melting of snow due to the increase in 
+!! temperature as it falls down through the freezing level. This 
+!! process is parameterized as a function of temperature and snow
+!! precipitation rate, that is,
 !!\f[
 !! P_{sm1}=C_{sm}(T-273.15)^{2}P_{s}
 !!\f]
 !! where \f$C_{sm}=5\times 10^{-8}m^{2}kg^{-1}K^{-2}s^{-1}\f$
-!! cause the falling snow to melt almost completely before it reaches the
-!! \f$T=278.15 K\f$ level.
-!!  - Another is the immediate melting of melting snow by collection of the cloud water
-!! below the freezing level. In order to calculate the melting rate, the
-!! collection rate of cloud water by melting snow is computed first. Similar to the collection of cloud water
-!! by rain, the collection of cloud water by melting snow can be parameterized to be proportional
-!! to the cloud water mixing ratio \f$m\f$ and the precipitation rate of snow \f$P_{s}\f$:
+!! cause the falling snow to melt almost completely before it reaches 
+!! the \f$T=278.15 K\f$ level.
+!!  - Another is the immediate melting of melting snow by collection of
+!! the cloud water below the freezing level. In order to calculate the 
+!! melting rate, the collection rate of cloud water by melting snow is 
+!! computed first. Similar to the collection of cloud water by rain, 
+!! the collection of cloud water by melting snow can be parameterized 
+!! to be proportional to the cloud water mixing ratio \f$m\f$ and the
+!! precipitation rate of snow \f$P_{s}\f$:
 !!\f[
 !!   P_{sacw}=C_{r}cwmP_{s}
 !!\f]
-!! where \f$C_{r}\f$ is the collection coefficient,\f$C_{r}=5.0\times 10^{-4}m^{2}kg^{-1}s^{-1}\f$
-!!. The melting rate of snow then can be computed from
+!! where \f$C_{r}\f$ is the collection coefficient,
+!! \f$C_{r}=5.0\times 10^{-4}m^{2}kg^{-1}s^{-1}\f$ . The melting rate 
+!! of snow then can be computed from
 !!\f[
 !!   P_{sm2}=C_{ws}P_{sacw}
 !!\f]
@@ -651,7 +683,8 @@
 !-----------------------end of precipitation processes-----------------
 !**********************************************************************
 !
-!> -# Compute precipitation at surface (\f$rn\f$)and determine fraction of frozen precipitation (\f$sr\f$).
+!> -# Compute precipitation at surface (\f$rn\f$)and determine 
+!! fraction of frozen precipitation (\f$sr\f$).
 !!\f[
 !!   rn= (P_{r}(\eta_{sfc})+P_{s}(\eta_{sfc}))/10^3
 !!\f]

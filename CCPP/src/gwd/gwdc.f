@@ -1,25 +1,34 @@
 !> \file gwdc.f This file is the original code for parameterization of
-!! stationary convection forced gravity wave drag based on Chun and Baik(1998) \cite chun_and_baik_1998
+!! stationary convection forced gravity wave drag based on Chun and 
+!! Baik(1998) \cite chun_and_baik_1998
 
 !> \ingroup gwd
 !> \defgroup convective Convective Gravity Wave Drag
-!! This subroutine is the parameterization of convective gravity wave drag
-!! based on the theory given by Chun and Baik (1998) \cite chun_and_baik_1998
-!! modified for implementation into the GFS/CFS by Ake Johansson(Aug 2005).
+!! This subroutine is the parameterization of convective gravity wave
+!! drag based on the theory given by Chun and Baik (1998) \cite 
+!! chun_and_baik_1998 modified for implementation into the GFS/CFS by 
+!! Ake Johansson(Aug 2005).
 !!
-!> Parameterizing subgrid-scale convection-induced gravity wave momentum flux for use in large-scale
-!! models inherently requires some information from subgrid-scale cumulus parameterization.
-!! The methodology for parameterizing the zonal momentum flux induced by thermal forcing can be
-!! summarized as follows. From the cloud-base to cloud-top height, the effect of the momentum flux
-!! induced by subgrid-scale diabatic forcing is not considered because subgrid-scale cumulus convection
-!! in large-scale models is only activated in a conditionally unstable atmosphere. Below the cloud
-!! base, the momentum flux is also not considered because of the wave momentum cancellation. At the
-!! cloud top, the momentum flux is obtained by eq.(18) and (19) in Chun and Baik (1998) \cite
-!! chun_and_baik_1998.  Above the cloud top, there are two ways to construct the momentum flux profile.
-!! One way is to specify a vertical structure of the momentum flux normalized by the cloud-top value,
-!! similar to what has been done for mountain drag parameterization. The other way is to apply the wave
-!! saturation hypothesis in order to find wave breaking levels in terms of the Richardon number
-!! criterion using the nonlinearity factor of thermally induced waves. 
+!> Parameterizing subgrid-scale convection-induced gravity wave 
+!! momentum flux for use in large-scale models inherently requires
+!! some information from subgrid-scale cumulus parameterization.
+!! The methodology for parameterizing the zonal momentum flux induced
+!! by thermal forcing can be summarized as follows. From the cloud-base
+!! to cloud-top height, the effect of the momentum flux
+!! induced by subgrid-scale diabatic forcing is not considered because
+!! subgrid-scale cumulus convection in large-scale models is only 
+!! activated in a conditionally unstable atmosphere. Below the cloud
+!! base, the momentum flux is also not considered because of the wave 
+!! momentum cancellation. At the cloud top, the momentum flux is 
+!! obtained by eq.(18) and (19) in Chun and Baik (1998) \cite
+!! chun_and_baik_1998.  Above the cloud top, there are two ways to
+!! construct the momentum flux profile. One way is to specify a
+!! vertical structure of the momentum flux normalized by the cloud-top
+!! value, similar to what has been done for mountain drag 
+!! parameterization. The other way is to apply the wave saturation
+!! hypothesis in order to find wave breaking levels in terms of the
+!! Richardon number criterion using the nonlinearity factor of 
+!! thermally induced waves. 
 !!@{
 
 !> \param[in] IM       horizontal number of used pts
@@ -34,24 +43,29 @@
 !> \param[in] PMID1    mean layer pressure
 !> \param[in] PINT1    pressure at layer interfaces
 !> \param[in] DPMID1   mean layer delta p
-!> \param[in] QMAX     maximum convective heating rate (k/s) in a horizontal
-!!                     grid point calculated from cumulus parameterization
+!> \param[in] QMAX     maximum convective heating rate (k/s) in a 
+!!                     horizontal grid point calculated 
+!!                     from cumulus parameterization
 !> \param[in] KTOP     vertical level index for cloud top
 !> \param[in] KBOT     vertical level index for cloud bottom
 !> \param[in] KCNV     (0,1) dependent on whether convection occur or not
 !> \param[in] CLDF     deep convective cloud fraction at the cloud top
 !> \param[in] GRAV     gravity defined in physcon
-!> \param[in] CP       specific heat at constant pressure defined in physcon
+!> \param[in] CP       specific heat at constant pressure defined in 
+!!                     physcon
 !> \param[in] RD       gas constant air defined in physcon
 !> \param[in] FV       con_fvirt = con_rv/con_rd-1
-!> \param[in] DLENGTH  grid spacing in the direction of basic wind at the cloud top
+!> \param[in] DLENGTH  grid spacing in the direction of basic wind at 
+!!                     the cloud top
 !> \param[in] LPRNT    logical print flag
 !> \param[in] IPR      check print point for debugging
 !> \param[in] FHOUR    forecast hour
 !> \param[out] UTGWC   zonal wind tendency
 !> \param[out] VTGWC   meridional wind tendency
-!> \param[out] TAUCTX  wave stress at the cloud top projected in the east
-!> \param[out] TAUCTY  wave stress at the cloud top projected in the north
+!> \param[out] TAUCTX  wave stress at the cloud top projected in the 
+!!                     east
+!> \param[out] TAUCTY  wave stress at the cloud top projected in the 
+!!                     north
 !!
 !> \section al_gwdc General Algorithm
 !> @{
@@ -468,15 +482,17 @@
 !
 
 !
-!>  - The top interface temperature, density, and Brunt-Vaisala frequencies (\f$N\f$) are calculated assuming an isothermal
-!!  atmosphere above the top mid level.
+!>  - The top interface temperature, density, and Brunt-Vaisala 
+!!    frequencies (\f$N\f$) are calculated assuming an isothermal
+!!    atmosphere above the top mid level.
 
         ti(i,1)    = t(i,1)
         rhoi(i,1)  = pint(i,1)/(rd*ti(i,1))
         bruni(i,1) = sqrt ( gsqr / (cp*ti(i,1)) )
 !
-!>  - The bottom interface temperature, density, and Brunt-Vaisala frequencies (\f$N\f$) are calculated assuming an isothermal
-!!  atmosphere below the bottom mid level.
+!>  - The bottom interface temperature, density, and Brunt-Vaisala 
+!!    frequencies (\f$N\f$) are calculated assuming an isothermal
+!!    atmosphere below the bottom mid level.
 
         ti(i,km+1)    = t(i,km)
         rhoi(i,km+1)  = pint(i,km+1)/(rd*ti(i,km+1)*(1.0+fv*spfh(i,km)))
@@ -486,7 +502,8 @@
 !-----------------------------------------------------------------------
 !
 !>  - The interface level temperature, density, and Brunt-Vaisala
-!!  frequencies (\f$N\f$) are calculated based on linear interpolation of temperature in ln(P).
+!!    frequencies (\f$N\f$) are calculated based on linear interpolation
+!!    of temperature in ln(P).
 !
 !-----------------------------------------------------------------------
 
@@ -593,11 +610,11 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate the basic state wind projected in the direction of the cloud
-!!  top wind at mid level and interface level  (U, UI), where:
-!! \n  U  : Basic-wind speed profile. Basic-wind is parallel to the wind
+!> -# Calculate the basic state wind projected in the direction of the
+!!  cloud top wind at mid level and interface level  (U, UI), where:
+!! \n  U : Basic-wind speed profile. Basic-wind is parallel to the wind
 !!             vector at the cloud top level. (mid level)
-!! \n  UI : Basic-wind speed profile. Basic-wind is parallel to the wind
+!! \n  UI: Basic-wind speed profile. Basic-wind is parallel to the wind
 !!             vector at the cloud top level. ( interface level )
 !  Input u(i,k) and v(i,k) is defined at mid level
 !
@@ -750,16 +767,19 @@
 !!      using density, temperature, and wind that are defined at mid
 !!      level just below the interface level in which cloud top wave
 !!      stress is defined.
-!! The parameter \f$\mu\f$ is the nonlinearity factor of thermally induced internal
-!! gravity waves defined by eq.(17) in Chun and Baik,1998 \cite chun_and_baik_1998
+!! The parameter \f$\mu\f$ is the nonlinearity factor of thermally 
+!! induced internal gravity waves defined by eq.(17) in Chun and 
+!! Baik, 1998 \cite chun_and_baik_1998
 !! \f[
 !!  \mu=\frac{gQ_{0}a_{1}}{c_{p}T_{0}NU^{2}}
 !! \f]
-!! where \f$Q_{0}\f$ is the maximum deep convective heating rate in a horizontal grid
-!! point calculated from cumulus parameterization. \f$a_{1}\f$ is the half-width of
-!! the forcing function.\f$g\f$ is gravity. \f$c_{p}\f$ is specific heat at constant pressure.
-!! \f$T_{0}\f$ is the layer mean temperature (T1).
-!! As eqs.(18) and (19) \cite chun_and_baik_1998, the zonal momentum flux is given by
+!! where \f$Q_{0}\f$ is the maximum deep convective heating rate in a
+!! horizontal grid point calculated from cumulus parameterization. 
+!! \f$a_{1}\f$ is the half-width of
+!! the forcing function.\f$g\f$ is gravity. \f$c_{p}\f$ is specific 
+!! heat at constant pressure. \f$T_{0}\f$ is the layer mean 
+!! temperature (T1). As eqs.(18) and (19) \cite chun_and_baik_1998, 
+!! the zonal momentum flux is given by
 !! \f[
 !! \tau_{x}=-[\rho U^{3}/(N\triangle x)]G(\mu)
 !! \f]
@@ -768,11 +788,12 @@
 !! G(\mu)=c_{1}c_2^2 \mu^{2}
 !! \f]
 !! wher \f$\rho\f$ is the local density.
-!! The tunable parameter \f$c_1\f$ is related to the horizontal structure of thermal forcing.
-!! The tunable parameter \f$c_2\f$ is related to the basic-state wind and stability and the
-!! bottom and top heights of thermal forcing.
-!! If the atmosphere is dynamically unstable at the cloud top,
-!! the convective GWD calculation is skipped at that grid point.
+!! The tunable parameter \f$c_1\f$ is related to the horizontal 
+!! structure of thermal forcing. The tunable parameter \f$c_2\f$ is 
+!! related to the basic-state wind and stability and the bottom and 
+!! top heights of thermal forcing. If the atmosphere is dynamically
+!! unstable at the cloud top, the convective GWD calculation is 
+!! skipped at that grid point.
 !!
 !  - If mean wind at the cloud top is less than zero, GWDC
 !      calculation in current horizontal grid is skipped.
@@ -840,8 +861,8 @@
 !  1 - nonlin*|c2|.
 !
 !-----------------------------------------------------------------------
-!> -# Calculate the minimum Richardson number including both the basic-state
-!! condition and wave effects.
+!> -# Calculate the minimum Richardson number including both the 
+!! basic-state condition and wave effects.
 !!\f[
 !! Ri_{min}\approx\frac{Ri(1-\mu|c_{2}|)}{(1+\mu Ri^{1/2}|c_{2}|)^{2}}
 !!\f]
@@ -888,8 +909,8 @@
 
 !-----------------------------------------------------------------------
 !
-!> -# Calculate the gravity wave stress profile using the wave saturation
-!!  hypothesis of Lindzen (1981) \cite lindzen_1981.
+!> -# Calculate the gravity wave stress profile using the wave 
+!!  saturation hypothesis of Lindzen (1981) \cite lindzen_1981.
 !
 !  Assuming kcldtop(i)=10 and kcldbot=16,
 !
@@ -942,8 +963,9 @@
 !
 !-----------------------------------------------------------------------
 
-!>  - When \f$Ri_{min}\f$ is set to 1/4 based on Lindzen's (1981) \cite lindzen_1981
-!! saturation hypothesis, the nonlinearity factor for wave saturation can be derived by
+!>  - When \f$Ri_{min}\f$ is set to 1/4 based on Lindzen's (1981) 
+!! \cite lindzen_1981 saturation hypothesis, the nonlinearity factor 
+!! for wave saturation can be derived by
 !! \f[
 !! \mu_{s}=\frac{1}{|c_{2}|}[2\sqrt{2+\frac{1}{\sqrt{Ri}}}-(2+\frac{1}{\sqrt{Ri}})]
 !! \f]
@@ -969,8 +991,9 @@
                   end if                                              ! RImin
                 else
 
-!>  - If the minimum \f$R_{i}\f$ at interface cloud top is less than or equal to 1/4,
-!!  the convective GWD calculation is skipped at that grid point.
+!>  - If the minimum \f$R_{i}\f$ at interface cloud top is less than 
+!! or equal to 1/4, the convective GWD calculation is skipped at that
+!! grid point.
 
                   taugwci(i,k) = zero    
                 end if                                                ! RIloc
@@ -989,7 +1012,8 @@
 
             elseif (k == 1) then
 
-!>  - As an upper boundary condition, upward propagation of gravity wave energy is permitted.
+!>  - As an upper boundary condition, upward propagation of gravity
+!!    wave energy is permitted.
 
               taugwci(i,1) = taugwci(i,2)
             endif
@@ -997,8 +1021,9 @@
         enddo                     ! end of i=1,npt loop
       enddo                       ! end of k=kcldm,1,-1 loop
 
-!> -# Calculate wind tendency in direction to the wind vector,zonal wind tendency and meridional wind
-!! tendency above the cloud top level due to convectively generated gravity waves.
+!> -# Calculate wind tendency in direction to the wind vector,zonal 
+!! wind tendency and meridional wind tendency above the cloud top 
+!! level due to convectively generated gravity waves.
 
       do k=1,km
         do i=1,npt
@@ -1207,7 +1232,8 @@
 !     enddo
 
 !-----------------------------------------------------------------------
-!> -# Convert back local convective GWD tendency arrays to GFS model vertical indices.
+!> -# Convert back local convective GWD tendency arrays to GFS model
+!!    vertical indices.
 !  Outgoing (FU1,FV1)=(utgwc,vtgwc)
 !-----------------------------------------------------------------------
 

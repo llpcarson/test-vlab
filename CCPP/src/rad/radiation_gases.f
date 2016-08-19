@@ -1,8 +1,8 @@
 !>  \file radiation_gases.f
-!!  This file contains routines that set up ozone climatological profiles and other constant gas
-!!   profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All
-!!   data are entered as mixing ratio by volume, except ozone which is
-!!   mass mixing ratio (g/g).
+!!  This file contains routines that set up ozone climatological
+!!  profiles and other constant gas profiles, such as co2, ch4, n2o,
+!!  o2, and those of cfc gases.  All data are entered as mixing ratio
+!!  by volume, except ozone which is mass mixing ratio (g/g).
 
 !  ==========================================================  !!!!!
 !              'module_radiation_gases'  description           !!!!!
@@ -107,8 +107,8 @@
 !> \ingroup rad
 !! \defgroup module_radiation_gases module_radiation_gases
 !! @{
-!> This module sets up ozone climatological profiles and other constant gas
-!! profiles, such as co2, ch4, n2o, o2, and those of cfc gases.  All
+!> This module sets up ozone climatological profiles and other constant
+!! gas profiles, such as co2, ch4, n2o, o2, and those of cfc gases. All
 !! data are entered as mixing ratio by volume, except ozone which is
 !! mass mixing ratio (g/g).
 !!\version NCEP-Radiation_gases     v5.1  Nov 2012
@@ -211,11 +211,11 @@
       contains
 ! =================
 
-!> This subroutine sets up ozone, co2, etc. parameters. If climatology ozone then
-!! read in monthly ozone data.
+!> This subroutine sets up ozone, co2, etc. parameters. If climatology
+!! ozone then read in monthly ozone data.
 !!\param me         print message control flag
 !-----------------------------------
-      subroutine gas_init
+      subroutine gas_init                      &
      &     ( me )!  ---  inputs:
 !  ---  outputs: ( none )
 
@@ -500,8 +500,8 @@
       end subroutine gas_init
 !-----------------------------------
 
-!> This subroutine reads in 2-d monthly co2 data set for a specified year.
-!! Data are in a 15 degree lat/lon horizontal resolution.
+!> This subroutine reads in 2-d monthly co2 data set for a specified
+!! year. Data are in a 15 degree lat/lon horizontal resolution.
 !!\param iyear      year of the requested data for fcst
 !!\param imon       month of the year
 !!\param iday       day of the month
@@ -512,7 +512,7 @@
 !>\section gen_gas_update General Algorithm
 !! @{
 !-----------------------------------
-      subroutine gas_update
+      subroutine gas_update                      &
      &     ( iyear, imon, iday, ihour, loz1st, ldoco2, me )!  ---  inputs
 !  ---  outputs: ( none )
 
@@ -883,13 +883,16 @@
 !-----------------------------------
 !! @}
 
-!> This subroutine sets up global distribution of radiation absorbing gases in volume
-!! mixing ratio. Currently only co2 has the options from observed values, all other
-!! gases are asigned to the climatological values.
+!> This subroutine sets up global distribution of radiation absorbing
+!! gases in volume mixing ratio. Currently only co2 has the options
+!! from observed values, all other gases are asigned to the
+!! climatological values.
 !!\param plvl       (IMAX,LMAX+1), pressure at model layer interfaces (mb)
-!!\param xlon       (IMAX), grid longitude in radians, ok both 0->2pi or -pi -> +pi arrangements
-!!\param xlat       (IMAX), grid latitude in radians, default range to pi/2 -> -pi/2, otherwise see in-line comment
-!!\param IMAX, LMAX        horizontal/vertical dimensions for output data
+!!\param xlon       (IMAX), grid longitude in radians, ok both 0->2pi 
+!!                  or -pi -> +pi arrangements
+!!\param xlat       (IMAX), grid latitude in radians, default range to 
+!!                  pi/2 -> -pi/2, otherwise see in-line comment
+!!\param IMAX, LMAX      horizontal/vertical dimensions for output data
 !!\param gasdat     (IMAX,LMAX,NF_VGAS) - gases volume mixing ratioes
 !!\n                    (:,:,1)           - co2
 !!\n                    (:,:,2)           - n2o
@@ -902,10 +905,10 @@
 !!\n                    (:,:,9)           - ccl4
 !!\n                    (:,:,10)          - cfc113
 !-----------------------------------
-      subroutine getgases         
-     &     ( plvl, xlon, xlat,   ! ---  inputs               
-     &       IMAX, LMAX,           
-     &       gasdat              ! ---  outputs    
+      subroutine getgases          &
+     &     ( plvl, xlon, xlat,     & ! ---  inputs               
+     &       IMAX, LMAX,           &
+     &       gasdat                & ! ---  outputs    
      &      )
 
 !  ===================================================================  !
@@ -1044,17 +1047,19 @@
       end subroutine getgases
 !-----------------------------------
 
-!> This subroutine sets up climatological ozone profile for radiation calculation.
-!! This code is originally written by Shrinivas Moorthi.
+!> This subroutine sets up climatological ozone profile for radiation
+!! calculation. This code is originally written by Shrinivas Moorthi.
 !!\param prslk       (IMAX,LM), exner function = \f$(p/p0)^{rocp}\f$
-!!\param xlat        (IMAX), latitude in radians, default to pi/2 -> -pi/2 range, otherwise see in-line comment
+!!\param xlat        (IMAX), latitude in radians, default to pi/2 ->
+!!                    -pi/2 range, otherwise see in-line comment
 !!\param IMAX, LM    horizontal and vertical dimensions
-!!\param o3mmr      (IMAX,LM), output ozone profile in mass mixing ratio (g/g)
+!!\param o3mmr       (IMAX,LM), output ozone profile in mass mixing 
+!!                   ratio (g/g)
 !-----------------------------------
-      subroutine getozn 
-     &     ( prslk,xlat,                                                !  ---  inputs
-     &       IMAX, LM,
-     &       o3mmr                                                      !  ---  outputs
+      subroutine getozn                             &
+     &     ( prslk,xlat,                            &                    !  ---  inputs
+     &       IMAX, LM,                              &
+     &       o3mmr                                  &                    !  ---  outputs
      &     )
 
 !  ===================================================================  !
