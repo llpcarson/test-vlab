@@ -1,0 +1,268 @@
+/**
+@mainpage Interoperable Physics Driver for NGGPS
+
+@section Introduction
+
+The development of the Interoperable Physics Driver (IPD) is being funded by 
+the Next Generation Global 
+Prediction System (NGGPS) program as a means to facilitate the research, development,
+and transition to operations of innovations in atmospheric physical
+parameterizations. A prototype of this driver has been developed by the NOAA Environmental Modeling Center
+ for the Global
+Forecast System (GFS) operational physics and works 'out of the box' coupled to the Global
+Spectral Model (GSM) and the GFS physics suite. The main focus of this documentation is the implementation of the IPD within the GSM. 
+It is important to keep in mind that the development of the IPD is ongoing, and decisions about its future are currently being made. 
+
+The IPD development is concurrent with the development of the Common
+Community Physics Package (CCPP). The CCPP is intended to be a collection of 
+parameterizations for use in Numerical Weather Prediction (NWP).  These parameterizations are
+necessary to simulate the effects of processes that are either sub-grid in
+scale (e.g., eddy structures in the planetary boundary layer), or are too
+complicated to be represented explicitly. Common categories of parameterizations include radiation, surface layer,
+planetary boundary layer and vertical mixing, deep and shallow cumulus, and
+microphysics. However, other categorizations are possible. More information about the physics
+that currently exist in the GSM, the prototype for the CCPP, and used with the IPD, please see the CCPP Documentation here: <a href="http://www.dtcenter.org/GMTB/gfs_phys_doc/index.html"> GFS Operational Physics Documentation </a>
+
+The IPD is still in a prototype phase at NCEP and, as such, is implemented in a way specific to the GFS physics. The figure below is an overview diagram of how the IPD is called in the GFS system. 
+
+
+@image html Phys_driver_hierarchy.png "Driver Implementation in GFS"
+
+
+@section future Future Plans
+
+Both the IPD and CCPP will undergo the necessary development to accommodate 
+and the CCPP will be
+designed to accommodate schemes that span multiple categories, such as the
+Simplified Higher Order Closure parameterization (SHOC).  The parameterizations
+can be grouped together into "physics suites" (defined here: @ref mainpage-suite), which are
+sets of parameterizations known to work well together.  Indeed, accurately
+representing the feedbacks and interactions between the physical processes
+represented by the parameterizations is essential.
+
+The CCPP will be designed to be *model--agnostic* in the sense that
+parameterizations contained in the package receive inputs from the dynamic core
+through the IPD. A pre/post physics layer translates variables between those used
+in the dynamic core and those required by the Driver, and performs any necessary de-
+and re-staggering. Currently all physics is assumed to be columnar. The notion of a *patch*
+of columns is only intended for the possibility of improving numerical efficiency through
+vectorization or local shared memory parallelization.
+
+A single IPD will be used to invoke any set of
+parameterizations or suite within the CCPP. Each suite is accompanied by a
+pre/post parameterization interface, which converts variables between those
+provided by the driver and those required by the parameterization, in case they
+differ. Through this mechanism, the CCPP and IPD provide physical tendencies
+back to the dynamic core, which is in turn responsible for updating the state variables.
+The IPD and CCPP can also provide variables for diagnostic output, or for use in other Earth
+System models.
+
+
+@section mainpage-requirements Requirements for the IPD 
+
+The IPD is expected to interact with any set of physics and any dynamic
+core, thus several requirements are needed to satisfy this interaction.
+Because of its purpose as a Community tool to promote research with operational
+models and foster transition of research to operations, it is imperative that
+requirements also be placed on the physics parameterizations.
+
+These requirements are stated explicitly here: 
+
+<a href="https://docs.google.com/document/d/1O6ii0r0jX83pD9Sa4FxnAC5d2lAU55yg_zvHaVykeLw/edit#heading=h.qmhn7sgvdtt4">Interoperable Physics Driver and Common Community Physics Package (CCPP): Goals and Requirements </a>
+
+@section mainpage-suite Definition of a Physics Suite 
+
+It is important that the IPD is able to support a **physics suite** as
+an identifiably distinguishable entity from an arbitrary group of physical
+parameterizations. The distinction between **physical parameterization** and **physics suite** is made as follows.
+
+A **physical parameterization** is a code that represents one or more physical
+processes that force or close model dynamics.  It is defined by the code
+implementation of the mathematical functions comprising the scheme, and not by a
+particular set of parameters or coefficients that could be set externally. 
+
+A **physics suite** is a set of non-redundant atmospheric physical parameterizations
+that have been designed or modified to work together to meet the forcing and
+closure requirements of a dynamical core used for a weather or climate
+prediction application.  A set of physical parameterizations chosen to be
+identified as a suite results from the needs and judgements of a particular user,
+developer, or group of either.  
+
+In some cases, a suite may be identified as a benchmark or reference set of
+physical parameterizations, against which variations can be tested. Since a
+suite can be configured in different ways for different applications by
+modifying its tunable parameters,  an accompanying set of tunable parameters
+should be specified when defining a reference implementation or configuration of
+a physics suite. 
+
+In the context of NGGPS, a Physics Review Committee will be established to
+determine which physical parameterizations should be accepted onto the Common
+Community Physics Package, and which physics suites should be identified as
+such. 
+
+An **ensemble physics suite** is a collection of physics suites as defined above,
+and may be implemented as part of multi-physics ensemble forecast system. 
+
+Currently, **physics suites** are only allowed to support columnar physics. 
+
+@section mainpage-prototype The IPD Prototype 
+
+The IPD-related code utilizes modern Fortran standards up to F2003 and should be compatible with current Fortran compiler 
+implementations. Model data are encapsulated into several Derived Data Types
+(DDT) with Type Bound Procedures. Most of the model arguments are pointers to the 
+actual arrays that are allocated and are by default managed externally to the driver.  The DDTs 
+serve as containers of the passed arguments and several DDTs exist to provide some structure and organization to the data. 
+One goal and constraint of this
+development was to minimize changes to existing code.
+
+The GFS currently calls multiple physics schemes as a part of its physics suite.
+In doing so, it passes many atmospheric variables between the dynamic core and
+the physics modules using an initialization procedure. This list of arguments had become
+unruly consisting of over a hundred variables. Through the use of the DDTs, the list
+was reduced to a more succinct set of required variables
+(on the order of 10) to be used by all of the physics
+modules in their interaction with the atmospheric model. 
+
+The structure of the DDTs are based on the following template consisting of data containers (data pointers) 
+and methods to act on these containers.
+
+       type model_data_in
+         private
+           real :: vara
+           real :: varb
+       end type
+
+       type model_data
+         private
+
+         type (model_data_in) :: data_in
+         type (model_data_out) :: data_out
+         type (model_data_inout) :: data_inout
+
+         contains
+           procedure :: setin => set_model_in
+           procedure :: setout => set_model_out
+           procedure :: setinout => set_model_inout 
+
+       end type
+
+The current implementation of the driver uses the following set DDTs:
+
+- nuopc_physics::tbd_ddt              : arguments that still need to be categorized.
+- nuopc_physics::state_fields_in      : input states for physics
+- nuopc_physics::state_fields_out     : output states for physics
+- nuopc_physics::sfc_properties       : surface properties
+- nuopc_physics::diagnostics          : diagnostic fluxes and other fields
+- nuopc_physics::interface_fields     : fields used for coupling to land/ocean
+- nuopc_physics::cloud_properties     : cloud related fields
+- nuopc_physics::radiation_tendencies : radiation fields
+- nuopc_physics::dynamic_parameters   : model parameters that change (used to be part of model_parameters but these change frequently)
+- nuopc_physics::model_parameters     : parameters that are set once in the initialize phase
+
+The methods that belonging to each of these DDTs vary, but consist of some combination of these four:
+- set
+- setphys
+- setrad
+- print
+
+@subsection DDT Memory Management
+
+When the DDTs are created, the variables are initially assigned to null values. Then as the *set* methods are called, 
+the parameters (including the values of the array sizes) are defined. These array-size values are then passed into the 
+physics routines, where the arrays are allocated. Currently these arrays are created only in `grrad.f`, `gbphys.f`, and `cs_conv.f`.
+
+As an example consider the variable for the u component of layer wind (`ugrs`). This variable is passed into `gbphys()` through
+the state input container `statein`\%`ugrs` as a null pointer. Within `gbphys()` the array is allocated to have `dimension(ix,levs)`,
+where `ix` and `levs` were defined during the set call. All other physics arrays are allocated in a similar manner.
+
+
+
+@section mainpage-codeflow Physics Driver Calling Sequence
+
+A clickable call tree for GFS physics can be found here in the documentation for `do_physics_one_step().`
+
+@subsection initphase Initialize Phase
+
+In the GSM, module gfs_physics_initialize_mod calls:
+   -  `nuopc_phys_init` (module nuopc_physics) to initialize parameters used in the radiation and other physics parameterizations.
+      -  Populate  idat, used by radupdate, with values from idate (NCEP's absolute date and time of initial conditions).
+      -  Populate the model_parameters container (`mdl`) with the input arguments.
+      -  Call `gfuncphys` (module funcphys) to compute all physics function tables.
+      -  Call `rad_initialize` (module rad_initialize) to initialize fixed control variables for radiation processes.
+      -  Call `set_soilveg` (module set_soilveg) to initialize soil parameters.
+
+@subsection runphase Run Phase
+The current run  implementation of GSM code divides the physics calls into two stages; 
+the first call to invoke the radiation physics (`gloopr`), and a second call to invoke the
+remaining physics (gloopb). The GSM makes calls to gloopr and gloopb in turn invoke 
+the physics driver through use of containers and methods provided by nuopc_physics.
+   - `gloopr`
+      - Populate the DDT containers with the data to be sent to the radiation physics call of the IPD.
+         - `dyn_parm`\%`setrad`:  set the dynamic_parameters
+         - `state_fldin`\%`setrad`: set the state_fields_in
+         - `sfc_prop`\%`setrad`: set the sfc_properties
+         - `diags`\%`setrad`: set the diagnostics
+         - `cld_prop`\%`setrad`: set the cloud_properties,
+         - `rad_tend`\%`set`: set the radiation_tendencies
+         - `intrfc_fld` \% `setrad`: set the interface_fields
+      - Invoke the method `nuopc_rad_run()` from module nuopc_physics to advance the radiation physics a single step. The method calls `grrad` with pointers to the containers specifying the call's argument list.
+
+
+@image html gloopr_overview.png "gloopr calls to IPD"
+
+
+   - `gloopb`
+      - Populate the DDT containers with the data to be sent to the non-radiation physics call of the IPD.
+         - `dyn_parm`\%`setphys`: set the dynamic_parameters
+         - `state_fldin`\%`setphys`: set the state_fields_in
+         - `diags`\%`setphys`: set the diagnostics
+         - `intrfc_fld`\%`setphys`:  set the interface_fields
+         - `rad_tend`\%`set`:  set the radiation_tendencies
+         - `sfc_propt`\%`setphys`:  set the sfc_properties
+         - `cld_prop`\%`setphys`: set the cloud_properties
+         - `tbddata`\%`set`: set the tbd_ddt
+      - Invoke the method `nuopc_phys_run()` from module nuopc_physics to advance the non-radiation physics a single step. The method calls `gbphys` with pointers to the containers specifying the call's argument list.
+         - at this stage allocate workspace using the sizes specified in the set calls.
+         - translate variables from container objects into local variables. 
+
+@image html gloopb_overview.png "gloopb calls to IPD" 
+
+@section mainpage-vartrans  Pre/Post Physics Variable Translation
+
+In the current implementation of the IPD, the variables from the dynamic core (names, units, etc.) 
+exactly match the variables 
+needed by the GFS physics. Therefore, to connect the variables between the dynamical core and the physics it is only necessary 
+that the subroutine arguments in the calls to `gbphys()` and `grrad()` to correctly coincide with the local input variables. 
+
+For other dynamic cores and physics packages, this will likely not be the case. The dynamic core may use variables 
+with different units, completely different 
+variable types (e.g. relative vs. specific humidity), different staggering, etc., and will therefore
+need to be *translated* into a form that can be used by the physics. Once the physics step is complete, the physics variables 
+will need to be translated back into a form that can be used by the dynamic core. 
+
+Since the current implementation of the GFS system does not require any translation of the variables between the 
+dynamical core and the GFS physics, there is of yet no agreed upon design for the implementation of the IPD for other dynamic cores or phyiscs suites. In principle, a translation layer may be needed between the dynamic core and IPD, between the physics and the IPD, or both.  
+
+By design, the translation layer(s) would be external to the Driver so that it may remain agnostic to the specific 
+choice of dynamic core and physics suite. A separate implementation of the translation layer would be necessary for each
+unique pairing of a dynamical core and a physics suite.
+
+
+@section mainpage-limitations Limitations of the current design 
+
+As a prototype designed to be used with the GFS physics suite, the current implementation of the 
+IPD has a number of limitations that will need to be addressed as development progresses.
+
+- The IPD is specific to the GFS physics
+  - There is no need for a translation layer, however, this will not be true when new physics suites are connected.
+  - The current design only supports physics being called in a predetermined order. 
+  - The current design divides physics into two sets: radiation and non-radiation physics.
+
+- Memory management
+  - It is ambiguous how users of different dynamic cores should allocate/deallocate memory -- inside or outside of the IPD. 
+     - The current implementation has all memory allocations buried deep within the physics calls. This reduces the transparency and expandability of the code. 
+     - Letting the driver handle the memory will help standardize the design.
+
+
+
+*/

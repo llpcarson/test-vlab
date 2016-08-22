@@ -1,0 +1,32 @@
+/** 
+@page code Getting the code
+
+This page explains how to checkout the code and what is included.
+
+@section checkout Checking out the code
+The source code is available by combining the trunks of two EMC repositories, one for NEMS and one for GFS. The code can
+be checked out by typing the following lines:
+
+
+* - svn checkout https://svnemc.ncep.noaa.gov/projects/nems/trunk PhysDrvI
+* - cd PhysDrvI/src/atmos
+* - svn checkout https://svnemc.ncep.noaa.gov/projects/gsm/trunk gsm
+
+@section dirstruct Directory Structure
+Once you have obtained the code, you will have the following
+directory structure within the PhysDrvI directory (only relevant directories and files are listed here). 
+
+
+-  src/atmos/phys/
+    -  nuopc_physics.F90 ... physics driver, DDTs, wrapper subroutines
+    -  grrad.f ... radiation subroutine
+    -  gbphys.f ... non-radiation physics subroutine
+-  src/atmos/gsm/phys
+    -  gfs_physics_initialize_mod.f ... calls nuopc_phys_init()
+    -  gfs_physics_run_mod.f ... calls do_physics_one_step, passes mdl_param from init
+    -  do_physics_one_step.f ... cals gloopr and gloopb, passes mdl_param
+    -  gloopr.f ... fills the DDT containers and calls nuopc_rad_run
+    -  gloopb.f ... fills the DDT containers and calls nuopc_phys_run
+    -  gfs_physics_internal_state_mod.f ... defines the gfs physics internal state
+
+*/
