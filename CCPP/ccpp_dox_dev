@@ -58,7 +58,7 @@ PROJECT_LOGO           = img/dtc_logo.png
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = doc
+OUTPUT_DIRECTORY       = doc/dev_branch
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -771,31 +771,56 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../src/nems/src/atmos/phys/gwdc.f \
-                         ../src/nems/src/atmos/phys/gwdps.f \
-                         ../src/nems/src/atmos/phys/gscond.f \
-                         ../src/nems/src/atmos/phys/precpd.f \
-                         ../src/nems/src/atmos/phys/ozphys.f \
-                         ../src/nems/src/atmos/phys/mfpbl.f \
-                         ../src/nems/src/atmos/phys/moninedmf.f \
-                         ../src/nems/src/atmos/phys/grrad.f \
-                         ../src/nems/src/atmos/phys/physcons.f \
-                         ../src/nems/src/atmos/phys/physparam.f \
-                         ../src/nems/src/atmos/phys/radiation_aerosols.f \
-                         ../src/nems/src/atmos/phys/radiation_astronomy.f \
-                         ../src/nems/src/atmos/phys/radiation_clouds.f \
-                         ../src/nems/src/atmos/phys/radiation_gases.f \
-                         ../src/nems/src/atmos/phys/radiation_surface.f \
-                         ../src/nems/src/atmos/phys/radlw_datatb.f \
-                         ../src/nems/src/atmos/phys/radlw_main.f \
-                         ../src/nems/src/atmos/phys/radlw_param.f \
-                         ../src/nems/src/atmos/phys/radsw_datatb.f \
-                         ../src/nems/src/atmos/phys/radsw_main.f \
-                         ../src/nems/src/atmos/phys/radsw_param.f \
-                         ../src/nems/src/atmos/phys/sascnvn.f \
-                         ../src/nems/src/atmos/phys/shalcnv.f \
+INPUT                  = ../src/gsm/dev_branch/gsmphys/gwdc.f \
+                         ../src/gsm/dev_branch/gsmphys/gwdps.f \
+                         ../src/gsm/dev_branch/gsmphys/gscond.f \
+                         ../src/gsm/dev_branch/gsmphys/precpd.f \
+                         ../src/gsm/dev_branch/gsmphys/ozphys.f \
+                         ../src/gsm/dev_branch/gsmphys/mfpbl.f \
+                         ../src/gsm/dev_branch/gsmphys/moninedmf.f \
+                         ../src/gsm/dev_branch/gsmphys/grrad.f \
+                         ../src/gsm/dev_branch/gsmphys/physcons.f \
+                         ../src/gsm/dev_branch/gsmphys/physparam.f \
+                         ../src/gsm/dev_branch/gsmphys/radiation_aerosols.f \
+                         ../src/gsm/dev_branch/gsmphys/radiation_astronomy.f \
+                         ../src/gsm/dev_branch/gsmphys/radiation_clouds.f \
+                         ../src/gsm/dev_branch/gsmphys/radiation_gases.f \
+                         ../src/gsm/dev_branch/gsmphys/radiation_surface.f \
+                         ../src/gsm/dev_branch/gsmphys/radlw_datatb.f \
+                         ../src/gsm/dev_branch/gsmphys/radlw_main.f \
+                         ../src/gsm/dev_branch/gsmphys/radlw_param.f \
+                         ../src/gsm/dev_branch/gsmphys/radsw_datatb.f \
+                         ../src/gsm/dev_branch/gsmphys/radsw_main.f \
+                         ../src/gsm/dev_branch/gsmphys/radsw_param.f \
+                         ../src/gsm/dev_branch/gsmphys/sascnvn.f \
+                         ../src/gsm/dev_branch/gsmphys/shalcnv.f \
+                         ../src/gsm/dev_branch/gsmphys/gbphys.f \
                          txt \
-                         ../gbphys.f
+#INPUT                  = ../src/nems/src/atmos/phys/gwdc.f \
+#                         ../src/nems/src/atmos/phys/gwdps.f \
+#                         ../src/nems/src/atmos/phys/gscond.f \
+#                         ../src/nems/src/atmos/phys/precpd.f \
+#                         ../src/nems/src/atmos/phys/ozphys.f \
+#                         ../src/nems/src/atmos/phys/mfpbl.f \
+#                         ../src/nems/src/atmos/phys/moninedmf.f \
+#                         ../src/nems/src/atmos/phys/grrad.f \
+#                         ../src/nems/src/atmos/phys/physcons.f \
+#                         ../src/nems/src/atmos/phys/physparam.f \
+#                         ../src/nems/src/atmos/phys/radiation_aerosols.f \
+#                         ../src/nems/src/atmos/phys/radiation_astronomy.f \
+#                         ../src/nems/src/atmos/phys/radiation_clouds.f \
+#                         ../src/nems/src/atmos/phys/radiation_gases.f \
+#                         ../src/nems/src/atmos/phys/radiation_surface.f \
+#                         ../src/nems/src/atmos/phys/radlw_datatb.f \
+#                         ../src/nems/src/atmos/phys/radlw_main.f \
+#                         ../src/nems/src/atmos/phys/radlw_param.f \
+#                         ../src/nems/src/atmos/phys/radsw_datatb.f \
+#                         ../src/nems/src/atmos/phys/radsw_main.f \
+#                         ../src/nems/src/atmos/phys/radsw_param.f \
+#                         ../src/nems/src/atmos/phys/sascnvn.f \
+#                         ../src/nems/src/atmos/phys/shalcnv.f \
+#                         txt \
+#                         ../gbphys.f
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

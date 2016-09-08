@@ -1,7 +1,13 @@
 /**
 \mainpage GFS Operational Physics
 
-Documentation for the operational physics suite can be found here. As of January 2016, the following schemes are used:
+The documentation found here corresponds to the state of the operational GFS physics suite as of 2016. The suite is considered to contain
+both driving routines and the individual physical parameterizations. Documentation for the driving routines can be accessed using the following links:
+ - gbphys() (GFS physics driver)
+ - grrad() (GFS radiation driver)
+ - radupdate() (GFS time-sensitive preparation for radiation)
+
+Documentation for the operational physics suite can be access through these links::
 	-  \ref rad
 	-  \ref PBL
 	-  \ref SAS
@@ -9,6 +15,8 @@ Documentation for the operational physics suite can be found here. As of January
 	-  \ref MPscheme
 	-  \ref gwd
 	-  \ref ozn
+
+Separate documentation of the initial version of the Interoperable Physics Driver is found <a href="http://www.dtcenter.org/GMTB/gmtb_ipd_doc/">here</a>
 
 \section structure Structure
 \image html GFS_Operational_Physics.png "This diagram represents the GFS physics calling structure. Colors represent layers of abstraction in the code, with cooler colors being deeper in the calling hierarchy. Labels represent subroutine names and those in parentheses reflect that they are one of many options (the subroutines that are written are the current operational schemes). The sfc_* subroutine represents sfc_diff and other subroutines that are called depending on the underlying surface (sea, ice, land)."
