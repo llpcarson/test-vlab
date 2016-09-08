@@ -1,4 +1,6 @@
 *.DS_Store
 CCPP/doc
 IPD/doc
-src/gsm
+src/gsm/dev_branch
+src/gsm/trunk
+src/gsm/.svn
