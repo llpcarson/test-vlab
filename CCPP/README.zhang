@@ -1,9 +1,0 @@
-in physparam.f:
-isubclw =0,
-
-changed in run_script 
-ISUBC_LW=2
-ISUBC_SW=2
-
-
-From Laurie: Most of the GFS physics subroutines are compiled as fixed-format F77.  So, the addition of a continuation character on the end of the line needs to be sure that this is in column 72 or after, or the compiler will complain.
