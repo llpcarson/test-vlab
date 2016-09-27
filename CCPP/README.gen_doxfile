@@ -1,3 +1,7 @@
- -run gen_doxfile to get log.txt and ccpp_dox which includes gsm/trun svn information
+ - edit gen_doxfile:
+   setenv src_br  dev_branch    # trunk
 
- - /scratch3/NCEPDEV/hwrf/save/Samuel.Trahan/doxygen-1.8.10/bin/doxygen ccpp_dox
+ - run gen_doxfile to get log.txt and ccpp_dox which includes dev_branch or trunk svn information
+
+ - run Doxygen: 
+   /scratch3/NCEPDEV/hwrf/save/Samuel.Trahan/doxygen-1.8.10/bin/doxygen ccpp_dox

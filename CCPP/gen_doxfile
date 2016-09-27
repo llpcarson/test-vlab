@@ -1,16 +1,24 @@
 #!/bin/csh 
-#
+## user input
+ setenv src_br  dev_branch    # trunk
+## end user input
+
+# set source code path
+ setenv srcpath  ../src/gsm/$src_br/gsmphys
+ echo $srcpath
+
+# exact svn/git infomation
+ echo "extract svn info and generate log page and doxyfile ... "
  setenv githash `git rev-parse HEAD ; git diff-index --quiet HEAD `
-# echo $githash
- setenv svn_url  `svn info ../src/gsm/trunk | grep 'URL: https' |cut -c6-`
- setenv svn_num  `svn info ../src/gsm/trunk | grep 'Revision'`
- setenv svn_dat  `svn info ../src/gsm/trunk | grep 'Date'`
- setenv svn_log  `svn log -v -l 10 ../src/gsm/trunk`
+ setenv svn_url  `svn info $srcpath | grep 'URL: https' |cut -c6-`
+ setenv svn_num  `svn info $srcpath | grep 'Revision'`
+ setenv svn_dat  `svn info $srcpath | grep 'Date'`
+ setenv svn_log  `svn log -v -l 10 $srcpath`
  
+# write into doxyfile and svn info page
 set doxyfile="ccpp_dox"
 set logfile="./txt/log.txt"
 #
-echo "extract svn info and generate log page and doxyfile ... "
 cat <<EOF >! ${logfile}
 /** 
 \page log  SVN infomation page
@@ -28,7 +36,7 @@ cat << EOF >! ${doxyfile}
 # Doxyfile 1.8.11
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "GFS Operational Physics Documentation"
-PROJECT_NUMBER         = "$svn_num"
+PROJECT_NUMBER         = "$src_br $svn_num"
 PROJECT_BRIEF          = ""
 PROJECT_LOGO           = img/dtc_logo.png
 OUTPUT_DIRECTORY       = doc/trunk
@@ -124,30 +132,30 @@ WARN_NO_PARAMDOC       = NO
 WARN_AS_ERROR          = NO
 WARN_FORMAT            = 
 WARN_LOGFILE           =
-INPUT                  = ../src/gsm/trunk/gsmphys/gwdc.f \
-                         ../src/gsm/trunk/gsmphys/gwdps.f \
-                         ../src/gsm/trunk/gsmphys/gscond.f \
-                         ../src/gsm/trunk/gsmphys/precpd.f \
-                         ../src/gsm/trunk/gsmphys/ozphys.f \
-                         ../src/gsm/trunk/gsmphys/mfpbl.f \
-                         ../src/gsm/trunk/gsmphys/moninedmf.f \
-                         ../src/gsm/trunk/gsmphys/grrad.f \
-                         ../src/gsm/trunk/gsmphys/physcons.f \
-                         ../src/gsm/trunk/gsmphys/physparam.f \
-                         ../src/gsm/trunk/gsmphys/radiation_aerosols.f \
-                         ../src/gsm/trunk/gsmphys/radiation_astronomy.f \
-                         ../src/gsm/trunk/gsmphys/radiation_clouds.f \
-                         ../src/gsm/trunk/gsmphys/radiation_gases.f \
-                         ../src/gsm/trunk/gsmphys/radiation_surface.f \
-                         ../src/gsm/trunk/gsmphys/radlw_datatb.f \
-                         ../src/gsm/trunk/gsmphys/radlw_main.f \
-                         ../src/gsm/trunk/gsmphys/radlw_param.f \
-                         ../src/gsm/trunk/gsmphys/radsw_datatb.f \
-                         ../src/gsm/trunk/gsmphys/radsw_main.f \
-                         ../src/gsm/trunk/gsmphys/radsw_param.f \
-                         ../src/gsm/trunk/gsmphys/sascnvn.f \
-                         ../src/gsm/trunk/gsmphys/shalcnv.f \
-                         ../src/gsm/trunk/gsmphys/gbphys.f \
+INPUT                  = $srcpath/gwdc.f \
+                         $srcpath/gwdps.f \
+                         $srcpath/gscond.f \
+                         $srcpath/precpd.f \
+                         $srcpath/ozphys.f \
+                         $srcpath/mfpbl.f \
+                         $srcpath/moninedmf.f \
+                         $srcpath/grrad.f \
+                         $srcpath/physcons.f \
+                         $srcpath/physparam.f \
+                         $srcpath/radiation_aerosols.f \
+                         $srcpath/radiation_astronomy.f \
+                         $srcpath/radiation_clouds.f \
+                         $srcpath/radiation_gases.f \
+                         $srcpath/radiation_surface.f \
+                         $srcpath/radlw_datatb.f \
+                         $srcpath/radlw_main.f \
+                         $srcpath/radlw_param.f \
+                         $srcpath/radsw_datatb.f \
+                         $srcpath/radsw_main.f \
+                         $srcpath/radsw_param.f \
+                         $srcpath/sascnvn.f \
+                         $srcpath/shalcnv.f \
+                         $srcpath/gbphys.f \
                          txt \
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.f \
